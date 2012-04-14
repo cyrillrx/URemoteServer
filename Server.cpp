@@ -151,6 +151,11 @@ void Server::TreatCommand(string _cmd)
 	} else if (command == Message::KILL_SERVER) {
 		m_ContinueToListen = false;
 		reply << "Server killed";
+		
+	// Commande pour fermer la fenêtre courante
+	} else if (command == Message::KEYBOARD_ALTF4) {
+		Keyboard::AltF4();
+		reply << "Window closed (Alt + F4)";
 
 	// Play/Pause
 	} else if (command == Message::MEDIA_PLAY_PAUSE) {
