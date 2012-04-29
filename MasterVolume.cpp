@@ -11,57 +11,10 @@
 using namespace std;
 
 //////////////////////////////////////////////////////////////////////////////
-// Fonctions publics
-//////////////////////////////////////////////////////////////////////////////
-
-//! Cette fonction permet d'initialiser la librairie COM
-MasterVolume::MasterVolume(void)
-{
-	// Initialisation de la librairie com
-	if (CoInitialize(NULL) != S_OK) {
-		cout << "CoInitialize failed" << endl;
-	}
-	LoadEndpointVolume();
-}
-
-MasterVolume::~MasterVolume(void)
-{
-	FreeEndpointVolume();
-	CoUninitialize();
-}
-
-//! Change l'état de mute et renvoie le nouvel état
-bool MasterVolume::ToggleMute()
-{
-	bool newMuteState = !IsMute();
-	SetMute(newMuteState);
-
-	return newMuteState;
-}
-
-//! Augmente le volume et renvoie la nouvelle valeur
-float MasterVolume::TurnUp()
-{
-	float currentVolume = GetVolume();
-	float newVolume = min(VOLUME_MAX, currentVolume + VOLUME_STEP);
-	SetVolume(newVolume);
-
-	return newVolume;
-}
-
-//! Baisse le volume et renvoie la nouvelle valeur
-float MasterVolume::TurnDown()
-{
-	float currentVolume = GetVolume();
-	float newVolume = max(VOLUME_MIN, currentVolume - VOLUME_STEP);
-	SetVolume(newVolume);
-
-	return newVolume;
-}
-
-//////////////////////////////////////////////////////////////////////////////
 // Fonctions privées
 //////////////////////////////////////////////////////////////////////////////
+
+MasterVolume* MasterVolume::s_MasterVolume = NULL; 
 
 //! Initialisation de l'objet permettant le contrôle du volume
 void MasterVolume::LoadEndpointVolume()
@@ -139,9 +92,6 @@ float MasterVolume::GetVolume()
 {
 	float _currentVolume = 0;
 
-	//HRESULT hr = m_endpointVolume->GetMasterVolumeLevel(&currentVolume);
-	//printf("Current volume in dB is: %f\n", currentVolume);
-
 	HRESULT hr = m_EndpointVolume->GetMasterVolumeLevelScalar(&_currentVolume);
 	if (hr != S_OK) {
 		cout << "An error occured while getting volume !" << endl;
@@ -156,4 +106,65 @@ void MasterVolume::SetVolume(float _newVolume)
 	if (hr != S_OK) {
 		cout << "An error occured while setting volume !" << endl;
 	}
+}
+
+//! Cette fonction permet d'initialiser la librairie COM
+MasterVolume::MasterVolume(void)
+{
+	// Initialisation de la librairie com
+	if (CoInitialize(NULL) != S_OK) {
+		cout << "CoInitialize failed" << endl;
+	}
+	LoadEndpointVolume();
+}
+
+MasterVolume::~MasterVolume(void)
+{
+	FreeEndpointVolume();
+	CoUninitialize();
+}
+
+//////////////////////////////////////////////////////////////////////////////
+// Fonctions publics
+//////////////////////////////////////////////////////////////////////////////
+
+MasterVolume* MasterVolume::GetInstance() {
+	if (!s_MasterVolume) {
+		s_MasterVolume = new MasterVolume();
+	}
+	return s_MasterVolume;
+}
+
+void MasterVolume::FreeInstance() {
+	delete(s_MasterVolume);
+	s_MasterVolume = NULL;
+}
+
+//! Change l'état de mute et renvoie le nouvel état
+bool MasterVolume::ToggleMute()
+{
+	bool newMuteState = !IsMute();
+	SetMute(newMuteState);
+
+	return newMuteState;
+}
+
+//! Augmente le volume et renvoie la nouvelle valeur
+float MasterVolume::TurnUp()
+{
+	float currentVolume = GetVolume();
+	float newVolume = min(VOLUME_MAX, currentVolume + VOLUME_STEP);
+	SetVolume(newVolume);
+
+	return newVolume;
+}
+
+//! Baisse le volume et renvoie la nouvelle valeur
+float MasterVolume::TurnDown()
+{
+	float currentVolume = GetVolume();
+	float newVolume = max(VOLUME_MIN, currentVolume - VOLUME_STEP);
+	SetVolume(newVolume);
+
+	return newVolume;
 }

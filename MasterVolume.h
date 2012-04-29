@@ -7,7 +7,11 @@ class MasterVolume
 {
 	
 private :
+	static MasterVolume *s_MasterVolume; 
 	IAudioEndpointVolume *m_EndpointVolume;
+	
+	MasterVolume(void);
+	~MasterVolume(void);
 	
 	void LoadEndpointVolume();
 	void FreeEndpointVolume();
@@ -19,8 +23,8 @@ private :
 	void SetVolume(float _newVolume);
 
 public:
-	MasterVolume(void);
-	~MasterVolume(void);
+	static MasterVolume* GetInstance();
+	static void FreeInstance();
 	
 	bool ToggleMute();
 	float TurnUp();
