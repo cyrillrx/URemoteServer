@@ -9,7 +9,7 @@ const string Message::CODE_APP		= "code_app";
 const string Message::CODE_CLASSIC	= "code_classic";
 
 // Gestion général
-const string Message::HELLO_SERVER	= "Hello serveur";
+const string Message::HELLO_SERVER	= "hello_serveur";
 const string Message::HELLO_CLIENT	= "Hello client";
 const string Message::TEST_COMMAND	= "test_command";
 const string Message::KILL_SERVER	= "kill_server";

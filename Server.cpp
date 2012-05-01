@@ -13,7 +13,6 @@
 
 int Server::s_InstanceCount = 0;
 
-
 //////////////////////////////////////////////////////////////////////////////
 // Fonctions publics
 //////////////////////////////////////////////////////////////////////////////
@@ -56,7 +55,10 @@ void Server::Launch()
 		//memset(buffer, '\0', sizeof(buffer)); // On vide le buffer
 		memset(buffer, '\0', BUFSIZ); // On vide le buffer
 		//recv(m_CSocket, buffer, sizeof(buffer), 0);
-		recv(m_CSocket, buffer, BUFSIZ, 0);
+		int res = recv(m_CSocket, buffer, BUFSIZ, 0);
+		cout << "result" << res <<  endl;
+		//int getpeername(int sockfd, struct sockaddr *addr, int *addrlen);
+		//int gethostname(char *hostname, size_t size);
 		cout << buffer << endl;
 		string command = buffer;
 		TreatCommand(command);
@@ -248,13 +250,14 @@ string Server::ClassicCommand(string _param)
 
 	if (_param == Message::HELLO_SERVER) {
 		reply << Message::HELLO_CLIENT;
+		Speech::SayW(L"Cyril is now connected. Welcome to Kronos System sir.");
 
 	// Commande de test
 	} else if (_param == Message::TEST_COMMAND) {
-		reply << "Code has been tested";
+		reply << "The code has been tested";
 		//Speech::Say(L"Code has been tested");
 		//Speech::Say(reply.str());
-	Speech::Say(reply.str().c_str());
+		Speech::Say(reply.str().c_str());
 
 	// Commande pour tuer le serveur
 	} else if (_param == Message::KILL_SERVER) {
