@@ -11,12 +11,15 @@ private:
 	int m_IsMute;
 	time_t m_LastWelcome;
 
-	//double ElapsedTime(clock_t _clock1, clock_t _clock2);
+	void Start();
+	void Shutdown();
 
 public:
 	AI(string _name);
 	~AI(void);
+
 	void Welcome();
 	void Say(string _textToSpeak);
+	bool ToggleMute();
 };
 

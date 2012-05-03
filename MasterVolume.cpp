@@ -16,6 +16,22 @@ using namespace std;
 
 MasterVolume* MasterVolume::s_MasterVolume = NULL; 
 
+//! Cette fonction permet d'initialiser la librairie COM
+MasterVolume::MasterVolume(void)
+{
+	// Initialisation de la librairie com
+	if (CoInitialize(NULL) != S_OK) {
+		cout << "CoInitialize failed" << endl;
+	}
+	LoadEndpointVolume();
+}
+
+MasterVolume::~MasterVolume(void)
+{
+	FreeEndpointVolume();
+	CoUninitialize();
+}
+
 //! Initialisation de l'objet permettant le contrôle du volume
 void MasterVolume::LoadEndpointVolume()
 {
@@ -106,22 +122,6 @@ void MasterVolume::SetVolume(float _newVolume)
 	if (hr != S_OK) {
 		cout << "An error occured while setting volume !" << endl;
 	}
-}
-
-//! Cette fonction permet d'initialiser la librairie COM
-MasterVolume::MasterVolume(void)
-{
-	// Initialisation de la librairie com
-	if (CoInitialize(NULL) != S_OK) {
-		cout << "CoInitialize failed" << endl;
-	}
-	LoadEndpointVolume();
-}
-
-MasterVolume::~MasterVolume(void)
-{
-	FreeEndpointVolume();
-	CoUninitialize();
 }
 
 //////////////////////////////////////////////////////////////////////////////

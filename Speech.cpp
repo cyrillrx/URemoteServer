@@ -1,5 +1,5 @@
 #include "Speech.h"
-
+/*
 void Speech::SayW(LPCWSTR _textToSpeak)
 {
 	ISpVoice * ispVoice = NULL;
@@ -8,7 +8,11 @@ void Speech::SayW(LPCWSTR _textToSpeak)
 
 	HRESULT hr = CoCreateInstance(CLSID_SpVoice, NULL, CLSCTX_ALL, IID_ISpVoice, (void **)&ispVoice);
     if (SUCCEEDED( hr )) {
-	
+
+		long rate;
+		ispVoice->GetRate(&rate);
+		cout << "rate is " << rate << endl;
+
 		hr = ispVoice->Speak(_textToSpeak, SPF_ASYNC, NULL);
 		if (hr == S_OK) {
 			cout << "  - Function completed successfully." << endl;
@@ -34,7 +38,7 @@ void Speech::SayW(LPCWSTR _textToSpeak)
 
     ::CoUninitialize();
 }
-
+*/
 void Speech::SayB(bstr_t _textToSpeak)
 {
 	ISpVoice * ispVoice = NULL;
@@ -43,6 +47,8 @@ void Speech::SayB(bstr_t _textToSpeak)
 
 	HRESULT hr = CoCreateInstance(CLSID_SpVoice, NULL, CLSCTX_ALL, IID_ISpVoice, (void **)&ispVoice);
     if (SUCCEEDED( hr )) {
+
+		ispVoice->SetRate(-2);
 	
 		hr = ispVoice->Speak(_textToSpeak, SPF_ASYNC, NULL);
 		if (hr == S_OK) {
@@ -75,7 +81,7 @@ void Speech::Say(string _textToSpeak)
 	SayB(object);
 		
 }
-
+/*
 void Speech::Say(char* _textToSpeak)
 {
 	cout << "- char* _textToSpeak" << endl;
@@ -113,3 +119,4 @@ wchar_t* Speech::StrToWChar(string _str)
 
 	return wcstring;
 }
+*/

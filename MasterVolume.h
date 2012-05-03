@@ -22,7 +22,7 @@ private :
 	float GetVolume();
 	void SetVolume(float _newVolume);
 
-public:
+public :
 	static MasterVolume* GetInstance();
 	static void FreeInstance();
 	
