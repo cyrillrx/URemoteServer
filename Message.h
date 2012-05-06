@@ -9,6 +9,7 @@ class Message
 public:
 	
 // Code de message
+	static const string CODE_AI;
 	static const string CODE_KEYBOARD;
 	static const string CODE_KEYBOARD_COMBO;
 	static const string CODE_MEDIA;
@@ -50,6 +51,9 @@ public:
 	// Explorateur de fichiers
 	static const string OPEN_DIR;
 	static const string OPEN_FILE;
+
+	// Intelligence Artificielle
+	static const string AI_MUTE;
 
 };
 

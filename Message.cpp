@@ -1,8 +1,9 @@
 #include "Message.h"
 
 // Code de message
-const string  Message::CODE_KEYBOARD	= "code_keyboard";
-const string  Message::CODE_KEYBOARD_COMBO	= "code_combo";
+const string  Message::CODE_AI		= "code_ai";
+const string  Message::CODE_KEYBOARD = "code_keyboard";
+const string  Message::CODE_KEYBOARD_COMBO = "code_combo";
 const string Message::CODE_MEDIA	= "code_media";
 const string Message::CODE_VOLUME	= "code_volume";
 const string Message::CODE_APP		= "code_app";
@@ -42,4 +43,7 @@ const string Message::GOM_PLAYER_STRETCH	= "gom_player_stretch";
 // Explorateur de fichiers
 const string Message::OPEN_DIR	= "open_directory";
 const string Message::OPEN_FILE	= "open_file";
+
+// Intelligence Artificielle
+const string Message::AI_MUTE	= "ai_mute";
 

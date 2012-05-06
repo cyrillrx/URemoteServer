@@ -1,7 +1,7 @@
 #include "AI.h"
 #include "Speech.h"
 
-#define DELAY 600 // 600 sec (10 min) avant de répéter
+#define DELAY 60*5 // 5 min / 300 sec avant de répéter
 
 //////////////////////////////////////////////////////////////////////////////
 // Fonctions publics
@@ -16,7 +16,6 @@ AI::AI(string _name)
 	m_LastWelcome -= DELAY;
 
 	Start();
-
 }
 
 AI::~AI(void)

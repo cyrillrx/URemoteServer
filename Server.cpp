@@ -21,8 +21,12 @@ Server::Server(int _port, int _maxConnections)
 	m_Port = _port;
 	m_MaxConcurrentConnections = _maxConnections;
 	InitServer();
-
-	m_ArtificialIntelligence = new AI("Jarvis");
+	
+	//m_ArtificialIntelligence = new AI("Synaps");
+	//m_ArtificialIntelligence = new AI("Ubiquity");
+	//m_ArtificialIntelligence = new AI("Arthemis");
+	//m_ArtificialIntelligence = new AI("Athena");
+	m_ArtificialIntelligence = new AI("Eternity");
 }
 
 Server::~Server(void)
@@ -147,10 +151,15 @@ void Server::TreatCommand(string _cmd)
 
 	ostringstream reply;
 	
-	if (code == Message::CODE_CLASSIC) {
+	// Commande à l'intelligence artificielle
+	if (code == Message::CODE_AI) {
 		Reply(ClassicCommand(param));
 		return;
 		
+	} else if (code == Message::CODE_CLASSIC) {
+		Reply(ClassicCommand(param));
+		return;
+	
 	// Commande des applications
 	} else if (code == Message::CODE_APP) {
 		Reply(AppCommand(param));
@@ -224,7 +233,6 @@ string Server::VolumeCommand(string _param)
 		float fVolumeLvl = MasterVolume::GetInstance()->TurnDown();
 		MasterVolume::FreeInstance();
 
-		//sprintf_s(buffer, "Volume is %f", fVolumeLvl);
 		reply << "Volume down to " << fVolumeLvl * 100 << "%";
 			
 	// Volume Mute
@@ -247,6 +255,27 @@ string Server::VolumeCommand(string _param)
 }
 
 //! Traitement d'une commande général
+string Server::AICommand(string _param)
+{
+	ostringstream reply;
+
+	if (_param == Message::AI_MUTE) {
+		bool isMute = m_ArtificialIntelligence->ToggleMute();
+			
+		if (isMute) {
+			reply << "AI volume is off.";
+		} else {
+			reply << "AI volume is now on.";
+			m_ArtificialIntelligence->Say(reply.str());
+		}
+
+	} else {
+		return "Unknown AI command !";
+	}
+	return reply.str();
+}
+
+//! Traitement d'une commande général
 string Server::ClassicCommand(string _param)
 {
 	ostringstream reply;
@@ -257,10 +286,18 @@ string Server::ClassicCommand(string _param)
 
 	// Commande de test
 	} else if (_param == Message::TEST_COMMAND) {
-		reply << "The code has been tested";
-		//Speech::Say(L"Code has been tested");
-		//Speech::Say(reply.str());
-		m_ArtificialIntelligence->Say(reply.str().c_str());
+		
+		bool isMute = m_ArtificialIntelligence->ToggleMute();
+			
+		if (isMute) {
+			reply << "AI volume is off.";
+		} else {
+			reply << "AI volume is now on.";
+			m_ArtificialIntelligence->Say(reply.str());
+		}
+
+		//reply << "The code has been tested";
+		m_ArtificialIntelligence->Say("The code has been tested");
 
 	// Commande pour tuer le serveur
 	} else if (_param == Message::KILL_SERVER) {
@@ -287,27 +324,18 @@ string Server::AppCommand(string _param)
 	// Ouvrir Gom player
 	if (_param == Message::APP_GOM_PLAYER) {
 		cout << Message::APP_GOM_PLAYER << endl;
-		App* gomPlayer = new App("Gom Player", "GomPlayer1.x", "D:\\Programs\\GomPlayer\\GOM.exe");
-		string resultMessage = gomPlayer->Show();
-		delete gomPlayer;
-		gomPlayer = NULL;
-		reply << resultMessage;
+		reply << App::GetGomPlayer()->Show();
+		App::FreeGomPlayer();
 		
 	// Fermer Gom player
 	} else if (_param == Message::KILL_GOM_PLAYER) {
-		App* gomPlayer = new App("Gom Player", "GomPlayer1.x", "D:\\Programs\\GomPlayer\\GOM.exe");
-		string resultMessage = gomPlayer->Close();
-		delete gomPlayer;
-		gomPlayer = NULL;
-		reply << resultMessage;
+		reply << App::GetGomPlayer()->Close();
+		App::FreeGomPlayer();
 
 	// Stretch Gom player
 	} else if (_param == Message::GOM_PLAYER_STRETCH) {
-		App* gomPlayer = new App("Gom Player", "GomPlayer1.x", "D:\\Programs\\GomPlayer\\GOM.exe");
-		string resultMessage = gomPlayer->Strech();
-		delete gomPlayer;
-		gomPlayer = NULL;
-		reply << resultMessage;
+		reply << App::GetGomPlayer()->Strech();
+		App::FreeGomPlayer();
 			
 	} else {
 		return "Unknown app command !";

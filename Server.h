@@ -25,6 +25,7 @@ private :
 	void TreatCommand(string _cmd);
 	void Reply(string _message);
 	string VolumeCommand(string _param);
+	string AICommand(string _param);
 	string ClassicCommand(string _param);
 	string AppCommand(string _param);
 	
