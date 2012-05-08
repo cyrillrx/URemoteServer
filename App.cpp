@@ -1,4 +1,5 @@
 #include <iostream>
+#include <comdef.h>
 
 #include "App.h"
 #include "Keyboard.h"
@@ -22,7 +23,8 @@ App::~App(void)
 
 bool App::SetOnTop()
 {
-	HWND window = FindWindowA(mClassName.c_str(), NULL);
+	bstr_t className(mClassName.c_str());
+	HWND window = FindWindow(className, NULL);
 	if (!window) {
 		cout << "Error while searching process." << endl;
 		return false;
@@ -34,10 +36,8 @@ bool App::SetOnTop()
 bool App::Launch()
 {
 	cout << "Launching " << mLabel << endl;
-	HINSTANCE returnCode = ShellExecuteA(NULL, "open", mExePath.c_str(), "", NULL, SW_SHOWMAXIMIZED);
-	//HINSTANCE returnCode = ShellExecuteA(NULL, "open", mExePath.c_str(), "", NULL, SW_SHOWMAXIMIZED);
-	//LPCWSTR exePath = mExePath.c_str();
-	//HINSTANCE returnCode = ShellExecute(NULL, L"open", exePath, L"", NULL, SW_SHOWMAXIMIZED);
+	bstr_t path(mExePath.c_str());
+	HINSTANCE returnCode = ShellExecute(NULL, L"open", path, L"", NULL, SW_SHOWMAXIMIZED);
 	return ((int)returnCode > 32);
 }
 
@@ -58,9 +58,9 @@ void App::FreeGomPlayer() {
 	s_GomPlayer = NULL;
 }
 
-/* 
- *! Met l'application au premier plan
- *! Lance l'application si elle n'est pas lancée
+/** 
+ * Met l'application au premier plan
+ * Lance l'application si elle n'est pas lancée
  */
 string App::Show()
 {
@@ -82,14 +82,15 @@ string App::Show()
 	return resultMessage;
 }
 
-/* 
- *! Ferme l'application si elle est ouverte
+/** 
+ * Ferme l'application si elle est ouverte
  */
 string App::Close()
 {
 	string resultMessage;
-
-	HWND window = FindWindowA(mClassName.c_str(), NULL);
+	
+	bstr_t className(mClassName.c_str());
+	HWND window = FindWindow(className, NULL);
 	if (!window) {
 		resultMessage = mLabel + " is not open.";
 	} else {
@@ -101,14 +102,15 @@ string App::Close()
 	return resultMessage;
 }
 
-/* 
- *! Stretch l'application si elle est ouverte
+/** 
+ * Stretch l'application si elle est ouverte
  */
 string App::Strech()
 {
 	string resultMessage;
-
-	HWND window = FindWindowA(mClassName.c_str(), NULL);
+	
+	bstr_t className(mClassName.c_str());
+	HWND window = FindWindow(className, NULL);
 	if (!window) {
 		resultMessage = mLabel + " is not open.";
 	} else {

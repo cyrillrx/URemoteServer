@@ -14,6 +14,7 @@ const string Message::HELLO_SERVER	= "hello_serveur";
 const string Message::HELLO_CLIENT	= "Hello client";
 const string Message::TEST_COMMAND	= "test_command";
 const string Message::KILL_SERVER	= "kill_server";
+const string Message::SHUTDOWN		= "shutdown";
 const string Message::MONITOR_SWITCH_WINDOW = "switch_window";
 
 // Gestion des touches du clavier 

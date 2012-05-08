@@ -22,6 +22,7 @@ public:
 	static const string HELLO_CLIENT;
 	static const string TEST_COMMAND;
 	static const string KILL_SERVER;
+	static const string SHUTDOWN;
 	static const string MONITOR_SWITCH_WINDOW;
 	
 	// Gestion des touches du clavier 

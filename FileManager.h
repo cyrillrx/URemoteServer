@@ -8,8 +8,9 @@ using namespace std;
 class FileManager
 {
 private:
-	static vector<string> ListFiles(string path);
+	static vector<string> ListFiles(string _dirPath);
 public:
-	static string ListFilesStr(string path);
+	static string ListFilesStr(string _dirPath);
+	static string OpenFile(string _filePath);
 };
 

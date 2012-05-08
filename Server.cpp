@@ -2,6 +2,7 @@
 
 #include <sstream>
 #include <iostream>
+#include <comdef.h>
 
 #include "Message.h"
 #include "MasterVolume.h"
@@ -191,9 +192,8 @@ void Server::TreatCommand(string _cmd)
 
 	// Ouvrir un fichier
 	} else if (code == Message::OPEN_FILE) { 
-		ShellExecuteA(NULL, NULL, param.c_str(), NULL, NULL, SW_SHOWMAXIMIZED);
-		reply << "Ouverture du fichier : " << param;
-
+		reply << FileManager::OpenFile(param);
+		
 	} else if (_cmd == "\0") {
 		reply << "No command had been receive";
 
@@ -214,6 +214,16 @@ void Server::Reply(string _message)
 	}
 	send(m_CSocket, _message.c_str(), strlen(_message.c_str()), 0);
 	cout << _message << endl;
+}
+
+string Server::ShutdownPC()
+{
+	m_ContinueToListen = false;
+	//ShellExecute(NULL, L"shutdown", NULL, L"-s -t 10", NULL, SW_SHOWMAXIMIZED);
+	system("Shutdown.exe -s -t 10 -c \"L'ordinateur va s'éteindre dans 10 secondes\"");
+	string reply = "PC will shutdown in 10 seconds";
+	m_ArtificialIntelligence->Say(reply);
+	return reply;
 }
 
 //! Traitement d'un commande de volume
@@ -286,7 +296,7 @@ string Server::ClassicCommand(string _param)
 
 	// Commande de test
 	} else if (_param == Message::TEST_COMMAND) {
-		
+		/*
 		bool isMute = m_ArtificialIntelligence->ToggleMute();
 			
 		if (isMute) {
@@ -295,6 +305,8 @@ string Server::ClassicCommand(string _param)
 			reply << "AI volume is now on.";
 			m_ArtificialIntelligence->Say(reply.str());
 		}
+		*/
+		ShutdownPC();
 
 		//reply << "The code has been tested";
 		m_ArtificialIntelligence->Say("The code has been tested");
@@ -303,6 +315,10 @@ string Server::ClassicCommand(string _param)
 	} else if (_param == Message::KILL_SERVER) {
 		m_ContinueToListen = false;
 		reply << "Server killed";
+		
+	// Eteindre l'ordinateur
+	} else if (_param == Message::SHUTDOWN) {
+		reply << ShutdownPC();
 
 	// Switch écran
 	} else if (_param == Message::MONITOR_SWITCH_WINDOW) {
