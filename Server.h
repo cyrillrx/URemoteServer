@@ -29,6 +29,8 @@ private :
 	string ClassicCommand(string _param);
 	string AppCommand(string _param);
 	
+	string ShutdownPC();
+	
 public:
 	Server(int _port, int _maxConnections);
 	~Server(void);

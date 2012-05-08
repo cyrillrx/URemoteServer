@@ -2,20 +2,25 @@
 #include <windows.h>
 #include <sstream>
 #include <iostream>
+#include <comdef.h>
 
-vector<string> FileManager::ListFiles(string path)
+//////////////////////////////////////////////////////////////////////////////
+// Fonctions privées
+//////////////////////////////////////////////////////////////////////////////
+
+vector<string> FileManager::ListFiles(string _dirPath)
 {
-	cout << "Target directory is " << path.c_str() << endl;
+	cout << "Target directory is " << _dirPath.c_str() << endl;
 
 	// Initialisation du vecteur à retourner
 	vector<string> fileList;
 	
 	// Préparation de la chaine pour l'utilisation de la fonction FindFile
 	// On ajoute "\\*" à la fin du nom de repertoire.
-	path += "\\*";
+	_dirPath += "\\*";
 	
 	// On vérifie que le chemin ne soit pas plus grand que la taille maximum autorisée (MAX_PATH) 
-	if (path.length() > MAX_PATH) {
+	if (_dirPath.length() > MAX_PATH) {
 		cout << "Directory path is too long." << endl;
 		return fileList;
 	}
@@ -24,7 +29,7 @@ vector<string> FileManager::ListFiles(string path)
 	WIN32_FIND_DATAA ffd;
 	HANDLE hFind = INVALID_HANDLE_VALUE;
 	DWORD dwError = 0;
-	hFind = FindFirstFileA(path.c_str(), &ffd);
+	hFind = FindFirstFileA(_dirPath.c_str(), &ffd);
 	if (hFind == INVALID_HANDLE_VALUE) {
 		cout << "FindFirstFile error : INVALID_HANDLE_VALUE" << endl;
 		return fileList;
@@ -67,9 +72,13 @@ vector<string> FileManager::ListFiles(string path)
 	return fileList;
 }
 
-string FileManager::ListFilesStr(string path)
+//////////////////////////////////////////////////////////////////////////////
+// Fonctions publics
+//////////////////////////////////////////////////////////////////////////////
+
+string FileManager::ListFilesStr(string _dirPath)
 {
-	vector<string> fileList = ListFiles(path);
+	vector<string> fileList = ListFiles(_dirPath);
 	const int listSize = fileList.size();
 
 	string result = "";
@@ -80,4 +89,11 @@ string FileManager::ListFilesStr(string path)
 		}
 	}
 	return result;
+}
+
+string FileManager::OpenFile(string _filePath)
+{
+	bstr_t filePath(_filePath.c_str());
+	ShellExecute(NULL, NULL, filePath, NULL, NULL, SW_SHOWMAXIMIZED);
+	return "Ouverture du fichier : "  + _filePath;
 }
