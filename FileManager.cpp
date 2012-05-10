@@ -44,11 +44,15 @@ vector<string> FileManager::ListFiles(string _dirPath)
 		data << ffd.cFileName;
 		// Si c'est un répertoire
 		if (ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-			if (ffd.cFileName != ".") { // skip le répertoire "."
-				data << "<DIR>"; 
-				fileList.push_back(data.str());
-				cout << ffd.cFileName << " <DIR>" << endl;
+			
+			// skip le répertoire "." et "$RECYCLE.BIN"
+			if (strcmp(ffd.cFileName, ".") == 0 || strcmp(ffd.cFileName, "$RECYCLE.BIN") == 0 ) {
+				continue;
 			}
+
+			data << "<DIR>"; 
+			fileList.push_back(data.str());
+			cout << ffd.cFileName << " <DIR>" << endl;
 
 		// Si c'est un fichier
 		} else {
