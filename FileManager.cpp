@@ -26,7 +26,7 @@ vector<string> FileManager::ListFiles(string _dirPath)
 	}
 
 	// Recherche du premier fichier dans le repertoire.
-	WIN32_FIND_DATAA ffd;
+	WIN32_FIND_DATA ffd;
 	HANDLE hFind = INVALID_HANDLE_VALUE;
 	DWORD dwError = 0;
 	hFind = FindFirstFileA(_dirPath.c_str(), &ffd);
@@ -46,7 +46,7 @@ vector<string> FileManager::ListFiles(string _dirPath)
 		if (ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
 			
 			// skip le répertoire "." et "$RECYCLE.BIN"
-			if (strcmp(ffd.cFileName, ".") == 0 || strcmp(ffd.cFileName, "$RECYCLE.BIN") == 0 ) {
+			if (wcscmp(ffd.cFileName, L".") == 0 || wcscmp(ffd.cFileName, L"$RECYCLE.BIN") == 0 ) {
 				continue;
 			}
 
@@ -63,7 +63,7 @@ vector<string> FileManager::ListFiles(string _dirPath)
 			fileList.push_back(data.str());
 
 		}
-	} while (FindNextFileA(hFind, &ffd) != 0);
+	} while (FindNextFile(hFind, &ffd) != 0);
  
 	dwError = GetLastError();
 	if (dwError != ERROR_NO_MORE_FILES) {
