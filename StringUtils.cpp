@@ -1,11 +1,8 @@
 #include "StringUtils.h"
 
 
-StringUtils::StringUtils(void)
+bstr_t StringUtils::StringToBStr(string _str)
 {
-}
-
-
-StringUtils::~StringUtils(void)
-{
+	bstr_t bstr(_str.c_str());
+	return bstr;
 }

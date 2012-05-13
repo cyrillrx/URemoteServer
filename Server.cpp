@@ -154,7 +154,7 @@ void Server::TreatCommand(string _cmd)
 	
 	// Commande à l'intelligence artificielle
 	if (code == Message::CODE_AI) {
-		Reply(ClassicCommand(param));
+		Reply(AICommand(param));
 		return;
 		
 	} else if (code == Message::CODE_CLASSIC) {
@@ -306,10 +306,10 @@ string Server::ClassicCommand(string _param)
 			m_ArtificialIntelligence->Say(reply.str());
 		}
 		*/
-		ShutdownPC();
 
 		//reply << "The code has been tested";
-		m_ArtificialIntelligence->Say("The code has been tested");
+		reply << "No way. Go Fuck yourself !";
+		m_ArtificialIntelligence->Say(reply.str());
 
 	// Commande pour tuer le serveur
 	} else if (_param == Message::KILL_SERVER) {
