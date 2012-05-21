@@ -53,12 +53,10 @@ void Server::Launch()
 
 		m_CSocket = accept(m_ListenSocket, (SOCKADDR *)&csin, &sizeofcsin);
 		if (m_CSocket == INVALID_SOCKET) {
-			cout << "accept failed with error: " << endl;
 			cout << "accept failed with error: " << WSAGetLastError() << endl;
 			FreeServer();
 			return;
 		}
-		cout << "Waiting for client to connect2..." << endl;
 		
 		memset(buffer, '\0', sizeof(buffer)); // On vide le buffer
 		//memset(buffer, '\0', BUFSIZ); // On vide le buffer
