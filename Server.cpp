@@ -42,33 +42,36 @@ void Server::Launch()
 	m_ContinueToListen = true;
 
 	// Socket d'acceptation
-	SOCKADDR_IN csin;
+	//SOCKADDR_IN csin;
+	//int sizeofcsin = sizeof(csin);
 	char buffer[BUFSIZ];
 
 	/* connection socket */
-	int sizeofcsin = sizeof(csin);
-
-	while(m_ContinueToListen) {
+	
+	while (m_ContinueToListen) {
+		cout << "Open port : " << m_Port << endl;
 		cout << "Waiting for client to connect..." << endl;
-
-		m_CSocket = accept(m_ListenSocket, (SOCKADDR *)&csin, &sizeofcsin);
+		
+		//m_CSocket = accept(m_ListenSocket, (SOCKADDR *)&csin, &sizeofcsin);
+		m_CSocket = accept(m_ListenSocket, NULL, NULL);
 		if (m_CSocket == INVALID_SOCKET) {
 			cout << "accept failed with error: " << WSAGetLastError() << endl;
 			FreeServer();
 			return;
 		}
 		
-		memset(buffer, '\0', sizeof(buffer)); // On vide le buffer
-		//memset(buffer, '\0', BUFSIZ); // On vide le buffer
-		int res = recv(m_CSocket, buffer, sizeof(buffer), 0);
-		//int res = recv(m_CSocket, buffer, BUFSIZ, 0);
-		cout << "  -- result" << res <<  endl;
-		//int getpeername(int sockfd, struct sockaddr *addr, int *addrlen);
-		//int gethostname(char *hostname, size_t size);
-		cout << buffer << endl;
-		string command = buffer;
-		TreatCommand(command);
+			memset(buffer, '\0', sizeof(buffer)); // On vide le buffer
+			//memset(buffer, '\0', BUFSIZ); // On vide le buffer
+			int res = recv(m_CSocket, buffer, sizeof(buffer), 0);
+			//int res = recv(m_CSocket, buffer, BUFSIZ, 0);
+			cout << "  -- result" << res <<  endl;
+			//int getpeername(int sockfd, struct sockaddr *addr, int *addrlen);
+			//int gethostname(char *hostname, size_t size);
+			cout << buffer << endl;
+			string message = buffer;
+			HandleMessage(message);
 		
+
 		closesocket(m_CSocket);
 		cout << "Socket closed" << endl << endl;
 	}
@@ -102,9 +105,9 @@ void Server::InitServer()
 
 	// Contient les informations techniques du socket
 	SOCKADDR_IN socketAddress; 
-	socketAddress.sin_addr.s_addr = htonl(INADDR_ANY); // Adresse du serveur
-	socketAddress.sin_family	= AF_INET; // famille de socket utilisée => Internet
-	socketAddress.sin_port	= htons(m_Port);
+	socketAddress.sin_addr.s_addr	= htonl(INADDR_ANY); // Adresse du serveur
+	socketAddress.sin_family		= AF_INET; // famille de socket utilisée => Internet
+	socketAddress.sin_port			= htons(m_Port);
 
 	// Attache le socket à l'adresse et au port définis dans SOCKADDR 
 	result = bind(m_ListenSocket, (SOCKADDR*)&socketAddress, sizeof(socketAddress));
@@ -133,20 +136,21 @@ void Server::FreeServer()
 }
 
 //! Traitement de la commande envoyée par le client
-void Server::TreatCommand(string _cmd) 
+void Server::HandleMessage(string _msg) 
 {
-	cout << "Server::TreatCommand : Command \"" << _cmd << "\" received." << endl;
-	size_t position = _cmd.find ('|');
+	cout << "Server::HandleMessage() : Command <" << _msg << ">" << endl;
+	size_t position = _msg.find ('|');
 
 	string code, param;
 	if (position != string::npos) { // Si on trouve un séparateur
-		code = _cmd.substr(0, position);
-		param = _cmd.substr(position + 1);
+		code = _msg.substr(0, position);
+		param = _msg.substr(position + 1);
 	} else {
-		code = _cmd;
+		code = _msg;
 		param = "";
 	}
-	cout << "Code is " << code << endl;
+	cout << "	Code	<" << code << ">" << endl;
+	cout << "	Param	<" << param << ">" << endl;
 
 	ostringstream reply;
 	
@@ -186,13 +190,15 @@ void Server::TreatCommand(string _cmd)
 
 	// Ouvrir un dossier
 	} else if (code == Message::OPEN_DIR) {
-		reply << FileManager::ListFilesStr(param);
+		string data;
+		FileManager::GetDirectoryContent(param)->SerializeToString(&data);
+		reply << data;
 
 	// Ouvrir un fichier
 	} else if (code == Message::OPEN_FILE) { 
 		reply << FileManager::OpenFile(param);
 		
-	} else if (_cmd == "\0") {
+	} else if (_msg == "\0") {
 		reply << "No command had been receive";
 
 	} else {

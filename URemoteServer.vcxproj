@@ -39,9 +39,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <LibraryPath>./MDd;$(LibraryPath)</LibraryPath>
+    <IncludePath>./include;$(IncludePath)</IncludePath>
+    <ReferencePath>$(ReferencePath)</ReferencePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <LibraryPath>./MD;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -54,6 +58,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>./lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libprotobuf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -76,13 +82,15 @@
   <ItemGroup>
     <ClInclude Include="AI.h" />
     <ClInclude Include="App.h" />
+    <ClInclude Include="directory_content.pb.h" />
     <ClInclude Include="FileManager.h" />
     <ClInclude Include="Goemetry.h" />
     <ClInclude Include="MasterVolume.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Message.h" />
-    <ClInclude Include="MessageManager.h" />
+    <ClInclude Include="MessageHandler.h" />
     <ClInclude Include="MonUtils.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="Speech.h" />
     <ClInclude Include="StringUtils.h" />
@@ -91,18 +99,22 @@
   <ItemGroup>
     <ClCompile Include="AI.cpp" />
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="directory_content.pb.cc" />
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="Goemetry.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MasterVolume.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Message.cpp" />
-    <ClCompile Include="MessageManager.cpp" />
+    <ClCompile Include="MessageHandler.cpp" />
     <ClCompile Include="MonUtils.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="Speech.cpp" />
     <ClCompile Include="StringUtils.cpp" />
     <ClCompile Include="Window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="URemoteServer.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

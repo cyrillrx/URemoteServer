@@ -22,7 +22,7 @@ private :
 
 	void InitServer();
 	void FreeServer();
-	void TreatCommand(string _cmd);
+	void HandleMessage(string _msg);
 	void Reply(string _message);
 	string VolumeCommand(string _param);
 	string AICommand(string _param);
