@@ -141,69 +141,65 @@ void Server::HandleMessage(string _msg)
 	cout << "Server::HandleMessage() : Command <" << _msg << ">" << endl;
 	size_t position = _msg.find ('|');
 
-	string code, param;
-	if (position != string::npos) { // Si on trouve un séparateur
-		code = _msg.substr(0, position);
-		param = _msg.substr(position + 1);
-	} else {
-		code = _msg;
-		param = "";
-	}
-	cout << "	Code	<" << code << ">" << endl;
+	Request request;
+	request.ParseFromString(_msg);
+
+	Request_Type requestType	= request.type();
+	Request_Code requestCode	= request.code();
+	string param	= request.text();
+	
+	wcout << "	Type	<" << request.Type_Name << ">" << endl;
+	wcout << "	Code	<" << request.Code_Name << ">" << endl;
 	cout << "	Param	<" << param << ">" << endl;
 
 	ostringstream reply;
 	
-	// Commande à l'intelligence artificielle
-	if (code == Message::CODE_AI) {
-		Reply(AICommand(param));
-		return;
+	switch (requestType) {
+	
+	case Request_Type_SIMPLE:
+		Reply(ClassicCommand(requestCode));
+		break;
+
+	case Request_Type_EXPLORER:
+		if (requestCode == Request_Code_OPEN_DIR) {
+			string data;
+			FileManager::GetDirectoryContent(param)->SerializeToString(&data);
+			reply << data;
+
+		// Ouvrir un fichier
+		} else if (requestCode == Request_Code_OPEN_FILE) { 
+			reply << FileManager::OpenFile(param);
+		}
+		break;
 		
-	} else if (code == Message::CODE_CLASSIC) {
-		Reply(ClassicCommand(param));
-		return;
-	
-	// Commande des applications
-	} else if (code == Message::CODE_APP) {
-		Reply(AppCommand(param));
-		return;
-	
-	// Commande clavier classique
-	} else if (code == Message::CODE_KEYBOARD) {
+	case Request_Type_KEYBOARD:
 		Reply(Keyboard::Command(param));
-		return;
-	
-	// Combinaison de commandes clavier
-	} else if (code == Message::CODE_KEYBOARD_COMBO) {
 		Reply(Keyboard::Combo(param));
-		return;
-	
-	// Media 
-	} else if (code == Message::CODE_MEDIA) {
+		break;
+
+	case Request_Type_MEDIA:
 		Reply(Keyboard::MediaCommand(param));
-		return;
-	
-	// Commande de volume
-	} else if (code == Message::CODE_VOLUME) {
-		Reply(VolumeCommand(param));
-		return;
+		break;
 
-	// Ouvrir un dossier
-	} else if (code == Message::OPEN_DIR) {
-		string data;
-		FileManager::GetDirectoryContent(param)->SerializeToString(&data);
-		reply << data;
-
-	// Ouvrir un fichier
-	} else if (code == Message::OPEN_FILE) { 
-		reply << FileManager::OpenFile(param);
+	case Request_Type_AI:
+		Reply(AICommand(requestCode));
+		break;
 		
-	} else if (_msg == "\0") {
-		reply << "No command had been receive";
+	case Request_Type_VOLUME:
+		Reply(VolumeCommand(requestCode));
+		break;
 
-	} else {
-		reply << "Unknown code received !";
-		return;
+	// Commande des applications
+	case Request_Type_APP:
+		Reply(AppCommand(param));
+		break;
+
+	default:
+		if (_msg == "\0") {
+			reply << "No command had been receive";
+		} else {
+			reply << "Unknown code received !";
+		}
 	}
 
 	Reply(reply.str());
@@ -231,27 +227,28 @@ string Server::ShutdownPC()
 }
 
 //! Traitement d'un commande de volume
-string Server::VolumeCommand(string _param)
+string Server::VolumeCommand(Request_Code _code)
 {
 	ostringstream reply;
+	float fVolumeLvl;
+	bool isMute;
 
-	// Volume +
-	if (_param == Message::VOLUME_UP) {
-		float fVolumeLvl = MasterVolume::GetInstance()->TurnUp();
+	switch (_code) {
+
+	case Request_Code_UP:
+		fVolumeLvl = MasterVolume::GetInstance()->TurnUp();
 		MasterVolume::FreeInstance();
-
 		reply << "Volume up to " << fVolumeLvl * 100 << "%";
+		break;
 			
-	// Volume -
-	} else if (_param == Message::VOLUME_DOWN) {
-		float fVolumeLvl = MasterVolume::GetInstance()->TurnDown();
+	case Request_Code_DOWN:
+		fVolumeLvl = MasterVolume::GetInstance()->TurnDown();
 		MasterVolume::FreeInstance();
-
 		reply << "Volume down to " << fVolumeLvl * 100 << "%";
+		break;
 			
-	// Volume Mute
-	} else if (_param == Message::VOLUME_MUTE) {
-		bool isMute = MasterVolume::GetInstance()->ToggleMute();
+	case Request_Code_MUTE:
+		isMute = MasterVolume::GetInstance()->ToggleMute();
 		MasterVolume::FreeInstance();
 			
 		if (isMute) {
@@ -259,9 +256,11 @@ string Server::VolumeCommand(string _param)
 		} else {
 			reply << "Volume is now on.";
 		}
-
-	} else {
-		return "Unknown Volume command !";
+		break;
+	
+	default:
+		reply << "Unknown Volume command !";
+		break;
 	}
 	const string replyStr = reply.str();
 	m_ArtificialIntelligence->Say(replyStr);
@@ -269,12 +268,15 @@ string Server::VolumeCommand(string _param)
 }
 
 //! Traitement d'une commande général
-string Server::AICommand(string _param)
+string Server::AICommand(Request_Code _code)
 {
 	ostringstream reply;
+	bool isMute;
 
-	if (_param == Message::AI_MUTE) {
-		bool isMute = m_ArtificialIntelligence->ToggleMute();
+	switch (_code) {
+
+	case Request_Code_MUTE:
+		isMute = m_ArtificialIntelligence->ToggleMute();
 			
 		if (isMute) {
 			reply << "AI volume is off.";
@@ -282,55 +284,49 @@ string Server::AICommand(string _param)
 			reply << "AI volume is now on.";
 			m_ArtificialIntelligence->Say(reply.str());
 		}
-
-	} else {
-		return "Unknown AI command !";
+		break;
+	
+	default:
+		reply << "Unknown AI command !";
 	}
+
 	return reply.str();
 }
 
 //! Traitement d'une commande général
-string Server::ClassicCommand(string _param)
+string Server::ClassicCommand(Request_Code _code)
 {
 	ostringstream reply;
 
-	if (_param == Message::HELLO_SERVER) {
+	switch (_code) {
+
+	case Request_Code_HELLO:
 		reply << Message::HELLO_CLIENT;
 		m_ArtificialIntelligence->Welcome();
-
-	// Commande de test
-	} else if (_param == Message::TEST_COMMAND) {
-		/*
-		bool isMute = m_ArtificialIntelligence->ToggleMute();
-			
-		if (isMute) {
-			reply << "AI volume is off.";
-		} else {
-			reply << "AI volume is now on.";
-			m_ArtificialIntelligence->Say(reply.str());
-		}
-		*/
-
+		break;
+		
+	case Request_Code_TEST:
 		//reply << "The code has been tested";
 		reply << "No way. Go Fuck yourself !";
 		m_ArtificialIntelligence->Say(reply.str());
+		break;
 
-	// Commande pour tuer le serveur
-	} else if (_param == Message::KILL_SERVER) {
+	case Request_Code_KILL_SERVER:
 		m_ContinueToListen = false;
 		reply << "Server killed";
-		
-	// Eteindre l'ordinateur
-	} else if (_param == Message::SHUTDOWN) {
-		reply << ShutdownPC();
+		break;
 
-	// Switch écran
-	} else if (_param == Message::MONITOR_SWITCH_WINDOW) {
+	case Request_Code_SHUTDOWN:
+		reply << ShutdownPC();
+		break;
+
+	case Request_Code_SWITCH_WINDOW:
 		MonUtils::SwitchWindow();
 		reply << "Switch window";
+		break;
 			
-	} else {
-		return "Unknown classic command !";
+	default:
+		reply <<  "Unknown classic command !";
 	}
 
 	return reply.str();

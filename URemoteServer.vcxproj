@@ -92,6 +92,7 @@
     <ClInclude Include="MonUtils.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Server.h" />
+    <ClInclude Include="server_exchange.pb.h" />
     <ClInclude Include="Speech.h" />
     <ClInclude Include="StringUtils.h" />
     <ClInclude Include="Window.h" />
@@ -109,6 +110,7 @@
     <ClCompile Include="MessageHandler.cpp" />
     <ClCompile Include="MonUtils.cpp" />
     <ClCompile Include="Server.cpp" />
+    <ClCompile Include="server_exchange.pb.cc" />
     <ClCompile Include="Speech.cpp" />
     <ClCompile Include="StringUtils.cpp" />
     <ClCompile Include="Window.cpp" />

@@ -2,8 +2,8 @@
 
 class MessageHandler
 {
-private :
 	/*
+private :
 	static MessageHandler *s_MessageManager; 
 
 	MessageHandler(void);
@@ -14,6 +14,7 @@ public :
 	static MessageHandler* GetInstance();
 	static void FreeInstance();
 	*/
-
+public :
+	//HandleEvent()
 };
 

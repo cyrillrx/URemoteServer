@@ -3,9 +3,11 @@
 #include <string> 
 #include <WinSock2.h>
 
+#include "server_exchange.pb.h"
 #include "AI.h"
 
 using namespace std;
+using namespace network;
 
 class Server
 {
@@ -24,9 +26,9 @@ private :
 	void FreeServer();
 	void HandleMessage(string _msg);
 	void Reply(string _message);
-	string VolumeCommand(string _param);
-	string AICommand(string _param);
-	string ClassicCommand(string _param);
+	string VolumeCommand(Request_Code _code);
+	string AICommand(Request_Code _code);
+	string ClassicCommand(Request_Code _code);
 	string AppCommand(string _param);
 	
 	string ShutdownPC();

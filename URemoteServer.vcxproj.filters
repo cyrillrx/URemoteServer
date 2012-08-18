@@ -60,6 +60,9 @@
     <ClInclude Include="directory_content.pb.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="server_exchange.pb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Server.cpp">
@@ -105,6 +108,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="directory_content.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="server_exchange.pb.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
