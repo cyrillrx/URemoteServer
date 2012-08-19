@@ -1,6 +1,8 @@
 #include "Exchange.h"
 
 #include <iostream>
+#include <sstream>
+
 #include "FileManager.h"
 #include "MonUtils.h"
 #include "AI.h"
@@ -11,51 +13,6 @@
 const string Exchange::APP_GOM_PLAYER	= "app_gom_player";
 const string Exchange::KILL_GOM_PLAYER	= "kill_gom_player";
 const string Exchange::GOM_PLAYER_STRETCH	= "gom_player_stretch";
-
-/*
-// Code de message
-const string  Message::CODE_AI		= "code_ai";
-const string  Message::CODE_KEYBOARD = "code_keyboard";
-const string  Message::CODE_KEYBOARD_COMBO = "code_combo";
-const string Message::CODE_MEDIA	= "code_media";
-const string Message::CODE_VOLUME	= "code_volume";
-const string Message::CODE_APP		= "code_app";
-const string Message::CODE_CLASSIC	= "code_classic";
-
-// Gestion général
-const string Message::HELLO_SERVER	= "hello_serveur";
-const string Message::HELLO_CLIENT	= "Hello client";
-const string Message::TEST_COMMAND	= "test_command";
-const string Message::KILL_SERVER	= "kill_server";
-const string Message::SHUTDOWN		= "shutdown";
-const string Message::MONITOR_SWITCH_WINDOW = "switch_window";
-
-// Gestion des touches du clavier 
-const string  Message::KB_ENTER		= "enter";
-const string  Message::KB_SPACE		= "space";
-const string  Message::KB_BACKSPACE	= "backspace";
-const string  Message::KB_ESCAPE	= "escape";
-const string  Message::KB_ALT_F4	= "alt_f4";
-const string  Message::KB_CTRL_ENTER= "ctrl_enter";
-
-// Gestion du multi-media
-const string Message::MEDIA_PLAY_PAUSE	= "play_pause";
-const string Message::MEDIA_STOP		= "stop";
-const string Message::MEDIA_PREVIOUS	= "previous";
-const string Message::MEDIA_NEXT		= "next";
-	
-// Gestion du son
-const string Message::VOLUME_MUTE	= "volume_mute";
-const string Message::VOLUME_UP		= "volume_up";
-const string Message::VOLUME_DOWN	= "volume_down";
-
-// Explorateur de fichiers
-const string Message::OPEN_DIR	= "open_directory";
-const string Message::OPEN_FILE	= "open_file";
-
-// Intelligence Artificielle
-const string Message::AI_MUTE	= "ai_mute";
-*/
 
 string Exchange::HandleMessage(string _msg, bool &_continueToListen)
 {
@@ -97,7 +54,7 @@ string Exchange::HandleMessage(string _msg, bool &_continueToListen)
 
 	// Commande des applications
 	case Request_Type_APP:
-		//AppCommand(param);
+		AppCommand(param);
 		break;
 
 	default:
@@ -128,11 +85,11 @@ Response* Exchange::ClassicCommand(Request_Code _code)
 
 	case Request_Code_KILL_SERVER:
 		reply->set_message("Server killed");
-		m_ContinueToListen = false;
+		AI::GetInstance()->StopConnection();
 		break;
 
 	case Request_Code_SHUTDOWN:
-		reply << ShutdownPC();
+		reply = ShutdownPC(10);
 		break;
 
 	case Request_Code_SWITCH_WINDOW:
@@ -192,18 +149,25 @@ Response* Exchange::VolumeCommand(Request_Code _code)
 	return replyStr;
 }
 
-string Exchange::ShutdownPC()
+/** Send a command to shutdown the computer. */
+Response* Exchange::ShutdownPC(int _delay)
 {
-	m_ContinueToListen = false;
+	Response *reply = new Response();
+	reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+
+	AI::GetInstance()->StopConnection();
 	//ShellExecute(NULL, L"shutdown", NULL, L"-s -t 10", NULL, SW_SHOWMAXIMIZED);
-	system("Shutdown.exe -s -t 10 -c \"L'ordinateur va s'éteindre dans 10 secondes\"");
-	string reply = "PC will shutdown in 10 seconds";
-	AI::GetInstance()->Say(reply);
+	string command = "Shutdown.exe -s -t " +_delay + " -c \"L'ordinateur va s'éteindre dans " +_delay + " secondes\"");
+	system("Shutdown.exe -s -t " + _delay + " -c \"L'ordinateur va s'éteindre dans 10 secondes\"");
+	
+	string message = "PC will shutdown in " +_delay + " seconds";
+	reply->set_message(message);
+	AI::GetInstance()->Say(message);
 	return reply;
 }
 
 
-//! Traitement d'une commande général
+/** Handle AI commands */
 Response* Server::AICommand(Request_Code _code)
 {
 	ostringstream reply;
@@ -229,7 +193,7 @@ Response* Server::AICommand(Request_Code _code)
 	return reply.str();
 }
 
-//! Traitement d'une commande applicative
+/** Handle application commands. */
 Response* Server::AppCommand(string _param)
 {
 	ostringstream reply;

@@ -164,7 +164,7 @@ void protobuf_AddDesc_server_5fexchange_2eproto() {
     "e\022#\n\004code\030\002 \002(\0162\025.network.Request.Code\022\017"
     "\n\007integer\030\003 \001(\005\022\014\n\004text\030\004 \001(\t\"K\n\004Type\022\n\n"
     "\006SIMPLE\020\000\022\014\n\010EXPLORER\020\001\022\014\n\010KEYBOARD\020\002\022\006\n"
-    "\002AI\020\003\022\n\n\006VOLUME\020\003\022\007\n\003APP\020\004\"\212\003\n\004Code\022\n\n\006D"
+    "\002AI\020\003\022\n\n\006VOLUME\020\004\022\007\n\003APP\020\005\"\212\003\n\004Code\022\n\n\006D"
     "EFINE\020\000\022\t\n\005HELLO\020\001\022\010\n\004TEST\020\002\022\017\n\013KILL_SER"
     "VER\020\003\022\014\n\010SHUTDOWN\020\004\022\021\n\rSWITCH_WINDOW\020\005\022\010"
     "\n\004LOCK\020\006\022\006\n\002UP\020\007\022\010\n\004DOWN\020\010\022\010\n\004LEFT\020\t\022\t\n\005"
@@ -220,6 +220,7 @@ bool Request_Type_IsValid(int value) {
     case 2:
     case 3:
     case 4:
+    case 5:
       return true;
     default:
       return false;

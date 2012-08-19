@@ -42,8 +42,8 @@ enum Request_Type {
   Request_Type_EXPLORER = 1,
   Request_Type_KEYBOARD = 2,
   Request_Type_AI = 3,
-  Request_Type_VOLUME = 3,
-  Request_Type_APP = 4
+  Request_Type_VOLUME = 4,
+  Request_Type_APP = 5
 };
 bool Request_Type_IsValid(int value);
 const Request_Type Request_Type_Type_MIN = Request_Type_SIMPLE;

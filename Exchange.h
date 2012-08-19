@@ -22,11 +22,10 @@ public :
 	static string GetRequestCode(Request_Code _code);
 
 private :
-	bool m_ContinueToListen;
 	static Response* ClassicCommand(Request_Code _code);
 	static Response* VolumeCommand(Request_Code _code);
 	static Response* AICommand(Request_Code _code);
 	static Response* AppCommand(string _param);
-	static Response* ShutdownPC();
+	static Response* ShutdownPC(int _delay);
 };
 

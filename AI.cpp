@@ -21,18 +21,28 @@ AI::~AI(void)
 	Shutdown();
 }
 
-bool AI::LaunchConnection(int _port, int _maxConnections)
+bool AI::StartConnection(int _port, int _maxConnections)
 {
 	bool result = true;
 	m_ExchangeServer = new Server(_port, _maxConnections);
 	Say(m_Name + " is now online.");
 
-	result = m_ExchangeServer->Launch();
+	result = m_ExchangeServer->Start();
 	
 	delete(m_ExchangeServer);
 	m_ExchangeServer = NULL;
 
 	return result;
+}
+
+bool AI::StopConnection()
+{
+	if (!m_ExchangeServer) {
+		return false;
+	}
+	m_ExchangeServer->Stop();
+
+	return true;
 }
 
 void AI::Welcome()

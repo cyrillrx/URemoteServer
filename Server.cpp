@@ -1,13 +1,9 @@
 #include "Server.h"
 
-#include <sstream>
 #include <iostream>
 #include <comdef.h>
 
 #include "Exchange.h"
-#include "MasterVolume.h"
-#include "Keyboard.h"
-#include "App.h"
 
 int Server::s_InstanceCount = 0;
 
@@ -28,7 +24,7 @@ Server::~Server(void)
 }
 
 //! Lancement du serveur
-bool Server::Launch()
+bool Server::Start()
 {
 	m_ContinueToListen = true;
 
@@ -69,6 +65,12 @@ bool Server::Launch()
 	}
 
 	return true;
+}
+
+/** Stop the server listening loop. */
+bool Server::Stop()
+{
+	m_ContinueToListen = false;
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -126,9 +128,11 @@ bool Server::InitServer()
 void Server::FreeServer()
 {
 	closesocket(m_ListenSocket);
-
-	if (s_InstanceCount <= 1)
+		
+	s_InstanceCount--;
+	if (s_InstanceCount < 1) {
 		WSACleanup();
+	}
 }
 
 
@@ -170,45 +174,6 @@ void Server::HandleMessage(string _msg)
 {
 	string serializedReply = Exchange::HandleMessage(_msg, m_ContinueToListen);
 	Reply(serializedReply);
-
-	
-	switch (request.type()) {
-	
-	case Request_Type_SIMPLE:
-		Reply(ClassicCommand(requestCode));
-		break;
-		
-	case Request_Type_KEYBOARD:
-		Reply(Keyboard::Command(param));
-		Reply(Keyboard::Combo(param));
-		break;
-
-	case Request_Type_MEDIA:
-		Reply(Keyboard::MediaCommand(param));
-		break;
-
-	case Request_Type_AI:
-		Reply(AICommand(requestCode));
-		break;
-		
-	case Request_Type_VOLUME:
-		Reply(VolumeCommand(requestCode));
-		break;
-
-	// Commande des applications
-	case Request_Type_APP:
-		Reply(AppCommand(param));
-		break;
-
-	default:
-		if (_msg == "\0") {
-			reply << "No command had been receive";
-		} else {
-			reply << "Unknown code received !";
-		}
-	}
-
-	Reply(reply.str());
 }
 
 //! Envoie de la réponse au client

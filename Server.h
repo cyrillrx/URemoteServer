@@ -14,8 +14,9 @@ class Server
 public:
 	Server(int _port, int _maxConnections);
 	~Server(void);
-
-	bool Launch();
+	
+	bool Start();
+	bool Stop();
 
 private :
 	static int s_InstanceCount;

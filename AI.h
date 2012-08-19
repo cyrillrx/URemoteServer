@@ -16,14 +16,17 @@ private:
 	Server *m_ExchangeServer;
 	
 	AI(string _name);
+	~AI(void);
 	void Start();
 	void Shutdown();
 
 public:
 	static AI* GetInstance();
-	~AI(void);
+	static void FreeInstance();
 
-	bool LaunchConnection(int _port, int _maxConnections);
+	bool StartConnection(int _port, int _maxConnections);
+	bool StopConnection();
+
 	void Welcome();
 	void Say(string _textToSpeak);
 	bool ToggleMute();
