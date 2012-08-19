@@ -2,6 +2,7 @@
 
 #include <string>
 #include <windows.h>
+#include "server_exchange.pb.h"
 
 #define VK_0 0x30
 #define VK_1 0x31
@@ -42,19 +43,17 @@
 #define VK_Z 0x5A
 
 using namespace std;
+using namespace network;
 
 class Keyboard
 {
+public:
+	static Response* HandleMessage(Request_Code _code, string _param);
+	static void CtrlEnter();
 
 private :
 	static void SendKeyboardInput(WORD _keyCode);
-	
+	static string SendKey(string _param);
 	static void AltF4();
-
-public:
-	static void CtrlEnter();
-	static string Command(string _param);
-	static string Combo(string _param);
-	static string MediaCommand(string _param);
 };
 

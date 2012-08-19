@@ -8,17 +8,45 @@
 #define FindFirstFile FindFirstFileA
 #define WIN32_FIND_DATA WIN32_FIND_DATAA
 
+//////////////////////////////////////////////////////////////////////////////
+// Fonctions publics
+//////////////////////////////////////////////////////////////////////////////
+
+Response* FileManager::HandleMessage(Request_Code _code, string _param)
+{
+	Response *reply = new Response();
+	reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+
+	switch (_code) {
+
+	case Request_Code_GET_FILE_LIST:
+		DirContent *dirContent = reply->mutable_dircontent();
+		if (!SetDirectoryContent(dirContent, _param)) {
+			reply->set_returncode(Response_ReturnCode_RC_ERROR);
+			reply->set_message("SetDirectoryContent returned false");
+		}
+		break;
+
+	case Request_Code_OPEN_FILE:
+		
+		reply->set_message(OpenFile(_param));
+		break;
+
+	default:
+		reply->set_returncode(Response_ReturnCode_RC_ERROR);
+		reply->set_message("Unknown code received : " + _code);
+		break;
+	}
+}
 
 //////////////////////////////////////////////////////////////////////////////
 // Fonctions privées
 //////////////////////////////////////////////////////////////////////////////
 
-ProtoDirContent *FileManager::GetDirectoryContent(string _dirPath)
+bool FileManager::SetDirectoryContent(DirContent* _dirContent, string _dirPath)
 {
 	cout << "Target directory is " << _dirPath.c_str() << endl;
 
-	// Initialisation du vecteur à retourner
-	ProtoDirContent* fileList = new ProtoDirContent();
 	
 	// Préparation de la chaine pour l'utilisation de la fonction FindFile
 	// On ajoute "\\*" à la fin du nom de repertoire.
@@ -26,29 +54,37 @@ ProtoDirContent *FileManager::GetDirectoryContent(string _dirPath)
 	
 	// On vérifie que le chemin ne soit pas plus grand que la taille maximum autorisée (MAX_PATH) 
 	if (_dirPath.length() > MAX_PATH) {
-		cout << "Directory path is too long." << endl;
-		return fileList;
+		cerr << "Directory path is too long." << endl;
+		return false;
 	}
 
 	// Recherche du premier fichier dans le repertoire.
 	WIN32_FIND_DATA ffd;
 	HANDLE hFind = INVALID_HANDLE_VALUE;
-	DWORD dwError = 0;
+	
 	//LPCWSTR str = StringUtils::StringToBStr(_dirPath);
 	hFind = FindFirstFile(_dirPath.c_str(), &ffd);
 	if (hFind == INVALID_HANDLE_VALUE) {
-		cout << "FindFirstFile error : INVALID_HANDLE_VALUE" << endl;
-		return fileList;
-	} 
-   
+		cerr << "FindFirstFile error : INVALID_HANDLE_VALUE" << endl;
+		return false;
+	}
+
+	// Initialisation du vecteur à retourner
+	DirContent* dirContent = new DirContent();
+	dirContent->set_path(_dirPath);
+
 	// Lister tous les fichiers du repertoire en récupérant quelques infos.
 	LARGE_INTEGER filesize;
-	ostringstream data;
-	ProtoFile *file;
-	do {
+	ostringstream osFilename;
 
-		data.str("");
-		data << ffd.cFileName;
+	do {
+		osFilename.str("");
+		osFilename << ffd.cFileName;
+
+		filesize.LowPart = ffd.nFileSizeLow;
+		filesize.HighPart = ffd.nFileSizeHigh;
+		//data << "<" << filesize.QuadPart << " bytes>";
+		int fileSize = (int) filesize.QuadPart;
 
 		// Si c'est un répertoire
 		if (ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
@@ -58,72 +94,42 @@ ProtoDirContent *FileManager::GetDirectoryContent(string _dirPath)
 				continue;
 			}
 			
-			file = fileList->add_file();
-			file->set_path(_dirPath);
-			file->set_name(data.str());
-			file->set_type(ProtoFile_FileType_DIRECTORY);
-			
-			filesize.LowPart = ffd.nFileSizeLow;
-			filesize.HighPart = ffd.nFileSizeHigh;
-			//data << "<" << filesize.QuadPart << " bytes>";
-			file->set_size((int) filesize.QuadPart);
-
-			wcout << ffd.cFileName << " <DIR>" << endl;
-
+			AddFile(dirContent, osFilename.str(), DirContent_File_FileType_DIRECTORY, fileSize);
+			wcout << "<DIR> " << ffd.cFileName << " " << filesize.QuadPart << " bytes" << endl;
 
 		// Si c'est un fichier
 		} else {
 			
-			file = fileList->add_file();
-			file->set_path(_dirPath);
-			file->set_name(data.str());
-			file->set_type(ProtoFile_FileType_FILE);
-
-			filesize.LowPart = ffd.nFileSizeLow;
-			filesize.HighPart = ffd.nFileSizeHigh;
-			//data << "<" << filesize.QuadPart << " bytes>";
-			file->set_size((int) filesize.QuadPart);
-
-			wcout << ffd.cFileName << " " << filesize.QuadPart << " bytes" << endl;
+			AddFile(dirContent, osFilename.str(), DirContent_File_FileType_FILE, fileSize);
+			wcout << "<FILE> " << ffd.cFileName << " " << filesize.QuadPart << " bytes" << endl;
 
 		}
 	} while (FindNextFile(hFind, &ffd) != 0);
  
-	dwError = GetLastError();
+	DWORD dwError = GetLastError();
 	if (dwError != ERROR_NO_MORE_FILES) {
-		cout << "FindFirstFile error : " << dwError << endl;
-		return fileList;
+		cerr << "GetDirectoryContent error : " << dwError << endl;
+		return NULL;
 	}
 
 	FindClose(hFind);
 
-	return fileList;
+	return true;
 }
-
-//////////////////////////////////////////////////////////////////////////////
-// Fonctions publics
-//////////////////////////////////////////////////////////////////////////////
-
-/*
-string FileManager::ListFilesStr(string _dirPath)
-{
-	vector<string> fileList = ListFiles(_dirPath);
-	const int listSize = fileList.size();
-
-	string result = "";
-	for(int i = 0; i < listSize; i++) {
-		result.append(fileList[i]);
-		if (i != listSize - 1) {
-			result.append("|");
-		}
-	}
-	return result;
-}
-*/
 
 string FileManager::OpenFile(string _filePath)
 {
 	bstr_t filePath(_filePath.c_str());
 	ShellExecute(NULL, NULL, filePath, NULL, NULL, SW_SHOWMAXIMIZED);
 	return "Ouverture du fichier : "  + _filePath;
+}
+
+bool FileManager::AddFile(DirContent* _dirContent, string _filename, DirContent_File_FileType _type, int _size)
+{
+	DirContent_File *file = _dirContent->add_file();
+	file->set_name(_filename);
+	file->set_type(_type);
+	file->set_size(_size);
+
+	return true;
 }

@@ -7,12 +7,12 @@
 
 int main()
 {
-	Server *uRemoteServer = new Server(PORT, MAX_CONCURRENT_CONNECTIONS);
+	AI *m_ArtificialIntelligence = AI::GetInstance();
 	
-	uRemoteServer->Launch();
+	m_ArtificialIntelligence->LaunchConnection(PORT, MAX_CONCURRENT_CONNECTIONS);
 	
-	delete(uRemoteServer);
-	uRemoteServer = NULL;
+	delete(m_ArtificialIntelligence);
+	m_ArtificialIntelligence = NULL;
 
     return EXIT_SUCCESS;
 }

@@ -33,15 +33,17 @@ void protobuf_AssignDesc_server_5fexchange_2eproto();
 void protobuf_ShutdownFile_server_5fexchange_2eproto();
 
 class Request;
+class DirContent;
+class DirContent_File;
+class Response;
 
 enum Request_Type {
   Request_Type_SIMPLE = 0,
   Request_Type_EXPLORER = 1,
   Request_Type_KEYBOARD = 2,
-  Request_Type_MEDIA = 3,
-  Request_Type_AI = 4,
-  Request_Type_VOLUME = 5,
-  Request_Type_APP = 6
+  Request_Type_AI = 3,
+  Request_Type_VOLUME = 3,
+  Request_Type_APP = 4
 };
 bool Request_Type_IsValid(int value);
 const Request_Type Request_Type_Type_MIN = Request_Type_SIMPLE;
@@ -73,8 +75,7 @@ enum Request_Code {
   Request_Code_MUTE = 11,
   Request_Code_SAY = 12,
   Request_Code_GET_FILE_LIST = 20,
-  Request_Code_OPEN_DIR = 21,
-  Request_Code_OPEN_FILE = 22,
+  Request_Code_OPEN_FILE = 21,
   Request_Code_MEDIA_PLAY_PAUSE = 30,
   Request_Code_MEDIA_STOP = 31,
   Request_Code_MEDIA_PREVIOUS = 32,
@@ -102,6 +103,44 @@ inline bool Request_Code_Parse(
     const ::std::string& name, Request_Code* value) {
   return ::google::protobuf::internal::ParseNamedEnum<Request_Code>(
     Request_Code_descriptor(), name, value);
+}
+enum DirContent_File_FileType {
+  DirContent_File_FileType_DIRECTORY = 0,
+  DirContent_File_FileType_FILE = 1
+};
+bool DirContent_File_FileType_IsValid(int value);
+const DirContent_File_FileType DirContent_File_FileType_FileType_MIN = DirContent_File_FileType_DIRECTORY;
+const DirContent_File_FileType DirContent_File_FileType_FileType_MAX = DirContent_File_FileType_FILE;
+const int DirContent_File_FileType_FileType_ARRAYSIZE = DirContent_File_FileType_FileType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* DirContent_File_FileType_descriptor();
+inline const ::std::string& DirContent_File_FileType_Name(DirContent_File_FileType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    DirContent_File_FileType_descriptor(), value);
+}
+inline bool DirContent_File_FileType_Parse(
+    const ::std::string& name, DirContent_File_FileType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<DirContent_File_FileType>(
+    DirContent_File_FileType_descriptor(), name, value);
+}
+enum Response_ReturnCode {
+  Response_ReturnCode_RC_SUCCESS = 0,
+  Response_ReturnCode_RC_ERROR = 1
+};
+bool Response_ReturnCode_IsValid(int value);
+const Response_ReturnCode Response_ReturnCode_ReturnCode_MIN = Response_ReturnCode_RC_SUCCESS;
+const Response_ReturnCode Response_ReturnCode_ReturnCode_MAX = Response_ReturnCode_RC_ERROR;
+const int Response_ReturnCode_ReturnCode_ARRAYSIZE = Response_ReturnCode_ReturnCode_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* Response_ReturnCode_descriptor();
+inline const ::std::string& Response_ReturnCode_Name(Response_ReturnCode value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    Response_ReturnCode_descriptor(), value);
+}
+inline bool Response_ReturnCode_Parse(
+    const ::std::string& name, Response_ReturnCode* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<Response_ReturnCode>(
+    Response_ReturnCode_descriptor(), name, value);
 }
 // ===================================================================
 
@@ -161,7 +200,6 @@ class Request : public ::google::protobuf::Message {
   static const Type SIMPLE = Request_Type_SIMPLE;
   static const Type EXPLORER = Request_Type_EXPLORER;
   static const Type KEYBOARD = Request_Type_KEYBOARD;
-  static const Type MEDIA = Request_Type_MEDIA;
   static const Type AI = Request_Type_AI;
   static const Type VOLUME = Request_Type_VOLUME;
   static const Type APP = Request_Type_APP;
@@ -201,7 +239,6 @@ class Request : public ::google::protobuf::Message {
   static const Code MUTE = Request_Code_MUTE;
   static const Code SAY = Request_Code_SAY;
   static const Code GET_FILE_LIST = Request_Code_GET_FILE_LIST;
-  static const Code OPEN_DIR = Request_Code_OPEN_DIR;
   static const Code OPEN_FILE = Request_Code_OPEN_FILE;
   static const Code MEDIA_PLAY_PAUSE = Request_Code_MEDIA_PLAY_PAUSE;
   static const Code MEDIA_STOP = Request_Code_MEDIA_STOP;
@@ -297,6 +334,389 @@ class Request : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static Request* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class DirContent_File : public ::google::protobuf::Message {
+ public:
+  DirContent_File();
+  virtual ~DirContent_File();
+  
+  DirContent_File(const DirContent_File& from);
+  
+  inline DirContent_File& operator=(const DirContent_File& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const DirContent_File& default_instance();
+  
+  void Swap(DirContent_File* other);
+  
+  // implements Message ----------------------------------------------
+  
+  DirContent_File* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const DirContent_File& from);
+  void MergeFrom(const DirContent_File& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  typedef DirContent_File_FileType FileType;
+  static const FileType DIRECTORY = DirContent_File_FileType_DIRECTORY;
+  static const FileType FILE = DirContent_File_FileType_FILE;
+  static inline bool FileType_IsValid(int value) {
+    return DirContent_File_FileType_IsValid(value);
+  }
+  static const FileType FileType_MIN =
+    DirContent_File_FileType_FileType_MIN;
+  static const FileType FileType_MAX =
+    DirContent_File_FileType_FileType_MAX;
+  static const int FileType_ARRAYSIZE =
+    DirContent_File_FileType_FileType_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  FileType_descriptor() {
+    return DirContent_File_FileType_descriptor();
+  }
+  static inline const ::std::string& FileType_Name(FileType value) {
+    return DirContent_File_FileType_Name(value);
+  }
+  static inline bool FileType_Parse(const ::std::string& name,
+      FileType* value) {
+    return DirContent_File_FileType_Parse(name, value);
+  }
+  
+  // accessors -------------------------------------------------------
+  
+  // required string name = 1;
+  inline bool has_name() const;
+  inline void clear_name();
+  static const int kNameFieldNumber = 1;
+  inline const ::std::string& name() const;
+  inline void set_name(const ::std::string& value);
+  inline void set_name(const char* value);
+  inline void set_name(const char* value, size_t size);
+  inline ::std::string* mutable_name();
+  inline ::std::string* release_name();
+  
+  // required .network.DirContent.File.FileType type = 3;
+  inline bool has_type() const;
+  inline void clear_type();
+  static const int kTypeFieldNumber = 3;
+  inline ::network::DirContent_File_FileType type() const;
+  inline void set_type(::network::DirContent_File_FileType value);
+  
+  // required int32 size = 4;
+  inline bool has_size() const;
+  inline void clear_size();
+  static const int kSizeFieldNumber = 4;
+  inline ::google::protobuf::int32 size() const;
+  inline void set_size(::google::protobuf::int32 value);
+  
+  // @@protoc_insertion_point(class_scope:network.DirContent.File)
+ private:
+  inline void set_has_name();
+  inline void clear_has_name();
+  inline void set_has_type();
+  inline void clear_has_type();
+  inline void set_has_size();
+  inline void clear_has_size();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* name_;
+  int type_;
+  ::google::protobuf::int32 size_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_server_5fexchange_2eproto();
+  friend void protobuf_AssignDesc_server_5fexchange_2eproto();
+  friend void protobuf_ShutdownFile_server_5fexchange_2eproto();
+  
+  void InitAsDefaultInstance();
+  static DirContent_File* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class DirContent : public ::google::protobuf::Message {
+ public:
+  DirContent();
+  virtual ~DirContent();
+  
+  DirContent(const DirContent& from);
+  
+  inline DirContent& operator=(const DirContent& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const DirContent& default_instance();
+  
+  void Swap(DirContent* other);
+  
+  // implements Message ----------------------------------------------
+  
+  DirContent* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const DirContent& from);
+  void MergeFrom(const DirContent& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  typedef DirContent_File File;
+  
+  // accessors -------------------------------------------------------
+  
+  // required string path = 1;
+  inline bool has_path() const;
+  inline void clear_path();
+  static const int kPathFieldNumber = 1;
+  inline const ::std::string& path() const;
+  inline void set_path(const ::std::string& value);
+  inline void set_path(const char* value);
+  inline void set_path(const char* value, size_t size);
+  inline ::std::string* mutable_path();
+  inline ::std::string* release_path();
+  
+  // repeated .network.DirContent.File file = 2;
+  inline int file_size() const;
+  inline void clear_file();
+  static const int kFileFieldNumber = 2;
+  inline const ::network::DirContent_File& file(int index) const;
+  inline ::network::DirContent_File* mutable_file(int index);
+  inline ::network::DirContent_File* add_file();
+  inline const ::google::protobuf::RepeatedPtrField< ::network::DirContent_File >&
+      file() const;
+  inline ::google::protobuf::RepeatedPtrField< ::network::DirContent_File >*
+      mutable_file();
+  
+  // @@protoc_insertion_point(class_scope:network.DirContent)
+ private:
+  inline void set_has_path();
+  inline void clear_has_path();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* path_;
+  ::google::protobuf::RepeatedPtrField< ::network::DirContent_File > file_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_server_5fexchange_2eproto();
+  friend void protobuf_AssignDesc_server_5fexchange_2eproto();
+  friend void protobuf_ShutdownFile_server_5fexchange_2eproto();
+  
+  void InitAsDefaultInstance();
+  static DirContent* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class Response : public ::google::protobuf::Message {
+ public:
+  Response();
+  virtual ~Response();
+  
+  Response(const Response& from);
+  
+  inline Response& operator=(const Response& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Response& default_instance();
+  
+  void Swap(Response* other);
+  
+  // implements Message ----------------------------------------------
+  
+  Response* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const Response& from);
+  void MergeFrom(const Response& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  typedef Response_ReturnCode ReturnCode;
+  static const ReturnCode RC_SUCCESS = Response_ReturnCode_RC_SUCCESS;
+  static const ReturnCode RC_ERROR = Response_ReturnCode_RC_ERROR;
+  static inline bool ReturnCode_IsValid(int value) {
+    return Response_ReturnCode_IsValid(value);
+  }
+  static const ReturnCode ReturnCode_MIN =
+    Response_ReturnCode_ReturnCode_MIN;
+  static const ReturnCode ReturnCode_MAX =
+    Response_ReturnCode_ReturnCode_MAX;
+  static const int ReturnCode_ARRAYSIZE =
+    Response_ReturnCode_ReturnCode_ARRAYSIZE;
+  static inline const ::google::protobuf::EnumDescriptor*
+  ReturnCode_descriptor() {
+    return Response_ReturnCode_descriptor();
+  }
+  static inline const ::std::string& ReturnCode_Name(ReturnCode value) {
+    return Response_ReturnCode_Name(value);
+  }
+  static inline bool ReturnCode_Parse(const ::std::string& name,
+      ReturnCode* value) {
+    return Response_ReturnCode_Parse(name, value);
+  }
+  
+  // accessors -------------------------------------------------------
+  
+  // optional .network.Request request = 1;
+  inline bool has_request() const;
+  inline void clear_request();
+  static const int kRequestFieldNumber = 1;
+  inline const ::network::Request& request() const;
+  inline ::network::Request* mutable_request();
+  inline ::network::Request* release_request();
+  
+  // required .network.Response.ReturnCode returnCode = 2;
+  inline bool has_returncode() const;
+  inline void clear_returncode();
+  static const int kReturnCodeFieldNumber = 2;
+  inline ::network::Response_ReturnCode returncode() const;
+  inline void set_returncode(::network::Response_ReturnCode value);
+  
+  // optional string message = 3;
+  inline bool has_message() const;
+  inline void clear_message();
+  static const int kMessageFieldNumber = 3;
+  inline const ::std::string& message() const;
+  inline void set_message(const ::std::string& value);
+  inline void set_message(const char* value);
+  inline void set_message(const char* value, size_t size);
+  inline ::std::string* mutable_message();
+  inline ::std::string* release_message();
+  
+  // optional int32 integer = 4;
+  inline bool has_integer() const;
+  inline void clear_integer();
+  static const int kIntegerFieldNumber = 4;
+  inline ::google::protobuf::int32 integer() const;
+  inline void set_integer(::google::protobuf::int32 value);
+  
+  // optional .network.DirContent dirContent = 5;
+  inline bool has_dircontent() const;
+  inline void clear_dircontent();
+  static const int kDirContentFieldNumber = 5;
+  inline const ::network::DirContent& dircontent() const;
+  inline ::network::DirContent* mutable_dircontent();
+  inline ::network::DirContent* release_dircontent();
+  
+  // @@protoc_insertion_point(class_scope:network.Response)
+ private:
+  inline void set_has_request();
+  inline void clear_has_request();
+  inline void set_has_returncode();
+  inline void clear_has_returncode();
+  inline void set_has_message();
+  inline void clear_has_message();
+  inline void set_has_integer();
+  inline void clear_has_integer();
+  inline void set_has_dircontent();
+  inline void clear_has_dircontent();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::network::Request* request_;
+  ::std::string* message_;
+  int returncode_;
+  ::google::protobuf::int32 integer_;
+  ::network::DirContent* dircontent_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_server_5fexchange_2eproto();
+  friend void protobuf_AssignDesc_server_5fexchange_2eproto();
+  friend void protobuf_ShutdownFile_server_5fexchange_2eproto();
+  
+  void InitAsDefaultInstance();
+  static Response* default_instance_;
 };
 // ===================================================================
 
@@ -431,6 +851,365 @@ inline ::std::string* Request::release_text() {
   }
 }
 
+// -------------------------------------------------------------------
+
+// DirContent_File
+
+// required string name = 1;
+inline bool DirContent_File::has_name() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void DirContent_File::set_has_name() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void DirContent_File::clear_has_name() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void DirContent_File::clear_name() {
+  if (name_ != &::google::protobuf::internal::kEmptyString) {
+    name_->clear();
+  }
+  clear_has_name();
+}
+inline const ::std::string& DirContent_File::name() const {
+  return *name_;
+}
+inline void DirContent_File::set_name(const ::std::string& value) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  name_->assign(value);
+}
+inline void DirContent_File::set_name(const char* value) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  name_->assign(value);
+}
+inline void DirContent_File::set_name(const char* value, size_t size) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  name_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* DirContent_File::mutable_name() {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  return name_;
+}
+inline ::std::string* DirContent_File::release_name() {
+  clear_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = name_;
+    name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required .network.DirContent.File.FileType type = 3;
+inline bool DirContent_File::has_type() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void DirContent_File::set_has_type() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void DirContent_File::clear_has_type() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void DirContent_File::clear_type() {
+  type_ = 0;
+  clear_has_type();
+}
+inline ::network::DirContent_File_FileType DirContent_File::type() const {
+  return static_cast< ::network::DirContent_File_FileType >(type_);
+}
+inline void DirContent_File::set_type(::network::DirContent_File_FileType value) {
+  GOOGLE_DCHECK(::network::DirContent_File_FileType_IsValid(value));
+  set_has_type();
+  type_ = value;
+}
+
+// required int32 size = 4;
+inline bool DirContent_File::has_size() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void DirContent_File::set_has_size() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void DirContent_File::clear_has_size() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void DirContent_File::clear_size() {
+  size_ = 0;
+  clear_has_size();
+}
+inline ::google::protobuf::int32 DirContent_File::size() const {
+  return size_;
+}
+inline void DirContent_File::set_size(::google::protobuf::int32 value) {
+  set_has_size();
+  size_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// DirContent
+
+// required string path = 1;
+inline bool DirContent::has_path() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void DirContent::set_has_path() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void DirContent::clear_has_path() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void DirContent::clear_path() {
+  if (path_ != &::google::protobuf::internal::kEmptyString) {
+    path_->clear();
+  }
+  clear_has_path();
+}
+inline const ::std::string& DirContent::path() const {
+  return *path_;
+}
+inline void DirContent::set_path(const ::std::string& value) {
+  set_has_path();
+  if (path_ == &::google::protobuf::internal::kEmptyString) {
+    path_ = new ::std::string;
+  }
+  path_->assign(value);
+}
+inline void DirContent::set_path(const char* value) {
+  set_has_path();
+  if (path_ == &::google::protobuf::internal::kEmptyString) {
+    path_ = new ::std::string;
+  }
+  path_->assign(value);
+}
+inline void DirContent::set_path(const char* value, size_t size) {
+  set_has_path();
+  if (path_ == &::google::protobuf::internal::kEmptyString) {
+    path_ = new ::std::string;
+  }
+  path_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* DirContent::mutable_path() {
+  set_has_path();
+  if (path_ == &::google::protobuf::internal::kEmptyString) {
+    path_ = new ::std::string;
+  }
+  return path_;
+}
+inline ::std::string* DirContent::release_path() {
+  clear_has_path();
+  if (path_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = path_;
+    path_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// repeated .network.DirContent.File file = 2;
+inline int DirContent::file_size() const {
+  return file_.size();
+}
+inline void DirContent::clear_file() {
+  file_.Clear();
+}
+inline const ::network::DirContent_File& DirContent::file(int index) const {
+  return file_.Get(index);
+}
+inline ::network::DirContent_File* DirContent::mutable_file(int index) {
+  return file_.Mutable(index);
+}
+inline ::network::DirContent_File* DirContent::add_file() {
+  return file_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::network::DirContent_File >&
+DirContent::file() const {
+  return file_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::network::DirContent_File >*
+DirContent::mutable_file() {
+  return &file_;
+}
+
+// -------------------------------------------------------------------
+
+// Response
+
+// optional .network.Request request = 1;
+inline bool Response::has_request() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void Response::set_has_request() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void Response::clear_has_request() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void Response::clear_request() {
+  if (request_ != NULL) request_->::network::Request::Clear();
+  clear_has_request();
+}
+inline const ::network::Request& Response::request() const {
+  return request_ != NULL ? *request_ : *default_instance_->request_;
+}
+inline ::network::Request* Response::mutable_request() {
+  set_has_request();
+  if (request_ == NULL) request_ = new ::network::Request;
+  return request_;
+}
+inline ::network::Request* Response::release_request() {
+  clear_has_request();
+  ::network::Request* temp = request_;
+  request_ = NULL;
+  return temp;
+}
+
+// required .network.Response.ReturnCode returnCode = 2;
+inline bool Response::has_returncode() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void Response::set_has_returncode() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void Response::clear_has_returncode() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void Response::clear_returncode() {
+  returncode_ = 0;
+  clear_has_returncode();
+}
+inline ::network::Response_ReturnCode Response::returncode() const {
+  return static_cast< ::network::Response_ReturnCode >(returncode_);
+}
+inline void Response::set_returncode(::network::Response_ReturnCode value) {
+  GOOGLE_DCHECK(::network::Response_ReturnCode_IsValid(value));
+  set_has_returncode();
+  returncode_ = value;
+}
+
+// optional string message = 3;
+inline bool Response::has_message() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void Response::set_has_message() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void Response::clear_has_message() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void Response::clear_message() {
+  if (message_ != &::google::protobuf::internal::kEmptyString) {
+    message_->clear();
+  }
+  clear_has_message();
+}
+inline const ::std::string& Response::message() const {
+  return *message_;
+}
+inline void Response::set_message(const ::std::string& value) {
+  set_has_message();
+  if (message_ == &::google::protobuf::internal::kEmptyString) {
+    message_ = new ::std::string;
+  }
+  message_->assign(value);
+}
+inline void Response::set_message(const char* value) {
+  set_has_message();
+  if (message_ == &::google::protobuf::internal::kEmptyString) {
+    message_ = new ::std::string;
+  }
+  message_->assign(value);
+}
+inline void Response::set_message(const char* value, size_t size) {
+  set_has_message();
+  if (message_ == &::google::protobuf::internal::kEmptyString) {
+    message_ = new ::std::string;
+  }
+  message_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Response::mutable_message() {
+  set_has_message();
+  if (message_ == &::google::protobuf::internal::kEmptyString) {
+    message_ = new ::std::string;
+  }
+  return message_;
+}
+inline ::std::string* Response::release_message() {
+  clear_has_message();
+  if (message_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = message_;
+    message_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// optional int32 integer = 4;
+inline bool Response::has_integer() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void Response::set_has_integer() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void Response::clear_has_integer() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void Response::clear_integer() {
+  integer_ = 0;
+  clear_has_integer();
+}
+inline ::google::protobuf::int32 Response::integer() const {
+  return integer_;
+}
+inline void Response::set_integer(::google::protobuf::int32 value) {
+  set_has_integer();
+  integer_ = value;
+}
+
+// optional .network.DirContent dirContent = 5;
+inline bool Response::has_dircontent() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void Response::set_has_dircontent() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void Response::clear_has_dircontent() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void Response::clear_dircontent() {
+  if (dircontent_ != NULL) dircontent_->::network::DirContent::Clear();
+  clear_has_dircontent();
+}
+inline const ::network::DirContent& Response::dircontent() const {
+  return dircontent_ != NULL ? *dircontent_ : *default_instance_->dircontent_;
+}
+inline ::network::DirContent* Response::mutable_dircontent() {
+  set_has_dircontent();
+  if (dircontent_ == NULL) dircontent_ = new ::network::DirContent;
+  return dircontent_;
+}
+inline ::network::DirContent* Response::release_dircontent() {
+  clear_has_dircontent();
+  ::network::DirContent* temp = dircontent_;
+  dircontent_ = NULL;
+  return temp;
+}
+
 
 // @@protoc_insertion_point(namespace_scope)
 
@@ -447,6 +1226,14 @@ inline const EnumDescriptor* GetEnumDescriptor< ::network::Request_Type>() {
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::network::Request_Code>() {
   return ::network::Request_Code_descriptor();
+}
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::network::DirContent_File_FileType>() {
+  return ::network::DirContent_File_FileType_descriptor();
+}
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::network::Response_ReturnCode>() {
+  return ::network::Response_ReturnCode_descriptor();
 }
 
 }  // namespace google

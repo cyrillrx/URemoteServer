@@ -1,25 +1,85 @@
 #include "Keyboard.h"
-#include "Message.h"
 
 //////////////////////////////////////////////////////////////////////////////
 // Fonctions publics
 //////////////////////////////////////////////////////////////////////////////
 
-string Keyboard::Command(string _param)
+Response* Keyboard::HandleMessage(Request_Code _code, string _param)
 {
-	if (_param == Message::KB_ENTER) {
-		SendKeyboardInput(VK_RETURN);
+	Response *reply = new Response();
+	reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 
-	} else if (_param == Message::KB_SPACE) {
-		SendKeyboardInput(VK_SPACE);
+	switch (_code) {
 
-	} else if (_param == Message::KB_BACKSPACE) {
-		SendKeyboardInput(VK_BACK);
+	case Request_Code_DEFINE:
+		SendKey(_param);
+		reply->set_message(_param);
+		break;
 
-	} else if (_param == Message::KB_ESCAPE) {
-		SendKeyboardInput(VK_ESCAPE);
+	case Request_Code_MEDIA_PLAY_PAUSE:
+		SendKeyboardInput(VK_MEDIA_PLAY_PAUSE);
+		reply->set_message("Play/pause");
+		break;
 		
-	} else if (_param == "0") {
+	case Request_Code_MEDIA_STOP:
+		SendKeyboardInput(VK_MEDIA_STOP);
+		reply->set_message("Stop");
+		break;
+
+	case Request_Code_MEDIA_PREVIOUS:
+		SendKeyboardInput(VK_MEDIA_PREV_TRACK);
+		reply->set_message("Previous");
+		break;
+
+	case Request_Code_MEDIA_NEXT:
+		SendKeyboardInput(VK_MEDIA_NEXT_TRACK);
+		reply->set_message("Next");
+		break;
+
+	case Request_Code_KB_RETURN:
+		SendKeyboardInput(VK_RETURN);
+		reply->set_message("Enter");
+		break;
+		
+	case Request_Code_KB_SPACE:
+		SendKeyboardInput(VK_SPACE);
+		reply->set_message("Space");
+		break;
+		
+	case Request_Code_KB_BACKSPACE:
+		SendKeyboardInput(VK_BACK);
+		reply->set_message("Backspace");
+		break;
+		
+	case Request_Code_KB_ESCAPE:
+		SendKeyboardInput(VK_ESCAPE);
+		reply->set_message("Escape");
+		break;
+
+	case Request_Code_KB_ALT_F4:
+		AltF4();
+		reply->set_message("Window closed (Alt + F4)");
+		break;
+		
+	case Request_Code_KB_CTRL_RETURN:
+		CtrlEnter();
+		reply->set_message("Ctrl + Enter");
+		break;
+
+	default:
+		reply->set_returncode(Response_ReturnCode_RC_ERROR);
+		reply->set_message("Unknown Keyboard code received : " + _code);
+		break;
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////
+// Fonctions privées
+//////////////////////////////////////////////////////////////////////////////
+
+string Keyboard::SendKey(string _param)
+{
+	if (_param == "0") {
 		SendKeyboardInput(VK_0);
 
 	} else if (_param == "1") {
@@ -132,48 +192,6 @@ string Keyboard::Command(string _param)
 	}
 	return _param;
 }
-
-string Keyboard::MediaCommand(string _param)
-{
-	if (_param == Message::MEDIA_PLAY_PAUSE) {
-		SendKeyboardInput(VK_MEDIA_PLAY_PAUSE);
-		return "Play/pause";
-		
-	} else if (_param == Message::MEDIA_STOP) {
-		SendKeyboardInput(VK_MEDIA_STOP);
-		return "Stop";
-
-	} else if (_param == Message::MEDIA_PREVIOUS) {
-		SendKeyboardInput(VK_MEDIA_PREV_TRACK);
-		return "Previous";
-
-	} else if (_param == Message::MEDIA_NEXT) {
-		SendKeyboardInput(VK_MEDIA_NEXT_TRACK);
-		return "Next";
-
-	} else {
-		return "Unknown media key !";
-	}
-}
-
-string Keyboard::Combo(string _param)
-{
-	if (_param == Message::KB_ALT_F4) {
-		AltF4();
-		return "Window closed (Alt + F4)";
-		
-	} else if (_param == Message::KB_CTRL_ENTER) {
-		CtrlEnter();
-		return "Ctrl + Enter";
-
-	} else {
-		return "Unknown combo key !";
-	}
-}
-
-//////////////////////////////////////////////////////////////////////////////
-// Fonctions privées
-//////////////////////////////////////////////////////////////////////////////
 
 void Keyboard::CtrlEnter()
 {

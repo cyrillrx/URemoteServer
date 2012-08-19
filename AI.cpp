@@ -7,20 +7,32 @@
 // Fonctions publics
 //////////////////////////////////////////////////////////////////////////////
 
-AI::AI(string _name)
+AI* AI::GetInstance()
 {
-	m_Name = _name;
-	m_IsMute = false;
-
-	time(&m_LastWelcome);
-	m_LastWelcome -= DELAY;
-
-	Start();
+	if (!s_Instance) {
+		s_Instance = new AI("Eternity");
+	}
+	
+	return s_Instance;
 }
 
 AI::~AI(void)
 {
 	Shutdown();
+}
+
+bool AI::LaunchConnection(int _port, int _maxConnections)
+{
+	bool result = true;
+	m_ExchangeServer = new Server(_port, _maxConnections);
+	Say(m_Name + " is now online.");
+
+	result = m_ExchangeServer->Launch();
+	
+	delete(m_ExchangeServer);
+	m_ExchangeServer = NULL;
+
+	return result;
 }
 
 void AI::Welcome()
@@ -58,12 +70,24 @@ bool AI::ToggleMute()
 // Fonctions privées
 //////////////////////////////////////////////////////////////////////////////
 
+AI::AI(string _name)
+{
+	m_Name = _name;
+	m_IsMute = false;
+
+	time(&m_LastWelcome);
+	m_LastWelcome -= DELAY;
+
+	Start();
+}
+
 void AI::Start()
 {
-	Say("Server activated. " + m_Name + " is online." );
+	Say("A.I. activated.");
 }
 
 void AI::Shutdown()
 {
-	Say(m_Name + " is shutting down. Goodbye sir" );
+	Say(m_Name + " is shutting down. Goodbye sir");
+
 }

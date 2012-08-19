@@ -10,33 +10,29 @@ using namespace std;
 using namespace network;
 
 class Server
-{
+{	
+public:
+	Server(int _port, int _maxConnections);
+	~Server(void);
+
+	bool Launch();
 
 private :
 	static int s_InstanceCount;
-
+	
+	string m_Hostname;
+	string m_IpAddress;
 	int m_Port;
 	int m_MaxConcurrentConnections;
 	SOCKET m_CSocket;
 	SOCKET m_ListenSocket;
 	bool m_ContinueToListen;
-	AI *m_ArtificialIntelligence;
 
-	void InitServer();
+	bool InitServer();
 	void FreeServer();
+	string GetHostName();
+	string GetIpAddress(string _hostname);
+
 	void HandleMessage(string _msg);
 	void Reply(string _message);
-	string VolumeCommand(Request_Code _code);
-	string AICommand(Request_Code _code);
-	string ClassicCommand(Request_Code _code);
-	string AppCommand(string _param);
-	
-	string ShutdownPC();
-	
-public:
-	Server(int _port, int _maxConnections);
-	~Server(void);
-
-	void Launch();
 };
-
