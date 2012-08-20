@@ -9,10 +9,9 @@ int main()
 {
 	AI *m_ArtificialIntelligence = AI::GetInstance();
 	
-	m_ArtificialIntelligence->LaunchConnection(PORT, MAX_CONCURRENT_CONNECTIONS);
+	m_ArtificialIntelligence->StartConnection(PORT, MAX_CONCURRENT_CONNECTIONS);
 	
-	delete(m_ArtificialIntelligence);
-	m_ArtificialIntelligence = NULL;
+	AI::FreeInstance();
 
     return EXIT_SUCCESS;
 }

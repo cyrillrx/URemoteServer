@@ -1,6 +1,6 @@
 #pragma once
 
-#include <string> 
+#include <string>
 #include "server_exchange.pb.h"
 
 using namespace std;
@@ -22,10 +22,10 @@ public :
 	static string GetRequestCode(Request_Code _code);
 
 private :
-	static Response* ClassicCommand(Request_Code _code);
-	static Response* VolumeCommand(Request_Code _code);
-	static Response* AICommand(Request_Code _code);
-	static Response* AppCommand(string _param);
-	static Response* ShutdownPC(int _delay);
+	static void ClassicCommand(Response* _reply, Request_Code _code);
+	static void VolumeCommand(Response* _reply, Request_Code _code);
+	static void AICommand(Response* _reply, Request_Code _code);
+	static void AppCommand(Response* _reply, Request_Code _code);
+	static void ShutdownPC(Response* _reply, int _delay);
 };
 

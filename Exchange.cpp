@@ -8,6 +8,7 @@
 #include "AI.h"
 #include "MasterVolume.h"
 #include "Keyboard.h"
+#include "App.h"
 
 // Gestion des applications
 const string Exchange::APP_GOM_PLAYER	= "app_gom_player";
@@ -29,197 +30,212 @@ string Exchange::HandleMessage(string _msg, bool &_continueToListen)
 	cout << "	Code	<" << Request_Code_Name(reqCode)	<< ">" << endl;
 	cout << "	Param	<" << param							<< ">" << endl;
 
-	Response *reply;
+	Response *reply = new Response();
 	switch (reqType) {
 	
 	case Request_Type_SIMPLE:
-		reply = ClassicCommand(reqCode);
+		ClassicCommand(reply, reqCode);
 		break;
 
 	case Request_Type_EXPLORER:
-		reply = FileManager::HandleMessage(reqCode, param);
+		FileManager::HandleMessage(reply, reqCode, param);
 		break;
 		
 	case Request_Type_KEYBOARD:
-		reply = FileManager::HandleMessage(reqCode, param);
+		Keyboard::HandleMessage(reply, reqCode, param);
 		break;
 
 	case Request_Type_AI:
-		reply = AICommand(reqCode);
+		AICommand(reply, reqCode);
 		break;
 		
 	case Request_Type_VOLUME:
-		reply = VolumeCommand(reqCode);
+		VolumeCommand(reply, reqCode);
 		break;
 
 	// Commande des applications
 	case Request_Type_APP:
-		AppCommand(param);
+		AppCommand(reply, reqCode);
 		break;
 
 	default:
 		reply->set_returncode(Response_ReturnCode_RC_ERROR);
 		reply->set_message("Unknown type received : " + reqType);
+		break;
+	}
+	
+	if (reply->has_message()) {
+		AI::GetInstance()->Say(reply->message());
 	}
 }
 
 //! Traitement d'une commande général
-Response* Exchange::ClassicCommand(Request_Code _code)
+void Exchange::ClassicCommand(Response* _reply, Request_Code _code)
 {
-	Response *reply = new Response();
-	reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
-
 	switch (_code) {
 
 	case Request_Code_HELLO:
-		reply->set_message("Hello back.");
+		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		_reply->set_message("Hello back.");
 		AI::GetInstance()->Welcome();
 		break;
 		
 	case Request_Code_TEST:
-		string text = "The code has been tested";
-		string text = "No way. Go Fuck yourself !";
-		reply->set_message(text);
-		AI::GetInstance()->Say(text);
+		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		//_reply->set_message("The code has been tested");
+		_reply->set_message("No way. Go Fuck yourself !");
 		break;
 
 	case Request_Code_KILL_SERVER:
-		reply->set_message("Server killed");
+		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		_reply->set_message("Server killed");
 		AI::GetInstance()->StopConnection();
 		break;
 
 	case Request_Code_SHUTDOWN:
-		reply = ShutdownPC(10);
+		ShutdownPC(_reply, 10);
 		break;
 
 	case Request_Code_SWITCH_WINDOW:
-		MonUtils::SwitchWindow();
-		reply->set_message("Switch window");
+		if (MonUtils::SwitchWindow()) {
+			_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+			_reply->set_message("Switch window");
+		} else {
+			_reply->set_returncode(Response_ReturnCode_RC_ERROR);
+			_reply->set_message("Switch window error");
+		}
 		break;
 			
 	default:
-		reply->set_returncode(Response_ReturnCode_RC_ERROR);
-		reply->set_message("ClassicCommand :Unknown code received : " + _code);
+		_reply->set_returncode(Response_ReturnCode_RC_ERROR);
+		_reply->set_message("ClassicCommand :Unknown code received : " + _code);
 		break;
 	}
-
-	return reply;
 }
 
 //! Traitement d'un commande de volume
-Response* Exchange::VolumeCommand(Request_Code _code)
+void Exchange::VolumeCommand(Response* _reply, Request_Code _code)
 {
-	Response *reply = new Response();
-	reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
-
 	float fVolumeLvl;
 	bool isMute;
+	char* message;
+	int volumePoucentage;
 
 	switch (_code) {
 
 	case Request_Code_UP:
 		fVolumeLvl = MasterVolume::GetInstance()->TurnUp();
 		MasterVolume::FreeInstance();
-		reply << "Volume up to " << fVolumeLvl * 100 << "%";
+
+		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		volumePoucentage = fVolumeLvl * 100;
+		_reply->set_integer(volumePoucentage);
+		sprintf(message,  "Volume up to %d%", volumePoucentage);
 		break;
 			
 	case Request_Code_DOWN:
 		fVolumeLvl = MasterVolume::GetInstance()->TurnDown();
 		MasterVolume::FreeInstance();
-		reply << "Volume down to " << fVolumeLvl * 100 << "%";
+
+		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		volumePoucentage = fVolumeLvl * 100;
+		_reply->set_integer(volumePoucentage);
+		sprintf(message,  "Volume down to %d%", volumePoucentage);
 		break;
 			
 	case Request_Code_MUTE:
 		isMute = MasterVolume::GetInstance()->ToggleMute();
 		MasterVolume::FreeInstance();
-			
-		if (isMute) {
-			reply << "Volume is off.";
-		} else {
-			reply << "Volume is now on.";
-		}
+		
+		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);	
+		message = (isMute) ? "Volume is off." : "Volume is now on.";
 		break;
 	
 	default:
-		reply << "Unknown Volume command !";
+		message = "Unknown Volume command !";
 		break;
 	}
-	const string replyStr = reply.str();
-	m_ArtificialIntelligence->Say(replyStr);
-	return replyStr;
+
+	_reply->set_message(message);
 }
-
-/** Send a command to shutdown the computer. */
-Response* Exchange::ShutdownPC(int _delay)
-{
-	Response *reply = new Response();
-	reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
-
-	AI::GetInstance()->StopConnection();
-	//ShellExecute(NULL, L"shutdown", NULL, L"-s -t 10", NULL, SW_SHOWMAXIMIZED);
-	string command = "Shutdown.exe -s -t " +_delay + " -c \"L'ordinateur va s'éteindre dans " +_delay + " secondes\"");
-	system("Shutdown.exe -s -t " + _delay + " -c \"L'ordinateur va s'éteindre dans 10 secondes\"");
-	
-	string message = "PC will shutdown in " +_delay + " seconds";
-	reply->set_message(message);
-	AI::GetInstance()->Say(message);
-	return reply;
-}
-
 
 /** Handle AI commands */
-Response* Server::AICommand(Request_Code _code)
+void Exchange::AICommand(Response* _reply, Request_Code _code)
 {
-	ostringstream reply;
 	bool isMute;
+	char* message;
 
 	switch (_code) {
 
 	case Request_Code_MUTE:
 		isMute = AI::GetInstance()->ToggleMute();
 			
-		if (isMute) {
-			reply << "AI volume is off.";
-		} else {
-			reply << "AI volume is now on.";
-			m_ArtificialIntelligence->Say(reply.str());
-		}
+		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		message = (isMute) ? "AI volume is off." : "AI volume is now on.";
 		break;
 	
 	default:
-		reply << "Unknown AI command !";
+		_reply->set_returncode(Response_ReturnCode_RC_ERROR);
+		message = "Unknown AI command !";
+		break;
 	}
-
-	return reply.str();
+	
+	_reply->set_message(message);
 }
 
 /** Handle application commands. */
-Response* Server::AppCommand(string _param)
+void Exchange::AppCommand(Response* _reply, Request_Code _code)
 {
-	ostringstream reply;
+	string message;
+
+	switch (_code) {
 
 	// Ouvrir Gom player
-	if (_param == Exchange::APP_GOM_PLAYER) {
-		cout << Exchange::APP_GOM_PLAYER << endl;
-		reply << App::GetGomPlayer()->Show();
+	case Request_Code_GOM_PLAYER_RUN:
+		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		message = App::GetGomPlayer()->Show();
 		App::FreeGomPlayer();
+		break;
 		
 	// Fermer Gom player
-	} else if (_param == Exchange::KILL_GOM_PLAYER) {
-		reply << App::GetGomPlayer()->Close();
+	case Request_Code_GOM_PLAYER_KILL:
+		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		message = App::GetGomPlayer()->Close();
 		App::FreeGomPlayer();
+		break;
 
 	// Stretch Gom player
-	} else if (_param == Exchange::GOM_PLAYER_STRETCH) {
-		reply << App::GetGomPlayer()->Strech();
+	case Request_Code_GOM_PLAYER_STRETCH:
+		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		message = App::GetGomPlayer()->Strech();
 		App::FreeGomPlayer();
+		break;
 			
-	} else {
-		return "Unknown app command !";
+	default:
+		_reply->set_returncode(Response_ReturnCode_RC_ERROR);
+		message = "Unknown app command !";
+		break;
 	}
 	
-	m_ArtificialIntelligence->Say(reply.str().c_str());
-	return reply.str();
+	_reply->set_message(message);
+}
+
+/** Send a command to shutdown the computer. */
+void Exchange::ShutdownPC(Response* _reply, int _delay)
+{
+	AI::GetInstance()->StopConnection();
+	//ShellExecute(NULL, L"shutdown", NULL, L"-s -t 10", NULL, SW_SHOWMAXIMIZED);
+	
+	char* command;
+	sprintf(command, "Shutdown.exe -s -t %d -c \"L'ordinateur va s'éteindre dans %d secondes\"", _delay, _delay);
+	system(command);
+
+	_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+	char* message;
+	sprintf(message, "PC will shutdown in %d seconds", _delay);
+	_reply->set_message(message);
+
+	AI::GetInstance()->Say(message);
 }
 
 string Exchange::GetRequestType(Request_Type _type)
@@ -231,8 +247,6 @@ string Exchange::GetRequestType(Request_Type _type)
 		return "Request_Type_EXPLORER";
 	case Request_Type_KEYBOARD:
 		return "Request_Type_KEYBOARD";
-	case Request_Type_MEDIA:
-		return "Request_Type_MEDIA";
 	case Request_Type_AI:
 		return "Request_Type_AI";
 	case Request_Type_VOLUME:

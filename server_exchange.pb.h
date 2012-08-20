@@ -87,11 +87,14 @@ enum Request_Code {
   Request_Code_KB_BACKSPACE = 42,
   Request_Code_KB_ESCAPE = 43,
   Request_Code_KB_ALT_F4 = 44,
-  Request_Code_KB_CTRL_RETURN = 45
+  Request_Code_KB_CTRL_RETURN = 45,
+  Request_Code_GOM_PLAYER_RUN = 50,
+  Request_Code_GOM_PLAYER_KILL = 51,
+  Request_Code_GOM_PLAYER_STRETCH = 52
 };
 bool Request_Code_IsValid(int value);
 const Request_Code Request_Code_Code_MIN = Request_Code_DEFINE;
-const Request_Code Request_Code_Code_MAX = Request_Code_KB_CTRL_RETURN;
+const Request_Code Request_Code_Code_MAX = Request_Code_GOM_PLAYER_STRETCH;
 const int Request_Code_Code_ARRAYSIZE = Request_Code_Code_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* Request_Code_descriptor();
@@ -252,6 +255,9 @@ class Request : public ::google::protobuf::Message {
   static const Code KB_ESCAPE = Request_Code_KB_ESCAPE;
   static const Code KB_ALT_F4 = Request_Code_KB_ALT_F4;
   static const Code KB_CTRL_RETURN = Request_Code_KB_CTRL_RETURN;
+  static const Code GOM_PLAYER_RUN = Request_Code_GOM_PLAYER_RUN;
+  static const Code GOM_PLAYER_KILL = Request_Code_GOM_PLAYER_KILL;
+  static const Code GOM_PLAYER_STRETCH = Request_Code_GOM_PLAYER_STRETCH;
   static inline bool Code_IsValid(int value) {
     return Request_Code_IsValid(value);
   }
@@ -654,7 +660,7 @@ class Response : public ::google::protobuf::Message {
   inline ::network::Request* mutable_request();
   inline ::network::Request* release_request();
   
-  // required .network.Response.ReturnCode returnCode = 2;
+  // optional .network.Response.ReturnCode returnCode = 2 [default = RC_ERROR];
   inline bool has_returncode() const;
   inline void clear_returncode();
   static const int kReturnCodeFieldNumber = 2;
@@ -1078,7 +1084,7 @@ inline ::network::Request* Response::release_request() {
   return temp;
 }
 
-// required .network.Response.ReturnCode returnCode = 2;
+// optional .network.Response.ReturnCode returnCode = 2 [default = RC_ERROR];
 inline bool Response::has_returncode() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
@@ -1089,7 +1095,7 @@ inline void Response::clear_has_returncode() {
   _has_bits_[0] &= ~0x00000002u;
 }
 inline void Response::clear_returncode() {
-  returncode_ = 0;
+  returncode_ = 1;
   clear_has_returncode();
 }
 inline ::network::Response_ReturnCode Response::returncode() const {

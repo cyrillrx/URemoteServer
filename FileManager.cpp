@@ -12,29 +12,29 @@
 // Fonctions publics
 //////////////////////////////////////////////////////////////////////////////
 
-Response* FileManager::HandleMessage(Request_Code _code, string _param)
+void FileManager::HandleMessage(Response* _reply, Request_Code _code, string _param)
 {
-	Response *reply = new Response();
-	reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 
 	switch (_code) {
 
 	case Request_Code_GET_FILE_LIST:
-		DirContent *dirContent = reply->mutable_dircontent();
-		if (!SetDirectoryContent(dirContent, _param)) {
-			reply->set_returncode(Response_ReturnCode_RC_ERROR);
-			reply->set_message("SetDirectoryContent returned false");
+		DirContent *dirContent = _reply->mutable_dircontent();
+		if (SetDirectoryContent(dirContent, _param)) {
+			_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		} else {
+			_reply->set_returncode(Response_ReturnCode_RC_ERROR);
+			_reply->set_message("SetDirectoryContent returned false");
 		}
 		break;
 
 	case Request_Code_OPEN_FILE:
-		
-		reply->set_message(OpenFile(_param));
+		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		_reply->set_message(OpenFile(_param));
 		break;
 
 	default:
-		reply->set_returncode(Response_ReturnCode_RC_ERROR);
-		reply->set_message("Unknown code received : " + _code);
+		_reply->set_returncode(Response_ReturnCode_RC_ERROR);
+		_reply->set_message("Unknown code received : " + _code);
 		break;
 	}
 }

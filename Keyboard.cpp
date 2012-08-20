@@ -4,71 +4,79 @@
 // Fonctions publics
 //////////////////////////////////////////////////////////////////////////////
 
-Response* Keyboard::HandleMessage(Request_Code _code, string _param)
+void Keyboard::HandleMessage(Response* _reply, Request_Code _code, string _param)
 {
-	Response *reply = new Response();
-	reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
-
 	switch (_code) {
 
 	case Request_Code_DEFINE:
 		SendKey(_param);
-		reply->set_message(_param);
+		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		_reply->set_message(_param);
 		break;
 
 	case Request_Code_MEDIA_PLAY_PAUSE:
 		SendKeyboardInput(VK_MEDIA_PLAY_PAUSE);
-		reply->set_message("Play/pause");
+		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		_reply->set_message("Play/pause");
 		break;
 		
 	case Request_Code_MEDIA_STOP:
 		SendKeyboardInput(VK_MEDIA_STOP);
-		reply->set_message("Stop");
+		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		_reply->set_message("Stop");
 		break;
 
 	case Request_Code_MEDIA_PREVIOUS:
 		SendKeyboardInput(VK_MEDIA_PREV_TRACK);
-		reply->set_message("Previous");
+		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		_reply->set_message("Previous");
 		break;
 
 	case Request_Code_MEDIA_NEXT:
 		SendKeyboardInput(VK_MEDIA_NEXT_TRACK);
-		reply->set_message("Next");
+		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		_reply->set_message("Next");
 		break;
 
 	case Request_Code_KB_RETURN:
 		SendKeyboardInput(VK_RETURN);
-		reply->set_message("Enter");
+		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		_reply->set_message("Enter");
 		break;
 		
 	case Request_Code_KB_SPACE:
 		SendKeyboardInput(VK_SPACE);
-		reply->set_message("Space");
+		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		_reply->set_message("Space");
 		break;
 		
 	case Request_Code_KB_BACKSPACE:
 		SendKeyboardInput(VK_BACK);
-		reply->set_message("Backspace");
+		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		_reply->set_message("Backspace");
 		break;
 		
 	case Request_Code_KB_ESCAPE:
 		SendKeyboardInput(VK_ESCAPE);
-		reply->set_message("Escape");
+		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		_reply->set_message("Escape");
 		break;
 
 	case Request_Code_KB_ALT_F4:
 		AltF4();
-		reply->set_message("Window closed (Alt + F4)");
+		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		_reply->set_message("Window closed (Alt + F4)");
 		break;
 		
 	case Request_Code_KB_CTRL_RETURN:
 		CtrlEnter();
-		reply->set_message("Ctrl + Enter");
+		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		_reply->set_message("Ctrl + Enter");
 		break;
 
 	default:
-		reply->set_returncode(Response_ReturnCode_RC_ERROR);
-		reply->set_message("Unknown Keyboard code received : " + _code);
+		_reply->set_returncode(Response_ReturnCode_RC_ERROR);
+		_reply->set_message("Unknown Keyboard code received : " + _code);
 		break;
 	}
 }

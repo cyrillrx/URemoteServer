@@ -48,7 +48,7 @@ using namespace network;
 class Keyboard
 {
 public:
-	static Response* HandleMessage(Request_Code _code, string _param);
+	static void HandleMessage(Response* _reply, Request_Code _code, string _param);
 	static void CtrlEnter();
 
 private :

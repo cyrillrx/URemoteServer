@@ -159,12 +159,12 @@ void protobuf_AddDesc_server_5fexchange_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\025server_exchange.proto\022\007network\"\314\004\n\007Req"
+    "\n\025server_exchange.proto\022\007network\"\215\005\n\007Req"
     "uest\022#\n\004type\030\001 \002(\0162\025.network.Request.Typ"
     "e\022#\n\004code\030\002 \002(\0162\025.network.Request.Code\022\017"
     "\n\007integer\030\003 \001(\005\022\014\n\004text\030\004 \001(\t\"K\n\004Type\022\n\n"
     "\006SIMPLE\020\000\022\014\n\010EXPLORER\020\001\022\014\n\010KEYBOARD\020\002\022\006\n"
-    "\002AI\020\003\022\n\n\006VOLUME\020\004\022\007\n\003APP\020\005\"\212\003\n\004Code\022\n\n\006D"
+    "\002AI\020\003\022\n\n\006VOLUME\020\004\022\007\n\003APP\020\005\"\313\003\n\004Code\022\n\n\006D"
     "EFINE\020\000\022\t\n\005HELLO\020\001\022\010\n\004TEST\020\002\022\017\n\013KILL_SER"
     "VER\020\003\022\014\n\010SHUTDOWN\020\004\022\021\n\rSWITCH_WINDOW\020\005\022\010"
     "\n\004LOCK\020\006\022\006\n\002UP\020\007\022\010\n\004DOWN\020\010\022\010\n\004LEFT\020\t\022\t\n\005"
@@ -174,18 +174,20 @@ void protobuf_AddDesc_server_5fexchange_2eproto() {
     "\n\nMEDIA_NEXT\020!\022\014\n\010MEDIA_FF\020\"\022\020\n\014MEDIA_RE"
     "WIND\020#\022\r\n\tKB_RETURN\020(\022\014\n\010KB_SPACE\020)\022\020\n\014K"
     "B_BACKSPACE\020*\022\r\n\tKB_ESCAPE\020+\022\r\n\tKB_ALT_F"
-    "4\020,\022\022\n\016KB_CTRL_RETURN\020-\"\274\001\n\nDirContent\022\014"
-    "\n\004path\030\001 \002(\t\022&\n\004file\030\002 \003(\0132\030.network.Dir"
-    "Content.File\032x\n\004File\022\014\n\004name\030\001 \002(\t\022/\n\004ty"
-    "pe\030\003 \002(\0162!.network.DirContent.File.FileT"
-    "ype\022\014\n\004size\030\004 \002(\005\"#\n\010FileType\022\r\n\tDIRECTO"
-    "RY\020\000\022\010\n\004FILE\020\001\"\326\001\n\010Response\022!\n\007request\030\001"
-    " \001(\0132\020.network.Request\0220\n\nreturnCode\030\002 \002"
-    "(\0162\034.network.Response.ReturnCode\022\017\n\007mess"
-    "age\030\003 \001(\t\022\017\n\007integer\030\004 \001(\005\022\'\n\ndirContent"
-    "\030\005 \001(\0132\023.network.DirContent\"*\n\nReturnCod"
-    "e\022\016\n\nRC_SUCCESS\020\000\022\014\n\010RC_ERROR\020\001B \n\016org.e"
-    "s.networkB\016ExchangeProtos", 1065);
+    "4\020,\022\022\n\016KB_CTRL_RETURN\020-\022\022\n\016GOM_PLAYER_RU"
+    "N\0202\022\023\n\017GOM_PLAYER_KILL\0203\022\026\n\022GOM_PLAYER_S"
+    "TRETCH\0204\"\274\001\n\nDirContent\022\014\n\004path\030\001 \002(\t\022&\n"
+    "\004file\030\002 \003(\0132\030.network.DirContent.File\032x\n"
+    "\004File\022\014\n\004name\030\001 \002(\t\022/\n\004type\030\003 \002(\0162!.netw"
+    "ork.DirContent.File.FileType\022\014\n\004size\030\004 \002"
+    "(\005\"#\n\010FileType\022\r\n\tDIRECTORY\020\000\022\010\n\004FILE\020\001\""
+    "\340\001\n\010Response\022!\n\007request\030\001 \001(\0132\020.network."
+    "Request\022:\n\nreturnCode\030\002 \001(\0162\034.network.Re"
+    "sponse.ReturnCode:\010RC_ERROR\022\017\n\007message\030\003"
+    " \001(\t\022\017\n\007integer\030\004 \001(\005\022\'\n\ndirContent\030\005 \001("
+    "\0132\023.network.DirContent\"*\n\nReturnCode\022\016\n\n"
+    "RC_SUCCESS\020\000\022\014\n\010RC_ERROR\020\001B \n\016org.es.net"
+    "workB\016ExchangeProtos", 1140);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "server_exchange.proto", &protobuf_RegisterTypes);
   Request::default_instance_ = new Request();
@@ -271,6 +273,9 @@ bool Request_Code_IsValid(int value) {
     case 43:
     case 44:
     case 45:
+    case 50:
+    case 51:
+    case 52:
       return true;
     default:
       return false;
@@ -305,6 +310,9 @@ const Request_Code Request::KB_BACKSPACE;
 const Request_Code Request::KB_ESCAPE;
 const Request_Code Request::KB_ALT_F4;
 const Request_Code Request::KB_CTRL_RETURN;
+const Request_Code Request::GOM_PLAYER_RUN;
+const Request_Code Request::GOM_PLAYER_KILL;
+const Request_Code Request::GOM_PLAYER_STRETCH;
 const Request_Code Request::Code_MIN;
 const Request_Code Request::Code_MAX;
 const int Request::Code_ARRAYSIZE;
@@ -1314,7 +1322,7 @@ Response::Response(const Response& from)
 void Response::SharedCtor() {
   _cached_size_ = 0;
   request_ = NULL;
-  returncode_ = 0;
+  returncode_ = 1;
   message_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   integer_ = 0;
   dircontent_ = NULL;
@@ -1360,7 +1368,7 @@ void Response::Clear() {
     if (has_request()) {
       if (request_ != NULL) request_->::network::Request::Clear();
     }
-    returncode_ = 0;
+    returncode_ = 1;
     if (has_message()) {
       if (message_ != &::google::protobuf::internal::kEmptyString) {
         message_->clear();
@@ -1394,7 +1402,7 @@ bool Response::MergePartialFromCodedStream(
         break;
       }
       
-      // required .network.Response.ReturnCode returnCode = 2;
+      // optional .network.Response.ReturnCode returnCode = 2 [default = RC_ERROR];
       case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -1486,7 +1494,7 @@ void Response::SerializeWithCachedSizes(
       1, this->request(), output);
   }
   
-  // required .network.Response.ReturnCode returnCode = 2;
+  // optional .network.Response.ReturnCode returnCode = 2 [default = RC_ERROR];
   if (has_returncode()) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
       2, this->returncode(), output);
@@ -1527,7 +1535,7 @@ void Response::SerializeWithCachedSizes(
         1, this->request(), target);
   }
   
-  // required .network.Response.ReturnCode returnCode = 2;
+  // optional .network.Response.ReturnCode returnCode = 2 [default = RC_ERROR];
   if (has_returncode()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       2, this->returncode(), target);
@@ -1573,7 +1581,7 @@ int Response::ByteSize() const {
           this->request());
     }
     
-    // required .network.Response.ReturnCode returnCode = 2;
+    // optional .network.Response.ReturnCode returnCode = 2 [default = RC_ERROR];
     if (has_returncode()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->returncode());
@@ -1659,7 +1667,6 @@ void Response::CopyFrom(const Response& from) {
 }
 
 bool Response::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000002) != 0x00000002) return false;
   
   if (has_request()) {
     if (!this->request().IsInitialized()) return false;

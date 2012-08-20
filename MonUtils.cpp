@@ -177,7 +177,7 @@ bool MonUtils::MoveWindow(HWND _window, HMONITOR _srcMonitor, HMONITOR _destMoni
 	if (srcMonPos) {
 		srcMonPos->Display("srcMon");
 	} else {
-		std::cout << "!!! GetMonitorRect(_srcMonitor) failed !!!" << std::endl;
+		std::cerr << "!!! GetMonitorRect(_srcMonitor) failed !!!" << std::endl;
 	}
 	
 	// Récupèration de la position du nouveau moniteur
@@ -185,7 +185,7 @@ bool MonUtils::MoveWindow(HWND _window, HMONITOR _srcMonitor, HMONITOR _destMoni
 	if (destMonPos) {
 		destMonPos->Display("destMon");
 	} else {
-		std::cout << "!!! GetMonitorRect(_destMonitor) failed !!!" << std::endl;
+		std::cerr << "!!! GetMonitorRect(_destMonitor) failed !!!" << std::endl;
 	}
 
 	// Calcul de la position relative de la fenêtre par rapport au moniteur source
@@ -193,7 +193,7 @@ bool MonUtils::MoveWindow(HWND _window, HMONITOR _srcMonitor, HMONITOR _destMoni
 	if (windowRelPos) {
 		windowRelPos->Display("windowRelPos");
 	} else {
-		std::cout << "!!! GetRelativePos(_window, *rectSrcMon) failed !!!" << std::endl;
+		std::cerr << "!!! GetRelativePos(_window, *rectSrcMon) failed !!!" << std::endl;
 	}
 
 	// Calcul du coefficient d'agrandissement pour passer d'un moniteur à l'autre

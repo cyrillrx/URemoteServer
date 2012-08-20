@@ -16,9 +16,10 @@ AI* AI::GetInstance()
 	return s_Instance;
 }
 
-AI::~AI(void)
+void AI::FreeInstance()
 {
-	Shutdown();
+	delete(s_Instance);
+	s_Instance = NULL;
 }
 
 bool AI::StartConnection(int _port, int _maxConnections)
@@ -89,6 +90,11 @@ AI::AI(string _name)
 	m_LastWelcome -= DELAY;
 
 	Start();
+}
+
+AI::~AI(void)
+{
+	Shutdown();
 }
 
 void AI::Start()
