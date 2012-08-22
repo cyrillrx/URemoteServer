@@ -18,8 +18,8 @@ void FileManager::HandleMessage(Response* _reply, Request_Code _code, string _pa
 	switch (_code) {
 
 	case Request_Code_GET_FILE_LIST:
-		DirContent *dirContent = _reply->mutable_dircontent();
-		if (SetDirectoryContent(dirContent, _param)) {
+		//DirContent *dirContent = _reply->mutable_dircontent();
+		if (SetDirectoryContent(_reply, _param)) {
 			_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		} else {
 			_reply->set_returncode(Response_ReturnCode_RC_ERROR);
@@ -43,7 +43,7 @@ void FileManager::HandleMessage(Response* _reply, Request_Code _code, string _pa
 // Fonctions privées
 //////////////////////////////////////////////////////////////////////////////
 
-bool FileManager::SetDirectoryContent(DirContent* _dirContent, string _dirPath)
+bool FileManager::SetDirectoryContent(Response* _reply, string _dirPath)
 {
 	cout << "Target directory is " << _dirPath.c_str() << endl;
 
@@ -51,10 +51,14 @@ bool FileManager::SetDirectoryContent(DirContent* _dirContent, string _dirPath)
 	// Préparation de la chaine pour l'utilisation de la fonction FindFile
 	// On ajoute "\\*" à la fin du nom de repertoire.
 	_dirPath += "\\*";
-	
+	string errorMessage;
+
 	// On vérifie que le chemin ne soit pas plus grand que la taille maximum autorisée (MAX_PATH) 
 	if (_dirPath.length() > MAX_PATH) {
-		cerr << "Directory path is too long." << endl;
+		errorMessage = "Directory path is too long.";
+		cerr << errorMessage << endl;
+		_reply->set_returncode(Response_ReturnCode_RC_ERROR);
+		_reply->set_message(errorMessage);
 		return false;
 	}
 
@@ -65,12 +69,16 @@ bool FileManager::SetDirectoryContent(DirContent* _dirContent, string _dirPath)
 	//LPCWSTR str = StringUtils::StringToBStr(_dirPath);
 	hFind = FindFirstFile(_dirPath.c_str(), &ffd);
 	if (hFind == INVALID_HANDLE_VALUE) {
-		cerr << "FindFirstFile error : INVALID_HANDLE_VALUE" << endl;
+		errorMessage = "FindFirstFile error : INVALID_HANDLE_VALUE";
+		cerr << errorMessage << endl;
+		_reply->set_returncode(Response_ReturnCode_RC_ERROR);
+		_reply->set_message(errorMessage);
 		return false;
 	}
 
 	// Initialisation du vecteur à retourner
-	DirContent* dirContent = new DirContent();
+	//DirContent* dirContent = new DirContent();
+	DirContent *dirContent = _reply->mutable_dircontent();
 	dirContent->set_path(_dirPath);
 
 	// Lister tous les fichiers du repertoire en récupérant quelques infos.
@@ -108,7 +116,10 @@ bool FileManager::SetDirectoryContent(DirContent* _dirContent, string _dirPath)
  
 	DWORD dwError = GetLastError();
 	if (dwError != ERROR_NO_MORE_FILES) {
-		cerr << "GetDirectoryContent error : " << dwError << endl;
+		errorMessage = "FindNextFile error : " + dwError;
+		cerr << errorMessage << endl;
+		_reply->set_returncode(Response_ReturnCode_RC_ERROR);
+		_reply->set_message(errorMessage);
 		return NULL;
 	}
 

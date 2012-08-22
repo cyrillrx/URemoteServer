@@ -36,9 +36,10 @@ bool Server::Start()
 	/* connection socket */
 	
 	while (m_ContinueToListen) {
-		cout << "Hostname : " << m_Hostname << endl;
-		cout << "IP Address : " << m_IpAddress << endl;
-		cout << "Open port : " << m_Port << endl;
+		cout << "Server Info : " << endl;
+		cout << " - Hostname   : " << m_Hostname << endl;
+		cout << " - IP Address : " << m_IpAddress << endl;
+		cout << " - Open port  : " << m_Port << endl;
 		cout << "Waiting for client to connect..." << endl;
 		
 		//m_CSocket = accept(m_ListenSocket, (SOCKADDR *)&csin, &sizeofcsin);
@@ -50,15 +51,13 @@ bool Server::Start()
 		}
 		
 		memset(buffer, '\0', sizeof(buffer)); // On vide le buffer
-		//memset(buffer, '\0', BUFSIZ); // On vide le buffer
+		//___memset(buffer, '\0', BUFSIZ); // On vide le buffer
 		int res = recv(m_CSocket, buffer, sizeof(buffer), 0);
-		//int res = recv(m_CSocket, buffer, BUFSIZ, 0);
-		cout << "  -- result" << res <<  endl;
-		//int getpeername(int sockfd, struct sockaddr *addr, int *addrlen);
-		//int gethostname(char *hostname, size_t size);
-		cout << buffer << endl;
-		string message = buffer;
-		HandleMessage(message);
+		//___int res = recv(m_CSocket, buffer, BUFSIZ, 0);
+		cout << "  -- result : " << res <<  endl << endl;
+		void* data = (void*) buffer;
+		//string message = buffer;
+		HandleMessage(data);
 
 		closesocket(m_CSocket);
 		cout << "Socket closed" << endl << endl;
@@ -71,6 +70,7 @@ bool Server::Start()
 bool Server::Stop()
 {
 	m_ContinueToListen = false;
+	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -136,7 +136,7 @@ void Server::FreeServer()
 }
 
 
-string GetHostName()
+string Server::GetHostName()
 {
 	char hostname[80];
 	if (gethostname(hostname, sizeof(hostname)) == SOCKET_ERROR) {
@@ -147,7 +147,7 @@ string GetHostName()
 	return hostname;
 }
 
-string GetIpAddress(string _hostname)
+string Server::GetIpAddress(string _hostname)
 {
 	string ipAddress = "";
 	struct hostent *host = gethostbyname(_hostname.c_str());
@@ -170,9 +170,9 @@ string GetIpAddress(string _hostname)
 }
 
 //! Traitement de la commande envoyée par le client
-void Server::HandleMessage(string _msg) 
+void Server::HandleMessage(void* _data) 
 {
-	string serializedReply = Exchange::HandleMessage(_msg, m_ContinueToListen);
+	string serializedReply = Exchange::HandleMessage(_data, m_ContinueToListen);
 	Reply(serializedReply);
 }
 
@@ -183,6 +183,7 @@ void Server::Reply(string _message)
 		cout << "Server::Reply : Message is empty." << endl;
 		return;
 	}
-	send(m_CSocket, _message.c_str(), strlen(_message.c_str()), 0);
+
+	send(m_CSocket, _message.data(), strlen(_message.data()), 0);
 	cout << _message << endl;
 }

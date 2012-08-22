@@ -4,8 +4,9 @@
 #define DELAY 60*5 // 5 min / 300 sec avant de répéter
 
 //////////////////////////////////////////////////////////////////////////////
-// Fonctions publics
+// Public methods
 //////////////////////////////////////////////////////////////////////////////
+AI* AI::s_Instance = NULL;
 
 AI* AI::GetInstance()
 {
@@ -38,18 +39,17 @@ bool AI::StartConnection(int _port, int _maxConnections)
 
 bool AI::StopConnection()
 {
-	if (!m_ExchangeServer) {
-		return false;
+	if (m_ExchangeServer) {
+		m_ExchangeServer->Stop();
+		return true;
 	}
-	m_ExchangeServer->Stop();
 
-	return true;
+	return false;
 }
 
 void AI::Welcome()
 {
 	// Welcome if last welcom > 10 min
-	
 	// Calcule du temps écoulé en minutes depuis le dernier appel à la fonction
 	time_t now;
 	time(&now);
@@ -99,7 +99,7 @@ AI::~AI(void)
 
 void AI::Start()
 {
-	Say("A.I. activated.");
+	Say("Artificial Intelligence initiated.");
 }
 
 void AI::Shutdown()

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef EXCHANGE_INCLUDED
+#define EXCHANGE_INCLUDED
 
 #include <string>
 #include "server_exchange.pb.h"
@@ -17,9 +18,9 @@ public :
 	static const string KILL_GOM_PLAYER;
 	static const string GOM_PLAYER_STRETCH;
 
-	static string HandleMessage(string _msg, bool &_continueToListen);
-	static string GetRequestType(Request_Type _type);
-	static string GetRequestCode(Request_Code _code);
+	static string HandleMessage(void* _msg, bool &_continueToListen);
+	//static string GetRequestType(Request_Type _type);
+	//static string GetRequestCode(Request_Code _code);
 
 private :
 	static void ClassicCommand(Response* _reply, Request_Code _code);
@@ -29,3 +30,5 @@ private :
 	static void ShutdownPC(Response* _reply, int _delay);
 };
 
+
+#endif  // EXCHANGE_INCLUDED

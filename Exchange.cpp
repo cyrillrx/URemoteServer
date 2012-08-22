@@ -2,10 +2,11 @@
 
 #include <iostream>
 #include <sstream>
+#include <ostream>
 
+#include "AI.h"
 #include "FileManager.h"
 #include "MonUtils.h"
-#include "AI.h"
 #include "MasterVolume.h"
 #include "Keyboard.h"
 #include "App.h"
@@ -15,20 +16,19 @@ const string Exchange::APP_GOM_PLAYER	= "app_gom_player";
 const string Exchange::KILL_GOM_PLAYER	= "kill_gom_player";
 const string Exchange::GOM_PLAYER_STRETCH	= "gom_player_stretch";
 
-string Exchange::HandleMessage(string _msg, bool &_continueToListen)
+string Exchange::HandleMessage(void* _data, bool &_continueToListen)
 {
-	cout << "Server::HandleMessage() : Command <" << _msg << ">" << endl;
+	Request* request = new Request();
+	request->ParseFromArray(_data, sizeof(_data));
 
-	Request request;
-	request.ParseFromString(_msg);
-
-	Request_Type reqType	= request.type();
-	Request_Code reqCode	= request.code();
-	string param	= request.text();
-
-	cout << "	Type	<" << Request_Type_Name(reqType)	<< ">" << endl;
-	cout << "	Code	<" << Request_Code_Name(reqCode)	<< ">" << endl;
-	cout << "	Param	<" << param							<< ">" << endl;
+	Request_Type reqType	= request->type();
+	Request_Code reqCode	= request->code();
+	string param	= request->text();
+	
+	cout << "Server::HandleMessage() Received message : " << endl;
+	cout << " - Type	<" << Request_Type_Name(reqType)	<< ">" << endl;
+	cout << " - Code	<" << Request_Code_Name(reqCode)	<< ">" << endl;
+	cout << " - Param	<" << param							<< ">" << endl;
 
 	Response *reply = new Response();
 	switch (reqType) {
@@ -67,6 +67,14 @@ string Exchange::HandleMessage(string _msg, bool &_continueToListen)
 	if (reply->has_message()) {
 		AI::GetInstance()->Say(reply->message());
 	}
+
+	string serializedReply;
+	reply->SerializeToString(&serializedReply);
+	
+	delete(reply);
+	reply = NULL;
+
+	return serializedReply;
 }
 
 //! Traitement d'une commande général
@@ -108,7 +116,7 @@ void Exchange::ClassicCommand(Response* _reply, Request_Code _code)
 			
 	default:
 		_reply->set_returncode(Response_ReturnCode_RC_ERROR);
-		_reply->set_message("ClassicCommand :Unknown code received : " + _code);
+		_reply->set_message("Unknown ClassicCommand received : " + _code);
 		break;
 	}
 }
@@ -118,7 +126,7 @@ void Exchange::VolumeCommand(Response* _reply, Request_Code _code)
 {
 	float fVolumeLvl;
 	bool isMute;
-	char* message;
+	char* message = "";
 	int volumePoucentage;
 
 	switch (_code) {
@@ -153,6 +161,7 @@ void Exchange::VolumeCommand(Response* _reply, Request_Code _code)
 	
 	default:
 		message = "Unknown Volume command !";
+		cerr << message << endl;
 		break;
 	}
 
@@ -177,6 +186,7 @@ void Exchange::AICommand(Response* _reply, Request_Code _code)
 	default:
 		_reply->set_returncode(Response_ReturnCode_RC_ERROR);
 		message = "Unknown AI command !";
+		cerr << message << endl;
 		break;
 	}
 	
@@ -214,6 +224,7 @@ void Exchange::AppCommand(Response* _reply, Request_Code _code)
 	default:
 		_reply->set_returncode(Response_ReturnCode_RC_ERROR);
 		message = "Unknown app command !";
+		cerr << message << endl;
 		break;
 	}
 	
@@ -226,18 +237,18 @@ void Exchange::ShutdownPC(Response* _reply, int _delay)
 	AI::GetInstance()->StopConnection();
 	//ShellExecute(NULL, L"shutdown", NULL, L"-s -t 10", NULL, SW_SHOWMAXIMIZED);
 	
-	char* command;
+	char* command = "";
 	sprintf(command, "Shutdown.exe -s -t %d -c \"L'ordinateur va s'éteindre dans %d secondes\"", _delay, _delay);
 	system(command);
 
 	_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
-	char* message;
+	char* message = "";
 	sprintf(message, "PC will shutdown in %d seconds", _delay);
 	_reply->set_message(message);
 
 	AI::GetInstance()->Say(message);
 }
-
+/*
 string Exchange::GetRequestType(Request_Type _type)
 {
 	switch (_type) {
@@ -319,3 +330,4 @@ string Exchange::GetRequestCode(Request_Code _code)
 		return "Error missing Request_Code value.";
 	}
 }
+*/

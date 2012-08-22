@@ -4,7 +4,6 @@
 #include <WinSock2.h>
 
 #include "server_exchange.pb.h"
-#include "AI.h"
 
 using namespace std;
 using namespace network;
@@ -34,6 +33,6 @@ private :
 	string GetHostName();
 	string GetIpAddress(string _hostname);
 
-	void HandleMessage(string _msg);
+	void HandleMessage(void* _data);
 	void Reply(string _message);
 };
