@@ -47,8 +47,8 @@ void protobuf_AssignDesc_server_5fexchange_2eproto() {
   static const int Request_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, type_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, code_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, integer_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, text_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, intparam_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, stringparam_),
   };
   Request_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -102,7 +102,7 @@ void protobuf_AssignDesc_server_5fexchange_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Response, request_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Response, returncode_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Response, message_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Response, integer_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Response, intvalue_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Response, dircontent_),
   };
   Response_reflection_ =
@@ -159,35 +159,35 @@ void protobuf_AddDesc_server_5fexchange_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\025server_exchange.proto\022\007network\"\215\005\n\007Req"
+    "\n\025server_exchange.proto\022\007network\"\225\005\n\007Req"
     "uest\022#\n\004type\030\001 \002(\0162\025.network.Request.Typ"
-    "e\022#\n\004code\030\002 \002(\0162\025.network.Request.Code\022\017"
-    "\n\007integer\030\003 \001(\005\022\014\n\004text\030\004 \001(\t\"K\n\004Type\022\n\n"
-    "\006SIMPLE\020\000\022\014\n\010EXPLORER\020\001\022\014\n\010KEYBOARD\020\002\022\006\n"
-    "\002AI\020\003\022\n\n\006VOLUME\020\004\022\007\n\003APP\020\005\"\313\003\n\004Code\022\n\n\006D"
-    "EFINE\020\000\022\t\n\005HELLO\020\001\022\010\n\004TEST\020\002\022\017\n\013KILL_SER"
-    "VER\020\003\022\014\n\010SHUTDOWN\020\004\022\021\n\rSWITCH_WINDOW\020\005\022\010"
-    "\n\004LOCK\020\006\022\006\n\002UP\020\007\022\010\n\004DOWN\020\010\022\010\n\004LEFT\020\t\022\t\n\005"
-    "RIGHT\020\n\022\010\n\004MUTE\020\013\022\007\n\003SAY\020\014\022\021\n\rGET_FILE_L"
-    "IST\020\024\022\r\n\tOPEN_FILE\020\025\022\024\n\020MEDIA_PLAY_PAUSE"
-    "\020\036\022\016\n\nMEDIA_STOP\020\037\022\022\n\016MEDIA_PREVIOUS\020 \022\016"
-    "\n\nMEDIA_NEXT\020!\022\014\n\010MEDIA_FF\020\"\022\020\n\014MEDIA_RE"
-    "WIND\020#\022\r\n\tKB_RETURN\020(\022\014\n\010KB_SPACE\020)\022\020\n\014K"
-    "B_BACKSPACE\020*\022\r\n\tKB_ESCAPE\020+\022\r\n\tKB_ALT_F"
-    "4\020,\022\022\n\016KB_CTRL_RETURN\020-\022\022\n\016GOM_PLAYER_RU"
-    "N\0202\022\023\n\017GOM_PLAYER_KILL\0203\022\026\n\022GOM_PLAYER_S"
-    "TRETCH\0204\"\274\001\n\nDirContent\022\014\n\004path\030\001 \002(\t\022&\n"
-    "\004file\030\002 \003(\0132\030.network.DirContent.File\032x\n"
-    "\004File\022\014\n\004name\030\001 \002(\t\022/\n\004type\030\003 \002(\0162!.netw"
-    "ork.DirContent.File.FileType\022\014\n\004size\030\004 \002"
-    "(\005\"#\n\010FileType\022\r\n\tDIRECTORY\020\000\022\010\n\004FILE\020\001\""
-    "\340\001\n\010Response\022!\n\007request\030\001 \001(\0132\020.network."
-    "Request\022:\n\nreturnCode\030\002 \001(\0162\034.network.Re"
-    "sponse.ReturnCode:\010RC_ERROR\022\017\n\007message\030\003"
-    " \001(\t\022\017\n\007integer\030\004 \001(\005\022\'\n\ndirContent\030\005 \001("
-    "\0132\023.network.DirContent\"*\n\nReturnCode\022\016\n\n"
-    "RC_SUCCESS\020\000\022\014\n\010RC_ERROR\020\001B \n\016org.es.net"
-    "workB\016ExchangeProtos", 1140);
+    "e\022#\n\004code\030\002 \002(\0162\025.network.Request.Code\022\020"
+    "\n\010intParam\030\003 \001(\005\022\023\n\013stringParam\030\004 \001(\t\"K\n"
+    "\004Type\022\n\n\006SIMPLE\020\000\022\014\n\010EXPLORER\020\001\022\014\n\010KEYBO"
+    "ARD\020\002\022\006\n\002AI\020\003\022\n\n\006VOLUME\020\004\022\007\n\003APP\020\005\"\313\003\n\004C"
+    "ode\022\n\n\006DEFINE\020\000\022\t\n\005HELLO\020\001\022\010\n\004TEST\020\002\022\017\n\013"
+    "KILL_SERVER\020\003\022\014\n\010SHUTDOWN\020\004\022\021\n\rSWITCH_WI"
+    "NDOW\020\005\022\010\n\004LOCK\020\006\022\006\n\002UP\020\007\022\010\n\004DOWN\020\010\022\010\n\004LE"
+    "FT\020\t\022\t\n\005RIGHT\020\n\022\010\n\004MUTE\020\013\022\007\n\003SAY\020\014\022\021\n\rGE"
+    "T_FILE_LIST\020\024\022\r\n\tOPEN_FILE\020\025\022\024\n\020MEDIA_PL"
+    "AY_PAUSE\020\036\022\016\n\nMEDIA_STOP\020\037\022\022\n\016MEDIA_PREV"
+    "IOUS\020 \022\016\n\nMEDIA_NEXT\020!\022\014\n\010MEDIA_FF\020\"\022\020\n\014"
+    "MEDIA_REWIND\020#\022\r\n\tKB_RETURN\020(\022\014\n\010KB_SPAC"
+    "E\020)\022\020\n\014KB_BACKSPACE\020*\022\r\n\tKB_ESCAPE\020+\022\r\n\t"
+    "KB_ALT_F4\020,\022\022\n\016KB_CTRL_RETURN\020-\022\022\n\016GOM_P"
+    "LAYER_RUN\0202\022\023\n\017GOM_PLAYER_KILL\0203\022\026\n\022GOM_"
+    "PLAYER_STRETCH\0204\"\274\001\n\nDirContent\022\014\n\004path\030"
+    "\001 \002(\t\022&\n\004file\030\002 \003(\0132\030.network.DirContent"
+    ".File\032x\n\004File\022\014\n\004name\030\001 \002(\t\022/\n\004type\030\003 \002("
+    "\0162!.network.DirContent.File.FileType\022\014\n\004"
+    "size\030\004 \002(\005\"#\n\010FileType\022\r\n\tDIRECTORY\020\000\022\010\n"
+    "\004FILE\020\001\"\341\001\n\010Response\022!\n\007request\030\001 \001(\0132\020."
+    "network.Request\022:\n\nreturnCode\030\002 \001(\0162\034.ne"
+    "twork.Response.ReturnCode:\010RC_ERROR\022\017\n\007m"
+    "essage\030\003 \001(\t\022\020\n\010intValue\030\004 \001(\005\022\'\n\ndirCon"
+    "tent\030\005 \001(\0132\023.network.DirContent\"*\n\nRetur"
+    "nCode\022\016\n\nRC_SUCCESS\020\000\022\014\n\010RC_ERROR\020\001B \n\016o"
+    "rg.es.networkB\016ExchangeProtos", 1149);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "server_exchange.proto", &protobuf_RegisterTypes);
   Request::default_instance_ = new Request();
@@ -320,8 +320,8 @@ const int Request::Code_ARRAYSIZE;
 #ifndef _MSC_VER
 const int Request::kTypeFieldNumber;
 const int Request::kCodeFieldNumber;
-const int Request::kIntegerFieldNumber;
-const int Request::kTextFieldNumber;
+const int Request::kIntParamFieldNumber;
+const int Request::kStringParamFieldNumber;
 #endif  // !_MSC_VER
 
 Request::Request()
@@ -342,8 +342,8 @@ void Request::SharedCtor() {
   _cached_size_ = 0;
   type_ = 0;
   code_ = 0;
-  integer_ = 0;
-  text_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  intparam_ = 0;
+  stringparam_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -352,8 +352,8 @@ Request::~Request() {
 }
 
 void Request::SharedDtor() {
-  if (text_ != &::google::protobuf::internal::kEmptyString) {
-    delete text_;
+  if (stringparam_ != &::google::protobuf::internal::kEmptyString) {
+    delete stringparam_;
   }
   if (this != default_instance_) {
   }
@@ -383,10 +383,10 @@ void Request::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     type_ = 0;
     code_ = 0;
-    integer_ = 0;
-    if (has_text()) {
-      if (text_ != &::google::protobuf::internal::kEmptyString) {
-        text_->clear();
+    intparam_ = 0;
+    if (has_stringparam()) {
+      if (stringparam_ != &::google::protobuf::internal::kEmptyString) {
+        stringparam_->clear();
       }
     }
   }
@@ -437,35 +437,35 @@ bool Request::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(24)) goto parse_integer;
+        if (input->ExpectTag(24)) goto parse_intParam;
         break;
       }
       
-      // optional int32 integer = 3;
+      // optional int32 intParam = 3;
       case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_integer:
+         parse_intParam:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &integer_)));
-          set_has_integer();
+                 input, &intparam_)));
+          set_has_intparam();
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(34)) goto parse_text;
+        if (input->ExpectTag(34)) goto parse_stringParam;
         break;
       }
       
-      // optional string text = 4;
+      // optional string stringParam = 4;
       case 4: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_text:
+         parse_stringParam:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_text()));
+                input, this->mutable_stringparam()));
           ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->text().data(), this->text().length(),
+            this->stringparam().data(), this->stringparam().length(),
             ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
@@ -504,18 +504,18 @@ void Request::SerializeWithCachedSizes(
       2, this->code(), output);
   }
   
-  // optional int32 integer = 3;
-  if (has_integer()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->integer(), output);
+  // optional int32 intParam = 3;
+  if (has_intparam()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->intparam(), output);
   }
   
-  // optional string text = 4;
-  if (has_text()) {
+  // optional string stringParam = 4;
+  if (has_stringparam()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->text().data(), this->text().length(),
+      this->stringparam().data(), this->stringparam().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      4, this->text(), output);
+      4, this->stringparam(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -538,19 +538,19 @@ void Request::SerializeWithCachedSizes(
       2, this->code(), target);
   }
   
-  // optional int32 integer = 3;
-  if (has_integer()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->integer(), target);
+  // optional int32 intParam = 3;
+  if (has_intparam()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->intparam(), target);
   }
   
-  // optional string text = 4;
-  if (has_text()) {
+  // optional string stringParam = 4;
+  if (has_stringparam()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->text().data(), this->text().length(),
+      this->stringparam().data(), this->stringparam().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        4, this->text(), target);
+        4, this->stringparam(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -576,18 +576,18 @@ int Request::ByteSize() const {
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->code());
     }
     
-    // optional int32 integer = 3;
-    if (has_integer()) {
+    // optional int32 intParam = 3;
+    if (has_intparam()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->integer());
+          this->intparam());
     }
     
-    // optional string text = 4;
-    if (has_text()) {
+    // optional string stringParam = 4;
+    if (has_stringparam()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->text());
+          this->stringparam());
     }
     
   }
@@ -623,11 +623,11 @@ void Request::MergeFrom(const Request& from) {
     if (from.has_code()) {
       set_code(from.code());
     }
-    if (from.has_integer()) {
-      set_integer(from.integer());
+    if (from.has_intparam()) {
+      set_intparam(from.intparam());
     }
-    if (from.has_text()) {
-      set_text(from.text());
+    if (from.has_stringparam()) {
+      set_stringparam(from.stringparam());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -655,8 +655,8 @@ void Request::Swap(Request* other) {
   if (other != this) {
     std::swap(type_, other->type_);
     std::swap(code_, other->code_);
-    std::swap(integer_, other->integer_);
-    std::swap(text_, other->text_);
+    std::swap(intparam_, other->intparam_);
+    std::swap(stringparam_, other->stringparam_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -1299,7 +1299,7 @@ const int Response::ReturnCode_ARRAYSIZE;
 const int Response::kRequestFieldNumber;
 const int Response::kReturnCodeFieldNumber;
 const int Response::kMessageFieldNumber;
-const int Response::kIntegerFieldNumber;
+const int Response::kIntValueFieldNumber;
 const int Response::kDirContentFieldNumber;
 #endif  // !_MSC_VER
 
@@ -1324,7 +1324,7 @@ void Response::SharedCtor() {
   request_ = NULL;
   returncode_ = 1;
   message_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  integer_ = 0;
+  intvalue_ = 0;
   dircontent_ = NULL;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -1374,7 +1374,7 @@ void Response::Clear() {
         message_->clear();
       }
     }
-    integer_ = 0;
+    intvalue_ = 0;
     if (has_dircontent()) {
       if (dircontent_ != NULL) dircontent_->::network::DirContent::Clear();
     }
@@ -1436,19 +1436,19 @@ bool Response::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(32)) goto parse_integer;
+        if (input->ExpectTag(32)) goto parse_intValue;
         break;
       }
       
-      // optional int32 integer = 4;
+      // optional int32 intValue = 4;
       case 4: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_integer:
+         parse_intValue:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &integer_)));
-          set_has_integer();
+                 input, &intvalue_)));
+          set_has_intvalue();
         } else {
           goto handle_uninterpreted;
         }
@@ -1509,9 +1509,9 @@ void Response::SerializeWithCachedSizes(
       3, this->message(), output);
   }
   
-  // optional int32 integer = 4;
-  if (has_integer()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->integer(), output);
+  // optional int32 intValue = 4;
+  if (has_intvalue()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->intvalue(), output);
   }
   
   // optional .network.DirContent dirContent = 5;
@@ -1551,9 +1551,9 @@ void Response::SerializeWithCachedSizes(
         3, this->message(), target);
   }
   
-  // optional int32 integer = 4;
-  if (has_integer()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->integer(), target);
+  // optional int32 intValue = 4;
+  if (has_intvalue()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->intvalue(), target);
   }
   
   // optional .network.DirContent dirContent = 5;
@@ -1594,11 +1594,11 @@ int Response::ByteSize() const {
           this->message());
     }
     
-    // optional int32 integer = 4;
-    if (has_integer()) {
+    // optional int32 intValue = 4;
+    if (has_intvalue()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->integer());
+          this->intvalue());
     }
     
     // optional .network.DirContent dirContent = 5;
@@ -1644,8 +1644,8 @@ void Response::MergeFrom(const Response& from) {
     if (from.has_message()) {
       set_message(from.message());
     }
-    if (from.has_integer()) {
-      set_integer(from.integer());
+    if (from.has_intvalue()) {
+      set_intvalue(from.intvalue());
     }
     if (from.has_dircontent()) {
       mutable_dircontent()->::network::DirContent::MergeFrom(from.dircontent());
@@ -1682,7 +1682,7 @@ void Response::Swap(Response* other) {
     std::swap(request_, other->request_);
     std::swap(returncode_, other->returncode_);
     std::swap(message_, other->message_);
-    std::swap(integer_, other->integer_);
+    std::swap(intvalue_, other->intvalue_);
     std::swap(dircontent_, other->dircontent_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);

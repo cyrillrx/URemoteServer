@@ -295,23 +295,23 @@ class Request : public ::google::protobuf::Message {
   inline ::network::Request_Code code() const;
   inline void set_code(::network::Request_Code value);
   
-  // optional int32 integer = 3;
-  inline bool has_integer() const;
-  inline void clear_integer();
-  static const int kIntegerFieldNumber = 3;
-  inline ::google::protobuf::int32 integer() const;
-  inline void set_integer(::google::protobuf::int32 value);
+  // optional int32 intParam = 3;
+  inline bool has_intparam() const;
+  inline void clear_intparam();
+  static const int kIntParamFieldNumber = 3;
+  inline ::google::protobuf::int32 intparam() const;
+  inline void set_intparam(::google::protobuf::int32 value);
   
-  // optional string text = 4;
-  inline bool has_text() const;
-  inline void clear_text();
-  static const int kTextFieldNumber = 4;
-  inline const ::std::string& text() const;
-  inline void set_text(const ::std::string& value);
-  inline void set_text(const char* value);
-  inline void set_text(const char* value, size_t size);
-  inline ::std::string* mutable_text();
-  inline ::std::string* release_text();
+  // optional string stringParam = 4;
+  inline bool has_stringparam() const;
+  inline void clear_stringparam();
+  static const int kStringParamFieldNumber = 4;
+  inline const ::std::string& stringparam() const;
+  inline void set_stringparam(const ::std::string& value);
+  inline void set_stringparam(const char* value);
+  inline void set_stringparam(const char* value, size_t size);
+  inline ::std::string* mutable_stringparam();
+  inline ::std::string* release_stringparam();
   
   // @@protoc_insertion_point(class_scope:network.Request)
  private:
@@ -319,17 +319,17 @@ class Request : public ::google::protobuf::Message {
   inline void clear_has_type();
   inline void set_has_code();
   inline void clear_has_code();
-  inline void set_has_integer();
-  inline void clear_has_integer();
-  inline void set_has_text();
-  inline void clear_has_text();
+  inline void set_has_intparam();
+  inline void clear_has_intparam();
+  inline void set_has_stringparam();
+  inline void clear_has_stringparam();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   int type_;
   int code_;
-  ::std::string* text_;
-  ::google::protobuf::int32 integer_;
+  ::std::string* stringparam_;
+  ::google::protobuf::int32 intparam_;
   
   mutable int _cached_size_;
   ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
@@ -678,12 +678,12 @@ class Response : public ::google::protobuf::Message {
   inline ::std::string* mutable_message();
   inline ::std::string* release_message();
   
-  // optional int32 integer = 4;
-  inline bool has_integer() const;
-  inline void clear_integer();
-  static const int kIntegerFieldNumber = 4;
-  inline ::google::protobuf::int32 integer() const;
-  inline void set_integer(::google::protobuf::int32 value);
+  // optional int32 intValue = 4;
+  inline bool has_intvalue() const;
+  inline void clear_intvalue();
+  static const int kIntValueFieldNumber = 4;
+  inline ::google::protobuf::int32 intvalue() const;
+  inline void set_intvalue(::google::protobuf::int32 value);
   
   // optional .network.DirContent dirContent = 5;
   inline bool has_dircontent() const;
@@ -701,8 +701,8 @@ class Response : public ::google::protobuf::Message {
   inline void clear_has_returncode();
   inline void set_has_message();
   inline void clear_has_message();
-  inline void set_has_integer();
-  inline void clear_has_integer();
+  inline void set_has_intvalue();
+  inline void clear_has_intvalue();
   inline void set_has_dircontent();
   inline void clear_has_dircontent();
   
@@ -711,7 +711,7 @@ class Response : public ::google::protobuf::Message {
   ::network::Request* request_;
   ::std::string* message_;
   int returncode_;
-  ::google::protobuf::int32 integer_;
+  ::google::protobuf::int32 intvalue_;
   ::network::DirContent* dircontent_;
   
   mutable int _cached_size_;
@@ -777,82 +777,82 @@ inline void Request::set_code(::network::Request_Code value) {
   code_ = value;
 }
 
-// optional int32 integer = 3;
-inline bool Request::has_integer() const {
+// optional int32 intParam = 3;
+inline bool Request::has_intparam() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void Request::set_has_integer() {
+inline void Request::set_has_intparam() {
   _has_bits_[0] |= 0x00000004u;
 }
-inline void Request::clear_has_integer() {
+inline void Request::clear_has_intparam() {
   _has_bits_[0] &= ~0x00000004u;
 }
-inline void Request::clear_integer() {
-  integer_ = 0;
-  clear_has_integer();
+inline void Request::clear_intparam() {
+  intparam_ = 0;
+  clear_has_intparam();
 }
-inline ::google::protobuf::int32 Request::integer() const {
-  return integer_;
+inline ::google::protobuf::int32 Request::intparam() const {
+  return intparam_;
 }
-inline void Request::set_integer(::google::protobuf::int32 value) {
-  set_has_integer();
-  integer_ = value;
+inline void Request::set_intparam(::google::protobuf::int32 value) {
+  set_has_intparam();
+  intparam_ = value;
 }
 
-// optional string text = 4;
-inline bool Request::has_text() const {
+// optional string stringParam = 4;
+inline bool Request::has_stringparam() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
-inline void Request::set_has_text() {
+inline void Request::set_has_stringparam() {
   _has_bits_[0] |= 0x00000008u;
 }
-inline void Request::clear_has_text() {
+inline void Request::clear_has_stringparam() {
   _has_bits_[0] &= ~0x00000008u;
 }
-inline void Request::clear_text() {
-  if (text_ != &::google::protobuf::internal::kEmptyString) {
-    text_->clear();
+inline void Request::clear_stringparam() {
+  if (stringparam_ != &::google::protobuf::internal::kEmptyString) {
+    stringparam_->clear();
   }
-  clear_has_text();
+  clear_has_stringparam();
 }
-inline const ::std::string& Request::text() const {
-  return *text_;
+inline const ::std::string& Request::stringparam() const {
+  return *stringparam_;
 }
-inline void Request::set_text(const ::std::string& value) {
-  set_has_text();
-  if (text_ == &::google::protobuf::internal::kEmptyString) {
-    text_ = new ::std::string;
+inline void Request::set_stringparam(const ::std::string& value) {
+  set_has_stringparam();
+  if (stringparam_ == &::google::protobuf::internal::kEmptyString) {
+    stringparam_ = new ::std::string;
   }
-  text_->assign(value);
+  stringparam_->assign(value);
 }
-inline void Request::set_text(const char* value) {
-  set_has_text();
-  if (text_ == &::google::protobuf::internal::kEmptyString) {
-    text_ = new ::std::string;
+inline void Request::set_stringparam(const char* value) {
+  set_has_stringparam();
+  if (stringparam_ == &::google::protobuf::internal::kEmptyString) {
+    stringparam_ = new ::std::string;
   }
-  text_->assign(value);
+  stringparam_->assign(value);
 }
-inline void Request::set_text(const char* value, size_t size) {
-  set_has_text();
-  if (text_ == &::google::protobuf::internal::kEmptyString) {
-    text_ = new ::std::string;
+inline void Request::set_stringparam(const char* value, size_t size) {
+  set_has_stringparam();
+  if (stringparam_ == &::google::protobuf::internal::kEmptyString) {
+    stringparam_ = new ::std::string;
   }
-  text_->assign(reinterpret_cast<const char*>(value), size);
+  stringparam_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* Request::mutable_text() {
-  set_has_text();
-  if (text_ == &::google::protobuf::internal::kEmptyString) {
-    text_ = new ::std::string;
+inline ::std::string* Request::mutable_stringparam() {
+  set_has_stringparam();
+  if (stringparam_ == &::google::protobuf::internal::kEmptyString) {
+    stringparam_ = new ::std::string;
   }
-  return text_;
+  return stringparam_;
 }
-inline ::std::string* Request::release_text() {
-  clear_has_text();
-  if (text_ == &::google::protobuf::internal::kEmptyString) {
+inline ::std::string* Request::release_stringparam() {
+  clear_has_stringparam();
+  if (stringparam_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
   } else {
-    ::std::string* temp = text_;
-    text_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    ::std::string* temp = stringparam_;
+    stringparam_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
     return temp;
   }
 }
@@ -1165,26 +1165,26 @@ inline ::std::string* Response::release_message() {
   }
 }
 
-// optional int32 integer = 4;
-inline bool Response::has_integer() const {
+// optional int32 intValue = 4;
+inline bool Response::has_intvalue() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
-inline void Response::set_has_integer() {
+inline void Response::set_has_intvalue() {
   _has_bits_[0] |= 0x00000008u;
 }
-inline void Response::clear_has_integer() {
+inline void Response::clear_has_intvalue() {
   _has_bits_[0] &= ~0x00000008u;
 }
-inline void Response::clear_integer() {
-  integer_ = 0;
-  clear_has_integer();
+inline void Response::clear_intvalue() {
+  intvalue_ = 0;
+  clear_has_intvalue();
 }
-inline ::google::protobuf::int32 Response::integer() const {
-  return integer_;
+inline ::google::protobuf::int32 Response::intvalue() const {
+  return intvalue_;
 }
-inline void Response::set_integer(::google::protobuf::int32 value) {
-  set_has_integer();
-  integer_ = value;
+inline void Response::set_intvalue(::google::protobuf::int32 value) {
+  set_has_intvalue();
+  intvalue_ = value;
 }
 
 // optional .network.DirContent dirContent = 5;

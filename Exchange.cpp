@@ -23,7 +23,7 @@ string Exchange::HandleMessage(void* _data, bool &_continueToListen)
 
 	Request_Type reqType	= request->type();
 	Request_Code reqCode	= request->code();
-	string param	= request->text();
+	string param	= request->stringparam();
 	
 	cout << "Server::HandleMessage() Received message : " << endl;
 	cout << " - Type	<" << Request_Type_Name(reqType)	<< ">" << endl;
@@ -137,7 +137,7 @@ void Exchange::VolumeCommand(Response* _reply, Request_Code _code)
 
 		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		volumePoucentage = fVolumeLvl * 100;
-		_reply->set_integer(volumePoucentage);
+		_reply->set_intvalue(volumePoucentage);
 		sprintf(message,  "Volume up to %d%", volumePoucentage);
 		break;
 			
@@ -147,7 +147,7 @@ void Exchange::VolumeCommand(Response* _reply, Request_Code _code)
 
 		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		volumePoucentage = fVolumeLvl * 100;
-		_reply->set_integer(volumePoucentage);
+		_reply->set_intvalue(volumePoucentage);
 		sprintf(message,  "Volume down to %d%", volumePoucentage);
 		break;
 			
@@ -156,6 +156,7 @@ void Exchange::VolumeCommand(Response* _reply, Request_Code _code)
 		MasterVolume::FreeInstance();
 		
 		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);	
+		_reply->set_intvalue(isMute);
 		message = (isMute) ? "Volume is off." : "Volume is now on.";
 		break;
 	
