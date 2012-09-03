@@ -13,7 +13,7 @@ void Speech::SayB(bstr_t _textToSpeak)
 	
 		hr = ispVoice->Speak(_textToSpeak, SPF_ASYNC, NULL);
 		if (hr == S_OK) {
-			cout << "Speech::SayB - Function completed successfully." << endl;
+			cout << "Speech::SayB : " << _textToSpeak << endl;
 
 		} else if (hr == E_INVALIDARG) {
 			cerr << "Speech::SayB - One or more parameters are invalid." << endl;

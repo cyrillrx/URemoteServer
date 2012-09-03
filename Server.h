@@ -34,5 +34,4 @@ private :
 	string GetIpAddress(string _hostname);
 
 	void HandleMessage(void* _data);
-	void Reply(string _message);
 };

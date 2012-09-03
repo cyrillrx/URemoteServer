@@ -4,6 +4,7 @@
 #include <sstream>
 #include <ostream>
 
+#include "include\google\protobuf\io\zero_copy_stream_impl_lite.h"
 #include "AI.h"
 #include "FileManager.h"
 #include "MonUtils.h"
@@ -16,7 +17,8 @@ const string Exchange::APP_GOM_PLAYER	= "app_gom_player";
 const string Exchange::KILL_GOM_PLAYER	= "kill_gom_player";
 const string Exchange::GOM_PLAYER_STRETCH	= "gom_player_stretch";
 
-string Exchange::HandleMessage(void* _data, bool &_continueToListen)
+SerializedExchange Exchange::HandleMessage(void* _data, bool &_continueToListen)
+//void* Exchange::HandleMessage(void* _data, bool &_continueToListen)
 {
 	Request* request = new Request();
 	request->ParseFromArray(_data, sizeof(_data));
@@ -68,13 +70,35 @@ string Exchange::HandleMessage(void* _data, bool &_continueToListen)
 		AI::GetInstance()->Say(reply->message());
 	}
 
-	string serializedReply;
-	reply->SerializeToString(&serializedReply);
-	
+	int bufSize = 0;
+	char* buf = NULL;
+	SerializedExchange resp = GetSerializeResponse(reply);
+
 	delete(reply);
 	reply = NULL;
 
-	return serializedReply;
+	return resp;
+}
+
+SerializedExchange Exchange::GetSerializeResponse(Response* _response)
+{
+	// Build a buffer that can hold message and room for a 32bit delimiter
+	int bufSize	= _response->ByteSize() + 4;
+	char* buf	= new char [bufSize];
+
+	// Write varint delimiter to the buffer
+	google::protobuf::io::ArrayOutputStream arrayOut(buf, bufSize);
+	google::protobuf::io::CodedOutputStream codedOut(&arrayOut);
+	codedOut.WriteVarint32(_response->ByteSize());
+
+	// Write response to the buffer
+	_response->SerializeToCodedStream(&codedOut);
+	
+	SerializedExchange resp;
+	resp.bufferSize	= bufSize;
+	resp.buffer		= buf;
+	
+	return resp;
 }
 
 //! Traitement d'une commande général
@@ -91,7 +115,8 @@ void Exchange::ClassicCommand(Response* _reply, Request_Code _code)
 	case Request_Code_TEST:
 		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		//_reply->set_message("The code has been tested");
-		_reply->set_message("No way. Go Fuck yourself !");
+		//_reply->set_message("No way. Go Fuck yourself !");
+		_reply->set_message("Intruder detected. Get out, or I'll kick your little punk ass !");
 		break;
 
 	case Request_Code_KILL_SERVER:
@@ -116,7 +141,7 @@ void Exchange::ClassicCommand(Response* _reply, Request_Code _code)
 			
 	default:
 		_reply->set_returncode(Response_ReturnCode_RC_ERROR);
-		_reply->set_message("Unknown ClassicCommand received : " + _code);
+		_reply->set_message("Unknown Simple Command received : " + _code);
 		break;
 	}
 }
@@ -249,86 +274,3 @@ void Exchange::ShutdownPC(Response* _reply, int _delay)
 
 	AI::GetInstance()->Say(message);
 }
-/*
-string Exchange::GetRequestType(Request_Type _type)
-{
-	switch (_type) {
-	case Request_Type_SIMPLE:
-		return "Request_Type_SIMPLE";
-	case Request_Type_EXPLORER:
-		return "Request_Type_EXPLORER";
-	case Request_Type_KEYBOARD:
-		return "Request_Type_KEYBOARD";
-	case Request_Type_AI:
-		return "Request_Type_AI";
-	case Request_Type_VOLUME:
-		return "Request_Type_VOLUME";
-	case Request_Type_APP:
-		return "Request_Type_APP";
-	default:
-		return "Error missing Request_Type value.";
-	}
-}
-
-string Exchange::GetRequestCode(Request_Code _code)
-{
-	switch (_code) {
-	case Request_Code_DEFINE:
-		return "Request_Code_DEFINE";
-	case Request_Code_HELLO:
-		return "Request_Code_HELLO";
-	case Request_Code_TEST:
-		return "Request_Code_TEST";
-	case Request_Code_KILL_SERVER:
-		return "Request_Code_KILL_SERVER";
-	case Request_Code_SHUTDOWN:
-		return "Request_Code_SHUTDOWN";
-	case Request_Code_SWITCH_WINDOW:
-		return "Request_Code_SWITCH_WINDOW";
-	case Request_Code_LOCK:
-		return "Request_Code_LOCK";
-	case Request_Code_UP:
-		return "Request_Code_UP";
-	case Request_Code_DOWN:
-		return "Request_Code_DOWN";
-	case Request_Code_LEFT:
-		return "Request_Code_LEFT";
-	case Request_Code_RIGHT:
-		return "Request_Code_RIGHT";
-	case Request_Code_MUTE:
-		return "Request_Code_MUTE";
-	case Request_Code_SAY:
-		return "Request_Code_SAY";
-	case Request_Code_GET_FILE_LIST:
-		return "Request_Code_GET_FILE_LIST";
-	case Request_Code_OPEN_FILE:
-		return "Request_Code_OPEN_FILE";
-	case Request_Code_MEDIA_PLAY_PAUSE:
-		return "Request_Code_MEDIA_PLAY_PAUSE";
-	case Request_Code_MEDIA_STOP:
-		return "Request_Code_MEDIA_STOP";
-	case Request_Code_MEDIA_PREVIOUS:
-		return "Request_Code_MEDIA_PREVIOUS";
-	case Request_Code_MEDIA_NEXT:
-		return "Request_Code_MEDIA_NEXT";
-	case Request_Code_MEDIA_FF:
-		return "Request_Code_MEDIA_FF";
-	case Request_Code_MEDIA_REWIND:
-		return "Request_Code_MEDIA_REWIND";
-	case Request_Code_KB_RETURN:
-		return "Request_Code_KB_RETURN";
-	case Request_Code_KB_SPACE:
-		return "Request_Code_KB_SPACE";
-	case Request_Code_KB_BACKSPACE:
-		return "Request_Code_KB_BACKSPACE";
-	case Request_Code_KB_ESCAPE:
-		return "Request_Code_KB_ESCAPE";
-	case Request_Code_KB_ALT_F4:
-		return "Request_Code_KB_ALT_F4";
-	case Request_Code_KB_CTRL_RETURN:
-		return "Request_Code_KB_CTRL_RETURN";
-	default:
-		return "Error missing Request_Code value.";
-	}
-}
-*/

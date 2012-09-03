@@ -7,9 +7,15 @@
 using namespace std;
 using namespace network;
 
+class SerializedExchange 
+{
+public :
+	int bufferSize;
+	char* buffer;
+};
+
 class Exchange
 {
-
 public :
 	
 	static const string HELLO_CLIENT;
@@ -17,10 +23,9 @@ public :
 	static const string APP_GOM_PLAYER;
 	static const string KILL_GOM_PLAYER;
 	static const string GOM_PLAYER_STRETCH;
-
-	static string HandleMessage(void* _msg, bool &_continueToListen);
-	//static string GetRequestType(Request_Type _type);
-	//static string GetRequestCode(Request_Code _code);
+	
+	static SerializedExchange HandleMessage(void* data, bool &_continueToListen);
+	static SerializedExchange GetSerializeResponse(Response* _response);
 
 private :
 	static void ClassicCommand(Response* _reply, Request_Code _code);
@@ -29,6 +34,5 @@ private :
 	static void AppCommand(Response* _reply, Request_Code _code);
 	static void ShutdownPC(Response* _reply, int _delay);
 };
-
 
 #endif  // EXCHANGE_INCLUDED

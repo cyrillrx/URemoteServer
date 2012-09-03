@@ -2,8 +2,11 @@
 
 #include <iostream>
 #include <comdef.h>
-
 #include "Exchange.h"
+#include "StringUtils.h"
+
+//#define BUFFER_SIZE BUFSIZ
+#define BUFFER_SIZE 4096
 
 int Server::s_InstanceCount = 0;
 
@@ -23,7 +26,10 @@ Server::~Server(void)
 	FreeServer();
 }
 
-//! Lancement du serveur
+/** 
+ * Launch the server 
+ * @return true if everything went correctly. False otherwise
+ */
 bool Server::Start()
 {
 	m_ContinueToListen = true;
@@ -31,7 +37,7 @@ bool Server::Start()
 	// Socket d'acceptation
 	//SOCKADDR_IN csin;
 	//int sizeofcsin = sizeof(csin);
-	char buffer[BUFSIZ];
+	char buffer[BUFFER_SIZE];
 
 	/* connection socket */
 	
@@ -50,8 +56,8 @@ bool Server::Start()
 			return false;
 		}
 		
-		memset(buffer, '\0', sizeof(buffer)); // On vide le buffer
-		//___memset(buffer, '\0', BUFSIZ); // On vide le buffer
+		StringUtils::ClearBuffer(buffer);
+
 		int res = recv(m_CSocket, buffer, sizeof(buffer), 0);
 		//___int res = recv(m_CSocket, buffer, BUFSIZ, 0);
 		cout << "  -- result : " << res <<  endl << endl;
@@ -77,7 +83,9 @@ bool Server::Stop()
 // Private methods
 //////////////////////////////////////////////////////////////////////////////
 
-//! Initialize the server
+/**
+ * Initialize the server.
+ */
 bool Server::InitServer() 
 {
 	// Initialize winSock library (v2.0)
@@ -124,7 +132,7 @@ bool Server::InitServer()
 	return true;
 }
 
-//! Libère les sockets
+/** Free the sockets. */
 void Server::FreeServer()
 {
 	closesocket(m_ListenSocket);
@@ -155,13 +163,6 @@ string Server::GetIpAddress(string _hostname)
 		cerr << "Yow! Bad host lookup." << endl;
 	}
 
-	/*
-	for (int i = 0; host->h_addr_list[i] != 0; ++i) {
-		struct in_addr addr;
-		memcpy(&addr, host->h_addr_list[i], sizeof(struct in_addr));
-		cout << "Address " << i << ": " << inet_ntoa(addr) << endl;
-	}
-	*/
 	struct in_addr addr;
 	memcpy(&addr, host->h_addr_list[0], sizeof(struct in_addr));
 	ipAddress = inet_ntoa(addr);
@@ -169,21 +170,12 @@ string Server::GetIpAddress(string _hostname)
 	return ipAddress;
 }
 
-//! Traitement de la commande envoyée par le client
+/**
+ * Handle the command sent by the client.
+ * then send a response.
+ */
 void Server::HandleMessage(void* _data) 
 {
-	string serializedReply = Exchange::HandleMessage(_data, m_ContinueToListen);
-	Reply(serializedReply);
-}
-
-//! Envoie de la réponse au client
-void Server::Reply(string _message)
-{
-	if (_message.empty()) {
-		cout << "Server::Reply : Message is empty." << endl;
-		return;
-	}
-
-	send(m_CSocket, _message.data(), strlen(_message.data()), 0);
-	cout << _message << endl;
+	SerializedExchange response = Exchange::HandleMessage(_data, m_ContinueToListen);
+	send(m_CSocket, response.buffer, response.bufferSize, 0);
 }
