@@ -18,13 +18,7 @@ void FileManager::HandleMessage(Response* _reply, Request_Code _code, string _pa
 	switch (_code) {
 
 	case Request_Code_GET_FILE_LIST:
-		//DirContent *dirContent = _reply->mutable_dircontent();
-		if (SetDirectoryContent(_reply, _param)) {
-			_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
-		} else {
-			_reply->set_returncode(Response_ReturnCode_RC_ERROR);
-			_reply->set_message("SetDirectoryContent returned false");
-		}
+		GetDirectoryContent(_reply, _param);
 		break;
 
 	case Request_Code_OPEN_FILE:
@@ -43,18 +37,18 @@ void FileManager::HandleMessage(Response* _reply, Request_Code _code, string _pa
 // Fonctions privées
 //////////////////////////////////////////////////////////////////////////////
 
-bool FileManager::SetDirectoryContent(Response* _reply, string _dirPath)
+bool FileManager::GetDirectoryContent(Response* _reply, string _dirPath)
 {
 	cout << "Target directory is " << _dirPath.c_str() << endl;
 
 	
 	// Préparation de la chaine pour l'utilisation de la fonction FindFile
 	// On ajoute "\\*" à la fin du nom de repertoire.
-	_dirPath += "\\*";
+	string searchPath = _dirPath + "\\*";
 	string errorMessage;
 
 	// On vérifie que le chemin ne soit pas plus grand que la taille maximum autorisée (MAX_PATH) 
-	if (_dirPath.length() > MAX_PATH) {
+	if (searchPath.length() > MAX_PATH) {
 		errorMessage = "Directory path is too long.";
 		cerr << errorMessage << endl;
 		_reply->set_returncode(Response_ReturnCode_RC_ERROR);
@@ -66,8 +60,7 @@ bool FileManager::SetDirectoryContent(Response* _reply, string _dirPath)
 	WIN32_FIND_DATA ffd;
 	HANDLE hFind = INVALID_HANDLE_VALUE;
 	
-	//LPCWSTR str = StringUtils::StringToBStr(_dirPath);
-	hFind = FindFirstFile(_dirPath.c_str(), &ffd);
+	hFind = FindFirstFile(searchPath.c_str(), &ffd);
 	if (hFind == INVALID_HANDLE_VALUE) {
 		errorMessage = "FindFirstFile error : INVALID_HANDLE_VALUE";
 		cerr << errorMessage << endl;
@@ -107,7 +100,6 @@ bool FileManager::SetDirectoryContent(Response* _reply, string _dirPath)
 
 		// Si c'est un fichier
 		} else {
-			
 			AddFile(dirContent, osFilename.str(), DirContent_File_FileType_FILE, fileSize);
 			wcout << "<FILE> " << ffd.cFileName << " " << filesize.QuadPart << " bytes" << endl;
 
@@ -120,10 +112,11 @@ bool FileManager::SetDirectoryContent(Response* _reply, string _dirPath)
 		cerr << errorMessage << endl;
 		_reply->set_returncode(Response_ReturnCode_RC_ERROR);
 		_reply->set_message(errorMessage);
-		return NULL;
+		return false;
 	}
-
+	
 	FindClose(hFind);
+	_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 
 	return true;
 }
@@ -132,7 +125,7 @@ string FileManager::OpenFile(string _filePath)
 {
 	bstr_t filePath(_filePath.c_str());
 	ShellExecute(NULL, NULL, filePath, NULL, NULL, SW_SHOWMAXIMIZED);
-	return "Ouverture du fichier : "  + _filePath;
+	return "Opening file : "  + _filePath;
 }
 
 bool FileManager::AddFile(DirContent* _dirContent, string _filename, DirContent_File_FileType _type, int _size)

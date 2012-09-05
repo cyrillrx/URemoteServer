@@ -2,7 +2,7 @@
 
 #include <string> 
 #include <WinSock2.h>
-
+#include "Exchange.h"
 #include "server_exchange.pb.h"
 
 using namespace std;
@@ -33,5 +33,5 @@ private :
 	string GetHostName();
 	string GetIpAddress(string _hostname);
 
-	void HandleMessage(void* _data);
+	void HandleMessage(SerializedExchange _request);
 };

@@ -12,7 +12,7 @@ class FileManager
 {
 private :
 	static bool AddFile(DirContent* _dirContent, string _filename, DirContent_File_FileType _type, int _size);
-	static bool SetDirectoryContent(Response* _reply, string _dirPath);
+	static bool GetDirectoryContent(Response* _reply, string _dirPath);
 	static string OpenFile(string _filePath);
 
 public :

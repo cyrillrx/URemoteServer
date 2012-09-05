@@ -17,20 +17,21 @@ const string Exchange::APP_GOM_PLAYER	= "app_gom_player";
 const string Exchange::KILL_GOM_PLAYER	= "kill_gom_player";
 const string Exchange::GOM_PLAYER_STRETCH	= "gom_player_stretch";
 
-SerializedExchange Exchange::HandleMessage(void* _data, bool &_continueToListen)
+SerializedExchange Exchange::HandleMessage(SerializedExchange _serializedExchange, bool &_continueToListen)
 //void* Exchange::HandleMessage(void* _data, bool &_continueToListen)
 {
-	Request* request = new Request();
-	request->ParseFromArray(_data, sizeof(_data));
+	Request* request = GetRequest(_serializedExchange);
 
 	Request_Type reqType	= request->type();
 	Request_Code reqCode	= request->code();
-	string param	= request->stringparam();
+	string strParam	= request->stringparam();
+	int intParam	= request->intparam();
 	
 	cout << "Server::HandleMessage() Received message : " << endl;
 	cout << " - Type	<" << Request_Type_Name(reqType)	<< ">" << endl;
 	cout << " - Code	<" << Request_Code_Name(reqCode)	<< ">" << endl;
-	cout << " - Param	<" << param							<< ">" << endl;
+	cout << " - String param <"	<< strParam					<< ">" << endl;
+	cout << " - int param <"	<< intParam					<< ">" << endl;
 
 	Response *reply = new Response();
 	switch (reqType) {
@@ -40,11 +41,11 @@ SerializedExchange Exchange::HandleMessage(void* _data, bool &_continueToListen)
 		break;
 
 	case Request_Type_EXPLORER:
-		FileManager::HandleMessage(reply, reqCode, param);
+		FileManager::HandleMessage(reply, reqCode, strParam);
 		break;
 		
 	case Request_Type_KEYBOARD:
-		Keyboard::HandleMessage(reply, reqCode, param);
+		Keyboard::HandleMessage(reply, reqCode, strParam);
 		break;
 
 	case Request_Type_AI:
@@ -72,12 +73,32 @@ SerializedExchange Exchange::HandleMessage(void* _data, bool &_continueToListen)
 
 	int bufSize = 0;
 	char* buf = NULL;
-	SerializedExchange resp = GetSerializeResponse(reply);
+	SerializedExchange serializedExchange = GetSerializeResponse(reply);
 
 	delete(reply);
 	reply = NULL;
 
-	return resp;
+	delete(request);
+	request = NULL;
+
+	return serializedExchange;
+}
+
+Request* Exchange::GetRequest(SerializedExchange _exchange)
+{
+	Request* request = new Request();
+	// Read varint delimited protobuf object in the buffer
+	google::protobuf::io::ArrayInputStream arrayInputStream(_exchange.buffer, _exchange.bufferSize);
+	google::protobuf::io::CodedInputStream codedInputStream(&arrayInputStream);
+
+	google::protobuf::uint32 size;
+	codedInputStream.ReadVarint32(&size);
+	google::protobuf::io::CodedInputStream::Limit msgLimit = codedInputStream.PushLimit(size);
+
+	request->ParseFromCodedStream(&codedInputStream);
+	codedInputStream.PopLimit(msgLimit);
+
+	return request;
 }
 
 SerializedExchange Exchange::GetSerializeResponse(Response* _response)
@@ -87,18 +108,18 @@ SerializedExchange Exchange::GetSerializeResponse(Response* _response)
 	char* buf	= new char [bufSize];
 
 	// Write varint delimiter to the buffer
-	google::protobuf::io::ArrayOutputStream arrayOut(buf, bufSize);
-	google::protobuf::io::CodedOutputStream codedOut(&arrayOut);
-	codedOut.WriteVarint32(_response->ByteSize());
+	google::protobuf::io::ArrayOutputStream arrayOutputStream(buf, bufSize);
+	google::protobuf::io::CodedOutputStream codedOutputStream(&arrayOutputStream);
+	codedOutputStream.WriteVarint32(_response->ByteSize());
 
 	// Write response to the buffer
-	_response->SerializeToCodedStream(&codedOut);
+	_response->SerializeToCodedStream(&codedOutputStream);
 	
-	SerializedExchange resp;
-	resp.bufferSize	= bufSize;
-	resp.buffer		= buf;
+	SerializedExchange exchange;
+	exchange.bufferSize	= bufSize;
+	exchange.buffer		= buf;
 	
-	return resp;
+	return exchange;
 }
 
 //! Traitement d'une commande général
@@ -151,7 +172,9 @@ void Exchange::VolumeCommand(Response* _reply, Request_Code _code)
 {
 	float fVolumeLvl;
 	bool isMute;
-	char* message = "";
+	
+	char buffer[50];
+	string message;
 	int volumePoucentage;
 
 	switch (_code) {
@@ -163,7 +186,9 @@ void Exchange::VolumeCommand(Response* _reply, Request_Code _code)
 		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		volumePoucentage = fVolumeLvl * 100;
 		_reply->set_intvalue(volumePoucentage);
-		sprintf(message,  "Volume up to %d%", volumePoucentage);
+		
+		sprintf(buffer,  "Volume up to %d%%", volumePoucentage);
+		message = buffer;
 		break;
 			
 	case Request_Code_DOWN:
@@ -173,7 +198,9 @@ void Exchange::VolumeCommand(Response* _reply, Request_Code _code)
 		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		volumePoucentage = fVolumeLvl * 100;
 		_reply->set_intvalue(volumePoucentage);
-		sprintf(message,  "Volume down to %d%", volumePoucentage);
+		
+		sprintf(buffer,  "Volume down to %d%%", volumePoucentage);
+		message = buffer;
 		break;
 			
 	case Request_Code_MUTE:

@@ -66,7 +66,8 @@ void AI::Say(string _textToSpeak)
 {
 	// Test mute
 	if (!m_IsMute) {
-		Speech::Say(_textToSpeak);
+		Speech::SayInThread(_textToSpeak);
+		//Speech::Say(_textToSpeak);
 	}
 }
 

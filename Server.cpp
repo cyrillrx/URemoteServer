@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <comdef.h>
-#include "Exchange.h"
 #include "StringUtils.h"
 
 //#define BUFFER_SIZE BUFSIZ
@@ -58,12 +57,14 @@ bool Server::Start()
 		
 		StringUtils::ClearBuffer(buffer);
 
-		int res = recv(m_CSocket, buffer, sizeof(buffer), 0);
-		//___int res = recv(m_CSocket, buffer, BUFSIZ, 0);
-		cout << "  -- result : " << res <<  endl << endl;
-		void* data = (void*) buffer;
-		//string message = buffer;
-		HandleMessage(data);
+		int received = recv(m_CSocket, buffer, sizeof(buffer), 0);
+		cout << "  -- result : " << received <<  endl << endl;
+
+		SerializedExchange exchange;
+		exchange.buffer = buffer;
+		exchange.bufferSize = received;
+
+		HandleMessage(exchange);
 
 		closesocket(m_CSocket);
 		cout << "Socket closed" << endl << endl;
@@ -174,8 +175,8 @@ string Server::GetIpAddress(string _hostname)
  * Handle the command sent by the client.
  * then send a response.
  */
-void Server::HandleMessage(void* _data) 
+void Server::HandleMessage(SerializedExchange _request) 
 {
-	SerializedExchange response = Exchange::HandleMessage(_data, m_ContinueToListen);
+	SerializedExchange response = Exchange::HandleMessage(_request, m_ContinueToListen);
 	send(m_CSocket, response.buffer, response.bufferSize, 0);
 }

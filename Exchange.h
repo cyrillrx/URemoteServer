@@ -24,7 +24,8 @@ public :
 	static const string KILL_GOM_PLAYER;
 	static const string GOM_PLAYER_STRETCH;
 	
-	static SerializedExchange HandleMessage(void* data, bool &_continueToListen);
+	static SerializedExchange HandleMessage(SerializedExchange _serializedExchange, bool &_continueToListen);
+	static Request* GetRequest(SerializedExchange _request);
 	static SerializedExchange GetSerializeResponse(Response* _response);
 
 private :

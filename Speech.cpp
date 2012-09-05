@@ -1,4 +1,5 @@
 #include "Speech.h"
+#include <Windows.h>
 
 void Speech::SayB(bstr_t _textToSpeak)
 {
@@ -36,9 +37,26 @@ void Speech::SayB(bstr_t _textToSpeak)
     ::CoUninitialize();
 }
 
+
+DWORD WINAPI  Speech::SayThread(void* _textToSpeak)
+{
+	string *txt = (string*)_textToSpeak;
+	Say(*txt);	
+
+	delete(txt);
+	return 0;
+}
+
 void Speech::Say(string _textToSpeak)
 {
 	bstr_t object(_textToSpeak.c_str());
 	SayB(object);
 		
+}
+
+void Speech::SayInThread(string _textToSpeak)
+{
+	string *ptTextToSpeak = new string(_textToSpeak);
+	DWORD threadID;
+	CreateThread(0, 0, SayThread, ptTextToSpeak, 0, &threadID);
 }
