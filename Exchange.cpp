@@ -288,14 +288,13 @@ void Exchange::AppCommand(Response* _reply, Request_Code _code)
 void Exchange::ShutdownPC(Response* _reply, int _delay)
 {
 	AI::GetInstance()->StopConnection();
-	//ShellExecute(NULL, L"shutdown", NULL, L"-s -t 10", NULL, SW_SHOWMAXIMIZED);
 	
-	char* command = "";
+	char command[100];
 	sprintf(command, "Shutdown.exe -s -t %d -c \"L'ordinateur va s'éteindre dans %d secondes\"", _delay, _delay);
 	system(command);
 
 	_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
-	char* message = "";
+	char message[50];
 	sprintf(message, "PC will shutdown in %d seconds", _delay);
 	_reply->set_message(message);
 
