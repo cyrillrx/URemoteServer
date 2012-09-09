@@ -36,4 +36,3 @@ public:
    __declspec(property(get = GetHeight, put = SetHeight)) int height;
 	
 };
-

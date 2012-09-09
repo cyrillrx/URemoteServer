@@ -12,13 +12,7 @@
 #include "Keyboard.h"
 #include "App.h"
 
-// Gestion des applications
-const string Exchange::APP_GOM_PLAYER	= "app_gom_player";
-const string Exchange::KILL_GOM_PLAYER	= "kill_gom_player";
-const string Exchange::GOM_PLAYER_STRETCH	= "gom_player_stretch";
-
 SerializedExchange Exchange::HandleMessage(SerializedExchange _serializedExchange, bool &_continueToListen)
-//void* Exchange::HandleMessage(void* _data, bool &_continueToListen)
 {
 	Request* request = GetRequest(_serializedExchange);
 
@@ -56,7 +50,6 @@ SerializedExchange Exchange::HandleMessage(SerializedExchange _serializedExchang
 		VolumeCommand(reply, reqCode);
 		break;
 
-	// Commande des applications
 	case Request_Type_APP:
 		AppCommand(reply, reqCode);
 		break;
@@ -67,9 +60,12 @@ SerializedExchange Exchange::HandleMessage(SerializedExchange _serializedExchang
 		break;
 	}
 	
+	/* 
+	// Speak out the message
 	if (reply->has_message()) {
 		AI::GetInstance()->Say(reply->message());
 	}
+	*/
 
 	int bufSize = 0;
 	char* buf = NULL;
@@ -122,14 +118,13 @@ SerializedExchange Exchange::GetSerializeResponse(Response* _response)
 	return exchange;
 }
 
-//! Traitement d'une commande général
+/** Handle general commands. */
 void Exchange::ClassicCommand(Response* _reply, Request_Code _code)
 {
 	switch (_code) {
 
 	case Request_Code_HELLO:
 		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
-		_reply->set_message("Hello back.");
 		AI::GetInstance()->Welcome();
 		break;
 		
@@ -167,7 +162,7 @@ void Exchange::ClassicCommand(Response* _reply, Request_Code _code)
 	}
 }
 
-//! Traitement d'un commande de volume
+/** Handle volume commands. */
 void Exchange::VolumeCommand(Response* _reply, Request_Code _code)
 {
 	float fVolumeLvl;

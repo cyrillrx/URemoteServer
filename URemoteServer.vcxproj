@@ -93,7 +93,6 @@
     <ClInclude Include="server_exchange.pb.h" />
     <ClInclude Include="Speech.h" />
     <ClInclude Include="StringUtils.h" />
-    <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AI.cpp" />
@@ -109,7 +108,6 @@
     <ClCompile Include="server_exchange.pb.cc" />
     <ClCompile Include="Speech.cpp" />
     <ClCompile Include="StringUtils.cpp" />
-    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="URemoteServer.rc" />

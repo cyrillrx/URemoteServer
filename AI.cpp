@@ -1,7 +1,7 @@
 #include "AI.h"
 #include "Speech.h"
 
-#define DELAY 60*5 // 5 min / 300 sec avant de répéter
+#define DELAY 60*5 // 5 min / 300 sec before repeate time
 
 //////////////////////////////////////////////////////////////////////////////
 // Public methods
@@ -49,25 +49,25 @@ bool AI::StopConnection()
 
 void AI::Welcome()
 {
-	// Welcome if last welcom > 10 min
-	// Calcule du temps écoulé en minutes depuis le dernier appel à la fonction
+	// Calculate the elapsed time since the last call to the method
 	time_t now;
 	time(&now);
 	cout << "now " << now << endl;
 	double elapsedTime = difftime(now, m_LastWelcome);
 	cout << "elapsedTime " << elapsedTime << endl;
+
+	// Welcome if last welcome > 10 min
 	if (elapsedTime > DELAY) {
-		Say("Cyril is now connected. Welcome to " + m_Name + " sir." );
+		Say("Welcome to " + m_Name + " sir." );
 		time(&m_LastWelcome);
 	}
 }
 
 void AI::Say(string _textToSpeak)
 {
-	// Test mute
+	// Test mute state
 	if (!m_IsMute) {
 		Speech::SayInThread(_textToSpeak);
-		//Speech::Say(_textToSpeak);
 	}
 }
 

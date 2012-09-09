@@ -17,4 +17,3 @@ public:
 	static void Say(string _textToSpeak);
 	static void SayInThread(string _textToSpeak);
 };
-

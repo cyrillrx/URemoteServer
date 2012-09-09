@@ -11,4 +11,3 @@ public:
 	static void ClearBuffer(char* _buffer);
 	static bstr_t StringToBStr(string _str);
 };
-

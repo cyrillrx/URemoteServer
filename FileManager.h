@@ -1,5 +1,4 @@
-#ifndef FILE_MANAGER_INCLUDED
-#define FILE_MANAGER_INCLUDED
+#pragma once
 
 #include <vector>
 #include <string>
@@ -18,5 +17,3 @@ private :
 public :
 	static void HandleMessage(Response* _reply, Request_Code _code, string _param);
 };
-
-#endif // FILE_MANAGER_INCLUDED

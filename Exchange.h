@@ -1,5 +1,4 @@
-#ifndef EXCHANGE_INCLUDED
-#define EXCHANGE_INCLUDED
+#pragma once
 
 #include <string>
 #include "server_exchange.pb.h"
@@ -18,12 +17,6 @@ class Exchange
 {
 public :
 	
-	static const string HELLO_CLIENT;
-	// Gestion des fenêtres et applications
-	static const string APP_GOM_PLAYER;
-	static const string KILL_GOM_PLAYER;
-	static const string GOM_PLAYER_STRETCH;
-	
 	static SerializedExchange HandleMessage(SerializedExchange _serializedExchange, bool &_continueToListen);
 	static Request* GetRequest(SerializedExchange _request);
 	static SerializedExchange GetSerializeResponse(Response* _response);
@@ -35,5 +28,3 @@ private :
 	static void AppCommand(Response* _reply, Request_Code _code);
 	static void ShutdownPC(Response* _reply, int _delay);
 };
-
-#endif  // EXCHANGE_INCLUDED

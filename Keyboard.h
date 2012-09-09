@@ -56,4 +56,3 @@ private :
 	static string SendKey(string _param);
 	static void AltF4();
 };
-

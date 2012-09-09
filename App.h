@@ -29,4 +29,3 @@ public:
 	string Close();
 	string Strech();
 };
-

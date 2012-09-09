@@ -31,4 +31,3 @@ private:
 	void Start();
 	void Shutdown();
 };
-
