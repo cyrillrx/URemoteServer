@@ -23,7 +23,7 @@ public :
 
 private :
 	static void ClassicCommand(Response* _reply, Request_Code _code);
-	static void VolumeCommand(Response* _reply, Request_Code _code);
+	static void VolumeCommand(Response* _reply, Request_Code _code, int _intParam);
 	static void AICommand(Response* _reply, Request_Code _code);
 	static void AppCommand(Response* _reply, Request_Code _code);
 	static void ShutdownPC(Response* _reply, int _delay);

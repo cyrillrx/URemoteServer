@@ -27,6 +27,7 @@ public :
 	static void FreeInstance();
 	
 	bool ToggleMute();
+	float Define(int _volumePoucentage);
 	float TurnUp();
 	float TurnDown();
 	

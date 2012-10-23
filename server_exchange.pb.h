@@ -652,25 +652,31 @@ class Response : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // optional .network.Request request = 1;
-  inline bool has_request() const;
-  inline void clear_request();
-  static const int kRequestFieldNumber = 1;
-  inline const ::network::Request& request() const;
-  inline ::network::Request* mutable_request();
-  inline ::network::Request* release_request();
+  // optional .network.Request.Type requestType = 1;
+  inline bool has_requesttype() const;
+  inline void clear_requesttype();
+  static const int kRequestTypeFieldNumber = 1;
+  inline ::network::Request_Type requesttype() const;
+  inline void set_requesttype(::network::Request_Type value);
   
-  // optional .network.Response.ReturnCode returnCode = 2 [default = RC_ERROR];
+  // optional .network.Request.Code requestCode = 2;
+  inline bool has_requestcode() const;
+  inline void clear_requestcode();
+  static const int kRequestCodeFieldNumber = 2;
+  inline ::network::Request_Code requestcode() const;
+  inline void set_requestcode(::network::Request_Code value);
+  
+  // optional .network.Response.ReturnCode returnCode = 3 [default = RC_ERROR];
   inline bool has_returncode() const;
   inline void clear_returncode();
-  static const int kReturnCodeFieldNumber = 2;
+  static const int kReturnCodeFieldNumber = 3;
   inline ::network::Response_ReturnCode returncode() const;
   inline void set_returncode(::network::Response_ReturnCode value);
   
-  // optional string message = 3;
+  // optional string message = 4;
   inline bool has_message() const;
   inline void clear_message();
-  static const int kMessageFieldNumber = 3;
+  static const int kMessageFieldNumber = 4;
   inline const ::std::string& message() const;
   inline void set_message(const ::std::string& value);
   inline void set_message(const char* value);
@@ -678,25 +684,27 @@ class Response : public ::google::protobuf::Message {
   inline ::std::string* mutable_message();
   inline ::std::string* release_message();
   
-  // optional int32 intValue = 4;
+  // optional int32 intValue = 5;
   inline bool has_intvalue() const;
   inline void clear_intvalue();
-  static const int kIntValueFieldNumber = 4;
+  static const int kIntValueFieldNumber = 5;
   inline ::google::protobuf::int32 intvalue() const;
   inline void set_intvalue(::google::protobuf::int32 value);
   
-  // optional .network.DirContent dirContent = 5;
+  // optional .network.DirContent dirContent = 6;
   inline bool has_dircontent() const;
   inline void clear_dircontent();
-  static const int kDirContentFieldNumber = 5;
+  static const int kDirContentFieldNumber = 6;
   inline const ::network::DirContent& dircontent() const;
   inline ::network::DirContent* mutable_dircontent();
   inline ::network::DirContent* release_dircontent();
   
   // @@protoc_insertion_point(class_scope:network.Response)
  private:
-  inline void set_has_request();
-  inline void clear_has_request();
+  inline void set_has_requesttype();
+  inline void clear_has_requesttype();
+  inline void set_has_requestcode();
+  inline void clear_has_requestcode();
   inline void set_has_returncode();
   inline void clear_has_returncode();
   inline void set_has_message();
@@ -708,14 +716,15 @@ class Response : public ::google::protobuf::Message {
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
-  ::network::Request* request_;
+  int requesttype_;
+  int requestcode_;
   ::std::string* message_;
   int returncode_;
   ::google::protobuf::int32 intvalue_;
   ::network::DirContent* dircontent_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
   
   friend void  protobuf_AddDesc_server_5fexchange_2eproto();
   friend void protobuf_AssignDesc_server_5fexchange_2eproto();
@@ -1055,44 +1064,61 @@ DirContent::mutable_file() {
 
 // Response
 
-// optional .network.Request request = 1;
-inline bool Response::has_request() const {
+// optional .network.Request.Type requestType = 1;
+inline bool Response::has_requesttype() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void Response::set_has_request() {
+inline void Response::set_has_requesttype() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void Response::clear_has_request() {
+inline void Response::clear_has_requesttype() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void Response::clear_request() {
-  if (request_ != NULL) request_->::network::Request::Clear();
-  clear_has_request();
+inline void Response::clear_requesttype() {
+  requesttype_ = 0;
+  clear_has_requesttype();
 }
-inline const ::network::Request& Response::request() const {
-  return request_ != NULL ? *request_ : *default_instance_->request_;
+inline ::network::Request_Type Response::requesttype() const {
+  return static_cast< ::network::Request_Type >(requesttype_);
 }
-inline ::network::Request* Response::mutable_request() {
-  set_has_request();
-  if (request_ == NULL) request_ = new ::network::Request;
-  return request_;
-}
-inline ::network::Request* Response::release_request() {
-  clear_has_request();
-  ::network::Request* temp = request_;
-  request_ = NULL;
-  return temp;
+inline void Response::set_requesttype(::network::Request_Type value) {
+  GOOGLE_DCHECK(::network::Request_Type_IsValid(value));
+  set_has_requesttype();
+  requesttype_ = value;
 }
 
-// optional .network.Response.ReturnCode returnCode = 2 [default = RC_ERROR];
-inline bool Response::has_returncode() const {
+// optional .network.Request.Code requestCode = 2;
+inline bool Response::has_requestcode() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void Response::set_has_returncode() {
+inline void Response::set_has_requestcode() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void Response::clear_has_returncode() {
+inline void Response::clear_has_requestcode() {
   _has_bits_[0] &= ~0x00000002u;
+}
+inline void Response::clear_requestcode() {
+  requestcode_ = 0;
+  clear_has_requestcode();
+}
+inline ::network::Request_Code Response::requestcode() const {
+  return static_cast< ::network::Request_Code >(requestcode_);
+}
+inline void Response::set_requestcode(::network::Request_Code value) {
+  GOOGLE_DCHECK(::network::Request_Code_IsValid(value));
+  set_has_requestcode();
+  requestcode_ = value;
+}
+
+// optional .network.Response.ReturnCode returnCode = 3 [default = RC_ERROR];
+inline bool Response::has_returncode() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void Response::set_has_returncode() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void Response::clear_has_returncode() {
+  _has_bits_[0] &= ~0x00000004u;
 }
 inline void Response::clear_returncode() {
   returncode_ = 1;
@@ -1107,15 +1133,15 @@ inline void Response::set_returncode(::network::Response_ReturnCode value) {
   returncode_ = value;
 }
 
-// optional string message = 3;
+// optional string message = 4;
 inline bool Response::has_message() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
+  return (_has_bits_[0] & 0x00000008u) != 0;
 }
 inline void Response::set_has_message() {
-  _has_bits_[0] |= 0x00000004u;
+  _has_bits_[0] |= 0x00000008u;
 }
 inline void Response::clear_has_message() {
-  _has_bits_[0] &= ~0x00000004u;
+  _has_bits_[0] &= ~0x00000008u;
 }
 inline void Response::clear_message() {
   if (message_ != &::google::protobuf::internal::kEmptyString) {
@@ -1165,15 +1191,15 @@ inline ::std::string* Response::release_message() {
   }
 }
 
-// optional int32 intValue = 4;
+// optional int32 intValue = 5;
 inline bool Response::has_intvalue() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
+  return (_has_bits_[0] & 0x00000010u) != 0;
 }
 inline void Response::set_has_intvalue() {
-  _has_bits_[0] |= 0x00000008u;
+  _has_bits_[0] |= 0x00000010u;
 }
 inline void Response::clear_has_intvalue() {
-  _has_bits_[0] &= ~0x00000008u;
+  _has_bits_[0] &= ~0x00000010u;
 }
 inline void Response::clear_intvalue() {
   intvalue_ = 0;
@@ -1187,15 +1213,15 @@ inline void Response::set_intvalue(::google::protobuf::int32 value) {
   intvalue_ = value;
 }
 
-// optional .network.DirContent dirContent = 5;
+// optional .network.DirContent dirContent = 6;
 inline bool Response::has_dircontent() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
+  return (_has_bits_[0] & 0x00000020u) != 0;
 }
 inline void Response::set_has_dircontent() {
-  _has_bits_[0] |= 0x00000010u;
+  _has_bits_[0] |= 0x00000020u;
 }
 inline void Response::clear_has_dircontent() {
-  _has_bits_[0] &= ~0x00000010u;
+  _has_bits_[0] &= ~0x00000020u;
 }
 inline void Response::clear_dircontent() {
   if (dircontent_ != NULL) dircontent_->::network::DirContent::Clear();

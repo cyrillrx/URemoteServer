@@ -150,6 +150,15 @@ bool MasterVolume::ToggleMute()
 }
 
 //! Augmente le volume et renvoie la nouvelle valeur
+float MasterVolume::Define(int _volumePoucentage)
+{
+	float volume = (float)_volumePoucentage/100.0;
+	SetVolume(volume);
+
+	return volume;
+}
+
+//! Augmente le volume et renvoie la nouvelle valeur
 float MasterVolume::TurnUp()
 {
 	float currentVolume = GetVolume();

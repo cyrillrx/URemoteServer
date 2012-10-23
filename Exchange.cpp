@@ -28,6 +28,9 @@ SerializedExchange Exchange::HandleMessage(SerializedExchange _serializedExchang
 	cout << " - int param <"	<< intParam					<< ">" << endl;
 
 	Response *reply = new Response();
+	reply->set_requesttype(reqType);
+	reply->set_requestcode(reqCode);
+
 	switch (reqType) {
 	
 	case Request_Type_SIMPLE:
@@ -47,7 +50,7 @@ SerializedExchange Exchange::HandleMessage(SerializedExchange _serializedExchang
 		break;
 		
 	case Request_Type_VOLUME:
-		VolumeCommand(reply, reqCode);
+		VolumeCommand(reply, reqCode, intParam);
 		break;
 
 	case Request_Type_APP:
@@ -163,7 +166,7 @@ void Exchange::ClassicCommand(Response* _reply, Request_Code _code)
 }
 
 /** Handle volume commands. */
-void Exchange::VolumeCommand(Response* _reply, Request_Code _code)
+void Exchange::VolumeCommand(Response* _reply, Request_Code _code, int _intParam)
 {
 	float fVolumeLvl;
 	bool isMute;
@@ -173,6 +176,18 @@ void Exchange::VolumeCommand(Response* _reply, Request_Code _code)
 	int volumePoucentage;
 
 	switch (_code) {
+
+	case Request_Code_DEFINE:
+		fVolumeLvl = MasterVolume::GetInstance()->Define(_intParam);
+		MasterVolume::FreeInstance();
+
+		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		volumePoucentage = fVolumeLvl * 100;
+		_reply->set_intvalue(volumePoucentage);
+		
+		sprintf(buffer,  "Volume up to %d%%", volumePoucentage);
+		message = buffer;
+		break;
 
 	case Request_Code_UP:
 		fVolumeLvl = MasterVolume::GetInstance()->TurnUp();
