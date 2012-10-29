@@ -61,19 +61,23 @@ inline bool Request_Type_Parse(
     Request_Type_descriptor(), name, value);
 }
 enum Request_Code {
-  Request_Code_DEFINE = 0,
-  Request_Code_HELLO = 1,
-  Request_Code_TEST = 2,
-  Request_Code_KILL_SERVER = 3,
-  Request_Code_SHUTDOWN = 4,
-  Request_Code_SWITCH_WINDOW = 5,
-  Request_Code_LOCK = 6,
-  Request_Code_UP = 7,
-  Request_Code_DOWN = 8,
-  Request_Code_LEFT = 9,
-  Request_Code_RIGHT = 10,
-  Request_Code_MUTE = 11,
-  Request_Code_SAY = 12,
+  Request_Code_NONE = 0,
+  Request_Code_DEFINE = 1,
+  Request_Code_STATUS = 2,
+  Request_Code_ON = 3,
+  Request_Code_OFF = 4,
+  Request_Code_HELLO = 5,
+  Request_Code_TEST = 6,
+  Request_Code_KILL_SERVER = 7,
+  Request_Code_SHUTDOWN = 8,
+  Request_Code_SWITCH_WINDOW = 9,
+  Request_Code_LOCK = 10,
+  Request_Code_UP = 11,
+  Request_Code_DOWN = 12,
+  Request_Code_LEFT = 13,
+  Request_Code_RIGHT = 14,
+  Request_Code_MUTE = 15,
+  Request_Code_SAY = 16,
   Request_Code_GET_FILE_LIST = 20,
   Request_Code_OPEN_FILE = 21,
   Request_Code_MEDIA_PLAY_PAUSE = 30,
@@ -82,18 +86,22 @@ enum Request_Code {
   Request_Code_MEDIA_NEXT = 33,
   Request_Code_MEDIA_FF = 34,
   Request_Code_MEDIA_REWIND = 35,
-  Request_Code_KB_RETURN = 40,
-  Request_Code_KB_SPACE = 41,
-  Request_Code_KB_BACKSPACE = 42,
-  Request_Code_KB_ESCAPE = 43,
-  Request_Code_KB_ALT_F4 = 44,
-  Request_Code_KB_CTRL_RETURN = 45,
+  Request_Code_KB_CTRL = 40,
+  Request_Code_KB_SHIFT = 41,
+  Request_Code_KB_ALT = 42,
+  Request_Code_KB_WINDOWS = 43,
+  Request_Code_KB_RETURN = 44,
+  Request_Code_KB_SPACE = 45,
+  Request_Code_KB_BACKSPACE = 46,
+  Request_Code_KB_ESCAPE = 47,
+  Request_Code_KB_TAB = 48,
+  Request_Code_KB_F4 = 50,
   Request_Code_GOM_PLAYER_RUN = 50,
   Request_Code_GOM_PLAYER_KILL = 51,
   Request_Code_GOM_PLAYER_STRETCH = 52
 };
 bool Request_Code_IsValid(int value);
-const Request_Code Request_Code_Code_MIN = Request_Code_DEFINE;
+const Request_Code Request_Code_Code_MIN = Request_Code_NONE;
 const Request_Code Request_Code_Code_MAX = Request_Code_GOM_PLAYER_STRETCH;
 const int Request_Code_Code_ARRAYSIZE = Request_Code_Code_MAX + 1;
 
@@ -228,7 +236,11 @@ class Request : public ::google::protobuf::Message {
   }
   
   typedef Request_Code Code;
+  static const Code NONE = Request_Code_NONE;
   static const Code DEFINE = Request_Code_DEFINE;
+  static const Code STATUS = Request_Code_STATUS;
+  static const Code ON = Request_Code_ON;
+  static const Code OFF = Request_Code_OFF;
   static const Code HELLO = Request_Code_HELLO;
   static const Code TEST = Request_Code_TEST;
   static const Code KILL_SERVER = Request_Code_KILL_SERVER;
@@ -249,12 +261,16 @@ class Request : public ::google::protobuf::Message {
   static const Code MEDIA_NEXT = Request_Code_MEDIA_NEXT;
   static const Code MEDIA_FF = Request_Code_MEDIA_FF;
   static const Code MEDIA_REWIND = Request_Code_MEDIA_REWIND;
+  static const Code KB_CTRL = Request_Code_KB_CTRL;
+  static const Code KB_SHIFT = Request_Code_KB_SHIFT;
+  static const Code KB_ALT = Request_Code_KB_ALT;
+  static const Code KB_WINDOWS = Request_Code_KB_WINDOWS;
   static const Code KB_RETURN = Request_Code_KB_RETURN;
   static const Code KB_SPACE = Request_Code_KB_SPACE;
   static const Code KB_BACKSPACE = Request_Code_KB_BACKSPACE;
   static const Code KB_ESCAPE = Request_Code_KB_ESCAPE;
-  static const Code KB_ALT_F4 = Request_Code_KB_ALT_F4;
-  static const Code KB_CTRL_RETURN = Request_Code_KB_CTRL_RETURN;
+  static const Code KB_TAB = Request_Code_KB_TAB;
+  static const Code KB_F4 = Request_Code_KB_F4;
   static const Code GOM_PLAYER_RUN = Request_Code_GOM_PLAYER_RUN;
   static const Code GOM_PLAYER_KILL = Request_Code_GOM_PLAYER_KILL;
   static const Code GOM_PLAYER_STRETCH = Request_Code_GOM_PLAYER_STRETCH;
@@ -295,17 +311,24 @@ class Request : public ::google::protobuf::Message {
   inline ::network::Request_Code code() const;
   inline void set_code(::network::Request_Code value);
   
-  // optional int32 intParam = 3;
+  // required .network.Request.Code extraCode = 3;
+  inline bool has_extracode() const;
+  inline void clear_extracode();
+  static const int kExtraCodeFieldNumber = 3;
+  inline ::network::Request_Code extracode() const;
+  inline void set_extracode(::network::Request_Code value);
+  
+  // optional int32 intParam = 4;
   inline bool has_intparam() const;
   inline void clear_intparam();
-  static const int kIntParamFieldNumber = 3;
+  static const int kIntParamFieldNumber = 4;
   inline ::google::protobuf::int32 intparam() const;
   inline void set_intparam(::google::protobuf::int32 value);
   
-  // optional string stringParam = 4;
+  // optional string stringParam = 5;
   inline bool has_stringparam() const;
   inline void clear_stringparam();
-  static const int kStringParamFieldNumber = 4;
+  static const int kStringParamFieldNumber = 5;
   inline const ::std::string& stringparam() const;
   inline void set_stringparam(const ::std::string& value);
   inline void set_stringparam(const char* value);
@@ -319,6 +342,8 @@ class Request : public ::google::protobuf::Message {
   inline void clear_has_type();
   inline void set_has_code();
   inline void clear_has_code();
+  inline void set_has_extracode();
+  inline void clear_has_extracode();
   inline void set_has_intparam();
   inline void clear_has_intparam();
   inline void set_has_stringparam();
@@ -328,11 +353,12 @@ class Request : public ::google::protobuf::Message {
   
   int type_;
   int code_;
-  ::std::string* stringparam_;
+  int extracode_;
   ::google::protobuf::int32 intparam_;
+  ::std::string* stringparam_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
   
   friend void  protobuf_AddDesc_server_5fexchange_2eproto();
   friend void protobuf_AssignDesc_server_5fexchange_2eproto();
@@ -786,15 +812,38 @@ inline void Request::set_code(::network::Request_Code value) {
   code_ = value;
 }
 
-// optional int32 intParam = 3;
-inline bool Request::has_intparam() const {
+// required .network.Request.Code extraCode = 3;
+inline bool Request::has_extracode() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void Request::set_has_intparam() {
+inline void Request::set_has_extracode() {
   _has_bits_[0] |= 0x00000004u;
 }
-inline void Request::clear_has_intparam() {
+inline void Request::clear_has_extracode() {
   _has_bits_[0] &= ~0x00000004u;
+}
+inline void Request::clear_extracode() {
+  extracode_ = 0;
+  clear_has_extracode();
+}
+inline ::network::Request_Code Request::extracode() const {
+  return static_cast< ::network::Request_Code >(extracode_);
+}
+inline void Request::set_extracode(::network::Request_Code value) {
+  GOOGLE_DCHECK(::network::Request_Code_IsValid(value));
+  set_has_extracode();
+  extracode_ = value;
+}
+
+// optional int32 intParam = 4;
+inline bool Request::has_intparam() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void Request::set_has_intparam() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void Request::clear_has_intparam() {
+  _has_bits_[0] &= ~0x00000008u;
 }
 inline void Request::clear_intparam() {
   intparam_ = 0;
@@ -808,15 +857,15 @@ inline void Request::set_intparam(::google::protobuf::int32 value) {
   intparam_ = value;
 }
 
-// optional string stringParam = 4;
+// optional string stringParam = 5;
 inline bool Request::has_stringparam() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
+  return (_has_bits_[0] & 0x00000010u) != 0;
 }
 inline void Request::set_has_stringparam() {
-  _has_bits_[0] |= 0x00000008u;
+  _has_bits_[0] |= 0x00000010u;
 }
 inline void Request::clear_has_stringparam() {
-  _has_bits_[0] &= ~0x00000008u;
+  _has_bits_[0] &= ~0x00000010u;
 }
 inline void Request::clear_stringparam() {
   if (stringparam_ != &::google::protobuf::internal::kEmptyString) {

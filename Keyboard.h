@@ -48,11 +48,13 @@ using namespace network;
 class Keyboard
 {
 public:
-	static void HandleMessage(Response* _reply, Request_Code _code, string _param);
+	//static void HandleMessage(Response* _reply, Request_Code _code, string _param);
+	static void HandleMessage(Response* _reply, Request* _request);
 	static void CtrlEnter();
 
 private :
-	static void SendKeyboardInput(WORD _keyCode);
-	static string SendKey(string _param);
-	static void AltF4();
+	static WORD GetInputFromCode(Request_Code _code);
+	//static void SendKeyboardInput(WORD _keyCode);
+	static void SendKeyboardInput(WORD _keyCode, WORD _secondKeyCode);
+	static string SendDefinedKey(string _param, WORD _extraCode);
 };

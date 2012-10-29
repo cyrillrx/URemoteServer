@@ -16,16 +16,18 @@ SerializedExchange Exchange::HandleMessage(SerializedExchange _serializedExchang
 {
 	Request* request = GetRequest(_serializedExchange);
 
-	Request_Type reqType	= request->type();
-	Request_Code reqCode	= request->code();
+	const Request_Type reqType	= request->type();
+	const Request_Code reqCode	= request->code();
+	const Request_Code reqExtraCode	= request->extracode();
 	string strParam	= request->stringparam();
 	int intParam	= request->intparam();
 	
 	cout << "Server::HandleMessage() Received message : " << endl;
-	cout << " - Type	<" << Request_Type_Name(reqType)	<< ">" << endl;
-	cout << " - Code	<" << Request_Code_Name(reqCode)	<< ">" << endl;
-	cout << " - String param <"	<< strParam					<< ">" << endl;
-	cout << " - int param <"	<< intParam					<< ">" << endl;
+	cout << " - Type		<" << Request_Type_Name(reqType)	<< ">" << endl;
+	cout << " - Code		<" << Request_Code_Name(reqCode)	<< ">" << endl;
+	cout << " - ExtraCode	<" << Request_Code_Name(reqExtraCode)	<< ">" << endl;
+	cout << " - str param	<"	<< strParam						<< ">" << endl;
+	cout << " - int param	<"	<< intParam						<< ">" << endl;
 
 	Response *reply = new Response();
 	reply->set_requesttype(reqType);
@@ -42,7 +44,7 @@ SerializedExchange Exchange::HandleMessage(SerializedExchange _serializedExchang
 		break;
 		
 	case Request_Type_KEYBOARD:
-		Keyboard::HandleMessage(reply, reqCode, strParam);
+		Keyboard::HandleMessage(reply, request);
 		break;
 
 	case Request_Type_AI:

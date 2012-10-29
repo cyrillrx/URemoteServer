@@ -44,9 +44,10 @@ void protobuf_AssignDesc_server_5fexchange_2eproto() {
       "server_exchange.proto");
   GOOGLE_CHECK(file != NULL);
   Request_descriptor_ = file->message_type(0);
-  static const int Request_offsets_[4] = {
+  static const int Request_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, type_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, code_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, extracode_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, intparam_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, stringparam_),
   };
@@ -160,37 +161,40 @@ void protobuf_AddDesc_server_5fexchange_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\025server_exchange.proto\022\007network\"\225\005\n\007Req"
+    "\n\025server_exchange.proto\022\007network\"\221\006\n\007Req"
     "uest\022#\n\004type\030\001 \002(\0162\025.network.Request.Typ"
-    "e\022#\n\004code\030\002 \002(\0162\025.network.Request.Code\022\020"
-    "\n\010intParam\030\003 \001(\005\022\023\n\013stringParam\030\004 \001(\t\"K\n"
-    "\004Type\022\n\n\006SIMPLE\020\000\022\014\n\010EXPLORER\020\001\022\014\n\010KEYBO"
-    "ARD\020\002\022\006\n\002AI\020\003\022\n\n\006VOLUME\020\004\022\007\n\003APP\020\005\"\313\003\n\004C"
-    "ode\022\n\n\006DEFINE\020\000\022\t\n\005HELLO\020\001\022\010\n\004TEST\020\002\022\017\n\013"
-    "KILL_SERVER\020\003\022\014\n\010SHUTDOWN\020\004\022\021\n\rSWITCH_WI"
-    "NDOW\020\005\022\010\n\004LOCK\020\006\022\006\n\002UP\020\007\022\010\n\004DOWN\020\010\022\010\n\004LE"
-    "FT\020\t\022\t\n\005RIGHT\020\n\022\010\n\004MUTE\020\013\022\007\n\003SAY\020\014\022\021\n\rGE"
-    "T_FILE_LIST\020\024\022\r\n\tOPEN_FILE\020\025\022\024\n\020MEDIA_PL"
-    "AY_PAUSE\020\036\022\016\n\nMEDIA_STOP\020\037\022\022\n\016MEDIA_PREV"
-    "IOUS\020 \022\016\n\nMEDIA_NEXT\020!\022\014\n\010MEDIA_FF\020\"\022\020\n\014"
-    "MEDIA_REWIND\020#\022\r\n\tKB_RETURN\020(\022\014\n\010KB_SPAC"
-    "E\020)\022\020\n\014KB_BACKSPACE\020*\022\r\n\tKB_ESCAPE\020+\022\r\n\t"
-    "KB_ALT_F4\020,\022\022\n\016KB_CTRL_RETURN\020-\022\022\n\016GOM_P"
-    "LAYER_RUN\0202\022\023\n\017GOM_PLAYER_KILL\0203\022\026\n\022GOM_"
-    "PLAYER_STRETCH\0204\"\274\001\n\nDirContent\022\014\n\004path\030"
-    "\001 \002(\t\022&\n\004file\030\002 \003(\0132\030.network.DirContent"
-    ".File\032x\n\004File\022\014\n\004name\030\001 \002(\t\022/\n\004type\030\003 \002("
-    "\0162!.network.DirContent.File.FileType\022\014\n\004"
-    "size\030\004 \002(\005\"#\n\010FileType\022\r\n\tDIRECTORY\020\000\022\010\n"
-    "\004FILE\020\001\"\226\002\n\010Response\022*\n\013requestType\030\001 \001("
-    "\0162\025.network.Request.Type\022*\n\013requestCode\030"
-    "\002 \001(\0162\025.network.Request.Code\022:\n\nreturnCo"
-    "de\030\003 \001(\0162\034.network.Response.ReturnCode:\010"
-    "RC_ERROR\022\017\n\007message\030\004 \001(\t\022\020\n\010intValue\030\005 "
-    "\001(\005\022\'\n\ndirContent\030\006 \001(\0132\023.network.DirCon"
-    "tent\"*\n\nReturnCode\022\016\n\nRC_SUCCESS\020\000\022\014\n\010RC"
-    "_ERROR\020\001B \n\016org.es.networkB\016ExchangeProt"
-    "os", 1202);
+    "e\022#\n\004code\030\002 \002(\0162\025.network.Request.Code\022("
+    "\n\textraCode\030\003 \002(\0162\025.network.Request.Code"
+    "\022\020\n\010intParam\030\004 \001(\005\022\023\n\013stringParam\030\005 \001(\t\""
+    "K\n\004Type\022\n\n\006SIMPLE\020\000\022\014\n\010EXPLORER\020\001\022\014\n\010KEY"
+    "BOARD\020\002\022\006\n\002AI\020\003\022\n\n\006VOLUME\020\004\022\007\n\003APP\020\005\"\235\004\n"
+    "\004Code\022\010\n\004NONE\020\000\022\n\n\006DEFINE\020\001\022\n\n\006STATUS\020\002\022"
+    "\006\n\002ON\020\003\022\007\n\003OFF\020\004\022\t\n\005HELLO\020\005\022\010\n\004TEST\020\006\022\017\n"
+    "\013KILL_SERVER\020\007\022\014\n\010SHUTDOWN\020\010\022\021\n\rSWITCH_W"
+    "INDOW\020\t\022\010\n\004LOCK\020\n\022\006\n\002UP\020\013\022\010\n\004DOWN\020\014\022\010\n\004L"
+    "EFT\020\r\022\t\n\005RIGHT\020\016\022\010\n\004MUTE\020\017\022\007\n\003SAY\020\020\022\021\n\rG"
+    "ET_FILE_LIST\020\024\022\r\n\tOPEN_FILE\020\025\022\024\n\020MEDIA_P"
+    "LAY_PAUSE\020\036\022\016\n\nMEDIA_STOP\020\037\022\022\n\016MEDIA_PRE"
+    "VIOUS\020 \022\016\n\nMEDIA_NEXT\020!\022\014\n\010MEDIA_FF\020\"\022\020\n"
+    "\014MEDIA_REWIND\020#\022\013\n\007KB_CTRL\020(\022\014\n\010KB_SHIFT"
+    "\020)\022\n\n\006KB_ALT\020*\022\016\n\nKB_WINDOWS\020+\022\r\n\tKB_RET"
+    "URN\020,\022\014\n\010KB_SPACE\020-\022\020\n\014KB_BACKSPACE\020.\022\r\n"
+    "\tKB_ESCAPE\020/\022\n\n\006KB_TAB\0200\022\t\n\005KB_F4\0202\022\022\n\016G"
+    "OM_PLAYER_RUN\0202\022\023\n\017GOM_PLAYER_KILL\0203\022\026\n\022"
+    "GOM_PLAYER_STRETCH\0204\"\274\001\n\nDirContent\022\014\n\004p"
+    "ath\030\001 \002(\t\022&\n\004file\030\002 \003(\0132\030.network.DirCon"
+    "tent.File\032x\n\004File\022\014\n\004name\030\001 \002(\t\022/\n\004type\030"
+    "\003 \002(\0162!.network.DirContent.File.FileType"
+    "\022\014\n\004size\030\004 \002(\005\"#\n\010FileType\022\r\n\tDIRECTORY\020"
+    "\000\022\010\n\004FILE\020\001\"\226\002\n\010Response\022*\n\013requestType\030"
+    "\001 \001(\0162\025.network.Request.Type\022*\n\013requestC"
+    "ode\030\002 \001(\0162\025.network.Request.Code\022:\n\nretu"
+    "rnCode\030\003 \001(\0162\034.network.Response.ReturnCo"
+    "de:\010RC_ERROR\022\017\n\007message\030\004 \001(\t\022\020\n\010intValu"
+    "e\030\005 \001(\005\022\'\n\ndirContent\030\006 \001(\0132\023.network.Di"
+    "rContent\"*\n\nReturnCode\022\016\n\nRC_SUCCESS\020\000\022\014"
+    "\n\010RC_ERROR\020\001B \n\016org.es.networkB\016Exchange"
+    "Protos", 1326);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "server_exchange.proto", &protobuf_RegisterTypes);
   Request::default_instance_ = new Request();
@@ -262,6 +266,10 @@ bool Request_Code_IsValid(int value) {
     case 10:
     case 11:
     case 12:
+    case 13:
+    case 14:
+    case 15:
+    case 16:
     case 20:
     case 21:
     case 30:
@@ -276,6 +284,9 @@ bool Request_Code_IsValid(int value) {
     case 43:
     case 44:
     case 45:
+    case 46:
+    case 47:
+    case 48:
     case 50:
     case 51:
     case 52:
@@ -286,7 +297,11 @@ bool Request_Code_IsValid(int value) {
 }
 
 #ifndef _MSC_VER
+const Request_Code Request::NONE;
 const Request_Code Request::DEFINE;
+const Request_Code Request::STATUS;
+const Request_Code Request::ON;
+const Request_Code Request::OFF;
 const Request_Code Request::HELLO;
 const Request_Code Request::TEST;
 const Request_Code Request::KILL_SERVER;
@@ -307,12 +322,16 @@ const Request_Code Request::MEDIA_PREVIOUS;
 const Request_Code Request::MEDIA_NEXT;
 const Request_Code Request::MEDIA_FF;
 const Request_Code Request::MEDIA_REWIND;
+const Request_Code Request::KB_CTRL;
+const Request_Code Request::KB_SHIFT;
+const Request_Code Request::KB_ALT;
+const Request_Code Request::KB_WINDOWS;
 const Request_Code Request::KB_RETURN;
 const Request_Code Request::KB_SPACE;
 const Request_Code Request::KB_BACKSPACE;
 const Request_Code Request::KB_ESCAPE;
-const Request_Code Request::KB_ALT_F4;
-const Request_Code Request::KB_CTRL_RETURN;
+const Request_Code Request::KB_TAB;
+const Request_Code Request::KB_F4;
 const Request_Code Request::GOM_PLAYER_RUN;
 const Request_Code Request::GOM_PLAYER_KILL;
 const Request_Code Request::GOM_PLAYER_STRETCH;
@@ -323,6 +342,7 @@ const int Request::Code_ARRAYSIZE;
 #ifndef _MSC_VER
 const int Request::kTypeFieldNumber;
 const int Request::kCodeFieldNumber;
+const int Request::kExtraCodeFieldNumber;
 const int Request::kIntParamFieldNumber;
 const int Request::kStringParamFieldNumber;
 #endif  // !_MSC_VER
@@ -345,6 +365,7 @@ void Request::SharedCtor() {
   _cached_size_ = 0;
   type_ = 0;
   code_ = 0;
+  extracode_ = 0;
   intparam_ = 0;
   stringparam_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -386,6 +407,7 @@ void Request::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     type_ = 0;
     code_ = 0;
+    extracode_ = 0;
     intparam_ = 0;
     if (has_stringparam()) {
       if (stringparam_ != &::google::protobuf::internal::kEmptyString) {
@@ -440,12 +462,33 @@ bool Request::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(24)) goto parse_intParam;
+        if (input->ExpectTag(24)) goto parse_extraCode;
         break;
       }
       
-      // optional int32 intParam = 3;
+      // required .network.Request.Code extraCode = 3;
       case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_extraCode:
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (::network::Request_Code_IsValid(value)) {
+            set_extracode(static_cast< ::network::Request_Code >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(3, value);
+          }
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(32)) goto parse_intParam;
+        break;
+      }
+      
+      // optional int32 intParam = 4;
+      case 4: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_intParam:
@@ -456,12 +499,12 @@ bool Request::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(34)) goto parse_stringParam;
+        if (input->ExpectTag(42)) goto parse_stringParam;
         break;
       }
       
-      // optional string stringParam = 4;
-      case 4: {
+      // optional string stringParam = 5;
+      case 5: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_stringParam:
@@ -507,18 +550,24 @@ void Request::SerializeWithCachedSizes(
       2, this->code(), output);
   }
   
-  // optional int32 intParam = 3;
-  if (has_intparam()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->intparam(), output);
+  // required .network.Request.Code extraCode = 3;
+  if (has_extracode()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      3, this->extracode(), output);
   }
   
-  // optional string stringParam = 4;
+  // optional int32 intParam = 4;
+  if (has_intparam()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->intparam(), output);
+  }
+  
+  // optional string stringParam = 5;
   if (has_stringparam()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->stringparam().data(), this->stringparam().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      4, this->stringparam(), output);
+      5, this->stringparam(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -541,19 +590,25 @@ void Request::SerializeWithCachedSizes(
       2, this->code(), target);
   }
   
-  // optional int32 intParam = 3;
-  if (has_intparam()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->intparam(), target);
+  // required .network.Request.Code extraCode = 3;
+  if (has_extracode()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      3, this->extracode(), target);
   }
   
-  // optional string stringParam = 4;
+  // optional int32 intParam = 4;
+  if (has_intparam()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->intparam(), target);
+  }
+  
+  // optional string stringParam = 5;
   if (has_stringparam()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->stringparam().data(), this->stringparam().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        4, this->stringparam(), target);
+        5, this->stringparam(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -579,14 +634,20 @@ int Request::ByteSize() const {
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->code());
     }
     
-    // optional int32 intParam = 3;
+    // required .network.Request.Code extraCode = 3;
+    if (has_extracode()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->extracode());
+    }
+    
+    // optional int32 intParam = 4;
     if (has_intparam()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->intparam());
     }
     
-    // optional string stringParam = 4;
+    // optional string stringParam = 5;
     if (has_stringparam()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -626,6 +687,9 @@ void Request::MergeFrom(const Request& from) {
     if (from.has_code()) {
       set_code(from.code());
     }
+    if (from.has_extracode()) {
+      set_extracode(from.extracode());
+    }
     if (from.has_intparam()) {
       set_intparam(from.intparam());
     }
@@ -649,7 +713,7 @@ void Request::CopyFrom(const Request& from) {
 }
 
 bool Request::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
+  if ((_has_bits_[0] & 0x00000007) != 0x00000007) return false;
   
   return true;
 }
@@ -658,6 +722,7 @@ void Request::Swap(Request* other) {
   if (other != this) {
     std::swap(type_, other->type_);
     std::swap(code_, other->code_);
+    std::swap(extracode_, other->extracode_);
     std::swap(intparam_, other->intparam_);
     std::swap(stringparam_, other->stringparam_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
