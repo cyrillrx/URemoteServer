@@ -89,12 +89,13 @@ enum Request_Code {
   Request_Code_KB_CTRL = 40,
   Request_Code_KB_SHIFT = 41,
   Request_Code_KB_ALT = 42,
-  Request_Code_KB_WINDOWS = 43,
-  Request_Code_KB_RETURN = 44,
-  Request_Code_KB_SPACE = 45,
-  Request_Code_KB_BACKSPACE = 46,
-  Request_Code_KB_ESCAPE = 47,
-  Request_Code_KB_TAB = 48,
+  Request_Code_KB_ALTGR = 43,
+  Request_Code_KB_WINDOWS = 44,
+  Request_Code_KB_RETURN = 45,
+  Request_Code_KB_SPACE = 46,
+  Request_Code_KB_BACKSPACE = 47,
+  Request_Code_KB_ESCAPE = 48,
+  Request_Code_KB_TAB = 49,
   Request_Code_KB_F4 = 50,
   Request_Code_GOM_PLAYER_RUN = 50,
   Request_Code_GOM_PLAYER_KILL = 51,
@@ -264,6 +265,7 @@ class Request : public ::google::protobuf::Message {
   static const Code KB_CTRL = Request_Code_KB_CTRL;
   static const Code KB_SHIFT = Request_Code_KB_SHIFT;
   static const Code KB_ALT = Request_Code_KB_ALT;
+  static const Code KB_ALTGR = Request_Code_KB_ALTGR;
   static const Code KB_WINDOWS = Request_Code_KB_WINDOWS;
   static const Code KB_RETURN = Request_Code_KB_RETURN;
   static const Code KB_SPACE = Request_Code_KB_SPACE;

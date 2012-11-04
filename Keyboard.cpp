@@ -95,7 +95,7 @@ void Keyboard::HandleMessage(Response* _reply, Request* _request)
 		break;
 
 	case Request_Code_KB_F4:
-		SendKeyboardInput(VK_F4, extraCode);
+		SendKeyboardInput(VK_F4, extraInput);
 		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		_reply->set_message("Window closed (Alt + F4)");
 		break;
@@ -116,180 +116,71 @@ WORD Keyboard::GetInputFromCode(Request_Code _code)
 		
 		case Request_Code_KB_CTRL:		return VK_CONTROL;
 		case Request_Code_KB_ALT:		return VK_MENU;
+		case Request_Code_KB_ALTGR:		return VK_RMENU;
 		case Request_Code_KB_SHIFT:		return VK_SHIFT;
 		case Request_Code_KB_WINDOWS:	return VK_RWIN;
-		case Request_Code_NONE:			return -1;
-
+		case Request_Code_NONE:			return VK_NONE;
 
 		default: 
-			return -1;
+			return VK_NONE;
 	}
 }
 
 string Keyboard::SendDefinedKey(string _param, WORD _extraCode)
 {
-	if (_param == "0") {
-		SendKeyboardInput(VK_0, _extraCode);
-
-	} else if (_param == "1") {
-		SendKeyboardInput(VK_1, _extraCode);
-
-	} else if (_param == "2") {
-		SendKeyboardInput(VK_2, _extraCode);
-
-	} else if (_param == "3") {
-		SendKeyboardInput(VK_3, _extraCode);
-		
-	} else if (_param == "4") {
-		SendKeyboardInput(VK_4, _extraCode);
-
-	} else if (_param == "5") {
-		SendKeyboardInput(VK_5, _extraCode);
-
-	} else if (_param == "6") {
-		SendKeyboardInput(VK_6, _extraCode);
-
-	} else if (_param == "7") {
-		SendKeyboardInput(VK_7, _extraCode);
-
-	} else if (_param == "8") {
-		SendKeyboardInput(VK_8, _extraCode);
-
-	} else if (_param == "9") {
-		SendKeyboardInput(VK_9, _extraCode);
-
-	} else if (_param == "A") {
-		SendKeyboardInput(VK_A, _extraCode);
-
-	} else if (_param == "B") {
-		SendKeyboardInput(VK_B, _extraCode);
-
-	} else if (_param == "C") {
-		SendKeyboardInput(VK_C, _extraCode);
-
-	} else if (_param == "D") {
-		SendKeyboardInput(VK_D, _extraCode);
-
-	} else if (_param == "E") {
-		SendKeyboardInput(VK_E, _extraCode);
-
-	} else if (_param == "F") {
-		SendKeyboardInput(VK_F, _extraCode);
-
-	} else if (_param == "G") {
-		SendKeyboardInput(VK_G, _extraCode);
-
-	} else if (_param == "H") {
-		SendKeyboardInput(VK_H, _extraCode);
-
-	} else if (_param == "I") {
-		SendKeyboardInput(VK_I, _extraCode);
-
-	} else if (_param == "J") {
-		SendKeyboardInput(VK_J, _extraCode);
-
-	} else if (_param == "K") {
-		SendKeyboardInput(VK_K, _extraCode);
-
-	} else if (_param == "L") {
-		SendKeyboardInput(VK_L, _extraCode);
-
-	} else if (_param == "M") {
-		SendKeyboardInput(VK_M, _extraCode);
-
-	} else if (_param == "N") {
-		SendKeyboardInput(VK_N, _extraCode);
-
-	} else if (_param == "O") {
-		SendKeyboardInput(VK_O, _extraCode);
-
-	} else if (_param == "P") {
-		SendKeyboardInput(VK_P, _extraCode);
-
-	} else if (_param == "Q") {
-		SendKeyboardInput(VK_Q, _extraCode);
-
-	} else if (_param == "R") {
-		SendKeyboardInput(VK_R, _extraCode);
-
-	} else if (_param == "S") {
-		SendKeyboardInput(VK_S, _extraCode);
-
-	} else if (_param == "T") {
-		SendKeyboardInput(VK_T, _extraCode);
-
-	} else if (_param == "U") {
-		SendKeyboardInput(VK_U, _extraCode);
-
-	} else if (_param == "V") {
-		SendKeyboardInput(VK_V, _extraCode);
-
-	} else if (_param == "W") {
-		SendKeyboardInput(VK_W, _extraCode);
-
-	} else if (_param == "X") {
-		SendKeyboardInput(VK_X, _extraCode);
-
-	} else if (_param == "Y") {
-		SendKeyboardInput(VK_Y, _extraCode);
-
-	} else if (_param == "Z") {
-		SendKeyboardInput(VK_Z, _extraCode);
+	char c = _param.c_str()[0];
+	if (	(c >= 48 && c <= 57) || // 0 to 9
+			(c >= 65 && c <= 90) || // A to Z
+			(c >= 97 && c <= 122) ) { // a to z
+		SendKeyboardInput(c, _extraCode);
+		return _param;
 
 	} else {
 		return "Unknown command key !";
 	}
-	return _param;
 }
 
 void Keyboard::CtrlEnter()
 {
 	SendKeyboardInput(VK_RETURN, VK_CONTROL);
+	SendKeyboardInput(VK_L, VK_LWIN);
 }
 
-/*
-void Keyboard::SendKeyboardInput(WORD _keyCode)
-{
-	KEYBDINPUT kbInput;
-	kbInput.wVk = _keyCode;
-	kbInput.wScan = 0;
-	kbInput.dwFlags = 0;
-	kbInput.time = 0;
-	kbInput.dwExtraInfo = (ULONG_PTR) GetMessageExtraInfo();
-
-	INPUT input;
-	input.type = INPUT_KEYBOARD;
-	input.ki   = kbInput;
-
-	SendInput(1, &input, sizeof(INPUT));
-}
-*/
 void Keyboard::SendKeyboardInput(WORD _code, WORD _extraCode)
 {
 	cout << "in Keyboard::SendKeyboardInput(WORD _code, WORD _extraCode)" << endl;
 	cout << "-- code : " << _code << endl;
 	cout << "-- extra code : " << _extraCode << endl;
-
-	/*
-	KEYBDINPUT kbInput;
-	kbInput.wVk = _keyCode;
-	kbInput.wScan = 0;
-	kbInput.dwFlags = 0;
-	kbInput.time = 0;
-	kbInput.dwExtraInfo = (ULONG_PTR) GetMessageExtraInfo();
+	
+	#define KEYEVENTF_KEYDOWN 0x0000
 
 	INPUT input;
 	input.type = INPUT_KEYBOARD;
-	input.ki   = kbInput;
-
+	input.ki.wScan = 0;
+	input.ki.time = 0;
+	input.ki.dwExtraInfo = 0;
+	
+	// Press the extra key
+	if (_extraCode != VK_NONE) {
+		input.ki.wVk = _extraCode;
+		input.ki.dwFlags = KEYEVENTF_KEYDOWN;
+		SendInput(1, &input, sizeof(INPUT));
+	}
+	
+	// Press the main key
+	input.ki.wVk = _code;
+	input.ki.dwFlags = KEYEVENTF_KEYDOWN;
 	SendInput(1, &input, sizeof(INPUT));
-	*/
-	INPUT combined_inputs[] =
-	{
-		{ INPUT_KEYBOARD, MAKELONG(_extraCode, 0) },
-		{ INPUT_KEYBOARD, MAKELONG(_code, MapVirtualKey(VK_SPACE, 0)) },
-		{ INPUT_KEYBOARD, MAKELONG(_code, MapVirtualKey(VK_SPACE, 0)), KEYEVENTF_KEYUP },
-		{ INPUT_KEYBOARD, MAKELONG(_extraCode, 0), KEYEVENTF_KEYUP }
-	};
-	SendInput(ARRAYSIZE(combined_inputs), combined_inputs, sizeof INPUT);
+	
+	// Release the main key
+	input.ki.wVk = _code;
+	input.ki.dwFlags = KEYEVENTF_KEYUP;
+	SendInput(1, &input, sizeof(INPUT));
+	
+	// Release the extra key
+	if (_extraCode != VK_NONE) {
+		input.ki.wVk = _extraCode;
+		input.ki.dwFlags = KEYEVENTF_KEYUP;
+		SendInput(1, &input, sizeof(INPUT));
+	}
 }

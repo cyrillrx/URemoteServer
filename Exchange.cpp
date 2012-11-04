@@ -150,6 +150,12 @@ void Exchange::ClassicCommand(Response* _reply, Request_Code _code)
 		ShutdownPC(_reply, 10);
 		break;
 
+	case Request_Code_LOCK:
+		LockWorkStation();
+		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		_reply->set_message("PC locked");
+		break;
+
 	case Request_Code_SWITCH_WINDOW:
 		if (MonUtils::SwitchWindow()) {
 			_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);

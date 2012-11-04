@@ -4,6 +4,8 @@
 #include <windows.h>
 #include "server_exchange.pb.h"
 
+#define VK_NONE (WORD)-1
+
 #define VK_0 0x30
 #define VK_1 0x31
 #define VK_2 0x32

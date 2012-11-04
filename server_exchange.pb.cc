@@ -161,13 +161,13 @@ void protobuf_AddDesc_server_5fexchange_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\025server_exchange.proto\022\007network\"\221\006\n\007Req"
+    "\n\025server_exchange.proto\022\007network\"\237\006\n\007Req"
     "uest\022#\n\004type\030\001 \002(\0162\025.network.Request.Typ"
     "e\022#\n\004code\030\002 \002(\0162\025.network.Request.Code\022("
     "\n\textraCode\030\003 \002(\0162\025.network.Request.Code"
     "\022\020\n\010intParam\030\004 \001(\005\022\023\n\013stringParam\030\005 \001(\t\""
     "K\n\004Type\022\n\n\006SIMPLE\020\000\022\014\n\010EXPLORER\020\001\022\014\n\010KEY"
-    "BOARD\020\002\022\006\n\002AI\020\003\022\n\n\006VOLUME\020\004\022\007\n\003APP\020\005\"\235\004\n"
+    "BOARD\020\002\022\006\n\002AI\020\003\022\n\n\006VOLUME\020\004\022\007\n\003APP\020\005\"\253\004\n"
     "\004Code\022\010\n\004NONE\020\000\022\n\n\006DEFINE\020\001\022\n\n\006STATUS\020\002\022"
     "\006\n\002ON\020\003\022\007\n\003OFF\020\004\022\t\n\005HELLO\020\005\022\010\n\004TEST\020\006\022\017\n"
     "\013KILL_SERVER\020\007\022\014\n\010SHUTDOWN\020\010\022\021\n\rSWITCH_W"
@@ -177,24 +177,24 @@ void protobuf_AddDesc_server_5fexchange_2eproto() {
     "LAY_PAUSE\020\036\022\016\n\nMEDIA_STOP\020\037\022\022\n\016MEDIA_PRE"
     "VIOUS\020 \022\016\n\nMEDIA_NEXT\020!\022\014\n\010MEDIA_FF\020\"\022\020\n"
     "\014MEDIA_REWIND\020#\022\013\n\007KB_CTRL\020(\022\014\n\010KB_SHIFT"
-    "\020)\022\n\n\006KB_ALT\020*\022\016\n\nKB_WINDOWS\020+\022\r\n\tKB_RET"
-    "URN\020,\022\014\n\010KB_SPACE\020-\022\020\n\014KB_BACKSPACE\020.\022\r\n"
-    "\tKB_ESCAPE\020/\022\n\n\006KB_TAB\0200\022\t\n\005KB_F4\0202\022\022\n\016G"
-    "OM_PLAYER_RUN\0202\022\023\n\017GOM_PLAYER_KILL\0203\022\026\n\022"
-    "GOM_PLAYER_STRETCH\0204\"\274\001\n\nDirContent\022\014\n\004p"
-    "ath\030\001 \002(\t\022&\n\004file\030\002 \003(\0132\030.network.DirCon"
-    "tent.File\032x\n\004File\022\014\n\004name\030\001 \002(\t\022/\n\004type\030"
-    "\003 \002(\0162!.network.DirContent.File.FileType"
-    "\022\014\n\004size\030\004 \002(\005\"#\n\010FileType\022\r\n\tDIRECTORY\020"
-    "\000\022\010\n\004FILE\020\001\"\226\002\n\010Response\022*\n\013requestType\030"
-    "\001 \001(\0162\025.network.Request.Type\022*\n\013requestC"
-    "ode\030\002 \001(\0162\025.network.Request.Code\022:\n\nretu"
-    "rnCode\030\003 \001(\0162\034.network.Response.ReturnCo"
-    "de:\010RC_ERROR\022\017\n\007message\030\004 \001(\t\022\020\n\010intValu"
-    "e\030\005 \001(\005\022\'\n\ndirContent\030\006 \001(\0132\023.network.Di"
-    "rContent\"*\n\nReturnCode\022\016\n\nRC_SUCCESS\020\000\022\014"
-    "\n\010RC_ERROR\020\001B \n\016org.es.networkB\016Exchange"
-    "Protos", 1326);
+    "\020)\022\n\n\006KB_ALT\020*\022\014\n\010KB_ALTGR\020+\022\016\n\nKB_WINDO"
+    "WS\020,\022\r\n\tKB_RETURN\020-\022\014\n\010KB_SPACE\020.\022\020\n\014KB_"
+    "BACKSPACE\020/\022\r\n\tKB_ESCAPE\0200\022\n\n\006KB_TAB\0201\022\t"
+    "\n\005KB_F4\0202\022\022\n\016GOM_PLAYER_RUN\0202\022\023\n\017GOM_PLA"
+    "YER_KILL\0203\022\026\n\022GOM_PLAYER_STRETCH\0204\"\274\001\n\nD"
+    "irContent\022\014\n\004path\030\001 \002(\t\022&\n\004file\030\002 \003(\0132\030."
+    "network.DirContent.File\032x\n\004File\022\014\n\004name\030"
+    "\001 \002(\t\022/\n\004type\030\003 \002(\0162!.network.DirContent"
+    ".File.FileType\022\014\n\004size\030\004 \002(\005\"#\n\010FileType"
+    "\022\r\n\tDIRECTORY\020\000\022\010\n\004FILE\020\001\"\226\002\n\010Response\022*"
+    "\n\013requestType\030\001 \001(\0162\025.network.Request.Ty"
+    "pe\022*\n\013requestCode\030\002 \001(\0162\025.network.Reques"
+    "t.Code\022:\n\nreturnCode\030\003 \001(\0162\034.network.Res"
+    "ponse.ReturnCode:\010RC_ERROR\022\017\n\007message\030\004 "
+    "\001(\t\022\020\n\010intValue\030\005 \001(\005\022\'\n\ndirContent\030\006 \001("
+    "\0132\023.network.DirContent\"*\n\nReturnCode\022\016\n\n"
+    "RC_SUCCESS\020\000\022\014\n\010RC_ERROR\020\001B \n\016org.es.net"
+    "workB\016ExchangeProtos", 1340);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "server_exchange.proto", &protobuf_RegisterTypes);
   Request::default_instance_ = new Request();
@@ -287,6 +287,7 @@ bool Request_Code_IsValid(int value) {
     case 46:
     case 47:
     case 48:
+    case 49:
     case 50:
     case 51:
     case 52:
@@ -325,6 +326,7 @@ const Request_Code Request::MEDIA_REWIND;
 const Request_Code Request::KB_CTRL;
 const Request_Code Request::KB_SHIFT;
 const Request_Code Request::KB_ALT;
+const Request_Code Request::KB_ALTGR;
 const Request_Code Request::KB_WINDOWS;
 const Request_Code Request::KB_RETURN;
 const Request_Code Request::KB_SPACE;
