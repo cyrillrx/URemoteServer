@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="network::Request" Collapsed="true">
+    <Position X="9.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>kWPcCgU1oLSdEqLpgcA8TksqMA8jmmIg45woBhbBcCg=</HashCode>
+      <FileName>src\server_exchange.pb.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="network::DirContent" Collapsed="true">
+    <Position X="11" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEgAAIQMgMECJIAYACAAMIAAUBAFIAVAEkBBJgQBg=</HashCode>
+      <FileName>src\server_exchange.pb.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="network::DirContent_File" Collapsed="true">
+    <Position X="12.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYIoCIQACAcUSJIAZAkAEJKhAcFCAIAUwAgTBJIcGA=</HashCode>
+      <FileName>src\server_exchange.pb.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="network::Response" Collapsed="true">
+    <Position X="11" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAEJUiiY0ADNniJNI6CELAIJQR0rIGoIQgAgRBJARaI=</HashCode>
+      <FileName>src\server_exchange.pb.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AI" Collapsed="true">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EQAAwAACAiAABEQAAgAAIQAABAAAAAACAAEAAAAAAAA=</HashCode>
+      <FileName>src\AI.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="App" Collapsed="true">
+    <Position X="9.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAFAAAQAAAAAAAACBCAAAAAAAECBAEAgAAAACgAAA=</HashCode>
+      <FileName>src\modules\App.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FileManager" Collapsed="true">
+    <Position X="9.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAgAAAAAIAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Modules\FileManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MasterVolume" Collapsed="true">
+    <Position X="12.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAARARAAAAAIAAABACACACgAAEAAAAEBAE=</HashCode>
+      <FileName>src\Modules\MasterVolume.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Keyboard" Collapsed="true">
+    <Position X="11" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABQAAAAAAAIAAAAEAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Modules\Keyboard.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SerializedExchange" Collapsed="true">
+    <Position X="12.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>src\Exchange.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Exchange" Collapsed="true">
+    <Position X="14.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgBAAAAAAAAAAAAAAACAAAiACAAAAAgAAAAIAAA=</HashCode>
+      <FileName>src\Exchange.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MonUtils" Collapsed="true">
+    <Position X="14.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABgAIkAAAQIAAAAAAAAgAQAAEAAAAAAAAQAAAIA=</HashCode>
+      <FileName>src\Modules\MonUtils.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Server" Collapsed="true">
+    <Position X="14.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>hIAAgCBAACAAAAAIAAAAIAEAEgAFAAgAIAAAAgAAAAA=</HashCode>
+      <FileName>src\Server.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Speech" Collapsed="true">
+    <Position X="7.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAABAAAABQAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\Modules\Speech.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="network::StaticDescriptorInitializer_server_5fexchange_2eproto" Collapsed="true">
+    <Position X="11" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>src\server_exchange.pb.cc</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Enum Name="network::Request_Type" Collapsed="true">
+    <Position X="11" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAACIAAAAAAAAACAAAAAAAAAAQAAAAAAAgAA=</HashCode>
+      <FileName>src\server_exchange.pb.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="network::Request_Code" Collapsed="true">
+    <Position X="9.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAASESCgAgABAgEAAJokAA2QARgBKAQQAAAQSAEAIGA=</HashCode>
+      <FileName>src\server_exchange.pb.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="network::DirContent_File_FileType" Collapsed="true">
+    <Position X="7.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\server_exchange.pb.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="network::Response_ReturnCode" Collapsed="true">
+    <Position X="12.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>src\server_exchange.pb.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

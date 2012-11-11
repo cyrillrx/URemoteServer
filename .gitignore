@@ -1,3 +1,7 @@
-/Debug
-/Release
-/include
+Debug
+Release
+include
+ipch
+*.suo
+*.sdf
+*.opensdf
