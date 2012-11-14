@@ -6,18 +6,27 @@
 
 using namespace std;
 
-// exceptions
-class file_error { } ;
-class open_error : public file_error { } ;
-class close_error : public file_error { } ;
-class write_error : public file_error { } ;
+// Exceptions
+class FileError { } ;
+class OpenFileError  : public FileError { } ;
+class CloseFileError : public FileError { } ;
+class ReadFileError  : public FileError { } ;
+class WriteFileError : public FileError { } ;
 
 using namespace std;
 
-class FileHandler : public std::fstream
+class FileHandler
 {
 public:
-	FileHandler(const string& path);
+	FileHandler(const string& path, const int openType);
 	~FileHandler();
+	
+	fstream& GetFile();
+
+	static const int OPEN_TYPE_READ		= 0;
+	static const int OPEN_TYPE_WRITE	= 1;
+
+private :
+	fstream m_File;
 };
 

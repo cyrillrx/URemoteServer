@@ -76,6 +76,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Property.h" />
     <ClInclude Include="src\FileHandler.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="src\Goemetry.h" />
@@ -86,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="src\Property.cpp" />
     <ClCompile Include="src\FileHandler.cpp" />
     <ClCompile Include="src\Goemetry.cpp" />
     <ClCompile Include="src\Properties.cpp" />
