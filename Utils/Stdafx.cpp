@@ -3,3 +3,5 @@
 // stdafx.obj contient les informations de type précompilées
 
 #include "stdafx.h"
+
+#using <mscorlib.dll>
