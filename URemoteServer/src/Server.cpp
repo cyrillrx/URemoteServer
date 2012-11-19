@@ -14,9 +14,8 @@ int Server::s_InstanceCount = 0;
 // Public methods
 //////////////////////////////////////////////////////////////////////////////
 
-Server::Server(unique_ptr<ServerConfig> config, AI* ai)
-{
-	m_Config = move(config);
+Server::Server(unique_ptr<ServerConfig> config, AI* ai) : m_Config(move(config))
+{	
 	m_Ai = ai;
 	InitServer();
 }

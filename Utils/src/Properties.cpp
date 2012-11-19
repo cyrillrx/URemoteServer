@@ -67,15 +67,13 @@ vector<Property> Properties::GetAll()
  */
 void Properties::LoadProperties(const string& path)
 {
-	try {
-		FileHandler fh(path, FileHandler::OPEN_TYPE_READ);
+	FileHandler fh(path, FileHandler::OPEN_TYPE_READ);
+	if (!fh.GetFile()) {
+		cerr << "Can not open the file to read !" << endl;
+		throw LoadPropertyException();
+	}
 
-		if (!fh.GetFile()) {
-			cerr << "Impossible d'ouvrir le fichier !" << endl;
-			throw LoadPropertyException();
-		}
-	
-		
+	try {
 		string line;
 		while(getline(fh.GetFile(), line)) {
 
@@ -98,10 +96,21 @@ void Properties::LoadProperties(const string& path)
 		cout << endl;
 	} catch (...) {
 		cout << "Error while loading file " << path << endl;
+		throw LoadPropertyException();
 	}
 }
 
 void Properties::SaveProperties(const string& path)
 {
-	
+	FileHandler fh(path, FileHandler::OPEN_TYPE_WRITE);
+	if (!fh.GetFile()) {
+		cerr << "Can not open the file to write !" << endl;
+		throw SavePropertyException();
+	}
+
+	try {
+		// TODO Try to save 
+	} catch(...) {
+		throw SavePropertyException();
+	}
 }
