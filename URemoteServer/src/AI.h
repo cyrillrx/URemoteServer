@@ -2,32 +2,31 @@
 
 #include <string>
 #include <time.h>
+#include <memory>
+#include "AIConfig.h"
+#include "ServerConfig.h"
 #include "Server.h"
 
 using namespace std;
-
+class Server;
 class AI
 {
 public:
-	static AI* GetInstance();
-	static void FreeInstance();
+	AI(unique_ptr<AIConfig> aiConfig);
+	~AI();
 
-	bool StartConnection(int _port, int _maxConnections);
+	bool StartConnection(unique_ptr<ServerConfig> serverConfig);
 	bool StopConnection();
 
 	void Welcome();
-	void Say(string _textToSpeak);
+	void Say(string textToSpeak);
 	bool ToggleMute();
 
 private:
-	static AI* s_Instance; 
-	string m_Name;
-	bool m_IsMute;
+	unique_ptr<AIConfig> m_Config;
+	unique_ptr<Server> m_ExchangeServer;
 	time_t m_LastWelcome;
-	Server* m_ExchangeServer;
 	
-	AI(string _name);
-	~AI(void);
 	void Start();
 	void Shutdown();
 };

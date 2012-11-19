@@ -3,15 +3,7 @@
 #include <string>
 #include <fstream>
 #include <iostream>
-
-using namespace std;
-
-// Exceptions
-class FileError { } ;
-class OpenFileError  : public FileError { } ;
-class CloseFileError : public FileError { } ;
-class ReadFileError  : public FileError { } ;
-class WriteFileError : public FileError { } ;
+#include "FileException.h"
 
 using namespace std;
 

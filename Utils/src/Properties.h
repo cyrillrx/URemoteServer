@@ -3,12 +3,7 @@
 #include <vector>
 #include "FileHandler.h"
 #include "Property.h"
-
-// Exceptions
-class PropertyError { } ;
-class LoadPropertyError  : public PropertyError { } ;
-class SavePropertyError  : public PropertyError { } ;
-class ReadPropertyError : public PropertyError { } ;
+#include "PropertyException.h"
 
 using namespace std;
 
@@ -18,10 +13,12 @@ public:
 	Properties();
 	~Properties();
 	
-	bool LoadProperties(const string& path);
-	bool SaveProperties();
+	void LoadProperties(const string& path);
+	void SaveProperties(const string& path);
 
-	string Get(const string _key);
+	const string GetString(const string key);
+	const int GetInt(const string key);
+	const bool GetBool(const string key);
 	vector<Property> GetAll();
 
 private:

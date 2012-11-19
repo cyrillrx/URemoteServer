@@ -5,16 +5,16 @@
 #include <ostream>
 
 #include "google\protobuf\io\zero_copy_stream_impl_lite.h"
-#include "AI.h"
-#include "./modules/FileManager.h"
-#include "./modules/MonUtils.h"
-#include "./modules/MasterVolume.h"
-#include "./modules/Keyboard.h"
-#include "./modules/App.h"
+#include "modules\FileManager.h"
+#include "modules\FileManager.h"
+#include "modules\MonUtils.h"
+#include "modules\MasterVolume.h"
+#include "modules\Keyboard.h"
+#include "modules\App.h"
 
-SerializedExchange Exchange::HandleMessage(SerializedExchange _serializedExchange, bool &_continueToListen)
+SerializedExchange Exchange::HandleMessage(AI* ai, SerializedExchange serializedRequest, bool &continueToListen)
 {
-	Request* request = GetRequest(_serializedExchange);
+	Request* request = GetRequest(serializedRequest);
 
 	const Request_Type reqType	= request->type();
 	const Request_Code reqCode	= request->code();
@@ -27,7 +27,7 @@ SerializedExchange Exchange::HandleMessage(SerializedExchange _serializedExchang
 	cout << " - Type		<" << Request_Type_Name(reqType)	<< ">" << endl;
 	cout << " - Code		<" << Request_Code_Name(reqCode)	<< ">" << endl;
 	cout << " - ExtraCode	<" << Request_Code_Name(reqExtraCode)	<< ">" << endl;
-	cout << " - Token	<" << securityToken					<< ">" << endl;
+	cout << " - Token	    <" << securityToken					<< ">" << endl;
 	cout << " - str param	<" << strParam						<< ">" << endl;
 	cout << " - int param	<" << intParam						<< ">" << endl;
 
@@ -44,7 +44,7 @@ SerializedExchange Exchange::HandleMessage(SerializedExchange _serializedExchang
 		switch (reqType) {
 	
 		case Request_Type_SIMPLE:
-			ClassicCommand(reply, reqCode);
+			ClassicCommand(ai, reply, reqCode);
 			break;
 
 		case Request_Type_EXPLORER:
@@ -56,7 +56,7 @@ SerializedExchange Exchange::HandleMessage(SerializedExchange _serializedExchang
 			break;
 
 		case Request_Type_AI:
-			AICommand(reply, reqCode);
+			AICommand(ai, reply, reqCode);
 			break;
 		
 		case Request_Type_VOLUME:
@@ -76,13 +76,12 @@ SerializedExchange Exchange::HandleMessage(SerializedExchange _serializedExchang
 	/* 
 	// Speak out the message
 	if (reply->has_message()) {
-		AI::GetInstance()->Say(reply->message());
+		ai->Say(reply->message());
 	}
 	*/
-
 	int bufSize = 0;
 	char* buf = NULL;
-	SerializedExchange serializedExchange = GetSerializeResponse(reply);
+	SerializedExchange serializedReply = GetSerializeResponse(reply);
 
 	delete(reply);
 	reply = NULL;
@@ -90,14 +89,14 @@ SerializedExchange Exchange::HandleMessage(SerializedExchange _serializedExchang
 	delete(request);
 	request = NULL;
 
-	return serializedExchange;
+	return serializedReply;
 }
 
-Request* Exchange::GetRequest(SerializedExchange _exchange)
+Request* Exchange::GetRequest(SerializedExchange exchange)
 {
 	Request* request = new Request();
 	// Read varint delimited protobuf object in the buffer
-	google::protobuf::io::ArrayInputStream arrayInputStream(_exchange.buffer, _exchange.bufferSize);
+	google::protobuf::io::ArrayInputStream arrayInputStream(exchange.buffer, exchange.bufferSize);
 	google::protobuf::io::CodedInputStream codedInputStream(&arrayInputStream);
 
 	google::protobuf::uint32 size;
@@ -110,19 +109,19 @@ Request* Exchange::GetRequest(SerializedExchange _exchange)
 	return request;
 }
 
-SerializedExchange Exchange::GetSerializeResponse(Response* _response)
+SerializedExchange Exchange::GetSerializeResponse(Response* response)
 {
 	// Build a buffer that can hold message and room for a 32bit delimiter
-	int bufSize	= _response->ByteSize() + 4;
+	int bufSize	= response->ByteSize() + 4;
 	char* buf	= new char [bufSize];
 
 	// Write varint delimiter to the buffer
 	google::protobuf::io::ArrayOutputStream arrayOutputStream(buf, bufSize);
 	google::protobuf::io::CodedOutputStream codedOutputStream(&arrayOutputStream);
-	codedOutputStream.WriteVarint32(_response->ByteSize());
+	codedOutputStream.WriteVarint32(response->ByteSize());
 
 	// Write response to the buffer
-	_response->SerializeToCodedStream(&codedOutputStream);
+	response->SerializeToCodedStream(&codedOutputStream);
 	
 	SerializedExchange exchange;
 	exchange.bufferSize	= bufSize;
@@ -132,57 +131,57 @@ SerializedExchange Exchange::GetSerializeResponse(Response* _response)
 }
 
 /** Handle general commands. */
-void Exchange::ClassicCommand(Response* _reply, Request_Code _code)
+void Exchange::ClassicCommand(AI* ai, Response* reply, Request_Code code)
 {
-	switch (_code) {
+	switch (code) {
 
 	case Request_Code_HELLO:
-		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
-		AI::GetInstance()->Welcome();
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		ai->Welcome();
 		break;
 		
 	case Request_Code_TEST:
-		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
-		//_reply->set_message("The code has been tested");
-		//_reply->set_message("No way. Go Fuck yourself !");
-		_reply->set_message("Intruder detected. Get out, or I'll kick your little punk ass !");
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		//reply->set_message("The code has been tested");
+		//reply->set_message("No way. Go Fuck yourself !");
+		reply->set_message("Intruder detected. Get out, or I'll kick your little punk ass !");
 		break;
 
 	case Request_Code_KILL_SERVER:
-		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
-		_reply->set_message("Server killed");
-		AI::GetInstance()->StopConnection();
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_message("Server killed");
+		ai->StopConnection();
 		break;
 
 	case Request_Code_SHUTDOWN:
-		ShutdownPC(_reply, 10);
+		ShutdownPC(ai, reply, 10);
 		break;
 
 	case Request_Code_LOCK:
 		LockWorkStation();
-		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
-		_reply->set_message("PC locked");
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_message("PC locked");
 		break;
 
 	case Request_Code_SWITCH_WINDOW:
 		if (MonUtils::SwitchWindow()) {
-			_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
-			_reply->set_message("Switch window");
+			reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+			reply->set_message("Switch window");
 		} else {
-			_reply->set_returncode(Response_ReturnCode_RC_ERROR);
-			_reply->set_message("Switch window error");
+			reply->set_returncode(Response_ReturnCode_RC_ERROR);
+			reply->set_message("Switch window error");
 		}
 		break;
 			
 	default:
-		_reply->set_returncode(Response_ReturnCode_RC_ERROR);
-		_reply->set_message("Unknown Simple Command received : " + _code);
+		reply->set_returncode(Response_ReturnCode_RC_ERROR);
+		reply->set_message("Unknown Simple Command received : " + code);
 		break;
 	}
 }
 
 /** Handle volume commands. */
-void Exchange::VolumeCommand(Response* _reply, Request_Code _code, int _intParam)
+void Exchange::VolumeCommand(Response* reply, Request_Code code, int _intParam)
 {
 	float fVolumeLvl;
 	bool isMute;
@@ -191,15 +190,15 @@ void Exchange::VolumeCommand(Response* _reply, Request_Code _code, int _intParam
 	string message;
 	int volumePoucentage;
 
-	switch (_code) {
+	switch (code) {
 
 	case Request_Code_DEFINE:
 		fVolumeLvl = MasterVolume::GetInstance()->Define(_intParam);
 		MasterVolume::FreeInstance();
 
-		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		volumePoucentage = fVolumeLvl * 100;
-		_reply->set_intvalue(volumePoucentage);
+		reply->set_intvalue(volumePoucentage);
 		
 		sprintf(buffer,  "Volume up to %d%%", volumePoucentage);
 		message = buffer;
@@ -209,9 +208,9 @@ void Exchange::VolumeCommand(Response* _reply, Request_Code _code, int _intParam
 		fVolumeLvl = MasterVolume::GetInstance()->TurnUp();
 		MasterVolume::FreeInstance();
 
-		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		volumePoucentage = fVolumeLvl * 100;
-		_reply->set_intvalue(volumePoucentage);
+		reply->set_intvalue(volumePoucentage);
 		
 		sprintf(buffer,  "Volume up to %d%%", volumePoucentage);
 		message = buffer;
@@ -221,9 +220,9 @@ void Exchange::VolumeCommand(Response* _reply, Request_Code _code, int _intParam
 		fVolumeLvl = MasterVolume::GetInstance()->TurnDown();
 		MasterVolume::FreeInstance();
 
-		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		volumePoucentage = fVolumeLvl * 100;
-		_reply->set_intvalue(volumePoucentage);
+		reply->set_intvalue(volumePoucentage);
 		
 		sprintf(buffer,  "Volume down to %d%%", volumePoucentage);
 		message = buffer;
@@ -233,8 +232,8 @@ void Exchange::VolumeCommand(Response* _reply, Request_Code _code, int _intParam
 		isMute = MasterVolume::GetInstance()->ToggleMute();
 		MasterVolume::FreeInstance();
 		
-		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);	
-		_reply->set_intvalue(isMute);
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);	
+		reply->set_intvalue(isMute);
 		message = (isMute) ? "Volume is off." : "Volume is now on.";
 		break;
 	
@@ -244,85 +243,85 @@ void Exchange::VolumeCommand(Response* _reply, Request_Code _code, int _intParam
 		break;
 	}
 
-	_reply->set_message(message);
+	reply->set_message(message);
 }
 
 /** Handle AI commands */
-void Exchange::AICommand(Response* _reply, Request_Code _code)
+void Exchange::AICommand(AI* ai, Response* reply, Request_Code code)
 {
 	bool isMute;
 	char* message;
 
-	switch (_code) {
+	switch (code) {
 
 	case Request_Code_MUTE:
-		isMute = AI::GetInstance()->ToggleMute();
+		isMute = ai->ToggleMute();
 			
-		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		message = (isMute) ? "AI volume is off." : "AI volume is now on.";
 		break;
 	
 	default:
-		_reply->set_returncode(Response_ReturnCode_RC_ERROR);
+		reply->set_returncode(Response_ReturnCode_RC_ERROR);
 		message = "Unknown AI command !";
 		cerr << message << endl;
 		break;
 	}
 	
-	_reply->set_message(message);
+	reply->set_message(message);
 }
 
 /** Handle application commands. */
-void Exchange::AppCommand(Response* _reply, Request_Code _code)
+void Exchange::AppCommand(Response* reply, Request_Code code)
 {
 	string message;
 
-	switch (_code) {
+	switch (code) {
 
 	// Ouvrir Gom player
 	case Request_Code_GOM_PLAYER_RUN:
-		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		message = App::GetGomPlayer()->Show();
 		App::FreeGomPlayer();
 		break;
 		
 	// Fermer Gom player
 	case Request_Code_GOM_PLAYER_KILL:
-		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		message = App::GetGomPlayer()->Close();
 		App::FreeGomPlayer();
 		break;
 
 	// Stretch Gom player
 	case Request_Code_GOM_PLAYER_STRETCH:
-		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		message = App::GetGomPlayer()->Strech();
 		App::FreeGomPlayer();
 		break;
 			
 	default:
-		_reply->set_returncode(Response_ReturnCode_RC_ERROR);
+		reply->set_returncode(Response_ReturnCode_RC_ERROR);
 		message = "Unknown app command !";
 		cerr << message << endl;
 		break;
 	}
 	
-	_reply->set_message(message);
+	reply->set_message(message);
 }
 
 /** Send a command to shutdown the computer. */
-void Exchange::ShutdownPC(Response* _reply, int _delay)
+void Exchange::ShutdownPC(AI* ai, Response* reply, int delay)
 {
-	AI::GetInstance()->StopConnection();
+	ai->StopConnection();
 	
 	char command[100];
-	sprintf(command, "Shutdown.exe -s -t %d -c \"L'ordinateur va s'éteindre dans %d secondes\"", _delay, _delay);
+	sprintf(command, "Shutdown.exe -s -t %d -c \"L'ordinateur va s'éteindre dans %d secondes\"", delay, delay);
 	system(command);
 
-	_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+	reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 	char message[50];
-	sprintf(message, "PC will shutdown in %d seconds", _delay);
-	_reply->set_message(message);
+	sprintf(message, "PC will shutdown in %d seconds", delay);
+	reply->set_message(message);
 
-	AI::GetInstance()->Say(message);
+	ai->Say(message);
 }

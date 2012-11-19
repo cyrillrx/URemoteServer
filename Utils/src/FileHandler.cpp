@@ -8,15 +8,14 @@ FileHandler::FileHandler(const string& path, const int openType)
 	} else if (openType == OPEN_TYPE_WRITE) {
 		m_File.open(path.c_str(), ios::out);
 	} else {
-		throw OpenFileError();
+		throw OpenFileException();
 	}
 	
 	if (!m_File.is_open()) {
-		cout << "Error while opening " << path << endl;
-		throw OpenFileError();
-	} else {
-		cout << "File " << path << " is open !" << endl;
+		throw OpenFileException();
 	}
+
+	cout << "File " << path << " is open !" << endl;
 }
 
 FileHandler::~FileHandler()

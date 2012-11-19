@@ -41,13 +41,14 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>./lib/MDd;$(LibraryPath)</LibraryPath>
-    <IncludePath>./include;$(IncludePath)</IncludePath>
+    <LibraryPath>.\lib\$(Configuration);$(LibraryPath)</LibraryPath>
+    <IncludePath>.\include;$(IncludePath)</IncludePath>
     <ReferencePath>$(ReferencePath)</ReferencePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <LibraryPath>./lib/MD;$(LibraryPath)</LibraryPath>
+    <LibraryPath>.\lib\$(Configuration);$(LibraryPath)</LibraryPath>
+    <IncludePath>.\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -84,6 +85,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\AIConfig.h" />
+    <ClInclude Include="src\ServerConfig.h" />
     <ClInclude Include="src\AI.h" />
     <ClInclude Include="src\modules\App.h" />
     <ClInclude Include="src\Modules\FileManager.h" />
@@ -97,6 +100,8 @@
     <ClInclude Include="src\Modules\Speech.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\AIConfig.cpp" />
+    <ClCompile Include="src\ServerConfig.cpp" />
     <ClCompile Include="src\AI.cpp" />
     <ClCompile Include="src\modules\App.cpp" />
     <ClCompile Include="src\Modules\FileManager.cpp" />
@@ -116,6 +121,9 @@
     <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\DevTools\protobuf-2.4.1\vsprojects\libprotobuf.vcxproj">
+      <Project>{3e283f37-a4ed-41b7-a3e6-a2d89d131a30}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Utils\Utils.vcxproj">
       <Project>{40a133af-dbe7-4533-b198-9597b336f630}</Project>
     </ProjectReference>

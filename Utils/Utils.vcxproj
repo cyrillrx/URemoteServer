@@ -43,9 +43,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)\$(SolutionName)\lib\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)\$(SolutionName)\lib\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -86,6 +88,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\FileException.h" />
+    <ClInclude Include="src\PropertyException.h" />
+    <ClInclude Include="SpecializedException.h" />
     <ClInclude Include="src\Property.h" />
     <ClInclude Include="src\FileHandler.h" />
     <ClInclude Include="resource.h" />
@@ -97,6 +102,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="src\FileException.cpp" />
+    <ClCompile Include="src\PropertyException.cpp" />
+    <ClCompile Include="SpecializedException.cpp" />
     <ClCompile Include="src\Property.cpp" />
     <ClCompile Include="src\FileHandler.cpp" />
     <ClCompile Include="src\Goemetry.cpp" />

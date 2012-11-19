@@ -1,38 +1,81 @@
 #include "StdAfx.h"
 #include "Properties.h"
+#include <sstream>
 
 Properties::Properties() {}
 
 Properties::~Properties() {}
 
-string Properties::Get(const string _key)
+/**
+ * @param key The property key;
+ * @return The property as a string.
+ */
+const string Properties::GetString(const string key)
 {
-	for(vector<Property>::iterator prop = m_Properties.begin(); prop != m_Properties.end(); prop++) {
-		if (prop->Key == _key) {
-			return prop->Value;
+	for (auto prop : m_Properties) {
+		if (prop.Key == key) {
+			return prop.Value;
 		}
 	}
-	throw ReadPropertyError();
-	cerr << "Error while reading property " << _key << endl;
-	return "";
+
+	throw ReadPropertyException();
 }
 
+/**
+ * @param key 
+ * @return The property as an integer.
+ */
+const int Properties::GetInt(const string key)
+{
+	auto stringProperty = GetString(key);
+
+	stringstream convertedStr(stringProperty);
+	int result;
+	if (!(convertedStr >> result)) {
+		throw ReadPropertyException();
+	}
+	
+	return result;
+}
+
+/**
+ * @param key 
+ * @return The property as a boolean.
+ */
+const bool Properties::GetBool(const string key)
+{
+	auto stringProperty = GetString(key);if (stringProperty == "true") {
+		return true;
+	} else if (stringProperty == "false") {
+		return false;
+	}
+
+	throw LoadPropertyException();
+}
+
+/**
+ * @return All the properties as a vector.
+ */
 vector<Property> Properties::GetAll()
 {
 	return m_Properties;
 }
 
-bool Properties::LoadProperties(const string& path)
+/**
+ * Load the properties from a file.
+ * @param path : The property file to read.
+ */
+void Properties::LoadProperties(const string& path)
 {
-	FileHandler fh(path, FileHandler::OPEN_TYPE_READ);
-
 	try {
+		FileHandler fh(path, FileHandler::OPEN_TYPE_READ);
 
 		if (!fh.GetFile()) {
 			cerr << "Impossible d'ouvrir le fichier !" << endl;
-			throw LoadPropertyError();
+			throw LoadPropertyException();
 		}
 	
+		
 		string line;
 		while(getline(fh.GetFile(), line)) {
 
@@ -44,7 +87,6 @@ bool Properties::LoadProperties(const string& path)
 				prop.Key	= line.substr(0, equalPos);
 				prop.Value	= line.substr(equalPos + 1);
 				m_Properties.push_back(prop);
-				
 				//cout << "Before trim:=" << value << endl;
 				//remove(value.begin(), value.end(), ' ');
 				//cout << "After trim:=" << value << endl;
@@ -57,10 +99,9 @@ bool Properties::LoadProperties(const string& path)
 	} catch (...) {
 		cout << "Error while loading file " << path << endl;
 	}
-	return true;
 }
 
-bool Properties::SaveProperties()
+void Properties::SaveProperties(const string& path)
 {
-	return false;
+	
 }

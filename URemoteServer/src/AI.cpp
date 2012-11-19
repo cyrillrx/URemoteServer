@@ -1,39 +1,36 @@
 #include "AI.h"
-#include ".\modules\Speech.h"
+
+#include "modules\Speech.h"
 
 #define DELAY 60*5 // 5 min / 300 sec before repeate time
 
 //////////////////////////////////////////////////////////////////////////////
 // Public methods
 //////////////////////////////////////////////////////////////////////////////
-AI* AI::s_Instance = NULL;
-
-AI* AI::GetInstance()
+AI::AI(unique_ptr<AIConfig> config)
 {
-	if (!s_Instance) {
-		s_Instance = new AI("Eternity");
-	}
-	
-	return s_Instance;
+	m_Config = move(config);
+	time(&m_LastWelcome);
+	m_LastWelcome -= DELAY;
+
+	Start();
 }
 
-void AI::FreeInstance()
+AI::~AI()
 {
-	delete(s_Instance);
-	s_Instance = NULL;
+	Shutdown();
 }
 
-bool AI::StartConnection(int _port, int _maxConnections)
+bool AI::StartConnection(unique_ptr<ServerConfig> serverConfig)
 {
 	bool result = true;
-	m_ExchangeServer = new Server(_port, _maxConnections);
-	Say(m_Name + " is now online.");
+	m_ExchangeServer = unique_ptr<Server>(new Server(move(serverConfig), this));
+	
+	//Say(m_Name + " is now online.");
+	Say(m_Config->Name + " est maintenant en ligne.");
 
 	result = m_ExchangeServer->Start();
 	
-	delete(m_ExchangeServer);
-	m_ExchangeServer = NULL;
-
 	return result;
 }
 
@@ -58,53 +55,37 @@ void AI::Welcome()
 
 	// Welcome if last welcome > 10 min
 	if (elapsedTime > DELAY) {
-		Say("Welcome to " + m_Name + " sir." );
+		Say("Welcome to " + m_Config->Name + " sir." );
 		time(&m_LastWelcome);
 	}
 }
 
-void AI::Say(string _textToSpeak)
+void AI::Say(string textToSpeak)
 {
 	// Test mute state
-	if (!m_IsMute) {
-		Speech::SayInThread(_textToSpeak);
+	if (!m_Config->IsMute) {
+		Speech::SayInThread(textToSpeak);
 	}
 }
 
 //! Change l'état de mute et renvoie le nouvel état
 bool AI::ToggleMute()
 {
-	m_IsMute = !m_IsMute;
-	return m_IsMute;
+	m_Config->IsMute = !m_Config->IsMute;
+	return m_Config->IsMute;
 }
 
 //////////////////////////////////////////////////////////////////////////////
 // Fonctions privées
 //////////////////////////////////////////////////////////////////////////////
 
-AI::AI(string _name)
-{
-	m_Name = _name;
-	m_IsMute = false;
-
-	time(&m_LastWelcome);
-	m_LastWelcome -= DELAY;
-
-	Start();
-}
-
-AI::~AI(void)
-{
-	Shutdown();
-}
-
 void AI::Start()
 {
-	Say("Artificial Intelligence initiated.");
+	//Say("Artificial Intelligence initiated.");
+	Say("Intelligence artificielle initialisée.");
 }
 
 void AI::Shutdown()
 {
-	Say(m_Name + " is shutting down. Goodbye sir");
-
+	Say(m_Config->Name + " is shutting down. Goodbye sir");
 }

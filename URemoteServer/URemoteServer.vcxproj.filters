@@ -48,6 +48,12 @@
     <ClInclude Include="src\modules\App.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\AIConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ServerConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AI.cpp">
@@ -81,6 +87,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\modules\App.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AIConfig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ServerConfig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

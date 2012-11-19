@@ -9,6 +9,6 @@ public:
 	std::string Value;
 	int Type;
 
-	Property(void);
-	~Property(void);
+	Property();
+	~Property();
 };
