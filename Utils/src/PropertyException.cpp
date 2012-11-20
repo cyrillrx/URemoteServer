@@ -17,3 +17,8 @@ ReadPropertyException::ReadPropertyException()
 {
 	m_Message = "ReadPropertyException : Error while reading property."; 
 }
+
+WritePropertyException::WritePropertyException()
+{
+	m_Message = "ReadPropertyException : Error while writing property."; 
+}

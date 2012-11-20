@@ -3,17 +3,20 @@
 #include <string>
 #include "Properties.h"
 
-class AIConfig
+class AIConfig : public Properties
 {
 public:
-	AIConfig(string configFile);
+	AIConfig(const string& path);
 	~AIConfig();
 	
 	string Name;
 	bool IsMute;
 
 private:
-	string GetNameFromProperty(Properties prop);
-	bool GetMuteFromProperty(Properties prop);
+	static const string KEY_NAME;
+	static const string KEY_MUTE;
+
+	static const string DEFAULT_NAME;
+	static const bool DEFAULT_MUTE;
 };
 

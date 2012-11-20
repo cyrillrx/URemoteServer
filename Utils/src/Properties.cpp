@@ -2,15 +2,20 @@
 #include "Properties.h"
 #include <sstream>
 
-Properties::Properties() {}
+Properties::Properties(const string& path) : m_FilePath(path)
+{
+	LoadProperties(m_FilePath);
+}
 
 Properties::~Properties() {}
 
 /**
- * @param key The property key;
- * @return The property as a string.
+ * Get the property value that matches the key.
+ * @param key The key of the property.
+ * @return The value of the property as a string.
+ * @throw ReadPropertyException if the key is not found.
  */
-const string Properties::GetString(const string key)
+const string Properties::GetString(const string& key)
 {
 	for (auto prop : m_Properties) {
 		if (prop.Key == key) {
@@ -22,27 +27,82 @@ const string Properties::GetString(const string key)
 }
 
 /**
- * @param key 
- * @return The property as an integer.
+ * Get the property value that matches the key.
+ * @param key The key of the property.
+ * @param defaultValue The value to return if ReadPropertyException is raised.
+ * @return The value of the property as a string.
  */
-const int Properties::GetInt(const string key)
+const string Properties::GetString(const string& key, const string& defaultValue)
 {
-	auto stringProperty = GetString(key);
-
-	stringstream convertedStr(stringProperty);
-	int result;
-	if (!(convertedStr >> result)) {
-		throw ReadPropertyException();
+	try {
+		return GetString(key);
+	} catch (const ReadPropertyException& exception) {
+		return defaultValue;
 	}
-	
-	return result;
 }
 
 /**
- * @param key 
- * @return The property as a boolean.
+ * Set the property value that matches the key.
+ * @param key The key of the property.
+ * @param value The value to set.
+ * @throw ReadPropertyException if the key is not found.
  */
-const bool Properties::GetBool(const string key)
+void Properties::SetString(const string& key, const string& value)
+{
+	for (auto &prop : m_Properties) {
+		if (prop.Key == key) {
+			prop.Value = value;
+			return;
+		}
+	}
+
+	throw WritePropertyException();
+}
+
+/**
+ * Get the property value that matches the key.
+ * @param key The key of the property.
+ * @return The value of the property as an integer.
+ * @throw ReadPropertyException cast from string to int fails.
+ */
+const int Properties::GetInt(const string& key)
+{
+	auto propertyAsString = GetString(key);
+	return stoi(propertyAsString);
+}
+
+/**
+ * Get the property value that matches the key.
+ * @param key The key of the property.
+ * @param defaultValue The value to return if ReadPropertyException is raised.
+ * @return The value of the property as an integer.
+ */
+const int Properties::GetInt(const string& key, const int& defaultValue)
+{
+	try {
+		return GetInt(key);
+	} catch (const ReadPropertyException& exception) {
+		return defaultValue;
+	}
+}
+
+/**
+ * Set the property value that matches the key.
+ * @param key The key of the property.
+ * @param value The value to set.
+ * @throw ReadPropertyException if the key is not found.
+ */
+void Properties::SetInt(const string& key, const int& value)
+{
+	SetString(key, to_string(value));
+}
+
+/**
+ * Get the property value that matches the key.
+ * @param key The key of the property.
+ * @return The value of the property as a boolean.
+ */
+const bool Properties::GetBool(const string& key)
 {
 	auto stringProperty = GetString(key);if (stringProperty == "true") {
 		return true;
@@ -50,15 +110,34 @@ const bool Properties::GetBool(const string key)
 		return false;
 	}
 
-	throw LoadPropertyException();
+	throw ReadPropertyException();
 }
 
 /**
- * @return All the properties as a vector.
+ * Get the property value that matches the key.
+ * @param key The key of the property.
+ * @param defaultValue The value to return if ReadPropertyException is raised.
+ * @return The value of the property as a boolean.
  */
-vector<Property> Properties::GetAll()
+const bool Properties::GetBool(const string& key, const bool& defaultValue)
 {
-	return m_Properties;
+	try {
+		return GetBool(key);
+	} catch (const ReadPropertyException& exception) {
+		return defaultValue;
+	}
+}
+
+/**
+ * Set the property value that matches the key.
+ * @param key The key of the property.
+ * @param value The value to set.
+ * @throw ReadPropertyException if the key is not found.
+ */
+void Properties::SetBool(const string& key, const bool& value)
+{
+	const string valueAsString = (value) ? "true" : "false";
+	SetString(key, valueAsString);
 }
 
 /**
@@ -109,8 +188,15 @@ void Properties::SaveProperties(const string& path)
 	}
 
 	try {
-		// TODO Try to save 
+		for (auto prop : m_Properties) {
+			fh.GetFile() << prop.Key << "=" << prop.Value << endl;
+		}
 	} catch(...) {
 		throw SavePropertyException();
 	}
+}
+
+void Properties::SaveProperties()
+{
+	SaveProperties(m_FilePath);
 }

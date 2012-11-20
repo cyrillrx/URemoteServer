@@ -1,33 +1,20 @@
 #include "ServerConfig.h"
 
+const string ServerConfig::KEY_PORT = "port";
+const string ServerConfig::KEY_MAX_CONNECTIONS = "maxConnections";
 
-ServerConfig::ServerConfig(string configFile)
+const int ServerConfig::DEFAULT_PORT = 8082;
+const int ServerConfig::DEFAULT_MAX_CONNECTIONS = 3;
+
+ServerConfig::ServerConfig(const string& configFile) : Properties(configFile)
 {
-	Properties properties;
-	properties.LoadProperties(configFile);
-	
-	Port = GetPortFromProperty(properties);
-	MaxConcurrentConnections = GetMaxConnectionsFromProperty(properties);
+	Port = GetInt(KEY_PORT, DEFAULT_PORT);
+	MaxConcurrentConnections = GetInt(KEY_MAX_CONNECTIONS, DEFAULT_MAX_CONNECTIONS);
 }
 
 ServerConfig::~ServerConfig()
 {
-}
-
-int ServerConfig::GetPortFromProperty(Properties prop)
-{
-	try {
-		return prop.GetInt("port");
-	} catch (ReadPropertyException const& exception) {
-		return 8082;
-	}
-}
-
-int ServerConfig::GetMaxConnectionsFromProperty(Properties prop)
-{
-	try {
-		return prop.GetInt("maxConnections");
-	} catch (ReadPropertyException const& exception) {
-		return 3;
-	}
+	SetInt(KEY_PORT, Port);
+	SetInt(KEY_MAX_CONNECTIONS, MaxConcurrentConnections);
+	SaveProperties();
 }

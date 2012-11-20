@@ -30,3 +30,9 @@ class ReadPropertyException : public PropertyException
 public:
 	ReadPropertyException();
 };
+
+class WritePropertyException : public PropertyException
+{
+public:
+	WritePropertyException();
+};
