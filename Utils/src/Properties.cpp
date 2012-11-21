@@ -17,7 +17,7 @@ Properties::~Properties() {}
  */
 const string Properties::GetString(const string& key)
 {
-	for (auto prop : m_Properties) {
+	for (const auto& prop : m_Properties) {
 		if (prop.Key == key) {
 			return prop.Value;
 		}
