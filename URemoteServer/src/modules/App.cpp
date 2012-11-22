@@ -8,7 +8,7 @@
 // Fonctions privées
 //////////////////////////////////////////////////////////////////////////////
 
-App* App::s_GomPlayer = NULL;
+App* App::s_GomPlayer = nullptr;
 
 App::App(string _label, string _className, string _exePath)
 {
@@ -24,7 +24,7 @@ App::~App(void)
 bool App::SetOnTop()
 {
 	bstr_t className(mClassName.c_str());
-	HWND window = FindWindow(className, NULL);
+	HWND window = FindWindow(className, nullptr);
 	if (!window) {
 		cout << "Error while searching process." << endl;
 		return false;
@@ -37,7 +37,7 @@ bool App::Launch()
 {
 	cout << "Launching " << mLabel << endl;
 	bstr_t path(mExePath.c_str());
-	HINSTANCE returnCode = ShellExecute(NULL, L"open", path, L"", NULL, SW_SHOWMAXIMIZED);
+	HINSTANCE returnCode = ShellExecute(nullptr, L"open", path, L"", nullptr, SW_SHOWMAXIMIZED);
 	return ((int)returnCode > 32);
 }
 
@@ -55,7 +55,7 @@ App* App::GetGomPlayer() {
 
 void App::FreeGomPlayer() {
 	delete(s_GomPlayer);
-	s_GomPlayer = NULL;
+	s_GomPlayer = nullptr;
 }
 
 /** 
@@ -90,7 +90,7 @@ string App::Close()
 	string resultMessage;
 	
 	bstr_t className(mClassName.c_str());
-	HWND window = FindWindow(className, NULL);
+	HWND window = FindWindow(className, nullptr);
 	if (!window) {
 		resultMessage = mLabel + " is not open.";
 	} else {
@@ -110,7 +110,7 @@ string App::Strech()
 	string resultMessage;
 	
 	bstr_t className(mClassName.c_str());
-	HWND window = FindWindow(className, NULL);
+	HWND window = FindWindow(className, nullptr);
 	if (!window) {
 		resultMessage = mLabel + " is not open.";
 	} else {

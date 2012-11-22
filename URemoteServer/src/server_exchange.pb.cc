@@ -17,22 +17,22 @@ namespace network {
 
 namespace {
 
-const ::google::protobuf::Descriptor* Request_descriptor_ = NULL;
+const ::google::protobuf::Descriptor* Request_descriptor_ = nullptr;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  Request_reflection_ = NULL;
-const ::google::protobuf::EnumDescriptor* Request_Type_descriptor_ = NULL;
-const ::google::protobuf::EnumDescriptor* Request_Code_descriptor_ = NULL;
-const ::google::protobuf::Descriptor* DirContent_descriptor_ = NULL;
+  Request_reflection_ = nullptr;
+const ::google::protobuf::EnumDescriptor* Request_Type_descriptor_ = nullptr;
+const ::google::protobuf::EnumDescriptor* Request_Code_descriptor_ = nullptr;
+const ::google::protobuf::Descriptor* DirContent_descriptor_ = nullptr;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  DirContent_reflection_ = NULL;
-const ::google::protobuf::Descriptor* DirContent_File_descriptor_ = NULL;
+  DirContent_reflection_ = nullptr;
+const ::google::protobuf::Descriptor* DirContent_File_descriptor_ = nullptr;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  DirContent_File_reflection_ = NULL;
-const ::google::protobuf::EnumDescriptor* DirContent_File_FileType_descriptor_ = NULL;
-const ::google::protobuf::Descriptor* Response_descriptor_ = NULL;
+  DirContent_File_reflection_ = nullptr;
+const ::google::protobuf::EnumDescriptor* DirContent_File_FileType_descriptor_ = nullptr;
+const ::google::protobuf::Descriptor* Response_descriptor_ = nullptr;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  Response_reflection_ = NULL;
-const ::google::protobuf::EnumDescriptor* Response_ReturnCode_descriptor_ = NULL;
+  Response_reflection_ = nullptr;
+const ::google::protobuf::EnumDescriptor* Response_ReturnCode_descriptor_ = nullptr;
 
 }  // namespace
 
@@ -42,7 +42,7 @@ void protobuf_AssignDesc_server_5fexchange_2eproto() {
   const ::google::protobuf::FileDescriptor* file =
     ::google::protobuf::DescriptorPool::generated_pool()->FindFileByName(
       "server_exchange.proto");
-  GOOGLE_CHECK(file != NULL);
+  GOOGLE_CHECK(file != nullptr);
   Request_descriptor_ = file->message_type(0);
   static const int Request_offsets_[6] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Request, type_),
@@ -403,10 +403,10 @@ const ::google::protobuf::Descriptor* Request::descriptor() {
 }
 
 const Request& Request::default_instance() {
-  if (default_instance_ == NULL) protobuf_AddDesc_server_5fexchange_2eproto();  return *default_instance_;
+  if (default_instance_ == nullptr) protobuf_AddDesc_server_5fexchange_2eproto();  return *default_instance_;
 }
 
-Request* Request::default_instance_ = NULL;
+Request* Request::default_instance_ = nullptr;
 
 Request* Request::New() const {
   return new Request;
@@ -728,7 +728,7 @@ void Request::MergeFrom(const ::google::protobuf::Message& from) {
   const Request* source =
     ::google::protobuf::internal::dynamic_cast_if_available<const Request*>(
       &from);
-  if (source == NULL) {
+  if (source == nullptr) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
     MergeFrom(*source);
@@ -875,10 +875,10 @@ const ::google::protobuf::Descriptor* DirContent_File::descriptor() {
 }
 
 const DirContent_File& DirContent_File::default_instance() {
-  if (default_instance_ == NULL) protobuf_AddDesc_server_5fexchange_2eproto();  return *default_instance_;
+  if (default_instance_ == nullptr) protobuf_AddDesc_server_5fexchange_2eproto();  return *default_instance_;
 }
 
-DirContent_File* DirContent_File::default_instance_ = NULL;
+DirContent_File* DirContent_File::default_instance_ = nullptr;
 
 DirContent_File* DirContent_File::New() const {
   return new DirContent_File;
@@ -1072,7 +1072,7 @@ void DirContent_File::MergeFrom(const ::google::protobuf::Message& from) {
   const DirContent_File* source =
     ::google::protobuf::internal::dynamic_cast_if_available<const DirContent_File*>(
       &from);
-  if (source == NULL) {
+  if (source == nullptr) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
     MergeFrom(*source);
@@ -1183,10 +1183,10 @@ const ::google::protobuf::Descriptor* DirContent::descriptor() {
 }
 
 const DirContent& DirContent::default_instance() {
-  if (default_instance_ == NULL) protobuf_AddDesc_server_5fexchange_2eproto();  return *default_instance_;
+  if (default_instance_ == nullptr) protobuf_AddDesc_server_5fexchange_2eproto();  return *default_instance_;
 }
 
-DirContent* DirContent::default_instance_ = NULL;
+DirContent* DirContent::default_instance_ = nullptr;
 
 DirContent* DirContent::New() const {
   return new DirContent;
@@ -1343,7 +1343,7 @@ void DirContent::MergeFrom(const ::google::protobuf::Message& from) {
   const DirContent* source =
     ::google::protobuf::internal::dynamic_cast_if_available<const DirContent*>(
       &from);
-  if (source == NULL) {
+  if (source == nullptr) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
     MergeFrom(*source);
@@ -1455,7 +1455,7 @@ void Response::SharedCtor() {
   returncode_ = 1;
   message_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   intvalue_ = 0;
-  dircontent_ = NULL;
+  dircontent_ = nullptr;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1483,10 +1483,10 @@ const ::google::protobuf::Descriptor* Response::descriptor() {
 }
 
 const Response& Response::default_instance() {
-  if (default_instance_ == NULL) protobuf_AddDesc_server_5fexchange_2eproto();  return *default_instance_;
+  if (default_instance_ == nullptr) protobuf_AddDesc_server_5fexchange_2eproto();  return *default_instance_;
 }
 
-Response* Response::default_instance_ = NULL;
+Response* Response::default_instance_ = nullptr;
 
 Response* Response::New() const {
   return new Response;
@@ -1504,7 +1504,7 @@ void Response::Clear() {
     }
     intvalue_ = 0;
     if (has_dircontent()) {
-      if (dircontent_ != NULL) dircontent_->::network::DirContent::Clear();
+      if (dircontent_ != nullptr) dircontent_->::network::DirContent::Clear();
     }
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -1797,7 +1797,7 @@ void Response::MergeFrom(const ::google::protobuf::Message& from) {
   const Response* source =
     ::google::protobuf::internal::dynamic_cast_if_available<const Response*>(
       &from);
-  if (source == NULL) {
+  if (source == nullptr) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
     MergeFrom(*source);

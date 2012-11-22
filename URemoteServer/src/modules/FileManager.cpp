@@ -124,7 +124,7 @@ bool FileManager::GetDirectoryContent(Response* _reply, string _dirPath)
 string FileManager::OpenFile(string _filePath)
 {
 	bstr_t filePath(_filePath.c_str());
-	ShellExecute(NULL, NULL, filePath, NULL, NULL, SW_SHOWMAXIMIZED);
+	ShellExecute(nullptr, nullptr, filePath, nullptr, nullptr, SW_SHOWMAXIMIZED);
 	return "Opening file : "  + _filePath;
 }
 

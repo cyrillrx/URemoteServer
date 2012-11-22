@@ -901,7 +901,7 @@ inline ::std::string* Request::mutable_securitytoken() {
 inline ::std::string* Request::release_securitytoken() {
   clear_has_securitytoken();
   if (securitytoken_ == &::google::protobuf::internal::kEmptyString) {
-    return NULL;
+    return nullptr;
   } else {
     ::std::string* temp = securitytoken_;
     securitytoken_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
@@ -981,7 +981,7 @@ inline ::std::string* Request::mutable_stringparam() {
 inline ::std::string* Request::release_stringparam() {
   clear_has_stringparam();
   if (stringparam_ == &::google::protobuf::internal::kEmptyString) {
-    return NULL;
+    return nullptr;
   } else {
     ::std::string* temp = stringparam_;
     stringparam_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
@@ -1043,7 +1043,7 @@ inline ::std::string* DirContent_File::mutable_name() {
 inline ::std::string* DirContent_File::release_name() {
   clear_has_name();
   if (name_ == &::google::protobuf::internal::kEmptyString) {
-    return NULL;
+    return nullptr;
   } else {
     ::std::string* temp = name_;
     name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
@@ -1150,7 +1150,7 @@ inline ::std::string* DirContent::mutable_path() {
 inline ::std::string* DirContent::release_path() {
   clear_has_path();
   if (path_ == &::google::protobuf::internal::kEmptyString) {
-    return NULL;
+    return nullptr;
   } else {
     ::std::string* temp = path_;
     path_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
@@ -1306,7 +1306,7 @@ inline ::std::string* Response::mutable_message() {
 inline ::std::string* Response::release_message() {
   clear_has_message();
   if (message_ == &::google::protobuf::internal::kEmptyString) {
-    return NULL;
+    return nullptr;
   } else {
     ::std::string* temp = message_;
     message_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
@@ -1347,21 +1347,21 @@ inline void Response::clear_has_dircontent() {
   _has_bits_[0] &= ~0x00000020u;
 }
 inline void Response::clear_dircontent() {
-  if (dircontent_ != NULL) dircontent_->::network::DirContent::Clear();
+  if (dircontent_ != nullptr) dircontent_->::network::DirContent::Clear();
   clear_has_dircontent();
 }
 inline const ::network::DirContent& Response::dircontent() const {
-  return dircontent_ != NULL ? *dircontent_ : *default_instance_->dircontent_;
+  return dircontent_ != nullptr ? *dircontent_ : *default_instance_->dircontent_;
 }
 inline ::network::DirContent* Response::mutable_dircontent() {
   set_has_dircontent();
-  if (dircontent_ == NULL) dircontent_ = new ::network::DirContent;
+  if (dircontent_ == nullptr) dircontent_ = new ::network::DirContent;
   return dircontent_;
 }
 inline ::network::DirContent* Response::release_dircontent() {
   clear_has_dircontent();
   ::network::DirContent* temp = dircontent_;
-  dircontent_ = NULL;
+  dircontent_ = nullptr;
   return temp;
 }
 

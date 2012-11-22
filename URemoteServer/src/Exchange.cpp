@@ -80,14 +80,14 @@ SerializedExchange Exchange::HandleMessage(AI* ai, SerializedExchange serialized
 	}
 	*/
 	int bufSize = 0;
-	char* buf = NULL;
+	char* buf = nullptr;
 	SerializedExchange serializedReply = GetSerializeResponse(reply);
 
 	delete(reply);
-	reply = NULL;
+	reply = nullptr;
 
 	delete(request);
-	request = NULL;
+	request = nullptr;
 
 	return serializedReply;
 }

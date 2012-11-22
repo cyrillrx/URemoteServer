@@ -65,7 +65,7 @@ HMONITOR MonUtils::GetNextMonitor(HMONITOR _monitor)
 	int nextMonitorIndex = GetNextMonitorIndex(_monitor);
 
 	if (nextMonitorIndex == ERROR_INDEX)
-		return NULL;
+		return nullptr;
 	
 	return s_vcMonitors[nextMonitorIndex];
 }
@@ -73,7 +73,7 @@ HMONITOR MonUtils::GetNextMonitor(HMONITOR _monitor)
 /**
  * @param _monitor Le moniteur dont on veut connaitre les dimensions.
  * @return Le rectangle délimitant la position et les dimensions du moniteur.
- * Retourne NULL en cas d'erreur.
+ * Retourne nullptr en cas d'erreur.
  */
 Rect* MonUtils::GetMonitorRect(HMONITOR _monitor)
 {
@@ -84,14 +84,14 @@ Rect* MonUtils::GetMonitorRect(HMONITOR _monitor)
 		return new Rect(monitorInfo.rcMonitor);
 	}
 	
-	return NULL;
+	return nullptr;
 }
 
 /**
  * @param _window La fenêtre dont on veut connaitre la position relative.
  * @param _rectMon La position du moniteur.
  * @return La position relative de la fenêtre par rappot au moniteur.
- * Retourne NULL en cas d'erreur.
+ * Retourne nullptr en cas d'erreur.
  */
 Rect* MonUtils::GetRelativePos(HWND _window, Rect _rectMon)
 {
@@ -107,7 +107,7 @@ Rect* MonUtils::GetRelativePos(HWND _window, Rect _rectMon)
 		return relativePos;
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 /**
@@ -216,7 +216,7 @@ bool MonUtils::MoveWindow(HWND _window, HMONITOR _srcMonitor, HMONITOR _destMoni
 		std::cout << "!!! ApplyOffest(*newRelPos, rectDestMon->left, rectDestMon->top) failed !!!" << std::endl;
 	}
 
-	SetWindowPos(_window, NULL, newPos->left, newPos->top, newPos->width, newPos->height, SWP_SHOWWINDOW);
+	SetWindowPos(_window, nullptr, newPos->left, newPos->top, newPos->width, newPos->height, SWP_SHOWWINDOW);
 	
 	// Suppression des pointeurs créés
 	delete(srcMonPos);
@@ -243,7 +243,7 @@ bool MonUtils::SwitchWindow()
 	}
 
 	// On établit la liste des moniteurs
-	EnumDisplayMonitors(NULL, NULL, MonitorEnumProc, 0);  
+	EnumDisplayMonitors(nullptr, nullptr, MonitorEnumProc, 0);  
 
 	// Récupération de la fenêtre au premier plan
 	HWND foregroundWindow = GetForegroundWindow();

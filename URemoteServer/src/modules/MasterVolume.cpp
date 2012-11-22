@@ -14,13 +14,13 @@ using namespace std;
 // Fonctions privées
 //////////////////////////////////////////////////////////////////////////////
 
-MasterVolume* MasterVolume::s_MasterVolume = NULL; 
+MasterVolume* MasterVolume::s_MasterVolume = nullptr; 
 
 //! Cette fonction permet d'initialiser la librairie COM
 MasterVolume::MasterVolume(void)
 {
 	// Initialisation de la librairie com
-	if (CoInitialize(NULL) != S_OK) {
+	if (CoInitialize(nullptr) != S_OK) {
 		cout << "CoInitialize failed" << endl;
 	}
 	LoadEndpointVolume();
@@ -35,14 +35,14 @@ MasterVolume::~MasterVolume(void)
 //! Initialisation de l'objet permettant le contrôle du volume
 void MasterVolume::LoadEndpointVolume()
 {
-	m_EndpointVolume = NULL;
+	m_EndpointVolume = nullptr;
 
 	HRESULT hr;
-	IMMDeviceEnumerator *deviceEnumerator = NULL;
-	IMMDevice *defaultDevice = NULL;
+	IMMDeviceEnumerator *deviceEnumerator = nullptr;
+	IMMDevice *defaultDevice = nullptr;
 
 	// Récupération de la liste des périphériques audio
-	hr = CoCreateInstance(__uuidof(MMDeviceEnumerator), NULL, CLSCTX_INPROC_SERVER, __uuidof(IMMDeviceEnumerator), (LPVOID *)&deviceEnumerator);
+	hr = CoCreateInstance(__uuidof(MMDeviceEnumerator), nullptr, CLSCTX_INPROC_SERVER, __uuidof(IMMDeviceEnumerator), (LPVOID *)&deviceEnumerator);
 	if (hr != S_OK) {
 		cout << "CoCreateInstance failed with error: " << hr << endl;
 		return;
@@ -58,11 +58,11 @@ void MasterVolume::LoadEndpointVolume()
 	// Libération de la liste des périphériques
 	if (deviceEnumerator) {
 		deviceEnumerator->Release();
-		deviceEnumerator = NULL;
+		deviceEnumerator = nullptr;
 	}
 
 	// Récupération de l'objet permettant le contrôle du volume
-	hr = defaultDevice->Activate(__uuidof(IAudioEndpointVolume), CLSCTX_INPROC_SERVER, NULL, (LPVOID *)&m_EndpointVolume);
+	hr = defaultDevice->Activate(__uuidof(IAudioEndpointVolume), CLSCTX_INPROC_SERVER, nullptr, (LPVOID *)&m_EndpointVolume);
 	if (hr != S_OK) {
 		cout << "defaultDevice->Activate failed with error: " << hr << endl;
 		return;
@@ -70,7 +70,7 @@ void MasterVolume::LoadEndpointVolume()
 
 	if (defaultDevice) {
 		defaultDevice->Release();
-		defaultDevice = NULL; 
+		defaultDevice = nullptr; 
 	}
 }
 
@@ -79,7 +79,7 @@ void MasterVolume::FreeEndpointVolume()
 {
 	if (m_EndpointVolume) {
 		m_EndpointVolume->Release();
-		m_EndpointVolume = NULL;
+		m_EndpointVolume = nullptr;
 	}
 }
 
@@ -97,7 +97,7 @@ bool MasterVolume::IsMute()
 //! Definit l'état de mute
 void MasterVolume::SetMute(bool _isMute)
 {
-	HRESULT hr = m_EndpointVolume->SetMute(_isMute, NULL);
+	HRESULT hr = m_EndpointVolume->SetMute(_isMute, nullptr);
 	if (hr != S_OK) {
 		cout << "An error occured while setting muting state !" << endl;
 	}
@@ -118,7 +118,7 @@ float MasterVolume::GetVolume()
 // Définit le nouveau volume
 void MasterVolume::SetVolume(float _newVolume)
 {
-	HRESULT hr = m_EndpointVolume->SetMasterVolumeLevelScalar(_newVolume, NULL);
+	HRESULT hr = m_EndpointVolume->SetMasterVolumeLevelScalar(_newVolume, nullptr);
 	if (hr != S_OK) {
 		cout << "An error occured while setting volume !" << endl;
 	}
@@ -137,7 +137,7 @@ MasterVolume* MasterVolume::GetInstance() {
 
 void MasterVolume::FreeInstance() {
 	delete(s_MasterVolume);
-	s_MasterVolume = NULL;
+	s_MasterVolume = nullptr;
 }
 
 //! Change l'état de mute et renvoie le nouvel état

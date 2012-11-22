@@ -45,7 +45,7 @@ bool Server::Start()
 		cout << "Waiting for client to connect..." << endl;
 		
 		//m_CSocket = accept(m_ListenSocket, (SOCKADDR *)&csin, &sizeofcsin);
-		m_CSocket = accept(m_ListenSocket, NULL, NULL);
+		m_CSocket = accept(m_ListenSocket, nullptr, nullptr);
 		if (m_CSocket == INVALID_SOCKET) {
 			cerr << "accept failed with error: " << WSAGetLastError() << endl;
 			FreeServer();
