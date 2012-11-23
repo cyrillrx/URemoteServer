@@ -8,7 +8,7 @@
 // Fonctions privées
 //////////////////////////////////////////////////////////////////////////////
 
-App* App::s_GomPlayer = nullptr;
+unique_ptr<App> App::s_GomPlayer = nullptr;
 
 App::App(string _label, string _className, string _exePath)
 {
@@ -45,16 +45,15 @@ bool App::Launch()
 // Fonctions publics
 //////////////////////////////////////////////////////////////////////////////
 
-App* App::GetGomPlayer() {
+unique_ptr<App> App::GetGomPlayer() {
 	if (s_GomPlayer)
-		return s_GomPlayer;
+		return move(s_GomPlayer);
 
-	s_GomPlayer = new App("Gom Player", "GomPlayer1.x", "D:\\Programs\\GomPlayer\\GOM.exe");
-	return s_GomPlayer;
+	s_GomPlayer = unique_ptr<App>(new App("Gom Player", "GomPlayer1.x", "D:\\Programs\\GomPlayer\\GOM.exe"));
+	return move(s_GomPlayer);
 }
 
 void App::FreeGomPlayer() {
-	delete(s_GomPlayer);
 	s_GomPlayer = nullptr;
 }
 
