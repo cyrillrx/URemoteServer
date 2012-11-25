@@ -1,16 +1,21 @@
 #include "Speech.h"
-#include <Windows.h>
+
+#include <thread>
 
 void Speech::SayB(bstr_t _textToSpeak)
 {
 	ISpVoice * ispVoice = nullptr;
-    if (FAILED(::CoInitialize(nullptr)))
+    if (FAILED(::CoInitialize(nullptr))) {
         return;
+	}
 
 	HRESULT hr = CoCreateInstance(CLSID_SpVoice, nullptr, CLSCTX_ALL, IID_ISpVoice, (void **)&ispVoice);
     if (SUCCEEDED( hr )) {
+		//ISpObjectToken* cpTokenEng;
+		//hr = SpFindBestToken(SPCAT_VOICES, L"Language=409", L"Gender=Female", &cpTokenEng);
+		//ispVoice->SetVoice(cpTokenEng);
 
-		ispVoice->SetRate(-2);
+		ispVoice->SetRate(+1);
 	
 		hr = ispVoice->Speak(_textToSpeak, SPF_ASYNC, nullptr);
 		if (hr == S_OK) {
@@ -56,7 +61,6 @@ void Speech::Say(string _textToSpeak)
 
 void Speech::SayInThread(string _textToSpeak)
 {
-	string *ptTextToSpeak = new string(_textToSpeak);
-	DWORD threadID;
-	CreateThread(0, 0, SayThread, ptTextToSpeak, 0, &threadID);
+	thread t(Say, _textToSpeak);
+	t.join();
 }
