@@ -12,11 +12,11 @@ using namespace std;
 
 unique_ptr<App> App::s_GomPlayer = nullptr;
 
-App::App(string _label, string _className, string _exePath)
+App::App(string label, string className, string exePath)
 {
-	mLabel		= _label;
-	mClassName	= _className;
-	mExePath	= _exePath;
+	mLabel		= label;
+	mClassName	= className;
+	mExePath	= exePath;
 }
 
 App::~App(void)

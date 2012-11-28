@@ -8,10 +8,10 @@
 class Speech
 {
 private:
-	static void SayB(bstr_t _textToSpeak);
-	static DWORD WINAPI SayThread(void* _textToSpeak);
+	static void SayB(bstr_t textToSpeak);
+	static DWORD WINAPI SayThread(void* textToSpeak);
 
 public:
-	static void Say(std::string _textToSpeak);
-	static void SayInThread(std::string _textToSpeak);
+	static void Say(std::string textToSpeak);
+	static void SayInThread(std::string textToSpeak);
 };

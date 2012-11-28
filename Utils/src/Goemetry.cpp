@@ -7,16 +7,12 @@ using namespace std;
 /////////////////////////////////////////////////////////
 // PointF
 /////////////////////////////////////////////////////////
-PointF::PointF(float _x, float _y)
+PointF::PointF(float _x, float _y) : x(_x), y(_y) 
 {
-	x = _x;
-	y = _y;
 }
 
-PointF::PointF(POINT _point)
+PointF::PointF(POINT point) :  x((float)point.x), y((float)point.y)
 {
-	x = _point.x;
-	y = _point.y;
 }
 
 void PointF::Display(string _name)
@@ -28,20 +24,12 @@ void PointF::Display(string _name)
 /////////////////////////////////////////////////////////
 // Rect
 /////////////////////////////////////////////////////////
-Rect::Rect(int _left, int _top, int _right, int _bottom)
+Rect::Rect(int _left, int _top, int _right, int _bottom) : left(_left), top(_top), right(_right), bottom(_bottom)
 {
-	left	= _left;
-	top	= _top;
-	right	= _right;
-	bottom = _bottom;
 }
 
-Rect::Rect(RECT _rect)
+Rect::Rect(RECT rect) : left(rect.left), top(rect.top), right(rect.right), bottom(rect.bottom)
 {
-	left	= _rect.left;
-	top	= _rect.top;
-	right	= _rect.right;
-	bottom = _rect.bottom;
 }
 
 void Rect::Display(string _name)

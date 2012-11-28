@@ -184,7 +184,7 @@ void Exchange::ClassicCommand(AI* ai, Response* reply, Request_Code code)
 }
 
 /** Handle volume commands. */
-void Exchange::VolumeCommand(Response* reply, Request_Code code, int _intParam)
+void Exchange::VolumeCommand(Response* reply, Request_Code code, int intParam)
 {
 	float fVolumeLvl;
 	bool isMute;
@@ -196,14 +196,14 @@ void Exchange::VolumeCommand(Response* reply, Request_Code code, int _intParam)
 	switch (code) {
 
 	case Request_Code_DEFINE:
-		fVolumeLvl = MasterVolume::GetInstance()->Define(_intParam);
+		fVolumeLvl = MasterVolume::GetInstance()->Define(intParam);
 		MasterVolume::FreeInstance();
 
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
-		volumePoucentage = fVolumeLvl * 100;
+		volumePoucentage = (int) (fVolumeLvl * 100);
 		reply->set_intvalue(volumePoucentage);
 		
-		sprintf(buffer,  "Volume up to %d%%", volumePoucentage);
+		sprintf_s(buffer,  "Volume up to %d%%", volumePoucentage);
 		message = buffer;
 		break;
 
@@ -212,10 +212,10 @@ void Exchange::VolumeCommand(Response* reply, Request_Code code, int _intParam)
 		MasterVolume::FreeInstance();
 
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
-		volumePoucentage = fVolumeLvl * 100;
+		volumePoucentage = (int) (fVolumeLvl * 100);
 		reply->set_intvalue(volumePoucentage);
 		
-		sprintf(buffer,  "Volume up to %d%%", volumePoucentage);
+		sprintf_s(buffer,  "Volume up to %d%%", volumePoucentage);
 		message = buffer;
 		break;
 			
@@ -224,10 +224,10 @@ void Exchange::VolumeCommand(Response* reply, Request_Code code, int _intParam)
 		MasterVolume::FreeInstance();
 
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
-		volumePoucentage = fVolumeLvl * 100;
+		volumePoucentage = (int) (fVolumeLvl * 100);
 		reply->set_intvalue(volumePoucentage);
 		
-		sprintf(buffer,  "Volume down to %d%%", volumePoucentage);
+		sprintf_s(buffer,  "Volume down to %d%%", volumePoucentage);
 		message = buffer;
 		break;
 			
@@ -318,12 +318,12 @@ void Exchange::ShutdownPC(AI* ai, Response* reply, int delay)
 	ai->StopConnection();
 	
 	char command[100];
-	sprintf(command, "Shutdown.exe -s -t %d -c \"L'ordinateur va s'éteindre dans %d secondes\"", delay, delay);
+	sprintf_s(command, "Shutdown.exe -s -t %d -c \"L'ordinateur va s'éteindre dans %d secondes\"", delay, delay);
 	system(command);
 
 	reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 	char message[50];
-	sprintf(message, "PC will shutdown in %d seconds", delay);
+	sprintf_s(message, "PC will shutdown in %d seconds", delay);
 	reply->set_message(message);
 
 	ai->Say(message);

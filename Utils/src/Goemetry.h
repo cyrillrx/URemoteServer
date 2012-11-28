@@ -3,7 +3,7 @@
 #include <string>
 #include <Windows.h>
 
-struct PointF
+class PointF
 {
 public:
 	PointF(float x = 0, float y = 0);
@@ -15,11 +15,12 @@ public:
 	
 };
 
-struct Rect
+class Rect
 {
 public:
 	Rect(int left = 0, int top = 0, int right = 0, int bottom = 0);
 	Rect(RECT rect);
+
 	void Display(std::string name);
 	int GetWidth();
 	void SetWidth(int width);

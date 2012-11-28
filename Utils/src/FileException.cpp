@@ -1,24 +1,16 @@
 #include "stdafx.h"
 #include "FileException.h"
 
-FileException::FileException() { }
+FileException::FileException(std::string message) : m_Message(message) { }
 
 OpenFileException::OpenFileException()
-{
-	m_Message = "OpenFileException : Error while opening file."; 
-}
+	: FileException("OpenFileException : Error while opening file.")	{ }
 
 CloseFileException::CloseFileException()
-{
-	m_Message = "CloseFileException : Error while closing file."; 
-}
+	: FileException("CloseFileException : Error while closing file.")	{ }
 
 ReadFileException::ReadFileException()
-{
-	m_Message = "ReadFileException : Error while reading file."; 
-}
+	: FileException("ReadFileException : Error while reading file.")	{ }
 
 WriteFileException::WriteFileException()
-{
-	m_Message = "WriteFileException : Error while writting file."; 
-}
+	: FileException("WriteFileException : Error while writting file.")	{ }

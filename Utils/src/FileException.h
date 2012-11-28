@@ -8,31 +8,15 @@
 class FileException
 {
 public:
-	FileException();
+	FileException(std::string message);
 protected:
 	std::string m_Message;
 };
 
-class OpenFileException  : public FileException
-{
-public:
-	OpenFileException();
-};
-
-class CloseFileException : public FileException 
-{
-public:
-	CloseFileException();
-};
-
-class ReadFileException  : public FileException 
-{
-public:
-	ReadFileException();
-};
-
-class WriteFileException : public FileException 
-{
-public:
-	WriteFileException();
-};
+/*
+ * Derived classes of FileException
+ */
+class OpenFileException		: public FileException { public: OpenFileException();	};
+class CloseFileException	: public FileException { public: CloseFileException();	};
+class ReadFileException		: public FileException { public: ReadFileException();	};
+class WriteFileException	: public FileException { public: WriteFileException();	};

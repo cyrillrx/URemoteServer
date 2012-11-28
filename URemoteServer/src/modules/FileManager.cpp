@@ -15,23 +15,23 @@ using namespace network;
 // Fonctions publics
 //////////////////////////////////////////////////////////////////////////////
 
-void FileManager::HandleMessage(Response* _reply, Request_Code _code, string _param)
+void FileManager::HandleMessage(Response* reply, Request_Code code, string param)
 {
 
-	switch (_code) {
+	switch (code) {
 
 	case Request_Code_GET_FILE_LIST:
-		GetDirectoryContent(_reply, _param);
+		GetDirectoryContent(reply, param);
 		break;
 
 	case Request_Code_OPEN_FILE:
-		_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
-		_reply->set_message(OpenFile(_param));
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_message(OpenFile(param));
 		break;
 
 	default:
-		_reply->set_returncode(Response_ReturnCode_RC_ERROR);
-		_reply->set_message("Unknown code received : " + _code);
+		reply->set_returncode(Response_ReturnCode_RC_ERROR);
+		reply->set_message("Unknown code received : " + code);
 		break;
 	}
 }
@@ -40,22 +40,22 @@ void FileManager::HandleMessage(Response* _reply, Request_Code _code, string _pa
 // Fonctions privées
 //////////////////////////////////////////////////////////////////////////////
 
-bool FileManager::GetDirectoryContent(Response* _reply, string _dirPath)
+bool FileManager::GetDirectoryContent(Response* reply, string dirPath)
 {
-	cout << "Target directory is " << _dirPath.c_str() << endl;
+	cout << "Target directory is " << dirPath.c_str() << endl;
 
 	
 	// Préparation de la chaine pour l'utilisation de la fonction FindFile
 	// On ajoute "\\*" à la fin du nom de repertoire.
-	string searchPath = _dirPath + "\\*";
+	string searchPath = dirPath + "\\*";
 	string errorMessage;
 
 	// On vérifie que le chemin ne soit pas plus grand que la taille maximum autorisée (MAX_PATH) 
 	if (searchPath.length() > MAX_PATH) {
 		errorMessage = "Directory path is too long.";
 		cerr << errorMessage << endl;
-		_reply->set_returncode(Response_ReturnCode_RC_ERROR);
-		_reply->set_message(errorMessage);
+		reply->set_returncode(Response_ReturnCode_RC_ERROR);
+		reply->set_message(errorMessage);
 		return false;
 	}
 
@@ -67,15 +67,15 @@ bool FileManager::GetDirectoryContent(Response* _reply, string _dirPath)
 	if (hFind == INVALID_HANDLE_VALUE) {
 		errorMessage = "FindFirstFile error : INVALID_HANDLE_VALUE";
 		cerr << errorMessage << endl;
-		_reply->set_returncode(Response_ReturnCode_RC_ERROR);
-		_reply->set_message(errorMessage);
+		reply->set_returncode(Response_ReturnCode_RC_ERROR);
+		reply->set_message(errorMessage);
 		return false;
 	}
 
 	// Initialisation du vecteur à retourner
 	//DirContent* dirContent = new DirContent();
-	DirContent *dirContent = _reply->mutable_dircontent();
-	dirContent->set_path(_dirPath);
+	DirContent *dirContent = reply->mutable_dircontent();
+	dirContent->set_path(dirPath);
 
 	// Lister tous les fichiers du repertoire en récupérant quelques infos.
 	LARGE_INTEGER filesize;
@@ -113,30 +113,30 @@ bool FileManager::GetDirectoryContent(Response* _reply, string _dirPath)
 	if (dwError != ERROR_NO_MORE_FILES) {
 		errorMessage = "FindNextFile error : " + dwError;
 		cerr << errorMessage << endl;
-		_reply->set_returncode(Response_ReturnCode_RC_ERROR);
-		_reply->set_message(errorMessage);
+		reply->set_returncode(Response_ReturnCode_RC_ERROR);
+		reply->set_message(errorMessage);
 		return false;
 	}
 	
 	FindClose(hFind);
-	_reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+	reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 
 	return true;
 }
 
-string FileManager::OpenFile(string _filePath)
+string FileManager::OpenFile(string filePath)
 {
-	bstr_t filePath(_filePath.c_str());
-	ShellExecute(nullptr, nullptr, filePath, nullptr, nullptr, SW_SHOWMAXIMIZED);
-	return "Opening file : "  + _filePath;
+	bstr_t path(filePath.c_str());
+	ShellExecute(nullptr, nullptr, path, nullptr, nullptr, SW_SHOWMAXIMIZED);
+	return "Opening file : "  + filePath;
 }
 
-bool FileManager::AddFile(DirContent* _dirContent, string _filename, DirContent_File_FileType _type, int _size)
+bool FileManager::AddFile(DirContent* dirContent, string filename, DirContent_File_FileType type, int size)
 {
-	DirContent_File *file = _dirContent->add_file();
-	file->set_name(_filename);
-	file->set_type(_type);
-	file->set_size(_size);
+	DirContent_File *file = dirContent->add_file();
+	file->set_name(filename);
+	file->set_type(type);
+	file->set_size(size);
 
 	return true;
 }

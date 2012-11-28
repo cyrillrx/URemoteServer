@@ -101,9 +101,9 @@ Rect* MonUtils::GetRelativePos(HWND _window, Rect _rectMon)
 		Rect *relativePos = new Rect();
 		// Calcul de l'offset en pixels
 		relativePos->left	= windowPos.left	- _rectMon.left;
-		relativePos->top	= windowPos.top	- _rectMon.top;
+		relativePos->top	= windowPos.top		- _rectMon.top;
 		relativePos->right	= windowPos.right	- _rectMon.left;
-		relativePos->bottom	= windowPos.bottom- _rectMon.top;
+		relativePos->bottom	= windowPos.bottom	- _rectMon.top;
 		return relativePos;
 	}
 
@@ -127,17 +127,17 @@ PointF MonUtils::GetRectCoef(Rect _rect1, Rect _rect2)
 
 /**
  * Application d'un coefficient à un rectange.
- * @param _rectIn Le rectangle.
- * @param _coef Le coefficient à appliquer.
+ * @param rectIn Le rectangle à redimensionner.
+ * @param coef Le coefficient à appliquer.
  * @return Le rectangle redimensionné.
  */
-Rect* MonUtils::ApplyCoef(Rect _rectIn, PointF _coef)
+Rect* MonUtils::ApplyCoef(Rect rectIn, PointF coef)
 {
 	Rect *rectOut = new Rect();
-	rectOut->left	= _rectIn.left	* _coef.x;
-	rectOut->top		= _rectIn.top	* _coef.y;
-	rectOut->right	= _rectIn.right	* _coef.x;
-	rectOut->bottom	= _rectIn.bottom * _coef.y;
+	rectOut->left	= (int) ((float)rectIn.left		* coef.x);
+	rectOut->top	= (int) ((float)rectIn.top		* coef.y);
+	rectOut->right	= (int) ((float)rectIn.right	* coef.x);
+	rectOut->bottom	= (int) ((float)rectIn.bottom	* coef.y);
 
 	return rectOut;
 }
