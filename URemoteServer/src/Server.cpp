@@ -8,6 +8,9 @@
 //#define BUFFER_SIZE BUFSIZ
 #define BUFFER_SIZE 4096
 
+using namespace std;
+using namespace network;
+
 int Server::s_InstanceCount = 0;
 
 //////////////////////////////////////////////////////////////////////////////

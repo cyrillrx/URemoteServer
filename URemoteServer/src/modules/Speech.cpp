@@ -2,6 +2,8 @@
 
 #include <thread>
 
+using namespace std;
+
 void Speech::SayB(bstr_t _textToSpeak)
 {
 	ISpVoice * ispVoice = nullptr;

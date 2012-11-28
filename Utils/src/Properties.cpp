@@ -2,6 +2,8 @@
 #include "Properties.h"
 #include <sstream>
 
+using namespace std;
+
 Properties::Properties(const string& path) : m_FilePath(path)
 {
 	LoadProperties(m_FilePath);

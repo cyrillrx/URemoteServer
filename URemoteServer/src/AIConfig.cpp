@@ -1,5 +1,7 @@
 #include "AIConfig.h"
 
+using namespace std;
+
 const string AIConfig::KEY_NAME = "name";
 const string AIConfig::KEY_MUTE = "mute";
 const string AIConfig::DEFAULT_NAME = "Eternity";

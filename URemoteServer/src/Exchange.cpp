@@ -12,6 +12,9 @@
 #include "modules\Keyboard.h"
 #include "modules\App.h"
 
+using namespace std;
+using namespace network;
+
 SerializedExchange Exchange::HandleMessage(AI* ai, SerializedExchange serializedRequest, bool &continueToListen)
 {
 	Request* request = GetRequest(serializedRequest);

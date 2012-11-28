@@ -4,29 +4,27 @@
 #include <string>
 #include <memory>
 
-using namespace std;
-
 BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam);
 
 class App
 {
-private:
-	static unique_ptr<App> s_GomPlayer;
-	string mLabel;
-	string mExePath;
-	string mClassName;
-
-	App(string _label, string _className, string _exePath);
-
-	bool SetOnTop();
-	bool Launch();
-
 public:
-	static unique_ptr<App> GetGomPlayer();
+	static std::unique_ptr<App> GetGomPlayer();
 	~App(void);
 	static void FreeGomPlayer();
 	
-	string Show();
-	string Close();
-	string Strech();
+	std::string Show();
+	std::string Close();
+	std::string Strech();
+	
+private:
+	static std::unique_ptr<App> s_GomPlayer;
+	std::string mLabel;
+	std::string mExePath;
+	std::string mClassName;
+
+	App(std::string label, std::string className, std::string exePath);
+
+	bool SetOnTop();
+	bool Launch();
 };

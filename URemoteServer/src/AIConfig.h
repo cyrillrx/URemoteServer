@@ -6,17 +6,16 @@
 class AIConfig : public Properties
 {
 public:
-	AIConfig(const string& path);
+	AIConfig(const std::string& path);
 	~AIConfig();
 	
-	string Name;
+	std::string Name;
 	bool IsMute;
 
 private:
-	static const string KEY_NAME;
-	static const string KEY_MUTE;
+	static const std::string KEY_NAME;
+	static const std::string KEY_MUTE;
 
-	static const string DEFAULT_NAME;
+	static const std::string DEFAULT_NAME;
 	static const bool DEFAULT_MUTE;
 };
-

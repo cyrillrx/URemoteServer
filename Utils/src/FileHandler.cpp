@@ -1,6 +1,8 @@
 #include "StdAfx.h"
 #include "FileHandler.h"
 
+using namespace std;
+
 FileHandler::FileHandler(const string& path, const int openType)
 {
 	if (openType == OPEN_TYPE_READ) {

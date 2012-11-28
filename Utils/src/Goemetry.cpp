@@ -2,6 +2,8 @@
 #include "Goemetry.h"
 #include <iostream>
 
+using namespace std;
+
 /////////////////////////////////////////////////////////
 // PointF
 /////////////////////////////////////////////////////////
@@ -17,10 +19,10 @@ PointF::PointF(POINT _point)
 	y = _point.y;
 }
 
-void PointF::Display(std::string _name)
+void PointF::Display(string _name)
 {
-	std::cout << "Displaying " << _name.c_str() << std::endl;
-	std::cout << "(" << x << "; " << y	<< ")" << std::endl << std::endl;
+	cout << "Displaying " << _name.c_str() << endl;
+	cout << "(" << x << "; " << y	<< ")" << endl << endl;
 }
 
 /////////////////////////////////////////////////////////
@@ -42,12 +44,12 @@ Rect::Rect(RECT _rect)
 	bottom = _rect.bottom;
 }
 
-void Rect::Display(std::string _name)
+void Rect::Display(string _name)
 {
-	std::cout << "Displaying " << _name.c_str() << std::endl;
-	std::cout << " - Position : "	<< left	<< ", "	<< top << ", ";
-	std::cout << right << ", "	<< bottom << std::endl;
-	std::cout << " - Dimensions : "	<< width << "x"	<< height << std::endl << std::endl;
+	cout << "Displaying " << _name.c_str() << endl;
+	cout << " - Position : "	<< left	<< ", "	<< top << ", ";
+	cout << right << ", "	<< bottom << endl;
+	cout << " - Dimensions : "	<< GetWidth() << "x" << GetHeight() << endl << endl;
 }
 
 int Rect::GetWidth()

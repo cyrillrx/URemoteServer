@@ -4,8 +4,7 @@
 #include "server_exchange.pb.h"
 #include "AI.h"
 
-using namespace std;
-using namespace network;
+class AI;
 
 class SerializedExchange 
 {
@@ -14,19 +13,17 @@ public :
 	char* buffer;
 };
 
-class AI;
 class Exchange
 {
 public :
-	
 	static SerializedExchange HandleMessage(AI* ai, SerializedExchange serializedRequest, bool &continueToListen);
-	static Request* GetRequest(SerializedExchange request);
-	static SerializedExchange GetSerializeResponse(Response* response);
+	static network::Request* GetRequest(SerializedExchange serializedRequest);
+	static SerializedExchange GetSerializeResponse(network::Response* response);
 
 private :
-	static void ClassicCommand(AI* ai, Response* reply, Request_Code code);
-	static void VolumeCommand(Response* reply, Request_Code code, int intParam);
-	static void AICommand(AI* ai, Response* reply, Request_Code code);
-	static void AppCommand(Response* reply, Request_Code code);
-	static void ShutdownPC(AI* ai, Response* reply, int delay);
+	static void ClassicCommand(AI* ai, network::Response* reply, network::Request_Code code);
+	static void VolumeCommand(network::Response* reply, network::Request_Code code, int intParam);
+	static void AICommand(AI* ai, network::Response* reply, network::Request_Code code);
+	static void AppCommand(network::Response* reply, network::Request_Code code);
+	static void ShutdownPC(AI* ai, network::Response* reply, int delay);
 };

@@ -5,32 +5,30 @@
 #include "Property.h"
 #include "PropertyException.h"
 
-using namespace std;
-
 class Properties
 {
 public:
-	Properties(const string& path);
+	Properties(const std::string& path);
 	~Properties();
 
 protected:
-	void LoadProperties(const string& path);
-	void SaveProperties(const string& path);
+	void LoadProperties(const std::string& path);
+	void SaveProperties(const std::string& path);
 	void SaveProperties();
 	
-	const string GetString(const string& key);
-	const string GetString(const string& key, const string& defaultValue);
-	void SetString(const string& key, const string& value);
+	const std::string GetString(const std::string& key);
+	const std::string GetString(const std::string& key, const std::string& defaultValue);
+	void SetString(const std::string& key, const std::string& value);
 
-	const int GetInt(const string& key);
-	const int GetInt(const string& key, const int& defaultValue);
-	void SetInt(const string& key, const int& value);
+	const int GetInt(const std::string& key);
+	const int GetInt(const std::string& key, const int& defaultValue);
+	void SetInt(const std::string& key, const int& value);
 
-	const bool GetBool(const string& key);
-	const bool GetBool(const string& key, const bool& defaultValue);
-	void SetBool(const string& key, const bool& value);
+	const bool GetBool(const std::string& key);
+	const bool GetBool(const std::string& key, const bool& defaultValue);
+	void SetBool(const std::string& key, const bool& value);
 
 private:
-	string m_FilePath;
-	vector<Property> m_Properties;
+	std::string m_FilePath;
+	std::vector<Property> m_Properties;
 };

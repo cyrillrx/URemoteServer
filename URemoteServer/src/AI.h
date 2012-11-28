@@ -7,24 +7,24 @@
 #include "ServerConfig.h"
 #include "Server.h"
 
-using namespace std;
 class Server;
+
 class AI
 {
 public:
-	AI(unique_ptr<AIConfig> aiConfig);
+	AI(std::unique_ptr<AIConfig> aiConfig);
 	~AI();
 
-	bool StartConnection(unique_ptr<ServerConfig> serverConfig);
+	bool StartConnection(std::unique_ptr<ServerConfig> serverConfig);
 	bool StopConnection();
 
 	void Welcome();
-	void Say(string textToSpeak);
+	void Say(std::string textToSpeak);
 	bool ToggleMute();
 
 private:
-	unique_ptr<AIConfig> m_Config;
-	unique_ptr<Server> m_ExchangeServer;
+	std::unique_ptr<AIConfig> m_Config;
+	std::unique_ptr<Server> m_ExchangeServer;
 	time_t m_LastWelcome;
 	
 	void Start();

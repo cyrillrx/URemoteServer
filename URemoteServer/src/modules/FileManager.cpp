@@ -1,12 +1,15 @@
 #include "FileManager.h"
-#include "StringUtils.h"
 
+#include "StringUtils.h"
 #include <windows.h>
 #include <sstream>
 
 #define FindNextFile FindNextFileA
 #define FindFirstFile FindFirstFileA
 #define WIN32_FIND_DATA WIN32_FIND_DATAA
+
+using namespace std;
+using namespace network;
 
 //////////////////////////////////////////////////////////////////////////////
 // Fonctions publics

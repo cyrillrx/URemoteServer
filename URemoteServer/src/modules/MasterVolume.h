@@ -5,7 +5,15 @@
 
 class MasterVolume
 {
+public :
+	static MasterVolume* GetInstance();
+	static void FreeInstance();
 	
+	bool ToggleMute();
+	float Define(int volumePoucentage);
+	float TurnUp();
+	float TurnDown();
+
 private :
 	static MasterVolume *s_MasterVolume; 
 	IAudioEndpointVolume *m_EndpointVolume;
@@ -17,18 +25,8 @@ private :
 	void FreeEndpointVolume();
 	
 	bool IsMute();
-	void SetMute(bool _mute);
+	void SetMute(bool mute);
 
 	float GetVolume();
-	void SetVolume(float _newVolume);
-
-public :
-	static MasterVolume* GetInstance();
-	static void FreeInstance();
-	
-	bool ToggleMute();
-	float Define(int _volumePoucentage);
-	float TurnUp();
-	float TurnDown();
-	
+	void SetVolume(float volume);	
 };

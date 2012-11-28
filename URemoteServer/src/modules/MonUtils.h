@@ -6,20 +6,20 @@
 
 class MonUtils
 {
+public:
+	static bool SwitchWindow();
+
 private:
 	static std::vector<HMONITOR> s_vcMonitors;
 	
-	static BOOL CALLBACK MonitorEnumProc(HMONITOR _monitor, HDC _hdcMonitor, LPRECT _lpMonitorRect, LPARAM _dwData);
-	static int GetMonitorIndex(HMONITOR _monitor);
-	static int GetNextMonitorIndex(HMONITOR _monitor);
-	static HMONITOR GetNextMonitor(HMONITOR _monitor);
-	static Rect* GetMonitorRect(HMONITOR _monitor);
-	static Rect* GetRelativePos(HWND _window, Rect _rectMon);
-	static PointF GetRectCoef(Rect _rect1, Rect _rect2);
-	static Rect* ApplyCoef(Rect _rectIn, PointF _coef);
-	static Rect* ApplyOffest(Rect _relativePos, int _offsetX, int _offsetY);
-	static bool MoveWindow(HWND _window, HMONITOR _monitorSrc, HMONITOR _monitorDest);
-
-public:
-	static bool SwitchWindow();
+	static BOOL CALLBACK MonitorEnumProc(HMONITOR monitor, HDC hdcMonitor, LPRECT lpMonitorRect, LPARAM dwData);
+	static int GetMonitorIndex(HMONITOR monitor);
+	static int GetNextMonitorIndex(HMONITOR monitor);
+	static HMONITOR GetNextMonitor(HMONITOR monitor);
+	static Rect* GetMonitorRect(HMONITOR monitor);
+	static Rect* GetRelativePos(HWND window, Rect rectMon);
+	static PointF GetRectCoef(Rect rect1, Rect rect2);
+	static Rect* ApplyCoef(Rect rectIn, PointF coef);
+	static Rect* ApplyOffest(Rect relativePos, int offsetX, int offsetY);
+	static bool MoveWindow(HWND window, HMONITOR monitorSrc, HMONITOR monitorDest);
 };

@@ -5,8 +5,6 @@
 #include <comdef.h>
 #include <sphelper.h>
 
-using namespace std;
-
 class Speech
 {
 private:
@@ -14,6 +12,6 @@ private:
 	static DWORD WINAPI SayThread(void* _textToSpeak);
 
 public:
-	static void Say(string _textToSpeak);
-	static void SayInThread(string _textToSpeak);
+	static void Say(std::string _textToSpeak);
+	static void SayInThread(std::string _textToSpeak);
 };

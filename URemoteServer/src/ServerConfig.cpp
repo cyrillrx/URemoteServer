@@ -1,5 +1,7 @@
 #include "ServerConfig.h"
 
+using namespace std;
+
 const string ServerConfig::KEY_PORT = "port";
 const string ServerConfig::KEY_MAX_CONNECTIONS = "maxConnections";
 

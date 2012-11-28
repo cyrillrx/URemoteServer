@@ -4,8 +4,7 @@
 
 #pragma comment(lib, "ws2_32.lib")
 
-#define PORT 8082 
-#define MAX_CONCURRENT_CONNECTIONS 2
+using namespace std;
 
 int main()
 {

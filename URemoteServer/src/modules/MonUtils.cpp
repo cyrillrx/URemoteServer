@@ -119,8 +119,8 @@ Rect* MonUtils::GetRelativePos(HWND _window, Rect _rectMon)
 PointF MonUtils::GetRectCoef(Rect _rect1, Rect _rect2)
 {
 	PointF coef;
-	coef.x = (float) (_rect2.width) / (float) (_rect1.width);
-	coef.y = (float) (_rect2.height) / (float) (_rect1.height);
+	coef.x = (float) (_rect2.GetWidth()) / (float) (_rect1.GetWidth());
+	coef.y = (float) (_rect2.GetHeight()) / (float) (_rect1.GetHeight());
 	
 	return coef;
 }
@@ -135,7 +135,7 @@ Rect* MonUtils::ApplyCoef(Rect _rectIn, PointF _coef)
 {
 	Rect *rectOut = new Rect();
 	rectOut->left	= _rectIn.left	* _coef.x;
-	rectOut->top	= _rectIn.top	* _coef.y;
+	rectOut->top		= _rectIn.top	* _coef.y;
 	rectOut->right	= _rectIn.right	* _coef.x;
 	rectOut->bottom	= _rectIn.bottom * _coef.y;
 
@@ -216,7 +216,7 @@ bool MonUtils::MoveWindow(HWND _window, HMONITOR _srcMonitor, HMONITOR _destMoni
 		std::cout << "!!! ApplyOffest(*newRelPos, rectDestMon->left, rectDestMon->top) failed !!!" << std::endl;
 	}
 
-	SetWindowPos(_window, nullptr, newPos->left, newPos->top, newPos->width, newPos->height, SWP_SHOWWINDOW);
+	SetWindowPos(_window, nullptr, newPos->left, newPos->top, newPos->GetWidth(), newPos->GetHeight(), SWP_SHOWWINDOW);
 	
 	// Suppression des pointeurs créés
 	delete(srcMonPos);

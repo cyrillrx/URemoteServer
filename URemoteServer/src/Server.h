@@ -6,15 +6,13 @@
 #include "ServerConfig.h"
 #include "server_exchange.pb.h"
 
-using namespace std;
-using namespace network;
-
 class SerializedExchange;
 class AI;
+
 class Server
 {	
 public:
-	Server(unique_ptr<ServerConfig> config, AI *ai);
+	Server(std::unique_ptr<ServerConfig> config, AI *ai);
 	~Server(void);
 	
 	bool Start();
@@ -22,19 +20,20 @@ public:
 
 private :
 	static int s_InstanceCount;
+
 	AI * m_Ai;
-	unique_ptr<ServerConfig> m_Config;
+	std::unique_ptr<ServerConfig> m_Config;
 	
-	string m_Hostname;
-	string m_IpAddress;
+	std::string m_Hostname;
+	std::string m_IpAddress;
 	SOCKET m_CSocket;
 	SOCKET m_ListenSocket;
 	bool m_ContinueToListen;
 
 	bool InitServer();
 	void FreeServer();
-	string GetHostName();
-	string GetIpAddress(string hostname);
+	std::string GetHostName();
+	std::string GetIpAddress(std::string hostname);
 
-	void HandleMessage(SerializedExchange request);
+	void HandleMessage(SerializedExchange serializedRequest);
 };
