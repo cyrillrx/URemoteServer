@@ -7,6 +7,7 @@
 #include "ServerConfig.h"
 #include "Server.h"
 
+class Speech;
 class Server;
 
 class AI
@@ -24,6 +25,7 @@ public:
 
 private:
 	std::unique_ptr<AIConfig> m_Config;
+	std::unique_ptr<Speech> m_Voice;
 	std::unique_ptr<Server> m_ExchangeServer;
 	time_t m_LastWelcome;
 	

@@ -11,6 +11,7 @@ using namespace std;
 //////////////////////////////////////////////////////////////////////////////
 AI::AI(unique_ptr<AIConfig> config) : m_Config(move(config))
 {
+	m_Voice = unique_ptr<Speech>(new Speech(m_Config->Lang, m_Config->Gender));
 	time(&m_LastWelcome);
 	m_LastWelcome -= DELAY;
 
@@ -65,7 +66,7 @@ void AI::Say(string textToSpeak)
 {
 	// Test mute state
 	if (!m_Config->IsMute) {
-		Speech::SayInThread(textToSpeak);
+		m_Voice->SayInThread(textToSpeak);
 	}
 }
 

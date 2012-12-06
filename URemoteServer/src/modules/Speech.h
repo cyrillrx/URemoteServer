@@ -7,11 +7,18 @@
 
 class Speech
 {
-private:
-	static void SayB(bstr_t textToSpeak);
-	static DWORD WINAPI SayThread(void* textToSpeak);
 
 public:
-	static void Say(std::string textToSpeak);
-	static void SayInThread(std::string textToSpeak);
+	Speech(const std::string& lang, const std::string& gender);
+	~Speech();
+
+	void SayInThread(const std::string& textToSpeak);
+
+private:
+	std::string m_Language;
+	std::string m_Gender;
+	
+	static void initVoice(ISpVoice * ispVoice, const std::string& language, const std::string& gender);
+	static void Say(const std::string& textToSpeak, const std::string& language, const std::string& gender);
+	static void SayB(const bstr_t& textToSpeak, const std::string& language, const std::string& gender);
 };
