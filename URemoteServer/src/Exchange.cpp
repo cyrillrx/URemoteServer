@@ -11,20 +11,21 @@
 #include "modules\MasterVolume.h"
 #include "modules\Keyboard.h"
 #include "modules\App.h"
+#include "Translator.h"
 
 using namespace std;
 using namespace network;
 
 SerializedExchange Exchange::HandleMessage(AI* ai, SerializedExchange serializedRequest, bool &continueToListen)
 {
-	Request* request = GetRequest(serializedRequest);
+	auto* request = GetRequest(serializedRequest);
 
-	const Request_Type reqType	= request->type();
-	const Request_Code reqCode	= request->code();
-	const Request_Code reqExtraCode	= request->extracode();
-	const string securityToken	= request->securitytoken();
-	const string strParam	= request->stringparam();
-	const int intParam	= request->intparam();
+	const auto reqType	= request->type();
+	const auto reqCode	= request->code();
+	const auto reqExtraCode	= request->extracode();
+	const auto securityToken	= request->securitytoken();
+	const auto strParam	= request->stringparam();
+	const auto intParam	= request->intparam();
 	
 	cout << "Server::HandleMessage() Received message : " << endl;
 	cout << " - Type		<" << Request_Type_Name(reqType)	<< ">" << endl;
@@ -34,13 +35,16 @@ SerializedExchange Exchange::HandleMessage(AI* ai, SerializedExchange serialized
 	cout << " - str param	<" << strParam						<< ">" << endl;
 	cout << " - int param	<" << intParam						<< ">" << endl;
 
-	Response *reply = new Response();
+	auto* reply = new Response();
 	reply->set_requesttype(reqType);
 	reply->set_requestcode(reqCode);
 
 	if (request->securitytoken() != "1234") {
 		reply->set_returncode(Response_ReturnCode_RC_ERROR);
-		reply->set_message("Unknown security token. You are not authorize to send commands !");
+	//TODO: define Translator::LANG_FR via IA
+	auto translator = Translator::getInstance();
+	//cout << translator->GetString("ai_initiated", Translator::LANG_FR) << endl;
+		reply->set_message(translator->GetString("unknown_security_token", Translator::LANG_FR));
 
 	} else {
 	
@@ -76,15 +80,10 @@ SerializedExchange Exchange::HandleMessage(AI* ai, SerializedExchange serialized
 			break;
 		}
 	}
-	/* 
-	// Speak out the message
-	if (reply->has_message()) {
-		ai->Say(reply->message());
-	}
-	*/
+
 	int bufSize = 0;
 	char* buf = nullptr;
-	SerializedExchange serializedReply = GetSerializeResponse(reply);
+	auto serializedReply = GetSerializeResponse(reply);
 
 	delete(reply);
 	reply = nullptr;
@@ -97,7 +96,7 @@ SerializedExchange Exchange::HandleMessage(AI* ai, SerializedExchange serialized
 
 Request* Exchange::GetRequest(SerializedExchange exchange)
 {
-	Request* request = new Request();
+	auto* request = new Request();
 	// Read varint delimited protobuf object in the buffer
 	google::protobuf::io::ArrayInputStream arrayInputStream(exchange.buffer, exchange.bufferSize);
 	google::protobuf::io::CodedInputStream codedInputStream(&arrayInputStream);

@@ -52,7 +52,7 @@ void AI::Welcome()
 	time_t now;
 	time(&now);
 	cout << "now " << now << endl;
-	double elapsedTime = difftime(now, m_LastWelcome);
+	auto elapsedTime = difftime(now, m_LastWelcome);
 	cout << "elapsedTime " << elapsedTime << endl;
 
 	// Welcome if last welcome > 10 min
