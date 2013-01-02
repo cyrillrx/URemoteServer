@@ -98,6 +98,7 @@
     <ClInclude Include="src\Server.h" />
     <ClInclude Include="src\server_exchange.pb.h" />
     <ClInclude Include="src\Modules\Speech.h" />
+    <ClInclude Include="src\TextKey.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AIConfig.cpp" />
@@ -113,6 +114,7 @@
     <ClCompile Include="src\Server.cpp" />
     <ClCompile Include="src\server_exchange.pb.cc" />
     <ClCompile Include="src\Modules\Speech.cpp" />
+    <ClCompile Include="src\TextKey.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="URemoteServer.rc" />

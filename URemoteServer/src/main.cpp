@@ -11,6 +11,7 @@ int main()
 	auto translator = Translator::getInstance();
 	translator->AddLanguage(Translator::LANG_EN, "en.lang");
 	translator->AddLanguage(Translator::LANG_FR, "fr.lang");
+	translator->SetLanguage(Translator::LANG_EN);
 
 	// Init config for the AI
 	auto aiConfig = unique_ptr<AIConfig>(new AIConfig("ai.conf"));

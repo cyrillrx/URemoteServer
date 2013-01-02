@@ -1,6 +1,8 @@
 #include "AI.h"
 
 #include "modules\Speech.h"
+#include "Translator.h"
+#include "TextKey.h"
 
 #define DELAY 60*5 // 5 min / 300 sec before repeate time
 
@@ -28,8 +30,11 @@ bool AI::StartConnection(unique_ptr<ServerConfig> serverConfig)
 	bool result = true;
 	m_ExchangeServer = unique_ptr<Server>(new Server(move(serverConfig), this));
 	
+	// TODO: clean the function
 	//Say(m_Name + " is now online.");
-	Say(m_Config->Name + " est maintenant en ligne.");
+	auto translator = Translator::getInstance();
+	auto text = translator->GetString(TextKey::AI_SERVER_ONLINE, m_Config->Name);
+	Say(text);
 
 	result = m_ExchangeServer->Start();
 	
@@ -57,7 +62,11 @@ void AI::Welcome()
 
 	// Welcome if last welcome > 10 min
 	if (elapsedTime > DELAY) {
-		Say("Welcome to " + m_Config->Name + " sir." );
+		// TODO: clean the function
+		//Say("Welcome to " + m_Config->Name + " sir.");
+		auto translator = Translator::getInstance();
+		auto text = translator->GetString(TextKey::AI_WELCOME, m_Config->Name);
+		Say(text);
 		time(&m_LastWelcome);
 	}
 }
@@ -84,10 +93,17 @@ bool AI::ToggleMute()
 void AI::Start()
 {
 	//Say("Artificial Intelligence initiated.");
-	Say("Intelligence artificielle initialisée.");
+	// TODO: clean the function
+	auto translator = Translator::getInstance();
+	auto text = translator->GetString(TextKey::AI_INITIATED, m_Config->Name);
+	Say(text);
 }
 
 void AI::Shutdown()
 {
-	Say(m_Config->Name + " is shutting down. Goodbye sir");
+	//Say(m_Config->Name + " is shutting down. Goodbye sir");
+	// TODO: clean the function
+	auto translator = Translator::getInstance();
+	auto text = translator->GetString(TextKey::AI_SHUTDOWN, m_Config->Name);
+	Say(text);
 }
