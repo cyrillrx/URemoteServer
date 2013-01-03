@@ -12,6 +12,7 @@
 #include "modules\Keyboard.h"
 #include "modules\App.h"
 #include "Translator.h"
+#include "TextKey.h"
 
 using namespace std;
 using namespace network;
@@ -41,9 +42,7 @@ SerializedExchange Exchange::HandleMessage(AI* ai, SerializedExchange serialized
 
 	if (request->securitytoken() != "1234") {
 		reply->set_returncode(Response_ReturnCode_RC_ERROR);
-		//TODO: define Translator::LANG_FR via IA
-		auto translator = Translator::getInstance();
-		reply->set_message(translator->GetString("unknown_security_token", Translator::LANG_FR));
+		reply->set_message(Translator::getInstance()->GetString(TextKey::XC_UNKNOWN_SECURITY_TOKEN));
 
 	} else {
 	
@@ -143,9 +142,7 @@ void Exchange::ClassicCommand(AI* ai, Response* reply, Request_Code code)
 		
 	case Request_Code_TEST:
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
-		//reply->set_message("The code has been tested");
-		//reply->set_message("No way. Go Fuck yourself !");
-		reply->set_message("Intruder detected. Get out, or I'll kick your little punk ass !");
+		reply->set_message(Translator::getInstance()->GetString(TextKey::XC_TEST));
 		break;
 
 	case Request_Code_KILL_SERVER:
@@ -315,13 +312,16 @@ void Exchange::ShutdownPC(AI* ai, Response* reply, int delay)
 {
 	ai->StopConnection();
 	
-	char command[100];
-	sprintf_s(command, "Shutdown.exe -s -t %d -c \"L'ordinateur va s'éteindre dans %d secondes\"", delay, delay);
-	system(command);
+	const auto message = Translator::getInstance()->GetString(TextKey::XC_PC_SHUTDOWN);
+	
+	stringstream command;
+	command << "Shutdown.exe -s -t " << delay << " -c \"" << message << "\"";
+	system(command.str().c_str());
+	//char command[100];
+	//sprintf_s(command, "Shutdown.exe -s -t %d -c \"PC will shutdown in %d seconds\"", delay, delay);
+	//system(command);
 
 	reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
-	char message[50];
-	sprintf_s(message, "PC will shutdown in %d seconds", delay);
 	reply->set_message(message);
 
 	ai->Say(message);
