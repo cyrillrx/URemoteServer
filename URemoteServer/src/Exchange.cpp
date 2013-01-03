@@ -42,7 +42,10 @@ SerializedExchange Exchange::HandleMessage(AI* ai, SerializedExchange serialized
 
 	if (request->securitytoken() != "1234") {
 		reply->set_returncode(Response_ReturnCode_RC_ERROR);
-		reply->set_message(Translator::getInstance()->GetString(TextKey::XC_UNKNOWN_SECURITY_TOKEN));
+		const auto message = Translator::getInstance()->GetString(TextKey::XC_UNKNOWN_SECURITY_TOKEN);
+		reply->set_message(message);
+
+		ai->Say(message);
 
 	} else {
 	
