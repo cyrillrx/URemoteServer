@@ -95,7 +95,7 @@ void AI::Start()
 	//Say("Artificial Intelligence initiated.");
 	// TODO: clean the function
 	auto translator = Translator::getInstance();
-	auto text = translator->GetString(TextKey::AI_INITIATED, m_Config->Name);
+	auto text = translator->GetString(TextKey::AI_INITIATED);
 	Say(text);
 }
 

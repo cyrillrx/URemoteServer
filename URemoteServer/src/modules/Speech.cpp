@@ -20,7 +20,8 @@ void Speech::initVoice(ISpVoice * ispVoice, const string& language, const string
 	ISpObjectToken* cpTokenEng;
 	HRESULT hr = SpFindBestToken(SPCAT_VOICES, reqAttributs, optAttributs, &cpTokenEng);
 	ispVoice->SetVoice(cpTokenEng);
-	ispVoice->SetRate(+1);
+	//TODO: Config Rate with file
+	ispVoice->SetRate(+0.5);
 }
 
 void Speech::SayB(const bstr_t& _textToSpeak, const std::string& language, const std::string& gender)

@@ -41,9 +41,8 @@ SerializedExchange Exchange::HandleMessage(AI* ai, SerializedExchange serialized
 
 	if (request->securitytoken() != "1234") {
 		reply->set_returncode(Response_ReturnCode_RC_ERROR);
-	//TODO: define Translator::LANG_FR via IA
-	auto translator = Translator::getInstance();
-	//cout << translator->GetString("ai_initiated", Translator::LANG_FR) << endl;
+		//TODO: define Translator::LANG_FR via IA
+		auto translator = Translator::getInstance();
 		reply->set_message(translator->GetString("unknown_security_token", Translator::LANG_FR));
 
 	} else {
