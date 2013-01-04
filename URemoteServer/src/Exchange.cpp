@@ -315,7 +315,7 @@ void Exchange::ShutdownPC(AI* ai, Response* reply, int delay)
 {
 	ai->StopConnection();
 	
-	const auto message = Translator::getInstance()->GetString(TextKey::XC_PC_SHUTDOWN);
+	const auto message = Translator::getInstance()->GetString(TextKey::XC_PC_SHUTDOWN, delay);
 	
 	stringstream command;
 	command << "Shutdown.exe -s -t " << delay << " -c \"" << message << "\"";

@@ -14,6 +14,7 @@ class Server
 public:
 	Server(std::unique_ptr<ServerConfig> config, AI *ai);
 	~Server(void);
+
 	
 	bool Start();
 	bool Stop();
