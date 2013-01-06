@@ -55,7 +55,7 @@ bool Server::Start()
 			return false;
 		}
 		
-		StringUtils::ClearBuffer(buffer);
+		StringUtils::clearBuffer(buffer);
 
 		int received = recv(m_CSocket, buffer, sizeof(buffer), 0);
 		cout << "  -- result : " << received <<  endl << endl;

@@ -10,12 +10,12 @@ using namespace std;
 int main()
 {
 	auto translator = Translator::getInstance();
-	translator->AddLanguage(Translator::LANG_EN, "en.lang");
-	translator->AddLanguage(Translator::LANG_FR, "fr.lang");
+	translator->addLanguage(Translator::LANG_EN, "en.lang");
+	translator->addLanguage(Translator::LANG_FR, "fr.lang");
 	
 	// Init config for the AI
 	auto aiConfig = unique_ptr<AIConfig>(new AIConfig("ai.conf"));
-	translator->SetLanguage(aiConfig->Lang);
+	translator->setLanguage(aiConfig->Lang);
 
 	// Create the AI
 	auto artificialIntelligence = unique_ptr<AI>(new AI(move(aiConfig)));

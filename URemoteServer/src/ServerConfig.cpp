@@ -10,13 +10,13 @@ const int ServerConfig::DEFAULT_MAX_CONNECTIONS = 3;
 
 ServerConfig::ServerConfig(const string& configFile) : Properties(configFile)
 {
-	Port = GetInt(KEY_PORT, DEFAULT_PORT);
-	MaxConcurrentConnections = GetInt(KEY_MAX_CONNECTIONS, DEFAULT_MAX_CONNECTIONS);
+	Port = getInt(KEY_PORT, DEFAULT_PORT);
+	MaxConcurrentConnections = getInt(KEY_MAX_CONNECTIONS, DEFAULT_MAX_CONNECTIONS);
 }
 
 ServerConfig::~ServerConfig()
 {
-	SetInt(KEY_PORT, Port);
-	SetInt(KEY_MAX_CONNECTIONS, MaxConcurrentConnections);
-	SaveProperties();
+	setInt(KEY_PORT, Port);
+	setInt(KEY_MAX_CONNECTIONS, MaxConcurrentConnections);
+	saveProperties();
 }

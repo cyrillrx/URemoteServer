@@ -14,18 +14,18 @@ const bool AIConfig::DEFAULT_MUTE		= false;
 
 AIConfig::AIConfig(const string& configFile) : Properties(configFile)
 {
-	Name	= GetString(KEY_NAME, DEFAULT_NAME);
-	Lang	= GetString(KEY_LANG, DEFAULT_LANG);
-	Gender	= GetString(KEY_GENDER, DEFAULT_GENDER);
-	IsMute	= GetBool(KEY_MUTE, DEFAULT_MUTE);
+	Name	= getString(KEY_NAME, DEFAULT_NAME);
+	Lang	= getString(KEY_LANG, DEFAULT_LANG);
+	Gender	= getString(KEY_GENDER, DEFAULT_GENDER);
+	IsMute	= getBool(KEY_MUTE, DEFAULT_MUTE);
 }
 
 AIConfig::~AIConfig()
 {
-	SetString(KEY_NAME, Name);
-	SetString(KEY_LANG, Lang);
-	SetString(KEY_GENDER, Gender);
-	SetBool(KEY_MUTE, IsMute);
+	setString(KEY_NAME, Name);
+	setString(KEY_LANG, Lang);
+	setString(KEY_GENDER, Gender);
+	setBool(KEY_MUTE, IsMute);
 
-	SaveProperties();
+	saveProperties();
 }

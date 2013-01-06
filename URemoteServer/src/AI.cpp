@@ -33,7 +33,7 @@ bool AI::StartConnection(unique_ptr<ServerConfig> serverConfig)
 	// TODO: clean the function
 	//Say(m_Name + " is now online.");
 	auto translator = Translator::getInstance();
-	auto text = translator->GetString(TextKey::AI_SERVER_ONLINE, m_Config->Name);
+	auto text = translator->getString(TextKey::AI_SERVER_ONLINE, m_Config->Name);
 	Say(text);
 
 	result = m_ExchangeServer->Start();
@@ -65,7 +65,7 @@ void AI::Welcome()
 		// TODO: clean the function
 		//Say("Welcome to " + m_Config->Name + " sir.");
 		auto translator = Translator::getInstance();
-		auto text = translator->GetString(TextKey::AI_WELCOME, m_Config->Name);
+		auto text = translator->getString(TextKey::AI_WELCOME, m_Config->Name);
 		Say(text);
 		time(&m_LastWelcome);
 	}
@@ -95,7 +95,7 @@ void AI::Start()
 	//Say("Artificial Intelligence initiated.");
 	// TODO: clean the function
 	auto translator = Translator::getInstance();
-	auto text = translator->GetString(TextKey::AI_INITIATED);
+	auto text = translator->getString(TextKey::AI_INITIATED);
 	Say(text);
 }
 
@@ -104,6 +104,6 @@ void AI::Shutdown()
 	//Say(m_Config->Name + " is shutting down. Goodbye sir");
 	// TODO: clean the function
 	auto translator = Translator::getInstance();
-	auto text = translator->GetString(TextKey::AI_SHUTDOWN, m_Config->Name);
+	auto text = translator->getString(TextKey::AI_SHUTDOWN, m_Config->Name);
 	Say(text);
 }

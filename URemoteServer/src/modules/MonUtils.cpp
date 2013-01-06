@@ -119,8 +119,8 @@ Rect* MonUtils::GetRelativePos(HWND _window, Rect _rectMon)
 PointF MonUtils::GetRectCoef(Rect _rect1, Rect _rect2)
 {
 	PointF coef;
-	coef.x = (float) (_rect2.GetWidth()) / (float) (_rect1.GetWidth());
-	coef.y = (float) (_rect2.GetHeight()) / (float) (_rect1.GetHeight());
+	coef.x = (float) (_rect2.getWidth()) / (float) (_rect1.getWidth());
+	coef.y = (float) (_rect2.getHeight()) / (float) (_rect1.getHeight());
 	
 	return coef;
 }
@@ -175,7 +175,7 @@ bool MonUtils::MoveWindow(HWND _window, HMONITOR _srcMonitor, HMONITOR _destMoni
 	// Récupèration de la position du moniteur source
 	Rect *srcMonPos = GetMonitorRect(_srcMonitor);
 	if (srcMonPos) {
-		srcMonPos->Display("srcMon");
+		srcMonPos->display("srcMon");
 	} else {
 		std::cerr << "!!! GetMonitorRect(_srcMonitor) failed !!!" << std::endl;
 	}
@@ -183,7 +183,7 @@ bool MonUtils::MoveWindow(HWND _window, HMONITOR _srcMonitor, HMONITOR _destMoni
 	// Récupèration de la position du nouveau moniteur
 	Rect *destMonPos = GetMonitorRect(_destMonitor);
 	if (destMonPos) {
-		destMonPos->Display("destMon");
+		destMonPos->display("destMon");
 	} else {
 		std::cerr << "!!! GetMonitorRect(_destMonitor) failed !!!" << std::endl;
 	}
@@ -191,19 +191,19 @@ bool MonUtils::MoveWindow(HWND _window, HMONITOR _srcMonitor, HMONITOR _destMoni
 	// Calcul de la position relative de la fenêtre par rapport au moniteur source
 	Rect *windowRelPos	= GetRelativePos(_window, *srcMonPos); 
 	if (windowRelPos) {
-		windowRelPos->Display("windowRelPos");
+		windowRelPos->display("windowRelPos");
 	} else {
 		std::cerr << "!!! GetRelativePos(_window, *rectSrcMon) failed !!!" << std::endl;
 	}
 
 	// Calcul du coefficient d'agrandissement pour passer d'un moniteur à l'autre
 	PointF coef	= GetRectCoef(*srcMonPos, *destMonPos); 
-	coef.Display("coef");
+	coef.display("coef");
 
 	// Application du coef à la position relative de la fenêtre
 	Rect *newRelPos = ApplyCoef(*windowRelPos, coef);
 	if (newRelPos) {
-		newRelPos->Display("newRelPos");
+		newRelPos->display("newRelPos");
 	} else {
 		std::cout << "!!! ApplyCoef(*windowRelPos, coef) failed !!!" << std::endl;
 	}
@@ -211,12 +211,12 @@ bool MonUtils::MoveWindow(HWND _window, HMONITOR _srcMonitor, HMONITOR _destMoni
 	// Calcul de la position absolue finale de la fenêtre
 	Rect *newPos = ApplyOffest(*newRelPos, destMonPos->left, destMonPos->top); 
 	if (newPos) {
-		newPos->Display("newPos (final)");
+		newPos->display("newPos (final)");
 	} else {
 		std::cout << "!!! ApplyOffest(*newRelPos, rectDestMon->left, rectDestMon->top) failed !!!" << std::endl;
 	}
 
-	SetWindowPos(_window, nullptr, newPos->left, newPos->top, newPos->GetWidth(), newPos->GetHeight(), SWP_SHOWWINDOW);
+	SetWindowPos(_window, nullptr, newPos->left, newPos->top, newPos->getWidth(), newPos->getHeight(), SWP_SHOWWINDOW);
 	
 	// Suppression des pointeurs créés
 	delete(srcMonPos);

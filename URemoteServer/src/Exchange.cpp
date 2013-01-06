@@ -42,7 +42,7 @@ SerializedExchange Exchange::HandleMessage(AI* ai, SerializedExchange serialized
 
 	if (request->securitytoken() != "1234") {
 		reply->set_returncode(Response_ReturnCode_RC_ERROR);
-		const auto message = Translator::getInstance()->GetString(TextKey::XC_UNKNOWN_SECURITY_TOKEN);
+		const auto message = Translator::getInstance()->getString(TextKey::XC_UNKNOWN_SECURITY_TOKEN);
 		reply->set_message(message);
 
 		ai->Say(message);
@@ -145,7 +145,7 @@ void Exchange::ClassicCommand(AI* ai, Response* reply, Request_Code code)
 		
 	case Request_Code_TEST:
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
-		reply->set_message(Translator::getInstance()->GetString(TextKey::XC_TEST));
+		reply->set_message(Translator::getInstance()->getString(TextKey::XC_TEST));
 		break;
 
 	case Request_Code_KILL_SERVER:
@@ -315,7 +315,7 @@ void Exchange::ShutdownPC(AI* ai, Response* reply, int delay)
 {
 	ai->StopConnection();
 	
-	const auto message = Translator::getInstance()->GetString(TextKey::XC_PC_SHUTDOWN, delay);
+	const auto message = Translator::getInstance()->getString(TextKey::XC_PC_SHUTDOWN, delay);
 	
 	stringstream command;
 	command << "Shutdown.exe -s -t " << delay << " -c \"" << message << "\"";
