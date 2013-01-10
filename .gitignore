@@ -7,3 +7,4 @@ ipch
 *.opensdf
 *.user
 *.filters
+*.log
