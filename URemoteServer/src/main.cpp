@@ -1,17 +1,38 @@
 #include "AI.h"
 #include "ServerConfig.h"
 #include "Translator.h"
+#include <Windows.h>
 #include <iostream>
+#include <sstream>
 
 #pragma comment(lib, "ws2_32.lib")
 
 using namespace std;
 
+bool initTranslator(Translator* translator) 
+{
+	try {
+		translator->addLanguage(Translator::LANG_EN, "en.lang");
+	} catch (const exception& e) {
+		MessageBoxA(nullptr, e.what(), nullptr, 0);
+	}
+
+	try {
+		translator->addLanguage(Translator::LANG_FR, "fr.lang");
+	} catch (const exception& e) {
+		MessageBoxA(nullptr, e.what(), nullptr, 0);
+	}
+
+	return (translator->countLanguages() > 0);
+}
+
 int main()
 {
 	auto translator = Translator::getInstance();
-	translator->addLanguage(Translator::LANG_EN, "en.lang");
-	translator->addLanguage(Translator::LANG_FR, "fr.lang");
+	if (!initTranslator(translator)) {
+		MessageBoxA(nullptr, "No language file available. Killing the program", nullptr, 0);
+		return EXIT_FAILURE;
+	}
 	
 	// Init config for the AI
 	auto aiConfig = unique_ptr<AIConfig>(new AIConfig("ai.conf"));
