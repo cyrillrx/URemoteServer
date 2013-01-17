@@ -26,6 +26,15 @@ bool initTranslator(Translator* translator)
 	return (translator->countLanguages() > 0);
 }
 
+bool initProgram()
+{
+	// TODO: Init translator
+	// TODO: Init logger
+	// TODO: Init ai
+	// TODO: Init server
+	return false;
+}
+
 int main()
 {
 	auto translator = Translator::getInstance();
