@@ -39,7 +39,7 @@ int main()
 {
 	auto translator = Translator::getInstance();
 	if (!initTranslator(translator)) {
-		MessageBoxA(nullptr, "No language file available. Killing the program", nullptr, 0);
+		MessageBoxA(nullptr, "No language file available.\nProgram will shutdown.", nullptr, 0);
 		return EXIT_FAILURE;
 	}
 	
