@@ -1,6 +1,7 @@
 #include "AI.h"
 #include "ServerConfig.h"
 #include "Translator.h"
+#include "Logger.h"
 #include <Windows.h>
 #include <iostream>
 #include <sstream>
@@ -11,6 +12,8 @@ using namespace std;
 
 bool initProgram(unique_ptr<AIConfig> aiConfig, unique_ptr<ServerConfig> serverConfig);
 bool initTranslator(Translator* translator, string& message);
+
+Logger logger("URemote.log");
 
 int main()
 {
@@ -32,6 +35,8 @@ int main()
 
 bool initProgram(unique_ptr<AIConfig> aiConfig, unique_ptr<ServerConfig> serverConfig)
 {
+	logger.debug("Program initialization...");
+
 	bool programInitialized = true;
 	string message = "";
 
@@ -69,13 +74,18 @@ bool initProgram(unique_ptr<AIConfig> aiConfig, unique_ptr<ServerConfig> serverC
 
 	// Check program initializations
 	if (!programInitialized) {
+		
+		logger.debug("Program initialization failed !");
 		MessageBoxA(nullptr, message.c_str(), nullptr, 0);
+	} else {
+		logger.debug("Program initialized.");
 	}
 	return programInitialized;
 }
 
 bool initTranslator(Translator* translator, string& message) 
 {
+	logger.debug("Init Translator...");
 	try {
 		translator->addLanguage(Translator::LANG_EN, "en.lang");
 	} catch (const exception& e) {
@@ -92,7 +102,9 @@ bool initTranslator(Translator* translator, string& message)
 
 	const auto isInitialized = translator->isInitialized();
 	if (!isInitialized) {
-		message += "Translator is not initialized : No language file available.\n";
+		string errorMessage = "Translator is not initialized : No language file available.";
+		logger.error(errorMessage);
+		message += errorMessage + "\n";
 	}
 
 	return isInitialized;
