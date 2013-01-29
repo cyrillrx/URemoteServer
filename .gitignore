@@ -8,3 +8,4 @@ ipch
 *.user
 *.filters
 *.log
+*.conf
