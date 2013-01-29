@@ -2,10 +2,11 @@ Debug
 Release
 include
 ipch
+conf
+logs
 *.suo
 *.sdf
 *.opensdf
 *.user
 *.filters
 *.log
-*.conf
