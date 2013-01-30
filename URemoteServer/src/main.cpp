@@ -1,7 +1,7 @@
 #include "AI.h"
 #include "ServerConfig.h"
 #include "Translator.h"
-#include "Logger.h"
+#include "Utils.h"
 #include <Windows.h>
 #include <iostream>
 #include <sstream>
@@ -13,10 +13,12 @@ using namespace std;
 bool initProgram(unique_ptr<AIConfig>& aiConfig, unique_ptr<ServerConfig>& serverConfig);
 bool initTranslator(Translator* translator, string& message);
 
-Logger logger("URemote.log");
+Logger logger = *Utils::getLogger();
 
 int main()
 {
+	// TODO: Init Logger
+	logger.setLogFile("URemote.log");
 	// TODO: init structure (files and directories)
 
 	logger.debug("******************************************************");

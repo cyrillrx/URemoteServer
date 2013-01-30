@@ -3,6 +3,7 @@
 #include "modules\Speech.h"
 #include "Translator.h"
 #include "TextKey.h"
+#include "Utils.h"
 
 #define DELAY 60*5 // 5 min / 300 sec before repeate time
 
@@ -27,17 +28,20 @@ AI::~AI()
 
 bool AI::StartConnection(unique_ptr<ServerConfig> serverConfig)
 {
-	bool result = true;
-	m_ExchangeServer = unique_ptr<Server>(new Server(move(serverConfig), this));
-	
-	// TODO: clean the function
-	//Say(m_Name + " is now online.");
-	auto translator = Translator::getInstance();
-	auto text = translator->getString(TextKey::AI_SERVER_ONLINE, m_Config->Name);
-	Say(text);
+	bool result = false;
 
-	result = m_ExchangeServer->Start();
+	try {
+		m_ExchangeServer = unique_ptr<Server>(new Server(move(serverConfig), this));
 	
+		auto translator = Translator::getInstance();
+		auto text = translator->getString(TextKey::AI_SERVER_ONLINE, m_Config->Name);
+		Say(text);
+
+		result = m_ExchangeServer->Start();
+	} catch (const exception&) {
+	Utils::getLogger()->error("AI::StartConnection(), " + (result) ? "OK" : "KO");
+	}
+	Utils::getLogger()->debug("AI::StartConnection(), " + (result) ? "OK" : "KO");
 	return result;
 }
 
