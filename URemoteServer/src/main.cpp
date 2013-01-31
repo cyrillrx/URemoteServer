@@ -21,9 +21,9 @@ int main()
 	logger->setLogFile("URemote.log");
 	// TODO: init structure (files and directories)
 
-	logger->debug("******************************************************");
-	logger->debug("*****               URemote Server               *****");
-	logger->debug("******************************************************");
+	logger->info("******************************************************");
+	logger->info("*****               URemote Server               *****");
+	logger->info("******************************************************");
 
 	unique_ptr<AIConfig> aiConfig = nullptr;
 	unique_ptr<ServerConfig> serverConfig = nullptr;
@@ -98,6 +98,7 @@ bool initProgram(unique_ptr<AIConfig>& aiConfig, unique_ptr<ServerConfig>& serve
 bool initTranslator(Translator* translator, string& message) 
 {
 	logger->debug("Init Translator...");
+	// TODO: Search files in directory "lang"
 	try {
 		translator->addLanguage(Translator::LANG_EN, ".\\conf\\en.lang");
 	} catch (const exception& e) {
