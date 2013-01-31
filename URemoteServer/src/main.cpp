@@ -13,17 +13,17 @@ using namespace std;
 bool initProgram(unique_ptr<AIConfig>& aiConfig, unique_ptr<ServerConfig>& serverConfig);
 bool initTranslator(Translator* translator, string& message);
 
-Logger logger = *Utils::getLogger();
+Logger* logger = Utils::getLogger();
 
 int main()
 {
 	// TODO: Init Logger
-	logger.setLogFile("URemote.log");
+	logger->setLogFile("URemote.log");
 	// TODO: init structure (files and directories)
 
-	logger.debug("******************************************************");
-	logger.debug("*****               URemote Server               *****");
-	logger.debug("******************************************************");
+	logger->debug("******************************************************");
+	logger->debug("*****               URemote Server               *****");
+	logger->debug("******************************************************");
 
 	unique_ptr<AIConfig> aiConfig = nullptr;
 	unique_ptr<ServerConfig> serverConfig = nullptr;
@@ -43,22 +43,22 @@ int main()
 
 bool initProgram(unique_ptr<AIConfig>& aiConfig, unique_ptr<ServerConfig>& serverConfig)
 {
-	logger.debug("Program initialization...");
+	logger->debug("Program initialization...");
 
 	bool programInitialized = false;
 	string message = "";
 	
 	// Init config for the AI
-	logger.debug("Init config for the AI...");
+	logger->debug("Init config for the AI...");
 	bool aiInitialized = false;
 	try {
 		aiConfig = unique_ptr<AIConfig>(new AIConfig(".\\conf\\ai.conf"));
-		logger.debug("AI config OK.");
+		logger->debug("AI config OK.");
 		aiInitialized = true;
 	} catch (const exception& e) {
 		message += e.what();
 		message += "\n";
-		logger.debug("AI config KO.");
+		logger->debug("AI config KO.");
 	}
 
 	// Init translator
@@ -69,26 +69,26 @@ bool initProgram(unique_ptr<AIConfig>& aiConfig, unique_ptr<ServerConfig>& serve
 	}
 
 	// Init config for the server
-	logger.debug("Init config for the server...");
+	logger->debug("Init config for the server...");
 	bool serverInitialized = false;
 	try {
 		serverConfig = unique_ptr<ServerConfig>(new ServerConfig(".\\conf\\server.conf"));
-		logger.debug("Server config OK.");
+		logger->debug("Server config OK.");
 		serverInitialized = true;
 	} catch (const exception& e) {
-		logger.error(e.what());
+		logger->error(e.what());
 		message += e.what();
 		message += "\n";
-		logger.debug("Server config KO.");
+		logger->debug("Server config KO.");
 	}
 
 	programInitialized = aiInitialized && translatorInitialized && serverInitialized;
 
 	// Check program initializations
 	if (programInitialized) {
-		logger.debug("Program initialized.");
+		logger->debug("Program initialized.");
 	} else {
-		logger.error("Program initialization failed !");
+		logger->error("Program initialization failed !");
 		MessageBoxA(nullptr, message.c_str(), nullptr, 0);
 	}
 
@@ -97,11 +97,11 @@ bool initProgram(unique_ptr<AIConfig>& aiConfig, unique_ptr<ServerConfig>& serve
 
 bool initTranslator(Translator* translator, string& message) 
 {
-	logger.debug("Init Translator...");
+	logger->debug("Init Translator...");
 	try {
 		translator->addLanguage(Translator::LANG_EN, ".\\conf\\en.lang");
 	} catch (const exception& e) {
-		logger.warning(e.what());
+		logger->warning(e.what());
 		message += e.what();
 		message += "\n";
 	}
@@ -109,17 +109,17 @@ bool initTranslator(Translator* translator, string& message)
 	try {
 		translator->addLanguage(Translator::LANG_FR, ".\\conf\\fr.lang");
 	} catch (const exception& e) {
-		logger.warning(e.what());
+		logger->warning(e.what());
 		message += e.what();
 		message += "\n";
 	}
 
 	const auto isInitialized = translator->isInitialized();
 	if (isInitialized) {
-		logger.debug("Translator OK.");
+		logger->debug("Translator OK.");
 	} else {
 		string errorMessage = "Translator KO : No language file available.";
-		logger.error(errorMessage);
+		logger->error(errorMessage);
 		message += errorMessage + "\n";
 	}
 
