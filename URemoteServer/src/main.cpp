@@ -11,7 +11,15 @@
 using namespace std;
 
 bool initProgram(unique_ptr<AIConfig>& aiConfig, unique_ptr<ServerConfig>& serverConfig);
+bool initAiConfig(unique_ptr<AIConfig>& aiConfig, string& message);
 bool initTranslator(Translator* translator, string& message);
+bool initServerConfig(unique_ptr<ServerConfig>& serverConfig, string& message);
+
+
+static const string LANGUAGE_DIR		= "lang";
+static const string CONFIGURATION_DIR	= "conf";
+static const string AI_CONF_FILE		= CONFIGURATION_DIR + "\\ai.conf";
+static const string SERVER_CONF_FILE	= CONFIGURATION_DIR + "\\server.conf";
 
 Logger* logger = Utils::getLogger();
 
@@ -41,6 +49,9 @@ int main()
     return EXIT_SUCCESS;
 }
 
+/**
+ * Initialize the AI, the translator and the Server
+ */
 bool initProgram(unique_ptr<AIConfig>& aiConfig, unique_ptr<ServerConfig>& serverConfig)
 {
 	logger->debug("Program initialization...");
@@ -49,17 +60,7 @@ bool initProgram(unique_ptr<AIConfig>& aiConfig, unique_ptr<ServerConfig>& serve
 	string message = "";
 	
 	// Init config for the AI
-	logger->debug("Init config for the AI...");
-	bool aiInitialized = false;
-	try {
-		aiConfig = unique_ptr<AIConfig>(new AIConfig(".\\conf\\ai.conf"));
-		logger->debug("AI config OK.");
-		aiInitialized = true;
-	} catch (const exception& e) {
-		message += e.what();
-		message += "\n";
-		logger->debug("AI config KO.");
-	}
+	bool aiInitialized = initAiConfig(aiConfig, message);
 
 	// Init translator
 	auto translator = Translator::getInstance();
@@ -67,20 +68,8 @@ bool initProgram(unique_ptr<AIConfig>& aiConfig, unique_ptr<ServerConfig>& serve
 	if (translatorInitialized && aiInitialized) {
 		translator->setLanguage(aiConfig->Lang);
 	}
-
-	// Init config for the server
-	logger->debug("Init config for the server...");
-	bool serverInitialized = false;
-	try {
-		serverConfig = unique_ptr<ServerConfig>(new ServerConfig(".\\conf\\server.conf"));
-		logger->debug("Server config OK.");
-		serverInitialized = true;
-	} catch (const exception& e) {
-		logger->error(e.what());
-		message += e.what();
-		message += "\n";
-		logger->debug("Server config KO.");
-	}
+	
+	bool serverInitialized = initServerConfig(serverConfig, message);
 
 	programInitialized = aiInitialized && translatorInitialized && serverInitialized;
 
@@ -95,12 +84,16 @@ bool initProgram(unique_ptr<AIConfig>& aiConfig, unique_ptr<ServerConfig>& serve
 	return programInitialized;
 }
 
+/**
+ * Initialize the Translator.
+ * Load the language files stored in LANGUAGE_DIR and add them to the translator.
+ */
 bool initTranslator(Translator* translator, string& message) 
 {
 	logger->debug("Init Translator...");
-	// TODO: Search files in directory "lang"
+	// TODO: Search files in directory LANGUAGE_DIR
 	try {
-		translator->addLanguage(Translator::LANG_EN, ".\\conf\\en.lang");
+		translator->addLanguage(Translator::LANG_EN, LANGUAGE_DIR + "\\en.lang");
 	} catch (const exception& e) {
 		logger->warning(e.what());
 		message += e.what();
@@ -108,7 +101,7 @@ bool initTranslator(Translator* translator, string& message)
 	}
 
 	try {
-		translator->addLanguage(Translator::LANG_FR, ".\\conf\\fr.lang");
+		translator->addLanguage(Translator::LANG_FR, LANGUAGE_DIR + "\\fr.lang");
 	} catch (const exception& e) {
 		logger->warning(e.what());
 		message += e.what();
@@ -125,4 +118,45 @@ bool initTranslator(Translator* translator, string& message)
 	}
 
 	return isInitialized;
+}
+
+/**
+ * Init config for the AI
+ */
+bool initAiConfig(unique_ptr<AIConfig>& aiConfig, string& message)
+{
+	logger->debug("Init config for the AI...");
+	bool aiInitialized = false;
+	try {
+		aiConfig = unique_ptr<AIConfig>(new AIConfig(AI_CONF_FILE));
+		logger->debug("AI config OK.");
+		aiInitialized = true;
+	} catch (const exception& e) {
+		message += e.what();
+		message += "\n";
+		logger->debug("AI config KO.");
+	}
+	return aiInitialized;
+}
+
+/**
+ * Init config for the Server.
+ * Load the ServerConfig object with the properties found in SERVER_CONF_FILE 
+ */
+bool initServerConfig(unique_ptr<ServerConfig>& serverConfig, string& message)
+{
+	// Init config for the server
+	logger->debug("Init config for the server...");
+	bool serverInitialized = false;
+	try {
+		serverConfig = unique_ptr<ServerConfig>(new ServerConfig(SERVER_CONF_FILE));
+		logger->debug("Server config OK.");
+		serverInitialized = true;
+	} catch (const exception& e) {
+		logger->error(e.what());
+		message += e.what();
+		message += "\n";
+		logger->debug("Server config KO.");
+	}
+	return serverInitialized;
 }

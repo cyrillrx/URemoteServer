@@ -1,0 +1,10 @@
+[AI]
+ai_initiated=Intelligence artificielle initialisée.
+ai_server_online=$1 est maintenant en ligne. 
+ai_welcome=Bienvenu $1.
+ai_shutdown=$1 est sur le point de s'éteindre. Au revoir monsieur.
+
+[Exchanges]
+xc_unknown_security_token=Jeton de sécurité inconnu. Vous n'êtes pas autorisé à envoyer des commandes !
+xc_test=Intrus détécté. Dégage de là ou sa ve barder pour ton matricule !
+xc_pc_shutdown=L'ordinateur va s'éteindre dans $1 secondes

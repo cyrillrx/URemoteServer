@@ -1,0 +1,10 @@
+[AI]
+ai_initiated=Artificial Intelligence initiated.
+ai_server_online=My name is $1. Connections are open. Waiting for commands.
+ai_welcome=Welcome $1.
+ai_shutdown=$1 is shutting down. Goodbye sir.
+
+[Exchanges]
+xc_unknown_security_token=Unknown security token. You are not authorize to send commands !
+xc_test=Intruder detected. Get out, or I'll kick your little punk ass !
+xc_pc_shutdown=PC will shutdown in $1 seconds
