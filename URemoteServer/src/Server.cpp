@@ -4,12 +4,15 @@
 #include <comdef.h>
 #include "StringUtils.h"
 #include "Exchange.h"
+#include "Logger.h"
 
 //#define BUFFER_SIZE BUFSIZ
 #define BUFFER_SIZE 4096
 
 using namespace std;
 using namespace network;
+
+Logger logger("Server.log");
 
 int Server::s_InstanceCount = 0;
 
@@ -21,6 +24,7 @@ Server::Server(unique_ptr<ServerConfig> config, AI* ai) : m_Config(move(config))
 {	
 	m_Ai = ai;
 	InitServer();
+	// TODO: Create inner logger and keep log out of console
 }
 
 Server::~Server(void)
@@ -32,7 +36,7 @@ Server::~Server(void)
  * Launch the server 
  * @return true if everything went correctly. False otherwise
  */
-bool Server::Start()
+void Server::Start()
 {
 	m_ContinueToListen = true;
 
@@ -41,24 +45,23 @@ bool Server::Start()
 	/* connection socket */
 	
 	while (m_ContinueToListen) {
-		cout << "Server Info : " << endl;
-		cout << " - Hostname   : " << m_Hostname << endl;
-		cout << " - IP Address : " << m_IpAddress << endl;
-		cout << " - Open port  : " << m_Config->Port << endl;
-		cout << "Waiting for client to connect..." << endl;
+		logger.debug("Server Info : ");
+		logger.debug(" - Hostname   : " + m_Hostname);
+		logger.debug(" - IP Address : " + m_IpAddress);
+		logger.debug(" - Open port  : " + to_string(m_Config->Port));
+		logger.debug("Waiting for client to connect...");
 		
-		//m_CSocket = accept(m_ListenSocket, (SOCKADDR *)&csin, &sizeofcsin);
 		m_CSocket = accept(m_ListenSocket, nullptr, nullptr);
 		if (m_CSocket == INVALID_SOCKET) {
-			cerr << "accept failed with error: " << WSAGetLastError() << endl;
+			logger.error("accept() failed with error: " + WSAGetLastError());
 			FreeServer();
-			return false;
+			return;
 		}
 		
 		StringUtils::clearBuffer(buffer);
 
 		int received = recv(m_CSocket, buffer, sizeof(buffer), 0);
-		cout << "  -- result : " << received <<  endl << endl;
+		logger.debug("  -- result : " + received);
 
 		SerializedExchange exchange;
 		exchange.buffer = buffer;
@@ -67,10 +70,8 @@ bool Server::Start()
 		HandleMessage(exchange);
 
 		closesocket(m_CSocket);
-		cout << "Socket closed" << endl << endl;
+		logger.debug("Socket closed.");
 	}
-
-	return true;
 }
 
 /** Stop the server listening loop. */

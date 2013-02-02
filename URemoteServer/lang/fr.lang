@@ -1,7 +1,7 @@
 [AI]
 ai_initiated=Intelligence artificielle initialisée.
-ai_server_online=$1 est maintenant en ligne. 
-ai_welcome=Bienvenu $1.
+ai_server_online=$1 en ligne. 
+ai_welcome=Utilisateur identifié. Bienvenu Cyril.
 ai_shutdown=$1 est sur le point de s'éteindre. Au revoir monsieur.
 
 [Exchanges]

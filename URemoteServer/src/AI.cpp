@@ -1,5 +1,6 @@
 #include "AI.h"
 
+#include <thread>
 #include "modules\Speech.h"
 #include "Translator.h"
 #include "TextKey.h"
@@ -31,16 +32,20 @@ bool AI::StartConnection(unique_ptr<ServerConfig> serverConfig)
 	bool result = false;
 
 	try {
-		m_ExchangeServer = unique_ptr<Server>(new Server(move(serverConfig), this));
+		//m_ExchangeServer = unique_ptr<Server>(new Server(move(serverConfig), this));
 	
-		auto translator = Translator::getInstance();
-		auto text = translator->getString(TextKey::AI_SERVER_ONLINE, m_Config->Name);
+		auto text = Translator::getInstance()->getString(TextKey::AI_SERVER_ONLINE, m_Config->Name);
 		Say(text);
 
-		result = m_ExchangeServer->Start();
+		Server* s = new Server(move(serverConfig), this);
+		thread startListener(&Server::Start, s);
+		startListener.join();
+
+		//result = m_ExchangeServer->Start();
 	} catch (const exception&) {
-	Utils::getLogger()->error("AI::StartConnection(), " + (result) ? "OK" : "KO");
+		Utils::getLogger()->error("AI::StartConnection(), " + (result) ? "OK" : "KO");
 	}
+
 	Utils::getLogger()->debug("AI::StartConnection(), " + (result) ? "OK" : "KO");
 	return result;
 }
@@ -60,16 +65,13 @@ void AI::Welcome()
 	// Calculate the elapsed time since the last call to the method
 	time_t now;
 	time(&now);
-	cout << "now " << now << endl;
+	Utils::getLogger()->debug("AI::Welcome() now " + to_string(now));
 	auto elapsedTime = difftime(now, m_LastWelcome);
-	cout << "elapsedTime " << elapsedTime << endl;
+	Utils::getLogger()->debug("AI::Welcome() elapsedTime " + to_string(elapsedTime));
 
-	// Welcome if last welcome > 10 min
+	// Welcome if last welcome > DELAY
 	if (elapsedTime > DELAY) {
-		// TODO: clean the function
-		//Say("Welcome to " + m_Config->Name + " sir.");
-		auto translator = Translator::getInstance();
-		auto text = translator->getString(TextKey::AI_WELCOME, m_Config->Name);
+		auto text = Translator::getInstance()->getString(TextKey::AI_WELCOME, m_Config->Name);
 		Say(text);
 		time(&m_LastWelcome);
 	}
@@ -96,18 +98,12 @@ bool AI::ToggleMute()
 
 void AI::Start()
 {
-	//Say("Artificial Intelligence initiated.");
-	// TODO: clean the function
-	auto translator = Translator::getInstance();
-	auto text = translator->getString(TextKey::AI_INITIATED);
+	auto text = Translator::getInstance()->getString(TextKey::AI_INITIATED);
 	Say(text);
 }
 
 void AI::Shutdown()
 {
-	//Say(m_Config->Name + " is shutting down. Goodbye sir");
-	// TODO: clean the function
-	auto translator = Translator::getInstance();
-	auto text = translator->getString(TextKey::AI_SHUTDOWN, m_Config->Name);
+	auto text = Translator::getInstance()->getString(TextKey::AI_SHUTDOWN, m_Config->Name);
 	Say(text);
 }

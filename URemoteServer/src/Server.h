@@ -16,7 +16,7 @@ public:
 	~Server(void);
 
 	
-	bool Start();
+	void Start();
 	bool Stop();
 
 private :
