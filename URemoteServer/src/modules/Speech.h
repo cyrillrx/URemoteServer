@@ -15,10 +15,10 @@ public:
 	void SayInThread(const std::string& textToSpeak);
 
 private:
-	std::string m_Language;
-	std::string m_Gender;
+	std::string m_language;
+	std::string m_gender;
 	
-	static void initVoice(ISpVoice * ispVoice, const std::string& language, const std::string& gender);
-	static void Say(const std::string& textToSpeak, const std::string& language, const std::string& gender);
-	static void SayB(const bstr_t& textToSpeak, const std::string& language, const std::string& gender);
+	void initVoice(ISpVoice * ispVoice);
+	void Say(const std::string& textToSpeak);
+	void SayB(const bstr_t& textToSpeak);
 };

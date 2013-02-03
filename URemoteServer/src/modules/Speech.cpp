@@ -3,7 +3,7 @@
 #include <thread>
 
 using namespace std;
-Speech::Speech(const string& lang, const string& gender) : m_Language(lang), m_Gender(gender)
+Speech::Speech(const string& lang, const string& gender) : m_language(lang), m_gender(gender)
 {
 }
 
@@ -11,20 +11,20 @@ Speech::~Speech()
 {
 }
 
-void Speech::initVoice(ISpVoice * ispVoice, const string& language, const string& gender)
+void Speech::initVoice(ISpVoice * ispVoice)
 {
-	// TODO initialize Language and gender in a map
-	const WCHAR* reqAttributs = (language == "FR")	? L"Language=40C" : L"Language=409";
-	const WCHAR* optAttributs = (gender == "M")		? L"Gender=Male"  : L"Gender=Female";
+	// TODO: initialize Language and gender in a map
+	const WCHAR* reqAttributs = (m_language == "FR")	? L"Language=40C" : L"Language=409";
+	const WCHAR* optAttributs = (m_gender == "M")		? L"Gender=Male"  : L"Gender=Female";
 
 	ISpObjectToken* cpTokenEng;
 	HRESULT hr = SpFindBestToken(SPCAT_VOICES, reqAttributs, optAttributs, &cpTokenEng);
 	ispVoice->SetVoice(cpTokenEng);
 	//TODO: Config Rate with file
-	ispVoice->SetRate(+0.5);
+	ispVoice->SetRate(long(0.5));
 }
 
-void Speech::SayB(const bstr_t& _textToSpeak, const std::string& language, const std::string& gender)
+void Speech::SayB(const bstr_t& _textToSpeak)
 {
 	ISpVoice * ispVoice = nullptr;
     if (FAILED(::CoInitialize(nullptr))) {
@@ -34,7 +34,7 @@ void Speech::SayB(const bstr_t& _textToSpeak, const std::string& language, const
 	HRESULT hr = CoCreateInstance(CLSID_SpVoice, nullptr, CLSCTX_ALL, IID_ISpVoice, (void **)&ispVoice);
     if (SUCCEEDED( hr )) {
 
-		initVoice(ispVoice, language, gender);
+		initVoice(ispVoice);
 	
 		hr = ispVoice->Speak(_textToSpeak, SPF_ASYNC, nullptr);
 		if (hr == S_OK) {
@@ -61,15 +61,15 @@ void Speech::SayB(const bstr_t& _textToSpeak, const std::string& language, const
     ::CoUninitialize();
 }
 
-void Speech::Say(const string& textToSpeak, const std::string& language, const std::string& gender)
+void Speech::Say(const string& textToSpeak)
 {
 	bstr_t bstrTextToSpeak(textToSpeak.c_str());
-	SayB(bstrTextToSpeak, language, gender);
+	SayB(bstrTextToSpeak);
 		
 }
 
 void Speech::SayInThread(const string& textToSpeak)
 {
-	thread speakThread(Say, textToSpeak, m_Language, m_Gender);
+	thread speakThread(&Speech::Say, this, textToSpeak);
 	speakThread.join();
 }

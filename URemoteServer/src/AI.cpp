@@ -30,23 +30,52 @@ AI::~AI()
 bool AI::StartConnection(unique_ptr<ServerConfig> serverConfig)
 {
 	bool result = false;
+	// TODO: Instanciate other listeners
+	thread uRemoteListener;
+	thread consoleListener;
+	//thread uiListener;
 
 	try {
-		//m_ExchangeServer = unique_ptr<Server>(new Server(move(serverConfig), this));
+		m_ExchangeServer = unique_ptr<Server>(new Server(move(serverConfig), this));
+		//Server* s = new Server(move(serverConfig), this);
+
+		uRemoteListener = thread(&Server::Start, m_ExchangeServer.get());
+		Utils::getLogger()->debug("AI::StartConnection(), OK");
+	
+
+		//result = m_ExchangeServer->Start();
+	} catch (const exception&) {
+		Utils::getLogger()->error("AI::StartConnection(), KO");
+	}
+
+	//////////////////////////////////////////////////////
+	try {
+		m_ExchangeServer = unique_ptr<Server>(new Server(move(serverConfig), this));
+		//Server* s = new Server(move(serverConfig), this);
+
+		consoleListener = thread([&] ()
+		{
+		
+		});
+		Utils::getLogger()->debug("AI::StartConnection(), OK");
 	
 		auto text = Translator::getInstance()->getString(TextKey::AI_SERVER_ONLINE, m_Config->Name);
 		Say(text);
 
-		Server* s = new Server(move(serverConfig), this);
-		thread startListener(&Server::Start, s);
-		startListener.join();
-
 		//result = m_ExchangeServer->Start();
 	} catch (const exception&) {
-		Utils::getLogger()->error("AI::StartConnection(), " + (result) ? "OK" : "KO");
+		Utils::getLogger()->error("AI::StartConnection(), KO");
 	}
+	//////////////////////////////////////////////////////
 
-	Utils::getLogger()->debug("AI::StartConnection(), " + (result) ? "OK" : "KO");
+	// Notify the user that the listener are open.
+	auto text = Translator::getInstance()->getString(TextKey::AI_SERVER_ONLINE, m_Config->Name);
+	Say(text);
+
+	// Join the listener threads
+	uRemoteListener.join();
+	consoleListener.join();
+
 	return result;
 }
 

@@ -15,19 +15,42 @@ bool initAiConfig(unique_ptr<AIConfig>& aiConfig, string& message);
 bool initTranslator(Translator* translator, string& message);
 bool initServerConfig(unique_ptr<ServerConfig>& serverConfig, string& message);
 
-
-static const string LANGUAGE_DIR		= "lang";
-static const string CONFIGURATION_DIR	= "conf";
-static const string AI_CONF_FILE		= CONFIGURATION_DIR + "\\ai.conf";
-static const string SERVER_CONF_FILE	= CONFIGURATION_DIR + "\\server.conf";
+static const string LANGUAGE_DIR		= "lang\\";
+static const string CONFIGURATION_DIR	= "conf\\";
+static const string AI_CONF_FILE		= CONFIGURATION_DIR + "ai.conf";
+static const string SERVER_CONF_FILE	= CONFIGURATION_DIR + "server.conf";
 
 Logger* logger = Utils::getLogger();
 
 int main()
 {
-	// TODO: Init Logger
+	
+	logger->debug("******************************************************");
+	logger->debug("*****          Directory initialization          *****");
+	logger->debug("******************************************************");
+	
+	CreateDirectoryA(LANGUAGE_DIR.c_str(), nullptr);
+	if (ERROR_ALREADY_EXISTS == GetLastError()) {
+		logger->debug("Language directory \"" + LANGUAGE_DIR + "\" already exists.");
+	} else {
+		logger->debug("Language directory \"" + LANGUAGE_DIR + "\" have been created.");
+	}
+	
+	CreateDirectoryA(CONFIGURATION_DIR.c_str(), nullptr);
+	if (ERROR_ALREADY_EXISTS == GetLastError()) {
+		logger->debug("Configuration directory \"" + CONFIGURATION_DIR +  "\" already exists.");
+	} else {
+		logger->debug("Configuration directory \"" + CONFIGURATION_DIR + "\" have been created");
+	}
+	
+	CreateDirectoryA(Logger::getLogDir().c_str(), nullptr);
+	if (ERROR_ALREADY_EXISTS == GetLastError()) {
+		logger->debug("Log directory \"" + Logger::getLogDir() + "\" already exists.");
+	} else {
+		logger->debug("Log directory \"" + Logger::getLogDir() + "\" have been created");
+	}
+
 	logger->setLogFile("URemote.log");
-	// TODO: init structure (files and directories)
 
 	logger->info("******************************************************");
 	logger->info("*****               URemote Server               *****");
