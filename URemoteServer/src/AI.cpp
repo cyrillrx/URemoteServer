@@ -59,7 +59,7 @@ bool AI::StartConnection(unique_ptr<ServerConfig> serverConfig)
 		});
 		Utils::getLogger()->debug("AI::StartConnection(), OK");
 	
-		auto text = Translator::getInstance()->getString(TextKey::AI_SERVER_ONLINE, m_Config->Name);
+		auto text = Translator::getString(TextKey::AI_SERVER_ONLINE, m_Config->Name);
 		Say(text);
 
 		//result = m_ExchangeServer->Start();
@@ -69,7 +69,7 @@ bool AI::StartConnection(unique_ptr<ServerConfig> serverConfig)
 	//////////////////////////////////////////////////////
 
 	// Notify the user that the listener are open.
-	auto text = Translator::getInstance()->getString(TextKey::AI_SERVER_ONLINE, m_Config->Name);
+	auto text = Translator::getString(TextKey::AI_SERVER_ONLINE, m_Config->Name);
 	Say(text);
 
 	// Join the listener threads
@@ -100,7 +100,7 @@ void AI::Welcome()
 
 	// Welcome if last welcome > DELAY
 	if (elapsedTime > DELAY) {
-		auto text = Translator::getInstance()->getString(TextKey::AI_WELCOME, m_Config->Name);
+		auto text = Translator::getString(TextKey::AI_WELCOME, m_Config->Name);
 		Say(text);
 		time(&m_LastWelcome);
 	}
@@ -127,12 +127,12 @@ bool AI::ToggleMute()
 
 void AI::Start()
 {
-	auto text = Translator::getInstance()->getString(TextKey::AI_INITIATED);
+	auto text = Translator::getString(TextKey::AI_INITIATED);
 	Say(text);
 }
 
 void AI::Shutdown()
 {
-	auto text = Translator::getInstance()->getString(TextKey::AI_SHUTDOWN, m_Config->Name);
+	auto text = Translator::getString(TextKey::AI_SHUTDOWN, m_Config->Name);
 	Say(text);
 }
