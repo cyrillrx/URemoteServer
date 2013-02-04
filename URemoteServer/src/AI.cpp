@@ -40,31 +40,30 @@ bool AI::StartConnection(unique_ptr<ServerConfig> serverConfig)
 		//Server* s = new Server(move(serverConfig), this);
 
 		uRemoteListener = thread(&Server::Start, m_ExchangeServer.get());
-		Utils::getLogger()->debug("AI::StartConnection(), OK");
-	
-
 		//result = m_ExchangeServer->Start();
+		Utils::getLogger()->debug("AI::StartConnection(), OK");
+
 	} catch (const exception&) {
 		Utils::getLogger()->error("AI::StartConnection(), KO");
 	}
 
 	//////////////////////////////////////////////////////
 	try {
-		m_ExchangeServer = unique_ptr<Server>(new Server(move(serverConfig), this));
-		//Server* s = new Server(move(serverConfig), this);
-
 		consoleListener = thread([&] ()
 		{
-		
+			string entry;
+			bool continueToListen = true;
+			while (continueToListen) {
+				cin >> entry;
+				Utils::getLogger()->debug("You entered " + entry);
+				continueToListen = entry != "exit";
+			}
+			Utils::getLogger()->debug("EXIT !");
 		});
-		Utils::getLogger()->debug("AI::StartConnection(), OK");
-	
-		auto text = Translator::getString(TextKey::AI_SERVER_ONLINE, m_Config->Name);
-		Say(text);
+		Utils::getLogger()->debug("AI::StartConnection() 2, OK");
 
-		//result = m_ExchangeServer->Start();
 	} catch (const exception&) {
-		Utils::getLogger()->error("AI::StartConnection(), KO");
+		Utils::getLogger()->error("AI::StartConnection() 2, KO");
 	}
 	//////////////////////////////////////////////////////
 
@@ -133,6 +132,8 @@ void AI::Start()
 
 void AI::Shutdown()
 {
-	auto text = Translator::getString(TextKey::AI_SHUTDOWN, m_Config->Name);
+	// TODO: clean the function
+	auto text = getString(TextKey::AI_SHUTDOWN, m_Config->Name);
+	//auto text = Translator::getString(TextKey::AI_SHUTDOWN, m_Config->Name);
 	Say(text);
 }

@@ -11,6 +11,7 @@
 using namespace std;
 using namespace network;
 
+	// TODO: Translate comments
 //////////////////////////////////////////////////////////////////////////////
 // Fonctions publics
 //////////////////////////////////////////////////////////////////////////////
@@ -36,6 +37,7 @@ void FileManager::HandleMessage(Response* reply, Request_Code code, string param
 	}
 }
 
+	// TODO: Translate comments
 //////////////////////////////////////////////////////////////////////////////
 // Fonctions privées
 //////////////////////////////////////////////////////////////////////////////
@@ -44,12 +46,13 @@ bool FileManager::GetDirectoryContent(Response* reply, string dirPath)
 {
 	cout << "Target directory is " << dirPath.c_str() << endl;
 
-	
+	// TODO: Translate comments
 	// Préparation de la chaine pour l'utilisation de la fonction FindFile
 	// On ajoute "\\*" à la fin du nom de repertoire.
 	string searchPath = dirPath + "\\*";
 	string errorMessage;
-
+	
+	// TODO: Translate comments
 	// On vérifie que le chemin ne soit pas plus grand que la taille maximum autorisée (MAX_PATH) 
 	if (searchPath.length() > MAX_PATH) {
 		errorMessage = "Directory path is too long.";
@@ -58,7 +61,8 @@ bool FileManager::GetDirectoryContent(Response* reply, string dirPath)
 		reply->set_message(errorMessage);
 		return false;
 	}
-
+	
+	// TODO: Translate comments
 	// Recherche du premier fichier dans le repertoire.
 	WIN32_FIND_DATA ffd;
 	HANDLE hFind = INVALID_HANDLE_VALUE;
@@ -71,12 +75,14 @@ bool FileManager::GetDirectoryContent(Response* reply, string dirPath)
 		reply->set_message(errorMessage);
 		return false;
 	}
-
+	
+	// TODO: Translate comments
 	// Initialisation du vecteur à retourner
 	//DirContent* dirContent = new DirContent();
 	DirContent *dirContent = reply->mutable_dircontent();
 	dirContent->set_path(dirPath);
-
+	
+	// TODO: Translate comments
 	// Lister tous les fichiers du repertoire en récupérant quelques infos.
 	LARGE_INTEGER filesize;
 	ostringstream osFilename;
