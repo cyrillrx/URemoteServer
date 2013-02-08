@@ -64,7 +64,7 @@ void Server::Start()
 			return;
 		}
 		
-		StringUtils::clearBuffer(buffer);
+		StringUtils::clear_buffer(buffer);
 
 		int received = recv(m_cSocket, buffer, sizeof(buffer), 0);
 		m_log->debug("  -- result : " + received);
