@@ -89,6 +89,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Listener.h" />
     <ClInclude Include="src\AIConfig.h" />
     <ClInclude Include="src\ServerConfig.h" />
     <ClInclude Include="src\AI.h" />
@@ -105,6 +106,7 @@
     <ClInclude Include="src\TextKey.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Listener.cpp" />
     <ClCompile Include="src\AIConfig.cpp" />
     <ClCompile Include="src\ServerConfig.cpp" />
     <ClCompile Include="src\AI.cpp" />
