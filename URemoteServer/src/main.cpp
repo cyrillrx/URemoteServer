@@ -6,8 +6,6 @@
 #include <iostream>
 #include <sstream>
 
-#pragma comment(lib, "ws2_32.lib")
-
 using namespace std;
 
 bool initProgram(unique_ptr<AIConfig>& aiConfig, unique_ptr<ServerConfig>& serverConfig);

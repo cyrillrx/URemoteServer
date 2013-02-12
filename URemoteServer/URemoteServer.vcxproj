@@ -89,7 +89,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Listener.h" />
+    <ClInclude Include="src\listeners\ConsoleListener.h" />
+    <ClInclude Include="src\listeners\Listener.h" />
     <ClInclude Include="src\AIConfig.h" />
     <ClInclude Include="src\ServerConfig.h" />
     <ClInclude Include="src\AI.h" />
@@ -100,13 +101,14 @@
     <ClInclude Include="src\Exchange.h" />
     <ClInclude Include="src\Modules\MonUtils.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="src\Server.h" />
+    <ClInclude Include="src\listeners\URemoteListener.h" />
     <ClInclude Include="src\server_exchange.pb.h" />
     <ClInclude Include="src\Modules\Speech.h" />
     <ClInclude Include="src\TextKey.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Listener.cpp" />
+    <ClCompile Include="src\listeners\ConsoleListener.cpp" />
+    <ClCompile Include="src\listeners\Listener.cpp" />
     <ClCompile Include="src\AIConfig.cpp" />
     <ClCompile Include="src\ServerConfig.cpp" />
     <ClCompile Include="src\AI.cpp" />
@@ -117,7 +119,7 @@
     <ClCompile Include="src\Modules\Keyboard.cpp" />
     <ClCompile Include="src\Exchange.cpp" />
     <ClCompile Include="src\Modules\MonUtils.cpp" />
-    <ClCompile Include="src\Server.cpp" />
+    <ClCompile Include="src\listeners\URemoteListener.cpp" />
     <ClCompile Include="src\server_exchange.pb.cc" />
     <ClCompile Include="src\Modules\Speech.cpp" />
     <ClCompile Include="src\TextKey.cpp" />

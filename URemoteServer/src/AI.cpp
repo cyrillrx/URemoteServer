@@ -31,16 +31,14 @@ bool AI::StartConnection(unique_ptr<ServerConfig> serverConfig)
 {
 	bool result = false;
 	// TODO: Instanciate other listeners
-	thread uRemoteListener;
-	thread consoleListener;
+	thread uRemoteThread;
+	thread consoleThread;
 	//thread uiListener;
 
+	// TODO: Change debug messages
 	try {
-		m_ExchangeServer = unique_ptr<Server>(new Server(move(serverConfig), this));
-		//Server* s = new Server(move(serverConfig), this);
-
-		uRemoteListener = thread(&Server::Start, m_ExchangeServer.get());
-		//result = m_ExchangeServer->Start();
+		m_ExchangeServer = unique_ptr<URemoteListener>(new URemoteListener(move(serverConfig), this));
+		uRemoteThread = m_ExchangeServer->start();
 		Utils::getLogger()->debug("AI::StartConnection(), OK");
 
 	} catch (const exception&) {
@@ -48,8 +46,9 @@ bool AI::StartConnection(unique_ptr<ServerConfig> serverConfig)
 	}
 
 	//////////////////////////////////////////////////////
+	// TODO: Externalize consoleThread in consoleListener class
 	try {
-		consoleListener = thread([&] ()
+		consoleThread = thread([&] ()
 		{
 			string entry;
 			bool continueToListen = true;
@@ -72,8 +71,8 @@ bool AI::StartConnection(unique_ptr<ServerConfig> serverConfig)
 	Say(text);
 
 	// Join the listener threads
-	uRemoteListener.join();
-	consoleListener.join();
+	uRemoteThread.join();
+	consoleThread.join();
 
 	return result;
 }
