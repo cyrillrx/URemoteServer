@@ -27,9 +27,8 @@ AI::~AI()
 	Shutdown();
 }
 
-bool AI::StartConnection(unique_ptr<ServerConfig> serverConfig)
+void AI::StartConnection(unique_ptr<ServerConfig> serverConfig)
 {
-	bool result = false;
 	// TODO: Instanciate other listeners
 	thread uRemoteThread;
 	thread consoleThread;
@@ -37,34 +36,22 @@ bool AI::StartConnection(unique_ptr<ServerConfig> serverConfig)
 
 	// TODO: Change debug messages
 	try {
-		m_ExchangeServer = unique_ptr<URemoteListener>(new URemoteListener(move(serverConfig), this));
-		uRemoteThread = m_ExchangeServer->start();
-		Utils::getLogger()->debug("AI::StartConnection(), OK");
+		m_uRemoteListener = unique_ptr<URemoteListener>(new URemoteListener(move(serverConfig), this));
+		uRemoteThread = m_uRemoteListener->start();
+		Utils::getLogger()->debug("AI::StartConnection(), URemoteListener OK");
 
 	} catch (const exception&) {
-		Utils::getLogger()->error("AI::StartConnection(), KO");
+		Utils::getLogger()->error("AI::StartConnection(), URemoteListener KO");
 	}
 
-	//////////////////////////////////////////////////////
-	// TODO: Externalize consoleThread in consoleListener class
 	try {
-		consoleThread = thread([&] ()
-		{
-			string entry;
-			bool continueToListen = true;
-			while (continueToListen) {
-				cin >> entry;
-				Utils::getLogger()->debug("You entered " + entry);
-				continueToListen = entry != "exit";
-			}
-			Utils::getLogger()->debug("EXIT !");
-		});
-		Utils::getLogger()->debug("AI::StartConnection() 2, OK");
+		m_consoleListener = unique_ptr<ConsoleListener>(new ConsoleListener());
+		consoleThread = m_consoleListener->start();
+		Utils::getLogger()->debug("AI::StartConnection(), ConsoleListener OK");
 
 	} catch (const exception&) {
-		Utils::getLogger()->error("AI::StartConnection() 2, KO");
+		Utils::getLogger()->error("AI::StartConnection(), ConsoleListener KO");
 	}
-	//////////////////////////////////////////////////////
 
 	// Notify the user that the listener are open.
 	auto text = Translator::getString(TextKey::AI_SERVER_ONLINE, m_Config->Name);
@@ -73,18 +60,16 @@ bool AI::StartConnection(unique_ptr<ServerConfig> serverConfig)
 	// Join the listener threads
 	uRemoteThread.join();
 	consoleThread.join();
-
-	return result;
 }
 
-bool AI::StopConnection()
+void AI::StopConnection()
 {
-	if (m_ExchangeServer) {
-		m_ExchangeServer->Stop();
-		return true;
+	if (m_uRemoteListener) {
+		m_uRemoteListener->Stop();
 	}
-
-	return false;
+	if (m_consoleListener) {
+		m_consoleListener->Stop();
+	}
 }
 
 void AI::Welcome()

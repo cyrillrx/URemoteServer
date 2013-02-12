@@ -24,7 +24,7 @@ int URemoteListener::s_instanceCount = 0;
 URemoteListener::URemoteListener(unique_ptr<ServerConfig> config, AI* ai) : m_config(move(config))
 {	
 	m_Ai = ai;
-	m_log = new Logger("Server.log");
+	m_log = new Logger("URemoteListener.log");
 	InitServer();
 	// TODO: Create inner logger and keep log out of console
 }
@@ -45,7 +45,7 @@ URemoteListener::~URemoteListener(void)
 void URemoteListener::doStart()
 {
 	m_log->info("******************************************************");
-	m_log->info("*****               Server Started               *****");
+	m_log->info("*****           URemoteListener Started          *****");
 	m_log->info("******************************************************");
 
 	m_continueToListen = true;
@@ -82,12 +82,6 @@ void URemoteListener::doStart()
 		closesocket(m_cSocket);
 		m_log->debug("Socket closed.");
 	}
-}
-
-/** Stop the server listening loop. */
-void URemoteListener::Stop()
-{
-	m_continueToListen = false;
 }
 
 //////////////////////////////////////////////////////////////////////////////

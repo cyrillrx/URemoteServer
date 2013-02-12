@@ -18,8 +18,6 @@ public:
 	URemoteListener(std::unique_ptr<ServerConfig> config, AI *ai);
 	~URemoteListener(void);
 
-	void Stop();
-
 private :
 	static int s_instanceCount;
 
@@ -31,7 +29,6 @@ private :
 	std::string m_ipAddress;
 	SOCKET m_cSocket;
 	SOCKET m_listenSocket;
-	bool m_continueToListen;
 	
 	void doStart();
 	bool InitServer();
