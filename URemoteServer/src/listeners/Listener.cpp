@@ -1,7 +1,5 @@
 #include "Listener.h"
 
-using namespace std;
-
 Listener::Listener(void)
 {
 }
@@ -11,9 +9,9 @@ Listener::~Listener(void)
 }
 
 /** Start the listening thread */
-thread Listener::start()
+std::thread Listener::start()
 {
-	return thread(&Listener::doStart, this);
+	return std::thread(&Listener::doStart, this);
 }
 
 /** Stop the listener loop. */

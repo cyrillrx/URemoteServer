@@ -3,11 +3,10 @@
 #include <string>
 #include <iostream>
 
-using namespace std;
-
 ConsoleListener::ConsoleListener(void)
 {
 	m_log = new Logger("ConsoleListener.log");
+	m_log->setLogSeverityConsole(Logger::SEVERITY_LVL_WARNING);
 }
 
 ConsoleListener::~ConsoleListener(void)
@@ -26,13 +25,17 @@ void ConsoleListener::doStart()
 
 	m_continueToListen = true;
 
-	string entry;
-	bool continueToListen = true;
+	std::string entry;
 	while (m_continueToListen) {
-		cout << "Waiting for user command : ";
-		cin >> entry;
-		m_log->debug("You entered " + entry);
-		continueToListen = entry != "exit";
+		std::cout << "Waiting for user command : " << std::endl;
+		std::cin >> entry;
+		m_log->debug("Command received : " + entry);
+		
+		// if entry == "exit", stop listening
+		m_continueToListen = entry != "exit";
+
+		// TODO: Add message : "command" is not supported
+		// TODO: support "Kill" command
 	}
 	m_log->debug("EXIT !");
 }
