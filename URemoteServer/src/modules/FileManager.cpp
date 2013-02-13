@@ -1,8 +1,10 @@
 #include "FileManager.h"
 
-#include "StringUtils.h"
 #include <windows.h>
 #include <sstream>
+
+#include "StringUtils.h"
+#include "Utils.h"
 
 #define FindNextFile FindNextFileA
 #define FindFirstFile FindFirstFileA
@@ -44,87 +46,26 @@ void FileManager::HandleMessage(Response* reply, Request_Code code, string param
 
 bool FileManager::GetDirectoryContent(Response* reply, string dirPath)
 {
-	cout << "Target directory is " << dirPath.c_str() << endl;
+	cout << "Target directory is " << dirPath << endl;
 
-	// TODO: Translate comments
-	// Préparation de la chaine pour l'utilisation de la fonction FindFile
-	// On ajoute "\\*" à la fin du nom de repertoire.
-	string searchPath = dirPath + "\\*";
-	string errorMessage;
-	
-	// TODO: Translate comments
-	// On vérifie que le chemin ne soit pas plus grand que la taille maximum autorisée (MAX_PATH) 
-	if (searchPath.length() > MAX_PATH) {
-		errorMessage = "Directory path is too long.";
-		cerr << errorMessage << endl;
+	vector<FileUtils::File> fileList;
+	try {
+		fileList = FileUtils::list_files(dirPath);
+	} catch (const exception& e) {
+		// TODO: Catch FileException
+		Utils::getLogger()->error(e.what());
 		reply->set_returncode(Response_ReturnCode_RC_ERROR);
-		reply->set_message(errorMessage);
+		reply->set_message(e.what());
 		return false;
 	}
-	
-	// TODO: Translate comments
-	// Recherche du premier fichier dans le repertoire.
-	WIN32_FIND_DATA ffd;
-	HANDLE hFind = INVALID_HANDLE_VALUE;
-	
-	hFind = FindFirstFile(searchPath.c_str(), &ffd);
-	if (hFind == INVALID_HANDLE_VALUE) {
-		errorMessage = "FindFirstFile error : INVALID_HANDLE_VALUE";
-		cerr << errorMessage << endl;
-		reply->set_returncode(Response_ReturnCode_RC_ERROR);
-		reply->set_message(errorMessage);
-		return false;
-	}
-	
-	// TODO: Translate comments
-	// Initialisation du vecteur à retourner
-	//DirContent* dirContent = new DirContent();
+
+	// Initiate the vector to return
 	DirContent *dirContent = reply->mutable_dircontent();
 	dirContent->set_path(dirPath);
 	
-	// TODO: Translate comments
-	// Lister tous les fichiers du repertoire en récupérant quelques infos.
-	LARGE_INTEGER filesize;
-	ostringstream osFilename;
-
-	do {
-		osFilename.str("");
-		osFilename << ffd.cFileName;
-
-		filesize.LowPart = ffd.nFileSizeLow;
-		filesize.HighPart = ffd.nFileSizeHigh;
-		//data << "<" << filesize.QuadPart << " bytes>";
-		int fileSize = (int) filesize.QuadPart;
-
-		// Si c'est un répertoire
-		if (ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-			
-			// skip le répertoire "." et "$RECYCLE.BIN"
-			if (strcmp(ffd.cFileName, ".") == 0 || strcmp(ffd.cFileName, "$RECYCLE.BIN") == 0 ) {
-				continue;
-			}
-			
-			AddFile(dirContent, osFilename.str(), DirContent_File_FileType_DIRECTORY, fileSize);
-			wcout << "<DIR> " << ffd.cFileName << " " << filesize.QuadPart << " bytes" << endl;
-
-		// Si c'est un fichier
-		} else {
-			AddFile(dirContent, osFilename.str(), DirContent_File_FileType_FILE, fileSize);
-			wcout << "<FILE> " << ffd.cFileName << " " << filesize.QuadPart << " bytes" << endl;
-
-		}
-	} while (FindNextFile(hFind, &ffd) != 0);
- 
-	DWORD dwError = GetLastError();
-	if (dwError != ERROR_NO_MORE_FILES) {
-		errorMessage = "FindNextFile error : " + dwError;
-		cerr << errorMessage << endl;
-		reply->set_returncode(Response_ReturnCode_RC_ERROR);
-		reply->set_message(errorMessage);
-		return false;
+	for (FileUtils::File file : fileList) {
+		AddFile(dirContent, file);
 	}
-	
-	FindClose(hFind);
 	reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 
 	return true;
@@ -137,12 +78,18 @@ string FileManager::OpenFile(string filePath)
 	return "Opening file : "  + filePath;
 }
 
-bool FileManager::AddFile(DirContent* dirContent, string filename, DirContent_File_FileType type, int size)
+bool FileManager::AddFile(DirContent* dirContent, FileUtils::File& file)
 {
-	DirContent_File *file = dirContent->add_file();
-	file->set_name(filename);
-	file->set_type(type);
-	file->set_size(size);
+	DirContent_File *exchangefile = dirContent->add_file();
+	exchangefile->set_name(file.getFilename());
+	
+	// TODO: Use a function to translate FileUtils::File::TYPE to DirContent_File_FileType
+	if (file.type == FileUtils::File::TYPE_DIRECTORY) {
+		exchangefile->set_type(DirContent_File_FileType_DIRECTORY);
+	} else {
+		exchangefile->set_type(DirContent_File_FileType_FILE);
+	}
+	exchangefile->set_size(file.size);
 
 	return true;
 }
