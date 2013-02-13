@@ -121,8 +121,7 @@ bool URemoteListener::InitServer()
 
 	// Bind the socket to the address and port defined in SOCKADDR
 	m_log->debug("Binding the socket to the address and port...");
-	int bindResult = ::bind(m_listenSocket, (SOCKADDR*)&socketAddress, sizeof(socketAddress));
-	if (bindResult == SOCKET_ERROR) {
+	if (bind(m_listenSocket, (SOCKADDR*)&socketAddress, sizeof(socketAddress)) == SOCKET_ERROR) {
 		m_log->error("URemoteListener::InitServer(), bind() failed with error: " + std::to_string(WSAGetLastError()));
 		FreeServer();
 		return false;

@@ -8,14 +8,12 @@
 
 #define DELAY 60*5 // 5 min / 300 sec before repeate time
 
-using namespace std;
-
 //////////////////////////////////////////////////////////////////////////////
 // Public methods
 //////////////////////////////////////////////////////////////////////////////
-AI::AI(unique_ptr<AIConfig> config) : m_Config(move(config))
+AI::AI(std::unique_ptr<AIConfig> config) : m_Config(move(config))
 {
-	m_Voice = unique_ptr<Speech>(new Speech(m_Config->Lang, m_Config->Gender));
+	m_Voice = std::unique_ptr<Speech>(new Speech(m_Config->Lang, m_Config->Gender));
 	time(&m_LastWelcome);
 	m_LastWelcome -= DELAY;
 
@@ -27,29 +25,29 @@ AI::~AI()
 	Shutdown();
 }
 
-void AI::StartConnection(unique_ptr<ServerConfig> serverConfig)
+void AI::StartConnection(std::unique_ptr<ServerConfig> serverConfig)
 {
 	// TODO: Instanciate other listeners
-	thread uRemoteThread;
-	thread consoleThread;
+	std::thread uRemoteThread;
+	std::thread consoleThread;
 	//thread uiListener;
 
 	// TODO: Change debug messages
 	try {
-		m_uRemoteListener = unique_ptr<URemoteListener>(new URemoteListener(move(serverConfig), this));
+		m_uRemoteListener = std::unique_ptr<URemoteListener>(new URemoteListener(move(serverConfig), this));
 		uRemoteThread = m_uRemoteListener->start();
 		Utils::getLogger()->debug("AI::StartConnection(), URemoteListener OK");
 
-	} catch (const exception&) {
+	} catch (const std::exception&) {
 		Utils::getLogger()->error("AI::StartConnection(), URemoteListener KO");
 	}
 
 	try {
-		m_consoleListener = unique_ptr<ConsoleListener>(new ConsoleListener());
+		m_consoleListener = std::unique_ptr<ConsoleListener>(new ConsoleListener());
 		consoleThread = m_consoleListener->start();
 		Utils::getLogger()->debug("AI::StartConnection(), ConsoleListener OK");
 
-	} catch (const exception&) {
+	} catch (const std::exception&) {
 		Utils::getLogger()->error("AI::StartConnection(), ConsoleListener KO");
 	}
 
@@ -77,9 +75,9 @@ void AI::Welcome()
 	// Calculate the elapsed time since the last call to the method
 	time_t now;
 	time(&now);
-	Utils::getLogger()->debug("AI::Welcome() now " + to_string(now));
+	Utils::getLogger()->debug("AI::Welcome() now " + std::to_string(now));
 	auto elapsedTime = difftime(now, m_LastWelcome);
-	Utils::getLogger()->debug("AI::Welcome() elapsedTime " + to_string(elapsedTime));
+	Utils::getLogger()->debug("AI::Welcome() elapsedTime " + std::to_string(elapsedTime));
 
 	// Welcome if last welcome > DELAY
 	if (elapsedTime > DELAY) {
@@ -89,7 +87,7 @@ void AI::Welcome()
 	}
 }
 
-void AI::Say(string textToSpeak)
+void AI::Say(std::string textToSpeak)
 {
 	// Test mute state
 	if (!m_Config->IsMute) {
