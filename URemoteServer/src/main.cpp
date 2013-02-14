@@ -1,10 +1,13 @@
 #include "AI.h"
-#include "ServerConfig.h"
-#include "Translator.h"
+
 #include "Utils.h"
 #include <Windows.h>
 #include <iostream>
 #include <sstream>
+
+#include "ServerConfig.h"
+#include "Translator.h"
+#include "FileUtils.h"
 
 using namespace std;
 
@@ -112,6 +115,7 @@ bool initProgram(unique_ptr<AIConfig>& aiConfig, unique_ptr<ServerConfig>& serve
 bool initTranslator(Translator* translator, string& message) 
 {
 	logger->info("Init Translator...");
+
 	// TODO: Search files in directory LANGUAGE_DIR
 	try {
 		translator->addLanguage(Translator::LANG_EN, LANGUAGE_DIR + "\\en.lang");
@@ -128,6 +132,21 @@ bool initTranslator(Translator* translator, string& message)
 		message += e.what();
 		message += "\n";
 	}
+	/*
+	auto files = FileUtils::list_files(LANGUAGE_DIR, false, ".*(\\.)lang");
+	for (auto file : files) {
+		if (file.isDirectory()) {
+			continue;
+		}
+		try {
+			// TODO: Translator::LANG_XX dynamic
+			translator->addLanguage(Translator::LANG_EN, file.getfullPath());
+		} catch (const exception& e) {
+			logger->warning(e.what());
+			message += e.what();
+			message += "\n";
+		}
+	}*/
 
 	const auto isInitialized = translator->isInitialized();
 	if (isInitialized) {
