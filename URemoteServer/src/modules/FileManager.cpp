@@ -13,7 +13,7 @@
 using namespace std;
 using namespace network;
 
-	// TODO: Translate comments
+// TODO: Translate comments
 //////////////////////////////////////////////////////////////////////////////
 // Fonctions publics
 //////////////////////////////////////////////////////////////////////////////
@@ -39,7 +39,7 @@ void FileManager::HandleMessage(Response* reply, Request_Code code, string param
 	}
 }
 
-	// TODO: Translate comments
+// TODO: Translate comments
 //////////////////////////////////////////////////////////////////////////////
 // Fonctions privées
 //////////////////////////////////////////////////////////////////////////////
@@ -48,9 +48,20 @@ bool FileManager::GetDirectoryContent(Response* reply, string dirPath)
 {
 	cout << "Target directory is " << dirPath << endl;
 
-	vector<FileUtils::File> fileList;
 	try {
-		fileList = FileUtils::list_files(dirPath);
+		auto fileList = FileUtils::list_files(dirPath);
+
+		// Initiate the vector to return
+		DirContent *dirContent = reply->mutable_dircontent();
+		dirContent->set_path(dirPath);
+
+		for (FileUtils::File file : fileList) {
+			AddFile(dirContent, file);
+		}
+
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		return true;
+
 	} catch (const exception& e) {
 		// TODO: Catch FileException
 		Utils::getLogger()->error(e.what());
@@ -58,17 +69,6 @@ bool FileManager::GetDirectoryContent(Response* reply, string dirPath)
 		reply->set_message(e.what());
 		return false;
 	}
-
-	// Initiate the vector to return
-	DirContent *dirContent = reply->mutable_dircontent();
-	dirContent->set_path(dirPath);
-	
-	for (FileUtils::File file : fileList) {
-		AddFile(dirContent, file);
-	}
-	reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
-
-	return true;
 }
 
 string FileManager::OpenFile(string filePath)
@@ -82,7 +82,7 @@ bool FileManager::AddFile(DirContent* dirContent, FileUtils::File& file)
 {
 	DirContent_File *exchangefile = dirContent->add_file();
 	exchangefile->set_name(file.getFilename());
-	
+
 	// TODO: Use a function to translate FileUtils::File::TYPE to DirContent_File_FileType
 	if (file.type == FileUtils::File::TYPE_DIRECTORY) {
 		exchangefile->set_type(DirContent_File_FileType_DIRECTORY);

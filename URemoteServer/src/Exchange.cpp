@@ -194,8 +194,8 @@ void Exchange::VolumeCommand(Response* reply, Request_Code code, int intParam)
 	switch (code) {
 
 	case Request_Code_DEFINE:
-		fVolumeLvl = MasterVolume::GetInstance()->Define(intParam);
-		MasterVolume::FreeInstance();
+		fVolumeLvl = MasterVolume::getInstance()->define(intParam);
+		MasterVolume::freeInstance();
 
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		volumePoucentage = (int) (fVolumeLvl * 100);
@@ -206,8 +206,8 @@ void Exchange::VolumeCommand(Response* reply, Request_Code code, int intParam)
 		break;
 
 	case Request_Code_UP:
-		fVolumeLvl = MasterVolume::GetInstance()->TurnUp();
-		MasterVolume::FreeInstance();
+		fVolumeLvl = MasterVolume::getInstance()->turnUp();
+		MasterVolume::freeInstance();
 
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		volumePoucentage = (int) (fVolumeLvl * 100);
@@ -218,8 +218,8 @@ void Exchange::VolumeCommand(Response* reply, Request_Code code, int intParam)
 		break;
 			
 	case Request_Code_DOWN:
-		fVolumeLvl = MasterVolume::GetInstance()->TurnDown();
-		MasterVolume::FreeInstance();
+		fVolumeLvl = MasterVolume::getInstance()->turnDown();
+		MasterVolume::freeInstance();
 
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		volumePoucentage = (int) (fVolumeLvl * 100);
@@ -230,8 +230,8 @@ void Exchange::VolumeCommand(Response* reply, Request_Code code, int intParam)
 		break;
 			
 	case Request_Code_MUTE:
-		isMute = MasterVolume::GetInstance()->ToggleMute();
-		MasterVolume::FreeInstance();
+		isMute = MasterVolume::getInstance()->toggleMute();
+		MasterVolume::freeInstance();
 		
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);	
 		reply->set_intvalue(isMute);

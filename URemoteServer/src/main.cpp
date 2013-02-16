@@ -25,7 +25,6 @@ Logger* logger = Utils::getLogger();
 
 int main()
 {
-	
 	logger->debug("******************************************************");
 	logger->debug("*****          Directory initialization          *****");
 	logger->debug("******************************************************");

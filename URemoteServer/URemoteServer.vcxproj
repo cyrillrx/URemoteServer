@@ -105,6 +105,7 @@
     <ClInclude Include="src\server_exchange.pb.h" />
     <ClInclude Include="src\Modules\Speech.h" />
     <ClInclude Include="src\TextKey.h" />
+    <ClInclude Include="src\listeners\VoiceListener.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\listeners\ConsoleListener.cpp" />
@@ -123,6 +124,7 @@
     <ClCompile Include="src\server_exchange.pb.cc" />
     <ClCompile Include="src\Modules\Speech.cpp" />
     <ClCompile Include="src\TextKey.cpp" />
+    <ClCompile Include="src\listeners\VoiceListener.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="URemoteServer.rc" />

@@ -6,27 +6,27 @@
 class MasterVolume
 {
 public :
-	static MasterVolume* GetInstance();
-	static void FreeInstance();
+	static MasterVolume* getInstance();
+	static void freeInstance();
 	
-	bool ToggleMute();
-	float Define(int volumePoucentage);
-	float TurnUp();
-	float TurnDown();
+	bool toggleMute();
+	float define(int volumePoucentage);
+	float turnUp();
+	float turnDown();
 
 private :
-	static MasterVolume *s_MasterVolume; 
-	IAudioEndpointVolume *m_EndpointVolume;
+	static MasterVolume *s_masterVolume; 
+	IAudioEndpointVolume *m_endpointVolume;
 	
 	MasterVolume(void);
 	~MasterVolume(void);
 	
-	void LoadEndpointVolume();
-	void FreeEndpointVolume();
+	void loadVolumeController();
+	void freeVolumeController();
 	
-	bool IsMute();
-	void SetMute(bool mute);
+	bool isMute();
+	void setMute(bool mute);
 
-	float GetVolume();
-	void SetVolume(float volume);	
+	float getVolume();
+	void setVolume(float volume);	
 };
