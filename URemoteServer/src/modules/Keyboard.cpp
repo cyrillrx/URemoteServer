@@ -1,7 +1,7 @@
 #include "Keyboard.h"
-#include <iostream>
 
-using namespace std;
+#include "Utils.h"
+
 using namespace network;
 
 //////////////////////////////////////////////////////////////////////////////
@@ -12,9 +12,8 @@ void Keyboard::HandleMessage(Response* reply, Request* request)
 {
 	const Request_Code code			= request->code();
 	const Request_Code extraCode	= request->extracode();
-	const string strParam			= request->stringparam();
-	
-	string message = "";
+	const std::string strParam			= request->stringparam();
+
 	const WORD extraInput = GetInputFromCode(extraCode);
 
 	switch (code) {
@@ -24,7 +23,7 @@ void Keyboard::HandleMessage(Response* reply, Request* request)
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message(strParam);
 		break;
-		
+
 	case Request_Code_LEFT:
 		SendKeyboardInput(VK_LEFT, extraInput);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
@@ -54,7 +53,7 @@ void Keyboard::HandleMessage(Response* reply, Request* request)
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("Play/pause");
 		break;
-		
+
 	case Request_Code_MEDIA_STOP:
 		SendKeyboardInput(VK_MEDIA_STOP, extraInput);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
@@ -78,19 +77,19 @@ void Keyboard::HandleMessage(Response* reply, Request* request)
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("Enter");
 		break;
-		
+
 	case Request_Code_KB_SPACE:
 		SendKeyboardInput(VK_SPACE, extraInput);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("Space");
 		break;
-		
+
 	case Request_Code_KB_BACKSPACE:
 		SendKeyboardInput(VK_BACK, extraInput);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("Backspace");
 		break;
-		
+
 	case Request_Code_KB_ESCAPE:
 		SendKeyboardInput(VK_ESCAPE, extraInput);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
@@ -116,27 +115,27 @@ void Keyboard::HandleMessage(Response* reply, Request* request)
 WORD Keyboard::GetInputFromCode(Request_Code code)
 {
 	switch (code) {
-		
-		case Request_Code_KB_CTRL:		return VK_CONTROL;
-		case Request_Code_KB_ALT:		return VK_MENU;
-		case Request_Code_KB_ALTGR:		return VK_RMENU;
-		case Request_Code_KB_SHIFT:		return VK_SHIFT;
-		case Request_Code_KB_WINDOWS:	return VK_RWIN;
-		case Request_Code_NONE:			return VK_NONE;
 
-		default: 
-			return VK_NONE;
+	case Request_Code_KB_CTRL:		return VK_CONTROL;
+	case Request_Code_KB_ALT:		return VK_MENU;
+	case Request_Code_KB_ALTGR:		return VK_RMENU;
+	case Request_Code_KB_SHIFT:		return VK_SHIFT;
+	case Request_Code_KB_WINDOWS:	return VK_RWIN;
+	case Request_Code_NONE:			return VK_NONE;
+
+	default: 
+		return VK_NONE;
 	}
 }
 
-string Keyboard::SendDefinedKey(string param, WORD extraCode)
+std::string Keyboard::SendDefinedKey(std::string param, WORD extraCode)
 {
 	char c = param.c_str()[0];
 	if (	(c >= 48 && c <= 57) || // 0 to 9
-			(c >= 65 && c <= 90) || // A to Z
-			(c >= 97 && c <= 122) ) { // a to z
-		SendKeyboardInput(c, extraCode);
-		return param;
+		(c >= 65 && c <= 90) || // A to Z
+		(c >= 97 && c <= 122) ) { // a to z
+			SendKeyboardInput(c, extraCode);
+			return param;
 
 	} else {
 		return "Unknown command key !";
@@ -151,35 +150,35 @@ void Keyboard::CtrlEnter()
 
 void Keyboard::SendKeyboardInput(WORD code, WORD extraCode)
 {
-	cout << "in Keyboard::SendKeyboardInput(WORD _code, WORD _extraCode)" << endl;
-	cout << "-- code : " << code << endl;
-	cout << "-- extra code : " << extraCode << endl;
-	
-	#define KEYEVENTF_KEYDOWN 0x0000
+	Utils::getLogger()->debug("Keyboard::SendKeyboardInput");
+	Utils::getLogger()->debug("-- code : "			+ code);
+	Utils::getLogger()->debug("-- extra code : "	+ extraCode);
+
+#define KEYEVENTF_KEYDOWN 0x0000
 
 	INPUT input;
 	input.type = INPUT_KEYBOARD;
 	input.ki.wScan = 0;
 	input.ki.time = 0;
 	input.ki.dwExtraInfo = 0;
-	
+
 	// Press the extra key
 	if (extraCode != VK_NONE) {
 		input.ki.wVk = extraCode;
 		input.ki.dwFlags = KEYEVENTF_KEYDOWN;
 		SendInput(1, &input, sizeof(INPUT));
 	}
-	
+
 	// Press the main key
 	input.ki.wVk = code;
 	input.ki.dwFlags = KEYEVENTF_KEYDOWN;
 	SendInput(1, &input, sizeof(INPUT));
-	
+
 	// Release the main key
 	input.ki.wVk = code;
 	input.ki.dwFlags = KEYEVENTF_KEYUP;
 	SendInput(1, &input, sizeof(INPUT));
-	
+
 	// Release the extra key
 	if (extraCode != VK_NONE) {
 		input.ki.wVk = extraCode;

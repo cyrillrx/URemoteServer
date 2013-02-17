@@ -1,6 +1,8 @@
 #include "MasterVolume.h"
 
 #include <iostream>
+
+#include "Utils.h"
 #include <windows.h>
 #include <mmdeviceapi.h>
 
@@ -8,18 +10,18 @@ const float VOLUME_MAX	= 1.0f;
 const float VOLUME_MIN	= 0.0f;
 const float VOLUME_STEP	= 0.05f;
 
-using namespace std;
-
 MasterVolume* MasterVolume::s_masterVolume = nullptr; 
 
-MasterVolume* MasterVolume::getInstance() {
+MasterVolume* MasterVolume::getInstance()
+{
 	if (!s_masterVolume) {
 		s_masterVolume = new MasterVolume();
 	}
 	return s_masterVolume;
 }
 
-void MasterVolume::freeInstance() {
+void MasterVolume::freeInstance()
+{
 	delete(s_masterVolume);
 	s_masterVolume = nullptr;
 }
@@ -43,7 +45,7 @@ bool MasterVolume::toggleMute()
 */
 float MasterVolume::define(int volumePoucentage)
 {
-	double volume = (float) volumePoucentage/100.0;
+	float volume = (float) volumePoucentage / 100.0f;
 	setVolume(volume);
 
 	return volume;
@@ -78,11 +80,11 @@ float MasterVolume::turnDown()
 /**
 * Default constructor.
 */
-MasterVolume::MasterVolume(void)
+MasterVolume::MasterVolume()
 {
 	// Initialize the COM library.
 	if (CoInitialize(nullptr) != S_OK) {
-		cout << "CoInitialize failed" << endl;
+		Utils::getLogger()->error("MasterVolume::MasterVolume(), CoInitialize failed");
 	}
 	loadVolumeController();
 }
@@ -90,7 +92,7 @@ MasterVolume::MasterVolume(void)
 /**
 * Default destructor.
 */
-MasterVolume::~MasterVolume(void)
+MasterVolume::~MasterVolume()
 {
 	freeVolumeController();
 	// Free COM Library
@@ -111,16 +113,14 @@ void MasterVolume::loadVolumeController()
 	// Get the list of audio devices
 	hr = CoCreateInstance(__uuidof(MMDeviceEnumerator), nullptr, CLSCTX_INPROC_SERVER, __uuidof(IMMDeviceEnumerator), (LPVOID *)&deviceEnumerator);
 	if (hr != S_OK) {
-		// TODO: Log the file content
-		cout << "CoCreateInstance failed with error: " << hr << endl;
+		Utils::getLogger()->error("MasterVolume::loadVolumeController(), CoCreateInstance failed with error: " + hr);
 		return;
 	}
 
 	// Get the default audio device
 	hr = deviceEnumerator->GetDefaultAudioEndpoint(eRender, eConsole, &defaultDevice);
 	if (hr != S_OK) {
-		// TODO: Log the file content
-		cout << "GetDefaultAudioEndpoint failed with error: " << hr << endl;
+		Utils::getLogger()->error("GetDefaultAudioEndpoint failed with error: " + hr);
 		return;
 	}
 
@@ -133,8 +133,7 @@ void MasterVolume::loadVolumeController()
 	// Load EndpointVolume (volume controller)
 	hr = defaultDevice->Activate(__uuidof(IAudioEndpointVolume), CLSCTX_INPROC_SERVER, nullptr, (LPVOID *)&m_endpointVolume);
 	if (hr != S_OK) {
-		// TODO: Log the file content
-		cout << "defaultDevice->Activate failed with error: " << hr << endl;
+		Utils::getLogger()->error("MasterVolume::loadVolumeController(), defaultDevice->Activate failed with error: " + hr);
 		return;
 	}
 
@@ -164,8 +163,7 @@ bool MasterVolume::isMute()
 	BOOL isMute = false;
 	HRESULT hr = m_endpointVolume->GetMute(&isMute);
 	if (hr != S_OK) {
-		// TODO: Log the file content
-		cout << "An error occured while getting muting state !" << endl;
+		Utils::getLogger()->error("MasterVolume::isMute(), An error occured while getting muting state !");
 	}
 	return (isMute) ? true : false;
 }
@@ -173,12 +171,11 @@ bool MasterVolume::isMute()
 /**
 * Set mute state
 */
-void MasterVolume::setMute(bool _isMute)
+void MasterVolume::setMute(bool isMute)
 {
-	HRESULT hr = m_endpointVolume->SetMute(_isMute, nullptr);
+	HRESULT hr = m_endpointVolume->SetMute(isMute, nullptr);
 	if (hr != S_OK) {
-		// TODO: Log the file content
-		cout << "An error occured while setting muting state !" << endl;
+		Utils::getLogger()->error("MasterVolume::setMute(), An error occured while setting muting state !");
 	}
 }
 
@@ -187,14 +184,13 @@ void MasterVolume::setMute(bool _isMute)
 */
 float MasterVolume::getVolume()
 {
-	float _currentVolume = 0;
+	float currentVolume = 0;
 
-	HRESULT hr = m_endpointVolume->GetMasterVolumeLevelScalar(&_currentVolume);
+	HRESULT hr = m_endpointVolume->GetMasterVolumeLevelScalar(&currentVolume);
 	if (hr != S_OK) {
-		// TODO: Log the file content
-		cout << "An error occured while getting volume !" << endl;
+		Utils::getLogger()->error("MasterVolume::getVolume(), An error occured while getting volume !");
 	}
-	return _currentVolume;
+	return currentVolume;
 }
 
 // Définit le nouveau volume
@@ -202,7 +198,6 @@ void MasterVolume::setVolume(float _newVolume)
 {
 	HRESULT hr = m_endpointVolume->SetMasterVolumeLevelScalar(_newVolume, nullptr);
 	if (hr != S_OK) {
-		// TODO: Log the file content
-		cout << "An error occured while setting volume !" << endl;
+		Utils::getLogger()->error("MasterVolume::setVolume(), An error occured while setting volume !");
 	}
 }

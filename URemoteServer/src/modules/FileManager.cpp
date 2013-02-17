@@ -10,15 +10,13 @@
 #define FindFirstFile FindFirstFileA
 #define WIN32_FIND_DATA WIN32_FIND_DATAA
 
-using namespace std;
 using namespace network;
 
-// TODO: Translate comments
 //////////////////////////////////////////////////////////////////////////////
-// Fonctions publics
+// Public functions
 //////////////////////////////////////////////////////////////////////////////
 
-void FileManager::HandleMessage(Response* reply, Request_Code code, string param)
+void FileManager::HandleMessage(Response* reply, Request_Code code, std::string param)
 {
 
 	switch (code) {
@@ -28,8 +26,9 @@ void FileManager::HandleMessage(Response* reply, Request_Code code, string param
 		break;
 
 	case Request_Code_OPEN_FILE:
+		OpenFile(param);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
-		reply->set_message(OpenFile(param));
+		reply->set_message("Opening file : "  + param);
 		break;
 
 	default:
@@ -39,15 +38,12 @@ void FileManager::HandleMessage(Response* reply, Request_Code code, string param
 	}
 }
 
-// TODO: Translate comments
 //////////////////////////////////////////////////////////////////////////////
-// Fonctions privées
+// Private functions
 //////////////////////////////////////////////////////////////////////////////
 
-bool FileManager::GetDirectoryContent(Response* reply, string dirPath)
+bool FileManager::GetDirectoryContent(Response* reply, std::string dirPath)
 {
-	cout << "Target directory is " << dirPath << endl;
-
 	try {
 		auto fileList = FileUtils::list_files(dirPath);
 
@@ -62,7 +58,7 @@ bool FileManager::GetDirectoryContent(Response* reply, string dirPath)
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		return true;
 
-	} catch (const exception& e) {
+	} catch (const std::exception& e) {
 		// TODO: Catch FileException
 		Utils::getLogger()->error(e.what());
 		reply->set_returncode(Response_ReturnCode_RC_ERROR);
@@ -71,11 +67,10 @@ bool FileManager::GetDirectoryContent(Response* reply, string dirPath)
 	}
 }
 
-string FileManager::OpenFile(string filePath)
+void FileManager::OpenFile(std::string filePath)
 {
 	bstr_t path(filePath.c_str());
 	ShellExecute(nullptr, nullptr, path, nullptr, nullptr, SW_SHOWMAXIMIZED);
-	return "Opening file : "  + filePath;
 }
 
 bool FileManager::AddFile(DirContent* dirContent, FileUtils::File& file)

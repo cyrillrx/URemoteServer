@@ -18,8 +18,8 @@ private :
 	static MasterVolume *s_masterVolume; 
 	IAudioEndpointVolume *m_endpointVolume;
 	
-	MasterVolume(void);
-	~MasterVolume(void);
+	MasterVolume();
+	~MasterVolume();
 	
 	void loadVolumeController();
 	void freeVolumeController();

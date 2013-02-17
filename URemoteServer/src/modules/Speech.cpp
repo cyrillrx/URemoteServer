@@ -2,14 +2,12 @@
 
 #include <thread>
 
-using namespace std;
-Speech::Speech(const string& lang, const string& gender) : m_language(lang), m_gender(gender)
-{
-}
+#include "Utils.h"
 
-Speech::~Speech()
-{
-}
+Speech::Speech(const std::string& lang, const std::string& gender)
+	: m_language(lang), m_gender(gender) { }
+
+Speech::~Speech() { }
 
 void Speech::initVoice(ISpVoice * ispVoice)
 {
@@ -24,33 +22,35 @@ void Speech::initVoice(ISpVoice * ispVoice)
 	ispVoice->SetRate(long(0.5));
 }
 
-void Speech::SayB(const bstr_t& _textToSpeak)
+bool Speech::sayB(const bstr_t& textToSpeak)
 {
 	ISpVoice * ispVoice = nullptr;
-    if (FAILED(::CoInitialize(nullptr))) {
-        return;
+    if (FAILED(CoInitialize(nullptr))) {
+        return false;
 	}
+
+	bool result = false;
 
 	HRESULT hr = CoCreateInstance(CLSID_SpVoice, nullptr, CLSCTX_ALL, IID_ISpVoice, (void **)&ispVoice);
     if (SUCCEEDED( hr )) {
 
 		initVoice(ispVoice);
 	
-		hr = ispVoice->Speak(_textToSpeak, SPF_ASYNC, nullptr);
+		hr = ispVoice->Speak(textToSpeak, SPF_ASYNC, nullptr);
 		if (hr == S_OK) {
-			cout << "Speech::SayB : " << _textToSpeak << endl;
+			result = true;
 
 		} else if (hr == E_INVALIDARG) {
-			cerr << "Speech::SayB - One or more parameters are invalid." << endl;
+			Utils::getLogger()->error("Speech::SayB - One or more parameters are invalid.");
 
 		} else if (hr == E_POINTER) {
-			cerr << "Speech::SayB - Invalid pointer." << endl;
+			Utils::getLogger()->error("Speech::SayB - Invalid pointer.");
 
 		} else if (hr == E_OUTOFMEMORY) {
-			cerr << "Speech::SayB - Exceeded available memory." << endl;
+			Utils::getLogger()->error("Speech::SayB - Exceeded available memory.");
 
 		} else {
-			cerr << "Speech::SayB - Unknown error." << endl << endl;
+			Utils::getLogger()->error("Speech::SayB - Unknown error.");
 		}
 
 		hr = ispVoice->WaitUntilDone(30000);
@@ -58,18 +58,22 @@ void Speech::SayB(const bstr_t& _textToSpeak)
         ispVoice->Release();
         ispVoice = nullptr;
     }
-    ::CoUninitialize();
+    CoUninitialize();
+
+	return result;
 }
 
-void Speech::Say(const string& textToSpeak)
+void Speech::say(const std::string& textToSpeak)
 {
 	bstr_t bstrTextToSpeak(textToSpeak.c_str());
-	SayB(bstrTextToSpeak);
+	if (sayB(bstrTextToSpeak)) {
+		Utils::getLogger()->info("Speech::say - " + textToSpeak);
+	}
 		
 }
 
-void Speech::SayInThread(const string& textToSpeak)
+void Speech::sayInThread(const std::string& textToSpeak)
 {
-	thread speakThread(&Speech::Say, this, textToSpeak);
+	std::thread speakThread(&Speech::say, this, textToSpeak);
 	speakThread.join();
 }

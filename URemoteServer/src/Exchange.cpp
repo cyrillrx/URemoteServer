@@ -1,8 +1,6 @@
 #include "Exchange.h"
 
 #include <iostream>
-#include <sstream>
-#include <ostream>
 
 #include "google\protobuf\io\zero_copy_stream_impl_lite.h"
 #include "modules\FileManager.h"
@@ -13,8 +11,8 @@
 #include "modules\App.h"
 #include "Translator.h"
 #include "TextKey.h"
+#include "Utils.h"
 
-using namespace std;
 using namespace network;
 
 SerializedExchange Exchange::HandleMessage(AI* ai, SerializedExchange serializedRequest, bool &continueToListen)
@@ -23,18 +21,18 @@ SerializedExchange Exchange::HandleMessage(AI* ai, SerializedExchange serialized
 
 	const auto reqType	= request->type();
 	const auto reqCode	= request->code();
-	const auto reqExtraCode	= request->extracode();
+	const auto reqExtraCode		= request->extracode();
 	const auto securityToken	= request->securitytoken();
 	const auto strParam	= request->stringparam();
 	const auto intParam	= request->intparam();
 	
-	cout << "Server::HandleMessage() Received message : " << endl;
-	cout << " - Type		<" << Request_Type_Name(reqType)	<< ">" << endl;
-	cout << " - Code		<" << Request_Code_Name(reqCode)	<< ">" << endl;
-	cout << " - ExtraCode	<" << Request_Code_Name(reqExtraCode)	<< ">" << endl;
-	cout << " - Token	    <" << securityToken					<< ">" << endl;
-	cout << " - str param	<" << strParam						<< ">" << endl;
-	cout << " - int param	<" << intParam						<< ">" << endl;
+	Utils::getLogger()->info("Server::HandleMessage() Received message : ");
+	Utils::getLogger()->info(" - Type		<" + Request_Type_Name(reqType)	+ ">");
+	Utils::getLogger()->info(" - Code		<" + Request_Code_Name(reqCode)	+ ">");
+	Utils::getLogger()->info(" - ExtraCode	<" + Request_Code_Name(reqExtraCode) + ">");
+	Utils::getLogger()->info(" - Token	    <" + securityToken				+ ">");
+	Utils::getLogger()->info(" - str param	<" + strParam					+ ">");
+	Utils::getLogger()->info(" - int param	<" + std::to_string(intParam)	+ ">");
 
 	auto* reply = new Response();
 	reply->set_requesttype(reqType);
@@ -188,7 +186,7 @@ void Exchange::VolumeCommand(Response* reply, Request_Code code, int intParam)
 	bool isMute;
 	
 	char buffer[50];
-	string message;
+	std::string message;
 	int volumePoucentage;
 
 	switch (code) {
@@ -240,7 +238,7 @@ void Exchange::VolumeCommand(Response* reply, Request_Code code, int intParam)
 	
 	default:
 		message = "Unknown Volume command !";
-		cerr << message << endl;
+		Utils::getLogger()->error(message);
 		break;
 	}
 
@@ -265,7 +263,7 @@ void Exchange::AICommand(AI* ai, Response* reply, Request_Code code)
 	default:
 		reply->set_returncode(Response_ReturnCode_RC_ERROR);
 		message = "Unknown AI command !";
-		cerr << message << endl;
+		Utils::getLogger()->error(message);
 		break;
 	}
 	
@@ -275,7 +273,7 @@ void Exchange::AICommand(AI* ai, Response* reply, Request_Code code)
 /** Handle application commands. */
 void Exchange::AppCommand(Response* reply, Request_Code code)
 {
-	string message;
+	std::string message;
 
 	switch (code) {
 
@@ -303,7 +301,7 @@ void Exchange::AppCommand(Response* reply, Request_Code code)
 	default:
 		reply->set_returncode(Response_ReturnCode_RC_ERROR);
 		message = "Unknown app command !";
-		cerr << message << endl;
+		Utils::getLogger()->error(message);
 		break;
 	}
 	
@@ -317,13 +315,9 @@ void Exchange::ShutdownPC(AI* ai, Response* reply, int delay)
 	
 	const auto message = Translator::getString(TextKey::XC_PC_SHUTDOWN, delay);
 	
-	stringstream command;
-	command << "Shutdown.exe -s -t " << delay << " -c \"" << message << "\"";
-	system(command.str().c_str());
-	//char command[100];
-	//sprintf_s(command, "Shutdown.exe -s -t %d -c \"PC will shutdown in %d seconds\"", delay, delay);
-	//system(command);
-
+	const std::string command = "Shutdown.exe -s -t " + std::to_string(delay) + " -c \"" + message + "\"";
+	system(command.c_str());
+	
 	reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 	reply->set_message(message);
 

@@ -75,9 +75,9 @@ void AI::Welcome()
 	// Calculate the elapsed time since the last call to the method
 	time_t now;
 	time(&now);
-	Utils::getLogger()->debug("AI::Welcome() now " + std::to_string(now));
+	Utils::getLogger()->debug("AI::Welcome, now " + std::to_string(now));
 	auto elapsedTime = difftime(now, m_LastWelcome);
-	Utils::getLogger()->debug("AI::Welcome() elapsedTime " + std::to_string(elapsedTime));
+	Utils::getLogger()->debug("AI::Welcome, elapsedTime " + std::to_string(elapsedTime));
 
 	// Welcome if last welcome > DELAY
 	if (elapsedTime > DELAY) {
@@ -91,7 +91,7 @@ void AI::Say(std::string textToSpeak)
 {
 	// Test mute state
 	if (!m_Config->IsMute) {
-		m_Voice->SayInThread(textToSpeak);
+		m_Voice->sayInThread(textToSpeak);
 	}
 }
 

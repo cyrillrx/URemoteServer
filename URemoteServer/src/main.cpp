@@ -1,10 +1,10 @@
 #include "AI.h"
 
-#include "Utils.h"
 #include <Windows.h>
 #include <iostream>
 #include <sstream>
 
+#include "Utils.h"
 #include "ServerConfig.h"
 #include "Translator.h"
 #include "FileUtils.h"

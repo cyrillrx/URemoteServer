@@ -14,5 +14,5 @@ public :
 private :
 	static bool AddFile(network::DirContent* dirContent, FileUtils::File& file);
 	static bool GetDirectoryContent(network::Response* reply, std::string dirPath);
-	static std::string OpenFile(std::string filePath);
+	static void OpenFile(std::string filePath);
 };
