@@ -12,11 +12,15 @@ Speech::~Speech() { }
 void Speech::initVoice(ISpVoice * ispVoice)
 {
 	// TODO: initialize Language and gender in a map
-	const WCHAR* reqAttributs = (m_language == "FR")	? L"Language=40C" : L"Language=409";
-	const WCHAR* optAttributs = (m_gender == "M")		? L"Gender=Male"  : L"Gender=Female";
+	const wchar_t* reqAttributsDefault = L"Language=409";
+	const wchar_t* reqAttributs = (m_language == "FR")	? L"Language=40C" : reqAttributsDefault;
+	const wchar_t* optAttributs = (m_gender == "M")		? L"Gender=Male"  : L"Gender=Female";
 
 	ISpObjectToken* cpTokenEng;
 	HRESULT hr = SpFindBestToken(SPCAT_VOICES, reqAttributs, optAttributs, &cpTokenEng);
+	if (FAILED(hr)) {
+		// TODO: voice not found error (hardware Exception)
+	}
 	ispVoice->SetVoice(cpTokenEng);
 	//TODO: Config Rate with file
 	ispVoice->SetRate(long(0.5));
