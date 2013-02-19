@@ -1,8 +1,16 @@
 #pragma once
-class VoiceListener
+
+#include "Listener.h"
+#include "Logger.h"
+
+class VoiceListener : public Listener
 {
 public:
-	VoiceListener(void);
-	~VoiceListener(void);
-};
+	VoiceListener();
+	~VoiceListener();
 
+private:
+	Logger* m_log;
+
+	void doStart();
+};

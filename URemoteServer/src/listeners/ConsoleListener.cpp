@@ -3,13 +3,13 @@
 #include <string>
 #include <iostream>
 
-ConsoleListener::ConsoleListener(void)
+ConsoleListener::ConsoleListener()
 {
 	m_log = new Logger("ConsoleListener.log");
 	m_log->setLogSeverityConsole(Logger::SEVERITY_LVL_WARNING);
 }
 
-ConsoleListener::~ConsoleListener(void)
+ConsoleListener::~ConsoleListener()
 {
 	if (m_log) {
 		delete(m_log);

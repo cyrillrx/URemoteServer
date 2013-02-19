@@ -6,12 +6,11 @@
 class ConsoleListener : public Listener
 {
 public:
-	ConsoleListener(void);
-	~ConsoleListener(void);
+	ConsoleListener();
+	~ConsoleListener();
 
 private:
 	Logger* m_log;
 
 	void doStart();
 };
-
