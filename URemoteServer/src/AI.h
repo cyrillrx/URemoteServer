@@ -9,8 +9,6 @@
 #include "ServerConfig.h"
 #include "listeners\Listener.h"
 #include "listeners\URemoteListener.h"
-#include "listeners\ConsoleListener.h"
-#include "listeners\VoiceListener.h"
 
 class Speech;
 class Server;

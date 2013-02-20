@@ -6,6 +6,8 @@
 #include "Translator.h"
 #include "TextKey.h"
 #include "Utils.h"
+#include "listeners\ConsoleListener.h"
+#include "listeners\VoiceListener.h"
 
 #define DELAY 60*5 // 5 min / 300 sec before repeate time
 
