@@ -43,7 +43,7 @@ SerializedExchange Exchange::HandleMessage(AI* ai, SerializedExchange serialized
 		const auto message = Translator::getString(TextKey::XC_UNKNOWN_SECURITY_TOKEN);
 		reply->set_message(message);
 
-		ai->Say(message);
+		ai->say(message);
 
 	} else {
 	
@@ -138,7 +138,7 @@ void Exchange::ClassicCommand(AI* ai, Response* reply, Request_Code code)
 
 	case Request_Code_HELLO:
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
-		ai->Welcome();
+		ai->welcome();
 		break;
 		
 	case Request_Code_TEST:
@@ -149,7 +149,7 @@ void Exchange::ClassicCommand(AI* ai, Response* reply, Request_Code code)
 	case Request_Code_KILL_SERVER:
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("Server killed");
-		ai->StopConnection();
+		ai->stopConnection();
 		break;
 
 	case Request_Code_SHUTDOWN:
@@ -254,7 +254,7 @@ void Exchange::AICommand(AI* ai, Response* reply, Request_Code code)
 	switch (code) {
 
 	case Request_Code_MUTE:
-		isMute = ai->ToggleMute();
+		isMute = ai->toggleMute();
 			
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		message = (isMute) ? "AI volume is off." : "AI volume is now on.";
@@ -311,7 +311,7 @@ void Exchange::AppCommand(Response* reply, Request_Code code)
 /** Send a command to shutdown the computer. */
 void Exchange::ShutdownPC(AI* ai, Response* reply, int delay)
 {
-	ai->StopConnection();
+	ai->stopConnection();
 	
 	const auto message = Translator::getString(TextKey::XC_PC_SHUTDOWN, delay);
 	
@@ -321,5 +321,5 @@ void Exchange::ShutdownPC(AI* ai, Response* reply, int delay)
 	reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 	reply->set_message(message);
 
-	ai->Say(message);
+	ai->say(message);
 }

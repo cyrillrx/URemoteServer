@@ -66,7 +66,7 @@ int main()
 	auto artificialIntelligence = unique_ptr<AI>(new AI(move(aiConfig)));
 	
 	// Start the server on the AI
-	artificialIntelligence->StartConnection(move(serverConfig));
+	artificialIntelligence->startConnection(move(serverConfig));
 	
 	Translator::freeInstance();
     return EXIT_SUCCESS;

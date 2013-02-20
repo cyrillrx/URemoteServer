@@ -29,7 +29,7 @@ URemoteListener::URemoteListener(std::unique_ptr<ServerConfig> config, AI* ai) :
 	// TODO: Create inner logger and keep log out of console
 }
 
-URemoteListener::~URemoteListener(void)
+URemoteListener::~URemoteListener()
 {
 	if (m_log) {
 		delete(m_log);

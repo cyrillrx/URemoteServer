@@ -89,6 +89,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\helpers\ComHelper.h" />
     <ClInclude Include="src\listeners\ConsoleListener.h" />
     <ClInclude Include="src\listeners\Listener.h" />
     <ClInclude Include="src\AIConfig.h" />
@@ -108,6 +109,7 @@
     <ClInclude Include="src\listeners\VoiceListener.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\helpers\ComHelper.cpp" />
     <ClCompile Include="src\listeners\ConsoleListener.cpp" />
     <ClCompile Include="src\listeners\Listener.cpp" />
     <ClCompile Include="src\AIConfig.cpp" />

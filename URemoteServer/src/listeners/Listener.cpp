@@ -1,12 +1,8 @@
 #include "Listener.h"
 
-Listener::Listener(void)
-{
-}
+Listener::Listener() { }
 
-Listener::~Listener(void)
-{
-}
+Listener::~Listener() { }
 
 /** Start the listening thread */
 std::thread Listener::start()
@@ -19,3 +15,5 @@ void Listener::Stop()
 {
 	m_continueToListen = false;
 }
+
+// TODO: Create a callback to AI via open port.

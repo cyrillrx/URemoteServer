@@ -16,7 +16,7 @@ class URemoteListener : public Listener
 {	
 public:
 	URemoteListener(std::unique_ptr<ServerConfig> config, AI *ai);
-	~URemoteListener(void);
+	~URemoteListener();
 
 private :
 	static int s_instanceCount;

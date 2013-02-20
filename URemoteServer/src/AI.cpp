@@ -1,6 +1,7 @@
 #include "AI.h"
 
 #include <thread>
+
 #include "modules\Speech.h"
 #include "Translator.h"
 #include "TextKey.h"
@@ -11,25 +12,26 @@
 //////////////////////////////////////////////////////////////////////////////
 // Public methods
 //////////////////////////////////////////////////////////////////////////////
-AI::AI(std::unique_ptr<AIConfig> config) : m_Config(move(config))
+AI::AI(std::unique_ptr<AIConfig> config) : m_config(move(config))
 {
-	m_Voice = std::unique_ptr<Speech>(new Speech(m_Config->Lang, m_Config->Gender));
-	time(&m_LastWelcome);
-	m_LastWelcome -= DELAY;
+	m_voice = std::unique_ptr<Speech>(new Speech(m_config->Lang, m_config->Gender));
+	time(&m_lastWelcome);
+	m_lastWelcome -= DELAY;
 
-	Start();
+	start();
 }
 
 AI::~AI()
 {
-	Shutdown();
+	shutdown();
 }
 
-void AI::StartConnection(std::unique_ptr<ServerConfig> serverConfig)
+void AI::startConnection(std::unique_ptr<ServerConfig> serverConfig)
 {
 	// TODO: Instanciate other listeners
 	std::thread uRemoteThread;
 	std::thread consoleThread;
+	std::thread voiceRecoThread;
 	//thread uiListener;
 
 	// TODO: Change debug messages
@@ -41,7 +43,17 @@ void AI::StartConnection(std::unique_ptr<ServerConfig> serverConfig)
 	} catch (const std::exception&) {
 		Utils::getLogger()->error("AI::StartConnection(), URemoteListener KO");
 	}
+	
+	try {
+		m_voiceListener = std::unique_ptr<VoiceListener>(new VoiceListener());
+		voiceRecoThread = m_voiceListener->start();
+		Utils::getLogger()->debug("AI::StartConnection(), voiceRecoThread OK");
 
+	} catch (const std::exception&) {
+		Utils::getLogger()->error("AI::StartConnection(), voiceRecoThread KO");
+	}
+
+	// TODO: Replace console listener by UI Listener
 	try {
 		m_consoleListener = std::unique_ptr<ConsoleListener>(new ConsoleListener());
 		consoleThread = m_consoleListener->start();
@@ -52,70 +64,78 @@ void AI::StartConnection(std::unique_ptr<ServerConfig> serverConfig)
 	}
 
 	// Notify the user that the listener are open.
-	auto text = Translator::getString(TextKey::AI_SERVER_ONLINE, m_Config->Name);
-	Say(text);
+	auto text = Translator::getString(TextKey::AI_SERVER_ONLINE, m_config->Name);
+	say(text);
 
 	// Join the listener threads
+	// TODO: Make it automatic
 	uRemoteThread.join();
 	consoleThread.join();
+	voiceRecoThread.join();
 }
 
-void AI::StopConnection()
+void AI::stopConnection()
 {
+	// TODO: Make it automatic
 	if (m_uRemoteListener) {
 		m_uRemoteListener->Stop();
 	}
+
 	if (m_consoleListener) {
 		m_consoleListener->Stop();
 	}
+	
+	if (m_voiceListener) {
+		m_voiceListener->Stop();
+	}
 }
 
-void AI::Welcome()
+void AI::welcome()
 {
 	// Calculate the elapsed time since the last call to the method
 	time_t now;
 	time(&now);
 	Utils::getLogger()->debug("AI::Welcome, now " + std::to_string(now));
-	auto elapsedTime = difftime(now, m_LastWelcome);
+	auto elapsedTime = difftime(now, m_lastWelcome);
 	Utils::getLogger()->debug("AI::Welcome, elapsedTime " + std::to_string(elapsedTime));
 
 	// Welcome if last welcome > DELAY
 	if (elapsedTime > DELAY) {
-		auto text = Translator::getString(TextKey::AI_WELCOME, m_Config->Name);
-		Say(text);
-		time(&m_LastWelcome);
+		auto text = Translator::getString(TextKey::AI_WELCOME, m_config->Name);
+		say(text);
+		time(&m_lastWelcome);
 	}
 }
 
-void AI::Say(std::string textToSpeak)
+void AI::say(std::string textToSpeak)
 {
 	// Test mute state
-	if (!m_Config->IsMute) {
-		m_Voice->sayInThread(textToSpeak);
+	if (!m_config->IsMute) {
+		m_voice->sayInThread(textToSpeak);
 	}
 }
 
 //! Change l'état de mute et renvoie le nouvel état
-bool AI::ToggleMute()
+bool AI::toggleMute()
 {
-	m_Config->IsMute = !m_Config->IsMute;
-	return m_Config->IsMute;
+	m_config->IsMute = !m_config->IsMute;
+	return m_config->IsMute;
 }
 
 //////////////////////////////////////////////////////////////////////////////
 // Fonctions privées
 //////////////////////////////////////////////////////////////////////////////
 
-void AI::Start()
+void AI::start()
 {
 	auto text = Translator::getString(TextKey::AI_INITIATED);
-	Say(text);
+	say(text);
 }
 
-void AI::Shutdown()
+void AI::shutdown()
 {
 	// TODO: clean the function
-	auto text = getString(TextKey::AI_SHUTDOWN, m_Config->Name);
+	auto text = getString(TextKey::AI_SHUTDOWN, m_config->Name);
 	//auto text = Translator::getString(TextKey::AI_SHUTDOWN, m_Config->Name);
-	Say(text);
+	say(text);
 }
