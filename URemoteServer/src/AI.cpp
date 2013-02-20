@@ -35,19 +35,25 @@ void AI::startConnection(std::unique_ptr<ServerConfig> serverConfig)
 	//thread uiListener;
 
 	// TODO: Change debug messages
+	
+	std::unique_ptr<URemoteListener> uRemoteListener;
+	std::unique_ptr<ConsoleListener> consoleListener;
+	std::unique_ptr<VoiceListener> voiceListener;
 	try {
-		m_uRemoteListener = std::unique_ptr<URemoteListener>(new URemoteListener(move(serverConfig), this));
-		uRemoteThread = m_uRemoteListener->start();
+		uRemoteListener = std::unique_ptr<URemoteListener>(new URemoteListener(move(serverConfig), this));
+		uRemoteThread = uRemoteListener->start();
 		Utils::getLogger()->debug("AI::StartConnection(), URemoteListener OK");
+		m_listeners.push_back(uRemoteListener.get());
 
 	} catch (const std::exception&) {
 		Utils::getLogger()->error("AI::StartConnection(), URemoteListener KO");
 	}
 	
 	try {
-		m_voiceListener = std::unique_ptr<VoiceListener>(new VoiceListener());
-		voiceRecoThread = m_voiceListener->start();
+		voiceListener = std::unique_ptr<VoiceListener>(new VoiceListener());
+		voiceRecoThread = voiceListener->start();
 		Utils::getLogger()->debug("AI::StartConnection(), voiceRecoThread OK");
+		m_listeners.push_back(voiceListener.get());
 
 	} catch (const std::exception&) {
 		Utils::getLogger()->error("AI::StartConnection(), voiceRecoThread KO");
@@ -55,9 +61,10 @@ void AI::startConnection(std::unique_ptr<ServerConfig> serverConfig)
 
 	// TODO: Replace console listener by UI Listener
 	try {
-		m_consoleListener = std::unique_ptr<ConsoleListener>(new ConsoleListener());
-		consoleThread = m_consoleListener->start();
+		consoleListener = std::unique_ptr<ConsoleListener>(new ConsoleListener());
+		consoleThread = consoleListener->start();
 		Utils::getLogger()->debug("AI::StartConnection(), ConsoleListener OK");
+		m_listeners.push_back(consoleListener.get());
 
 	} catch (const std::exception&) {
 		Utils::getLogger()->error("AI::StartConnection(), ConsoleListener KO");
@@ -76,18 +83,21 @@ void AI::startConnection(std::unique_ptr<ServerConfig> serverConfig)
 
 void AI::stopConnection()
 {
-	// TODO: Make it automatic
-	if (m_uRemoteListener) {
-		m_uRemoteListener->Stop();
+	for (auto listener : m_listeners) {
+		listener->stop();
 	}
+	//// TODO: Make it automatic
+	//if (m_uRemoteListener) {
+	//	m_uRemoteListener->stop();
+	//}
 
-	if (m_consoleListener) {
-		m_consoleListener->Stop();
-	}
-	
-	if (m_voiceListener) {
-		m_voiceListener->Stop();
-	}
+	//if (m_consoleListener) {
+	//	m_consoleListener->stop();
+	//}
+	//
+	//if (m_voiceListener) {
+	//	m_voiceListener->stop();
+	//}
 }
 
 void AI::welcome()

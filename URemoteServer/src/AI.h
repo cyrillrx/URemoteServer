@@ -1,11 +1,13 @@
 #pragma once
 
 #include <string>
-#include <time.h>
+#include <ctime>
 #include <memory>
+#include <vector>
 
 #include "AIConfig.h"
 #include "ServerConfig.h"
+#include "listeners\Listener.h"
 #include "listeners\URemoteListener.h"
 #include "listeners\ConsoleListener.h"
 #include "listeners\VoiceListener.h"
@@ -30,9 +32,10 @@ private:
 	std::unique_ptr<AIConfig> m_config;
 	std::unique_ptr<Speech> m_voice;
 
-	std::unique_ptr<URemoteListener> m_uRemoteListener;
+	std::vector<Listener*> m_listeners;
+	/*std::unique_ptr<URemoteListener> m_uRemoteListener;
 	std::unique_ptr<ConsoleListener> m_consoleListener;
-	std::unique_ptr<VoiceListener> m_voiceListener;
+	std::unique_ptr<VoiceListener> m_voiceListener;*/
 	time_t m_lastWelcome;
 	
 	void start();

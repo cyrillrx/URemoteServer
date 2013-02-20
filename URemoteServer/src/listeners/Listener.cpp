@@ -11,7 +11,7 @@ std::thread Listener::start()
 }
 
 /** Stop the listener loop. */
-void Listener::Stop()
+void Listener::stop()
 {
 	m_continueToListen = false;
 }

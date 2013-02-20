@@ -148,7 +148,8 @@ void VoiceListener::getText(ComHelper& helper, ISpRecoContext* reco_context)
 	hr = recoResult->GetText(SP_GETWHOLEPHRASE, SP_GETWHOLEPHRASE, FALSE, &text, NULL);
 	helper.checkResult(hr);
 
-	m_log->info("VoiceListener::getText, J'ai compris: ");
-	//	+ std::string(text));
+	const std::wstring wstr = std::wstring(text);
+	const std::string str(wstr.begin(), wstr.end());
+	m_log->info("VoiceListener::getText, J'ai compris: " + str);
 	CoTaskMemFree(text);
 }

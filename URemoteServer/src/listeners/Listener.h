@@ -9,7 +9,7 @@ public:
 	~Listener(void);
 
 	std::thread start();
-	void Stop();
+	void stop();
 
 protected:
 	bool m_continueToListen;
