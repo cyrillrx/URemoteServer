@@ -2,14 +2,15 @@
 
 #include <string>
 
-class ComHelper
+class ComHandler
 {
 public:
-	ComHelper();
-	~ComHelper();
-	
-	void checkResult(long result);
-
-private :
-	std::string getResultMessage(long result);
+	ComHandler();
+	~ComHandler();
 };
+
+namespace ComHelper
+{
+	void checkResult(const std::string& source, const long& result);
+	std::string getResultMessage(const long& result);
+}

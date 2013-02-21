@@ -1,7 +1,7 @@
 #include "URemoteListener.h"
 
 #include <iostream>
-#include <comdef.h>
+#include <WinSock2.h>
 
 #include "StringUtils.h"
 #include "..\Exchange.h"
@@ -21,11 +21,11 @@ int URemoteListener::s_instanceCount = 0;
 //////////////////////////////////////////////////////////////////////////////
 
 URemoteListener::URemoteListener(std::unique_ptr<ServerConfig> config, AI* ai) :
-	m_config(move(config)), m_Ai(ai)
+	m_config(move(config)), m_ai(ai)
 {	
 	m_log = new Logger("URemoteListener.log");
 	m_log->setLogSeverityConsole(Logger::SEVERITY_LVL_WARNING);
-	InitServer();
+	initServer();
 	// TODO: Create inner logger and keep log out of console
 }
 
@@ -35,7 +35,7 @@ URemoteListener::~URemoteListener()
 		delete(m_log);
 		m_log = nullptr;
 	}
-	FreeServer();
+	freeServer();
 }
 
 /** 
@@ -64,7 +64,7 @@ void URemoteListener::doStart()
 		m_cSocket = accept(m_listenSocket, nullptr, nullptr);
 		if (m_cSocket == INVALID_SOCKET) {
 			m_log->error("accept() failed with error: " + std::to_string(WSAGetLastError()));
-			FreeServer();
+			freeServer();
 			return;
 		}
 		
@@ -77,7 +77,7 @@ void URemoteListener::doStart()
 		exchange.buffer = buffer;
 		exchange.bufferSize = received;
 
-		HandleMessage(exchange);
+		handleMessage(exchange);
 
 		closesocket(m_cSocket);
 		m_log->debug("Socket closed.");
@@ -91,7 +91,7 @@ void URemoteListener::doStart()
 /**
  * Initialize the server.
  */
-bool URemoteListener::InitServer() 
+bool URemoteListener::initServer() 
 {
 	// Initialize winSock library (v2.0)
 	m_log->debug("Initializing winSock library (v2.0)...");
@@ -109,7 +109,7 @@ bool URemoteListener::InitServer()
 	m_listenSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_IP);
 	if (m_listenSocket == INVALID_SOCKET) {
 		m_log->error("URemoteListener::InitServer(), socket() failed with error: " + std::to_string(WSAGetLastError()));
-		FreeServer();
+		freeServer();
 		return false;
 	}
 
@@ -123,7 +123,7 @@ bool URemoteListener::InitServer()
 	m_log->debug("Binding the socket to the address and port...");
 	if (bind(m_listenSocket, (SOCKADDR*)&socketAddress, sizeof(socketAddress)) == SOCKET_ERROR) {
 		m_log->error("URemoteListener::InitServer(), bind() failed with error: " + std::to_string(WSAGetLastError()));
-		FreeServer();
+		freeServer();
 		return false;
 	}
 
@@ -131,18 +131,18 @@ bool URemoteListener::InitServer()
 	m_log->debug("Listen to incoming connections...");
 	if (listen(m_listenSocket, m_config->MaxConcurrentConnections) == SOCKET_ERROR) {
 		m_log->error("URemoteListener::InitServer(), listen() failed with error: " + std::to_string(WSAGetLastError()));
-		FreeServer();
+		freeServer();
 		return false;
 	}
 
-	m_hostname = GetHostName();
-	m_ipAddress = GetIpAddress(m_hostname);
+	m_hostname = getHostName();
+	m_ipAddress = getIpAddress(m_hostname);
 
 	return true;
 }
 
 /** Free the sockets. */
-void URemoteListener::FreeServer()
+void URemoteListener::freeServer()
 {
 	closesocket(m_listenSocket);
 		
@@ -153,7 +153,7 @@ void URemoteListener::FreeServer()
 }
 
 
-std::string URemoteListener::GetHostName()
+std::string URemoteListener::getHostName()
 {
 	char hostname[80];
 	if (gethostname(hostname, sizeof(hostname)) == SOCKET_ERROR) {
@@ -164,7 +164,7 @@ std::string URemoteListener::GetHostName()
 	return hostname;
 }
 
-std::string URemoteListener::GetIpAddress(std::string hostname)
+std::string URemoteListener::getIpAddress(std::string hostname)
 {
 	std::string ipAddress = "";
 	struct hostent *host = gethostbyname(hostname.c_str());
@@ -183,9 +183,9 @@ std::string URemoteListener::GetIpAddress(std::string hostname)
  * Handle the command sent by the client.
  * then send a response.
  */
-void URemoteListener::HandleMessage(SerializedExchange request) 
+void URemoteListener::handleMessage(SerializedExchange request) 
 {
-	SerializedExchange response = Exchange::HandleMessage(m_Ai, request, m_continueToListen);
+	SerializedExchange response = Exchange::handleMessage(m_ai, request, m_continueToListen);
 	send(m_cSocket, response.buffer, response.bufferSize, 0);
 }
 

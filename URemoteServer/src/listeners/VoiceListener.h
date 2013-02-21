@@ -3,20 +3,19 @@
 #include <sapi.h>
 
 #include "Listener.h"
-#include "Logger.h"
-#include "..\helpers\ComHelper.h"
+#include "..\Exchange.h"
 
 class VoiceListener : public Listener
 {
 public:
-	VoiceListener();
+	VoiceListener(AI *ai);
 	~VoiceListener();
 
 private:
-	Logger* m_log;
+	AI * m_ai;
 
 	void doStart();
 	void listen();
-	ISpRecoGrammar* initGrammar(ComHelper& helper, ISpRecoContext* recoContext);
-	void getText(ComHelper& helper, ISpRecoContext* reco_context);
+	ISpRecoGrammar* initGrammar(ISpRecoContext* recoContext);
+	void getText(ISpRecoContext* reco_context);
 };

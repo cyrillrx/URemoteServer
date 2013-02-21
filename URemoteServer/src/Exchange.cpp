@@ -15,9 +15,9 @@
 
 using namespace network;
 
-SerializedExchange Exchange::HandleMessage(AI* ai, SerializedExchange serializedRequest, bool &continueToListen)
+SerializedExchange Exchange::handleMessage(AI* ai, SerializedExchange serializedRequest, bool &continueToListen)
 {
-	auto* request = GetRequest(serializedRequest);
+	auto* request = getRequest(serializedRequest);
 
 	const auto reqType	= request->type();
 	const auto reqCode	= request->code();
@@ -50,7 +50,7 @@ SerializedExchange Exchange::HandleMessage(AI* ai, SerializedExchange serialized
 		switch (reqType) {
 	
 		case Request_Type_SIMPLE:
-			ClassicCommand(ai, reply, reqCode);
+			classicCommand(ai, reply, reqCode);
 			break;
 
 		case Request_Type_EXPLORER:
@@ -62,15 +62,15 @@ SerializedExchange Exchange::HandleMessage(AI* ai, SerializedExchange serialized
 			break;
 
 		case Request_Type_AI:
-			AICommand(ai, reply, reqCode);
+			aICommand(ai, reply, reqCode);
 			break;
 		
 		case Request_Type_VOLUME:
-			VolumeCommand(reply, reqCode, intParam);
+			volumeCommand(reply, reqCode, intParam);
 			break;
 
 		case Request_Type_APP:
-			AppCommand(reply, reqCode);
+			appCommand(reply, reqCode);
 			break;
 
 		default:
@@ -82,7 +82,7 @@ SerializedExchange Exchange::HandleMessage(AI* ai, SerializedExchange serialized
 
 	int bufSize = 0;
 	char* buf = nullptr;
-	auto serializedReply = GetSerializeResponse(reply);
+	auto serializedReply = getSerializeResponse(reply);
 
 	delete(reply);
 	reply = nullptr;
@@ -93,7 +93,7 @@ SerializedExchange Exchange::HandleMessage(AI* ai, SerializedExchange serialized
 	return serializedReply;
 }
 
-Request* Exchange::GetRequest(SerializedExchange exchange)
+Request* Exchange::getRequest(SerializedExchange exchange)
 {
 	auto* request = new Request();
 	// Read varint delimited protobuf object in the buffer
@@ -110,7 +110,7 @@ Request* Exchange::GetRequest(SerializedExchange exchange)
 	return request;
 }
 
-SerializedExchange Exchange::GetSerializeResponse(Response* response)
+SerializedExchange Exchange::getSerializeResponse(Response* response)
 {
 	// Build a buffer that can hold message and room for a 32bit delimiter
 	int bufSize	= response->ByteSize() + 4;
@@ -132,7 +132,7 @@ SerializedExchange Exchange::GetSerializeResponse(Response* response)
 }
 
 /** Handle general commands. */
-void Exchange::ClassicCommand(AI* ai, Response* reply, Request_Code code)
+void Exchange::classicCommand(AI* ai, Response* reply, Request_Code code)
 {
 	switch (code) {
 
@@ -153,7 +153,7 @@ void Exchange::ClassicCommand(AI* ai, Response* reply, Request_Code code)
 		break;
 
 	case Request_Code_SHUTDOWN:
-		ShutdownPC(ai, reply, 10);
+		shutdownPC(ai, reply, 10);
 		break;
 
 	case Request_Code_LOCK:
@@ -180,7 +180,7 @@ void Exchange::ClassicCommand(AI* ai, Response* reply, Request_Code code)
 }
 
 /** Handle volume commands. */
-void Exchange::VolumeCommand(Response* reply, Request_Code code, int intParam)
+void Exchange::volumeCommand(Response* reply, Request_Code code, int intParam)
 {
 	float fVolumeLvl;
 	bool isMute;
@@ -246,7 +246,7 @@ void Exchange::VolumeCommand(Response* reply, Request_Code code, int intParam)
 }
 
 /** Handle AI commands */
-void Exchange::AICommand(AI* ai, Response* reply, Request_Code code)
+void Exchange::aICommand(AI* ai, Response* reply, Request_Code code)
 {
 	bool isMute;
 	char* message;
@@ -271,7 +271,7 @@ void Exchange::AICommand(AI* ai, Response* reply, Request_Code code)
 }
 
 /** Handle application commands. */
-void Exchange::AppCommand(Response* reply, Request_Code code)
+void Exchange::appCommand(Response* reply, Request_Code code)
 {
 	std::string message;
 
@@ -309,7 +309,7 @@ void Exchange::AppCommand(Response* reply, Request_Code code)
 }
 
 /** Send a command to shutdown the computer. */
-void Exchange::ShutdownPC(AI* ai, Response* reply, int delay)
+void Exchange::shutdownPC(AI* ai, Response* reply, int delay)
 {
 	ai->stopConnection();
 	

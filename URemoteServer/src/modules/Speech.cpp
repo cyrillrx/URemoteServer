@@ -2,6 +2,7 @@
 
 #include <thread>
 
+#include "..\helpers\ComHelper.h"
 #include "Utils.h"
 
 Speech::Speech(const std::string& lang, const std::string& gender)
@@ -17,7 +18,7 @@ void Speech::initVoice(ISpVoice * ispVoice)
 	const wchar_t* optAttributs = (m_gender == "M")		? L"Gender=Male"  : L"Gender=Female";
 
 	ISpObjectToken* cpTokenEng;
-	HRESULT hr = SpFindBestToken(SPCAT_VOICES, reqAttributs, optAttributs, &cpTokenEng);
+	HRESULT hr = ::SpFindBestToken(SPCAT_VOICES, reqAttributs, optAttributs, &cpTokenEng);
 	if (FAILED(hr)) {
 		// TODO: voice not found error (hardware Exception)
 	}
@@ -28,15 +29,19 @@ void Speech::initVoice(ISpVoice * ispVoice)
 
 bool Speech::sayB(const bstr_t& textToSpeak)
 {
+	ComHandler comHandler;
+	HRESULT hr;
+
 	ISpVoice * ispVoice = nullptr;
-    if (FAILED(CoInitialize(nullptr))) {
-        return false;
-	}
 
 	bool result = false;
 
-	HRESULT hr = CoCreateInstance(CLSID_SpVoice, nullptr, CLSCTX_ALL, IID_ISpVoice, (void **)&ispVoice);
-    if (SUCCEEDED( hr )) {
+	hr = ::CoCreateInstance(CLSID_SpVoice, 
+		nullptr, CLSCTX_ALL, IID_ISpVoice,
+		reinterpret_cast<void**>(&ispVoice));
+	ComHelper::checkResult("Speech::sayB", hr);
+	
+	if (SUCCEEDED( hr )) {
 
 		initVoice(ispVoice);
 	
@@ -62,7 +67,6 @@ bool Speech::sayB(const bstr_t& textToSpeak)
         ispVoice->Release();
         ispVoice = nullptr;
     }
-    CoUninitialize();
 
 	return result;
 }

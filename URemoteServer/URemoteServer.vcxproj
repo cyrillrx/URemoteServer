@@ -107,6 +107,7 @@
     <ClInclude Include="src\Modules\Speech.h" />
     <ClInclude Include="src\TextKey.h" />
     <ClInclude Include="src\listeners\VoiceListener.h" />
+    <ClInclude Include="src\helpers\WinSockHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\helpers\ComHelper.cpp" />
@@ -127,6 +128,7 @@
     <ClCompile Include="src\Modules\Speech.cpp" />
     <ClCompile Include="src\TextKey.cpp" />
     <ClCompile Include="src\listeners\VoiceListener.cpp" />
+    <ClCompile Include="src\helpers\WinSockHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="URemoteServer.rc" />

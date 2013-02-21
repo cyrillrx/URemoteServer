@@ -7,6 +7,7 @@
 #include "TextKey.h"
 #include "Utils.h"
 #include "listeners\ConsoleListener.h"
+#include "listeners\URemoteListener.h"
 #include "listeners\VoiceListener.h"
 
 #define DELAY 60*5 // 5 min / 300 sec before repeate time
@@ -52,7 +53,7 @@ void AI::startConnection(std::unique_ptr<ServerConfig> serverConfig)
 	}
 	
 	try {
-		voiceListener = std::unique_ptr<VoiceListener>(new VoiceListener());
+		voiceListener = std::unique_ptr<VoiceListener>(new VoiceListener(this));
 		voiceRecoThread = voiceListener->start();
 		Utils::getLogger()->debug("AI::StartConnection(), voiceRecoThread OK");
 		m_listeners.push_back(voiceListener.get());
@@ -88,18 +89,11 @@ void AI::stopConnection()
 	for (auto listener : m_listeners) {
 		listener->stop();
 	}
-	//// TODO: Make it automatic
-	//if (m_uRemoteListener) {
-	//	m_uRemoteListener->stop();
-	//}
+}
 
-	//if (m_consoleListener) {
-	//	m_consoleListener->stop();
-	//}
-	//
-	//if (m_voiceListener) {
-	//	m_voiceListener->stop();
-	//}
+std::string AI::getName()
+{
+	return m_config->Name;
 }
 
 void AI::welcome()

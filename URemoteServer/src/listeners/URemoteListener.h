@@ -1,8 +1,8 @@
 #pragma once
 
-#include <WinSock2.h>
 #include <string> 
 #include <memory>
+#include <basetsd.h>
 
 #include "Listener.h"
 #include "..\ServerConfig.h"
@@ -21,20 +21,20 @@ public:
 private :
 	static int s_instanceCount;
 
-	AI * m_Ai;
+	AI * m_ai;
 	Logger* m_log;
 	std::unique_ptr<ServerConfig> m_config;
 	
 	std::string m_hostname;
 	std::string m_ipAddress;
-	SOCKET m_cSocket;
-	SOCKET m_listenSocket;
+	UINT_PTR m_cSocket;
+	UINT_PTR m_listenSocket;
 	
 	void doStart();
-	bool InitServer();
-	void FreeServer();
-	std::string GetHostName();
-	std::string GetIpAddress(std::string hostname);
+	bool initServer();
+	void freeServer();
+	std::string getHostName();
+	std::string getIpAddress(std::string hostname);
 
-	void HandleMessage(SerializedExchange serializedRequest);
+	void handleMessage(SerializedExchange serializedRequest);
 };

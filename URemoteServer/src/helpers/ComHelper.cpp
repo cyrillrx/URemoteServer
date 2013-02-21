@@ -2,66 +2,60 @@
 
 #include <sapi.h>
 
-ComHelper::ComHelper()
+#include "exception\Exception.h"
+
+ComHandler::ComHandler()
 {
-	HRESULT hr = CoInitialize(nullptr);
-	checkResult(hr);
+	HRESULT hr = ::CoInitialize(nullptr);
+	ComHelper::checkResult("ComHandler::ComHandler", hr);
 }
 
-ComHelper::~ComHelper()
+ComHandler::~ComHandler()
 {
-	CoUninitialize();
+	::CoUninitialize();
 }
 
-void ComHelper::checkResult(HRESULT result)
+namespace ComHelper
 {
-	if (result != S_OK) {	
-		throw std::exception(getResultMessage(result).c_str());
-	}
-}
-
-std::string ComHelper::getResultMessage(HRESULT result)
-{
-	std::string msg;
-
-	switch(result)
+	void checkResult(const std::string& source, const HRESULT& result)
 	{
-	case E_INVALIDARG:
-		msg = "One or more arguments are invalids.";
-		break;
-
-	case E_ACCESSDENIED:
-		msg = "Acces Denied.";
-		break;
-
-	case E_NOINTERFACE:
-		msg = "Interface does not exist.";
-		break;
-
-	case E_NOTIMPL:
-		msg = "Not implemented method.";
-		break;
-
-	case E_OUTOFMEMORY:
-		msg = "Out of memory.";
-		break;
-
-	case E_POINTER:
-		msg = "Invalid pointer.";
-		break;
-
-	case E_UNEXPECTED:
-		msg = "Unexpecter error.";
-		break;
-
-	case E_FAIL:
-		msg = "Failure";
-		break;
-
-	default:
-		msg = "Unknown";
-		break;
+		if (result != S_OK) {	
+			throw Exception("ComException", source, getResultMessage(result));
+		}
 	}
 
-	return "COM error : " + msg;
+	std::string getResultMessage(const HRESULT& result)
+	{
+		std::string msg;
+
+		switch(result) {
+
+		case E_INVALIDARG:
+			return "One or more arguments are invalids.";
+
+		case E_ACCESSDENIED:
+			return "Acces Denied.";
+
+		case E_NOINTERFACE:
+			return "Interface does not exist.";
+
+		case E_NOTIMPL:
+			return "Not implemented method.";
+
+		case E_OUTOFMEMORY:
+			return "Out of memory.";
+
+		case E_POINTER:
+			return "Invalid pointer.";
+
+		case E_UNEXPECTED:
+			return "Unexpecter error.";
+
+		case E_FAIL:
+			return "Failure";
+
+		default:
+			return "Unknown : " + std::to_string(result);
+		}
+	}
 }

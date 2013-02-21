@@ -2,6 +2,8 @@
 
 #include <thread>
 
+#include "Logger.h"
+
 class Listener
 {
 public:
@@ -13,8 +15,10 @@ public:
 
 protected:
 	bool m_continueToListen;
+	Logger* m_log;
 
 private:
 	virtual void doStart() = 0;
+	//virtual void handleMessage() = 0;
 };
 

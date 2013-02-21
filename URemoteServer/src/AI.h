@@ -8,7 +8,6 @@
 #include "AIConfig.h"
 #include "ServerConfig.h"
 #include "listeners\Listener.h"
-#include "listeners\URemoteListener.h"
 
 class Speech;
 class Server;
@@ -22,6 +21,8 @@ public:
 	void startConnection(std::unique_ptr<ServerConfig> serverConfig);
 	void stopConnection();
 
+	std::string getName();
+
 	void welcome();
 	void say(std::string textToSpeak);
 	bool toggleMute();
@@ -31,9 +32,6 @@ private:
 	std::unique_ptr<Speech> m_voice;
 
 	std::vector<Listener*> m_listeners;
-	/*std::unique_ptr<URemoteListener> m_uRemoteListener;
-	std::unique_ptr<ConsoleListener> m_consoleListener;
-	std::unique_ptr<VoiceListener> m_voiceListener;*/
 	time_t m_lastWelcome;
 	
 	void start();
