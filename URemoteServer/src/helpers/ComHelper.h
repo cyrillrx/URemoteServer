@@ -1,12 +1,16 @@
 #pragma once
 
 #include <string>
+#include "Logger.h"
 
 class ComHandler
 {
 public:
-	ComHandler();
+	ComHandler(Logger* logger);
 	~ComHandler();
+
+private:
+	Logger* m_log;
 };
 
 namespace ComHelper

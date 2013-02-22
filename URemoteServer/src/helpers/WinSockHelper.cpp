@@ -6,17 +6,22 @@
 //////////////////////////////////////////////////////////////////////////////
 // WinSockHandler
 //////////////////////////////////////////////////////////////////////////////
-WinSockHandler::WinSockHandler()
+WinSockHandler::WinSockHandler(Logger* logger)
+	: m_log(logger)
 {
-	// Initialize winSock library (v2.0)
+	m_log->debug("Initializing winSock library (v2.0)...");
+
 	WSADATA wsaData;
 	::WSAStartup(MAKEWORD(2,0), &wsaData);
-	WinSockHelper::checkResult("WinSockHandler::WinSockHandler", WSAGetLastError());
+	WinSockHelper::checkResult("::WinSockHandler", WSAGetLastError());
 }
 
 WinSockHandler::~WinSockHandler()
 {
+	m_log->debug("Uninitialize WinSock library.");
+
 	::WSACleanup();
+	WinSockHelper::checkResult("::~WinSockHandler", WSAGetLastError());
 }
 
 //////////////////////////////////////////////////////////////////////////////
