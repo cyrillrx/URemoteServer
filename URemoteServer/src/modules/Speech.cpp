@@ -29,7 +29,8 @@ void Speech::initVoice(ISpVoice * ispVoice)
 
 bool Speech::sayB(const bstr_t& textToSpeak)
 {
-	ComHandler comHandler;
+	// Init COM lib
+	ComHandler comHandler(Utils::getLogger());
 	HRESULT hr;
 
 	ISpVoice * ispVoice = nullptr;
