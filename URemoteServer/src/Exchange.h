@@ -16,7 +16,7 @@ public :
 class Exchange
 {
 public :
-	static SerializedExchange handleMessage(AI* ai, SerializedExchange serializedRequest, bool &continueToListen);
+	static SerializedExchange handleMessage(AI* ai, SerializedExchange serializedRequest);
 	static network::Request* getRequest(SerializedExchange serializedRequest);
 	static SerializedExchange getSerializeResponse(network::Response* response);
 

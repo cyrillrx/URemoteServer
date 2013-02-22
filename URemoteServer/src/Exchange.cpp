@@ -15,7 +15,7 @@
 
 using namespace network;
 
-SerializedExchange Exchange::handleMessage(AI* ai, SerializedExchange serializedRequest, bool &continueToListen)
+SerializedExchange Exchange::handleMessage(AI* ai, SerializedExchange serializedRequest)
 {
 	auto* request = getRequest(serializedRequest);
 
