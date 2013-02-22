@@ -185,7 +185,7 @@ std::string URemoteListener::getIpAddress(std::string hostname)
  */
 void URemoteListener::handleMessage(SerializedExchange request) 
 {
-	SerializedExchange response = Exchange::handleMessage(m_ai, request, m_continueToListen);
+	SerializedExchange response = Exchange::handleMessage(m_ai, request);
 	send(m_cSocket, response.buffer, response.bufferSize, 0);
 }
 
