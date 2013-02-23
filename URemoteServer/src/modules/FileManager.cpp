@@ -51,7 +51,7 @@ bool FileManager::GetDirectoryContent(Response* reply, std::string dirPath)
 		DirContent *dirContent = reply->mutable_dircontent();
 		dirContent->set_path(dirPath);
 
-		for (FileUtils::File file : fileList) {
+		for (FileUtils::File& file : fileList) {
 			AddFile(dirContent, file);
 		}
 

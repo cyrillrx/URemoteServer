@@ -132,7 +132,7 @@ bool initTranslator(Translator* translator, string& message)
 		message += "\n";
 	}
 	/*
-	auto files = FileUtils::list_files(LANGUAGE_DIR, false, ".*(\\.lang)$");
+	auto files = FileUtils::list_files(LANGUAGE_DIR, false, ".*(\\.lang)$", true);
 	for (auto file : files) {
 		if (file.isDirectory()) {
 			continue;

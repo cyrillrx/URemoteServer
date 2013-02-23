@@ -47,8 +47,7 @@ void VoiceListener::doStart()
 void VoiceListener::listen()
 {
 	// Initialize COM library
-	m_log->debug("Initializing COM library...");
-	ComHandler initLibrary;
+	ComHandler initLibrary(m_log);
 	HRESULT hr;
 
 	ISpRecognizer* recognizer;
