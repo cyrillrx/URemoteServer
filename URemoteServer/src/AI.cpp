@@ -141,7 +141,7 @@ void AI::start()
 void AI::shutdown()
 {
 	// TODO: clean the function
-	auto text = getString(TextKey::AI_SHUTDOWN, m_config->Name);
+	auto text = trad::get_string(TextKey::AI_SHUTDOWN, m_config->Name);
 	//auto text = Translator::getString(TextKey::AI_SHUTDOWN, m_Config->Name);
 	say(text);
 }
