@@ -3,6 +3,9 @@ ai_initiated=Artificial Intelligence initiated.
 ai_server_online=My name is $1. Connections are open. Waiting for commands.
 ai_welcome=User identified. Welcome Cyril.
 ai_shutdown=$1 is shutting down. Goodbye sir.
+ai_yes=Yes sir.
+ai_all_right=All right.
+ai_understood=Understood.
 
 [Exchanges]
 xc_unknown_security_token=Unknown security token. You are not authorize to send commands !

@@ -2,6 +2,8 @@
 
 #include "..\helpers\ComHelper.h"
 #include "..\AI.h"
+#include "Translator.h"
+#include "..\TextKey.h"
 
 const ULONGLONG grammarId = 0;
 const wchar_t* ruleName1 = L"ruleName1";
@@ -14,7 +16,6 @@ VoiceListener::VoiceListener(AI *ai)
 	
 	//::CoInitialize(nullptr);
 }
-
 
 VoiceListener::~VoiceListener()
 {
@@ -101,7 +102,7 @@ void VoiceListener::listen()
 	WaitForMultipleObjects(1, handles, FALSE, INFINITE);
 	getText(recoContext);
 
-	m_ai->say("Yes sir");
+	m_ai->say(Translator::getString(TextKey::AI_YES));
 
 }
 
@@ -117,6 +118,7 @@ ISpRecoGrammar* VoiceListener::initGrammar(ISpRecoContext* recoContext)
 	WORD langId = MAKELANGID(LANG_FRENCH, SUBLANG_FRENCH);
 	hr = recoGrammar->ResetGrammar(langId);
 	ComHelper::checkResult("VoiceListener::initGrammar", hr);
+	// TODO: Catch error and use default langId => GetUserDefaultUILanguage()
 
 	// Create rules
 	hr = recoGrammar->GetRule(ruleName1, 0, SPRAF_TopLevel | SPRAF_Active, true, &sate);
@@ -161,6 +163,6 @@ void VoiceListener::getText(ISpRecoContext* reco_context)
 
 	const std::wstring wstr = std::wstring(text);
 	const std::string str(wstr.begin(), wstr.end());
-	m_log->info("VoiceListener::getText, J'ai compris: " + str);
+	m_log->info("VoiceListener::getText, Understood: " + str);
 	CoTaskMemFree(text);
 }
