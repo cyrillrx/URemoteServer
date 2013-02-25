@@ -13,13 +13,10 @@ VoiceListener::VoiceListener(AI *ai)
 {
 	m_log = new Logger("VoiceListener.log");
 	m_log->setLogSeverityConsole(Logger::SEVERITY_LVL_WARNING);
-	
-	//::CoInitialize(nullptr);
 }
 
 VoiceListener::~VoiceListener()
 {
-	//::CoUninitialize();
 	if (m_log) {
 		delete(m_log);
 		m_log = nullptr;
