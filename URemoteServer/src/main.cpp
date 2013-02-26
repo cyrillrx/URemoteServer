@@ -115,6 +115,7 @@ bool initTranslator(Translator* translator, string& message)
 {
 	logger->info("Init Translator...");
 
+	/*
 	// TODO: Search files in directory LANGUAGE_DIR
 	try {
 		translator->addLanguage(Translator::LANG_EN, LANGUAGE_DIR + "\\en.lang");
@@ -131,23 +132,22 @@ bool initTranslator(Translator* translator, string& message)
 		message += e.what();
 		message += "\n";
 	}
-	/*
+	/**/
 	auto files = FileUtils::list_files(LANGUAGE_DIR, false, ".*(\\.lang)$", true);
 	for (auto file : files) {
-		if (file.isDirectory()) {
-			continue;
-		}
-		if (trunc_extension(file.getFilename()) == .) {
-		}
+		
 		try {
 			// TODO: Translator::LANG_XX dynamic
-			translator->addLanguage(Translator::LANG_EN, file.getfullPath());
+			// TODO: replace by a function getLangKey that throws an exception for unsupported languages
+			const string langKey = (file.getFilename() == "fr.lang") ? Translator::LANG_FR : Translator::LANG_EN;
+
+			translator->addLanguage(langKey, file.getfullPath());
 		} catch (const exception& e) {
 			logger->warning(e.what());
 			message += e.what();
 			message += "\n";
 		}
-	}*/
+	}
 
 	const auto isInitialized = translator->isInitialized();
 	if (isInitialized) {
