@@ -103,6 +103,11 @@ void VoiceListener::listen()
 
 }
 
+/**
+* Create and initialize the Grammar.
+* Create a rule for the grammar.
+* Add word to the grammar.
+*/
 ISpRecoGrammar* VoiceListener::initGrammar(ISpRecoContext* recoContext)
 {
 	HRESULT hr;
