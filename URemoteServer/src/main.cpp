@@ -15,6 +15,7 @@ bool initProgram(unique_ptr<AIConfig>& aiConfig, unique_ptr<ServerConfig>& serve
 bool initAiConfig(unique_ptr<AIConfig>& aiConfig, string& message);
 bool initTranslator(Translator* translator, string& message);
 bool initServerConfig(unique_ptr<ServerConfig>& serverConfig, string& message);
+string filenameToKey(const string& filename);
 
 static const string LANGUAGE_DIR		= "lang\\";
 static const string CONFIGURATION_DIR	= "conf\\";
@@ -115,33 +116,11 @@ bool initTranslator(Translator* translator, string& message)
 {
 	logger->info("Init Translator...");
 
-	/*
-	// TODO: Search files in directory LANGUAGE_DIR
-	try {
-		translator->addLanguage(Translator::LANG_EN, LANGUAGE_DIR + "\\en.lang");
-	} catch (const exception& e) {
-		logger->warning(e.what());
-		message += e.what();
-		message += "\n";
-	}
-
-	try {
-		translator->addLanguage(Translator::LANG_FR, LANGUAGE_DIR + "\\fr.lang");
-	} catch (const exception& e) {
-		logger->warning(e.what());
-		message += e.what();
-		message += "\n";
-	}
-	/**/
 	auto files = FileUtils::list_files(LANGUAGE_DIR, false, ".*(\\.lang)$", true);
 	for (auto file : files) {
 		
 		try {
-			// TODO: Translator::LANG_XX dynamic
-			// TODO: replace by a function getLangKey that throws an exception for unsupported languages
-			const string langKey = (file.getFilename() == "fr.lang") ? Translator::LANG_FR : Translator::LANG_EN;
-
-			translator->addLanguage(langKey, file.getfullPath());
+			translator->addLanguage(filenameToKey(file.getFilename()), file.getfullPath());
 		} catch (const exception& e) {
 			logger->warning(e.what());
 			message += e.what();
@@ -159,6 +138,28 @@ bool initTranslator(Translator* translator, string& message)
 	}
 
 	return isInitialized;
+}
+
+/**
+ * Get a filename and return the corresponding language key.
+ */
+string filenameToKey(const string& filename)
+{
+	const string defaultKey = Translator::LANG_EN;
+
+	// TODO: Store the map in RAM ?
+	map<string, string> langFilenameToKey;
+	langFilenameToKey.insert(make_pair("fr.lang", Translator::LANG_FR));
+	langFilenameToKey.insert(make_pair("en.lang", Translator::LANG_EN));
+
+	auto keyItem = langFilenameToKey.find(filename);
+	if (keyItem != langFilenameToKey.end()) {
+		return keyItem->second;
+	}
+
+	// If key is not found, return the default key
+	logger->debug("langFilenameToKey, file \"" + filename + "\" is not supported.");
+	return defaultKey;
 }
 
 /**
