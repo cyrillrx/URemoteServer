@@ -43,14 +43,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>.\lib\$(Configuration);$(LibraryPath)</LibraryPath>
     <IncludePath>.\include;$(IncludePath)</IncludePath>
-    <ReferencePath>$(ReferencePath)</ReferencePath>
+    <LibraryPath>.\lib\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <LibraryPath>.\lib\$(Configuration);$(LibraryPath)</LibraryPath>
     <IncludePath>.\include;$(IncludePath)</IncludePath>
+    <LibraryPath>.\lib\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -65,7 +64,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>./lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libprotobuf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -85,9 +84,13 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+      <AdditionalDependencies>libprotobuf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\api_config.h" />
     <ClInclude Include="src\helpers\ComHelper.h" />
     <ClInclude Include="src\listeners\ConsoleListener.h" />
     <ClInclude Include="src\listeners\Listener.h" />
