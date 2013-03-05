@@ -79,10 +79,13 @@ bool FileManager::AddFile(DirContent* dirContent, FileUtils::File& file)
 	exchangefile->set_name(file.getFilename());
 
 	// TODO: Use a function to translate FileUtils::File::TYPE to DirContent_File_FileType
-	if (file.type == FileUtils::File::TYPE_DIRECTORY) {
+	if (file.type == FileUtils::file_type::directory_file) {
 		exchangefile->set_type(DirContent_File_FileType_DIRECTORY);
-	} else {
+
+	} else if (file.type == FileUtils::file_type::regular_file) {
 		exchangefile->set_type(DirContent_File_FileType_FILE);
+	} else {
+		// TODO: Throw an exception
 	}
 	exchangefile->set_size(file.size);
 
