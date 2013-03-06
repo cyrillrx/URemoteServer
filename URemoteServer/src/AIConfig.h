@@ -14,6 +14,8 @@ public:
 	std::string Gender;
 	bool IsMute;
 
+	static const std::string DEFAULT_LANG;
+
 private:
 	static const std::string KEY_NAME;
 	static const std::string KEY_LANG;
@@ -21,7 +23,6 @@ private:
 	static const std::string KEY_MUTE;
 
 	static const std::string DEFAULT_NAME;
-	static const std::string DEFAULT_LANG;
 	static const std::string DEFAULT_GENDER;
 	static const bool DEFAULT_MUTE;
 };

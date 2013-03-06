@@ -6,6 +6,7 @@
 #include "Translator.h"
 #include "TextKey.h"
 #include "Utils.h"
+#include "exception\Exception.h"
 #include "listeners\ConsoleListener.h"
 #include "listeners\URemoteListener.h"
 #include "listeners\VoiceListener.h"
@@ -17,7 +18,19 @@
 //////////////////////////////////////////////////////////////////////////////
 AI::AI(std::unique_ptr<AIConfig> config) : m_config(move(config))
 {
-	m_voice = std::unique_ptr<Speech>(new Speech(m_config->Lang, m_config->Gender));
+	try {
+		m_voice = std::unique_ptr<Speech>(new Speech(m_config->Lang, m_config->Gender));
+
+	} catch (const Exception& e) {
+		Utils::getLogger()->error(e.whatAsString());
+		// if an error occured, try with default language.
+		// No exception catching this time.
+		// TODO: On change lang => update Translator
+		m_config->Lang = AIConfig::DEFAULT_LANG;
+		
+		m_voice = std::unique_ptr<Speech>(new Speech(m_config->Lang, m_config->Gender));
+	}
+
 	time(&m_lastWelcome);
 	m_lastWelcome -= DELAY;
 

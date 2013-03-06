@@ -3,12 +3,31 @@
 #include <thread>
 
 #include "..\helpers\ComHelper.h"
+#include "exception\Exception.h"
 #include "Utils.h"
 
 Speech::Speech(const std::string& lang, const std::string& gender)
-	: m_language(lang), m_gender(gender) { }
+	: m_language(lang), m_gender(gender)
+{
+	testParameters();
+}
 
 Speech::~Speech() { }
+
+/**
+* Try to initialize a voice object to check if the properties are OK.
+* @throws and Exception if a problem occurs.
+*/
+void Speech::testParameters()
+{
+	// Init COM lib
+	ComHandler comHandler(Utils::getLogger());
+	HRESULT hr;
+	ISpVoice * ispVoice = nullptr;
+	hr = ::CoCreateInstance(CLSID_SpVoice, nullptr, CLSCTX_ALL, IID_ISpVoice, reinterpret_cast<void**>(&ispVoice));
+	ComHelper::checkResult("Speech::testParameters", hr);
+	initVoice(ispVoice);
+}
 
 void Speech::initVoice(ISpVoice * ispVoice)
 {
@@ -20,7 +39,7 @@ void Speech::initVoice(ISpVoice * ispVoice)
 	ISpObjectToken* cpTokenEng;
 	HRESULT hr = ::SpFindBestToken(SPCAT_VOICES, reqAttributs, optAttributs, &cpTokenEng);
 	if (FAILED(hr)) {
-		// TODO: voice not found error (hardware Exception)
+		throw Exception("SoftwareException", "Speech::initVoice", "Couldn't find a Token with the required attributs.");
 	}
 	ispVoice->SetVoice(cpTokenEng);
 	//TODO: Config Rate with file
@@ -37,15 +56,13 @@ bool Speech::sayB(const bstr_t& textToSpeak)
 
 	bool result = false;
 
-	hr = ::CoCreateInstance(CLSID_SpVoice, 
-		nullptr, CLSCTX_ALL, IID_ISpVoice,
-		reinterpret_cast<void**>(&ispVoice));
+	hr = ::CoCreateInstance(CLSID_SpVoice, nullptr, CLSCTX_ALL, IID_ISpVoice, reinterpret_cast<void**>(&ispVoice));
 	ComHelper::checkResult("Speech::sayB", hr);
-	
+
 	if (SUCCEEDED( hr )) {
 
 		initVoice(ispVoice);
-	
+
 		hr = ispVoice->Speak(textToSpeak, SPF_ASYNC, nullptr);
 		if (hr == S_OK) {
 			result = true;
@@ -65,9 +82,9 @@ bool Speech::sayB(const bstr_t& textToSpeak)
 
 		hr = ispVoice->WaitUntilDone(30000);
 
-        ispVoice->Release();
-        ispVoice = nullptr;
-    }
+		ispVoice->Release();
+		ispVoice = nullptr;
+	}
 
 	return result;
 }
@@ -78,7 +95,6 @@ void Speech::say(const std::string& textToSpeak)
 	if (sayB(bstrTextToSpeak)) {
 		Utils::getLogger()->info("Speech::say - " + textToSpeak);
 	}
-		
 }
 
 void Speech::sayInThread(const std::string& textToSpeak)

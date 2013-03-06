@@ -17,7 +17,8 @@ public:
 private:
 	std::string m_language;
 	std::string m_gender;
-	
+
+	void testParameters();
 	void initVoice(ISpVoice * ispVoice);
 	void say(const std::string& textToSpeak);
 	bool sayB(const bstr_t& textToSpeak);
