@@ -8,6 +8,7 @@
 #include "ServerConfig.h"
 #include "Translator.h"
 #include "FileUtils.h"
+#include "modules\Speech.h"
 
 using namespace std;
 
@@ -30,6 +31,7 @@ int main()
 	logger->debug("*****          Directory initialization          *****");
 	logger->debug("******************************************************");
 	
+	// TODO: Replace plate-forme dependent API
 	CreateDirectoryA(LANGUAGE_DIR.c_str(), nullptr);
 	if (ERROR_ALREADY_EXISTS == GetLastError()) {
 		logger->debug("Language directory \"" + LANGUAGE_DIR + "\" already exists.");
@@ -195,7 +197,6 @@ bool initServerConfig(unique_ptr<ServerConfig>& serverConfig, string& message)
 		logger->debug("Server config OK.");
 		serverInitialized = true;
 	} catch (const exception& e) {
-		logger->error(e.what());
 		message += e.what();
 		message += "\n";
 		logger->error("Server config KO.");
