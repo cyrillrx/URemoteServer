@@ -27,3 +27,8 @@ AIConfig::~AIConfig()
 
 	saveProperties();
 }
+
+
+void AIConfig::check() {
+
+}

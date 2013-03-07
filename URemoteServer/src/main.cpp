@@ -9,6 +9,7 @@
 #include "fs_utils.h"
 #include "exception\Exception.h"
 #include "modules\Speech.h"
+#include "modules\text_to_speech.h"
 
 using namespace std;
 
@@ -174,6 +175,7 @@ bool initAiConfig(unique_ptr<AIConfig>& aiConfig, string& message)
 	try {
 		aiConfig = unique_ptr<AIConfig>(new AIConfig(ai_conf_path));
 		logger->info("AI config OK.");
+		text_to_speech::available_languages();
 		aiInitialized = true;
 	} catch (const exception& e) {
 		message += e.what();

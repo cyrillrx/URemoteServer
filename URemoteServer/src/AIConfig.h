@@ -8,6 +8,8 @@ class AIConfig : public Properties
 public:
 	AIConfig(const std::string& path);
 	~AIConfig();
+
+	void check();
 	
 	std::string Name;
 	std::string Lang;
