@@ -1,14 +1,9 @@
 #include "FileManager.h"
 
-#include <windows.h>
 #include <sstream>
 
 #include "StringUtils.h"
 #include "Utils.h"
-
-#define FindNextFile FindNextFileA
-#define FindFirstFile FindFirstFileA
-#define WIN32_FIND_DATA WIN32_FIND_DATAA
 
 using namespace network;
 
@@ -45,13 +40,13 @@ void FileManager::HandleMessage(Response* reply, Request_Code code, std::string 
 bool FileManager::GetDirectoryContent(Response* reply, std::string dirPath)
 {
 	try {
-		auto fileList = FileUtils::list_files(dirPath);
+		auto fileList = fs_utils::list_files(dirPath);
 
 		// Initiate the vector to return
 		DirContent *dirContent = reply->mutable_dircontent();
 		dirContent->set_path(dirPath);
 
-		for (FileUtils::File& file : fileList) {
+		for (fs_utils::File& file : fileList) {
 			AddFile(dirContent, file);
 		}
 
@@ -73,16 +68,16 @@ void FileManager::OpenFile(std::string filePath)
 	ShellExecute(nullptr, nullptr, path, nullptr, nullptr, SW_SHOWMAXIMIZED);
 }
 
-bool FileManager::AddFile(DirContent* dirContent, FileUtils::File& file)
+bool FileManager::AddFile(DirContent* dirContent, fs_utils::File& file)
 {
 	DirContent_File *exchangefile = dirContent->add_file();
 	exchangefile->set_name(file.getFilename());
 
 	// TODO: Use a function to translate FileUtils::File::TYPE to DirContent_File_FileType
-	if (file.type == FileUtils::file_type::directory_file) {
+	if (file.type == fs_utils::file_type::directory_file) {
 		exchangefile->set_type(DirContent_File_FileType_DIRECTORY);
 
-	} else if (file.type == FileUtils::file_type::regular_file) {
+	} else if (file.type == fs_utils::file_type::regular_file) {
 		exchangefile->set_type(DirContent_File_FileType_FILE);
 	} else {
 		// TODO: Throw an exception

@@ -1,13 +1,12 @@
 #include "AI.h"
 
-#include <Windows.h>
 #include <iostream>
 #include <sstream>
 
 #include "Utils.h"
 #include "ServerConfig.h"
 #include "Translator.h"
-#include "FileUtils.h"
+#include "fs_utils.h"
 #include "modules\Speech.h"
 
 using namespace std;
@@ -30,27 +29,27 @@ int main()
 	logger->debug("******************************************************");
 	logger->debug("*****          Directory initialization          *****");
 	logger->debug("******************************************************");
-	
+
 	// TODO: Replace plate-forme dependent API
-	CreateDirectoryA(LANGUAGE_DIR.c_str(), nullptr);
-	if (ERROR_ALREADY_EXISTS == GetLastError()) {
-		logger->debug("Language directory \"" + LANGUAGE_DIR + "\" already exists.");
-	} else {
+	try {
+		fs_utils::create_directory(LANGUAGE_DIR);
 		logger->debug("Language directory \"" + LANGUAGE_DIR + "\" have been created.");
+	} catch (...) { // TODO: catch the correct exception
+		logger->error("Language directory \"" + LANGUAGE_DIR + "\" already exists.");
 	}
-	
-	CreateDirectoryA(CONFIGURATION_DIR.c_str(), nullptr);
-	if (ERROR_ALREADY_EXISTS == GetLastError()) {
-		logger->debug("Configuration directory \"" + CONFIGURATION_DIR +  "\" already exists.");
-	} else {
+
+	try {
+		fs_utils::create_directory(CONFIGURATION_DIR);
 		logger->debug("Configuration directory \"" + CONFIGURATION_DIR + "\" have been created");
+	} catch (...) { // TODO: catch the correct exception
+		logger->error("Configuration directory \"" + CONFIGURATION_DIR +  "\" already exists.");
 	}
-	
-	CreateDirectoryA(Logger::getLogDir().c_str(), nullptr);
-	if (ERROR_ALREADY_EXISTS == GetLastError()) {
-		logger->debug("Log directory \"" + Logger::getLogDir() + "\" already exists.");
-	} else {
+
+	try {
+		fs_utils::create_directory(Logger::getLogDir());
 		logger->debug("Log directory \"" + Logger::getLogDir() + "\" have been created");
+	} catch (...) { // TODO: catch the correct exception
+		logger->error("Log directory \"" + Logger::getLogDir() + "\" already exists.");
 	}
 
 	logger->setLogFile("URemote.log");
@@ -64,27 +63,27 @@ int main()
 	if (!initProgram(aiConfig, serverConfig)) {
 		return EXIT_FAILURE;
 	}
-	
+
 	// Create the AI
 	auto artificialIntelligence = unique_ptr<AI>(new AI(move(aiConfig)));
-	
+
 	// Start the server on the AI
 	artificialIntelligence->startConnection(move(serverConfig));
-	
+
 	Translator::freeInstance();
-    return EXIT_SUCCESS;
+	return EXIT_SUCCESS;
 }
 
 /**
- * Initialize the AI, the translator and the Server
- */
+* Initialize the AI, the translator and the Server
+*/
 bool initProgram(unique_ptr<AIConfig>& aiConfig, unique_ptr<ServerConfig>& serverConfig)
 {
 	logger->info("Program initialization...");
 
 	bool programInitialized = false;
 	string message = "";
-	
+
 	// Init config for the AI
 	bool aiInitialized = initAiConfig(aiConfig, message);
 
@@ -94,7 +93,7 @@ bool initProgram(unique_ptr<AIConfig>& aiConfig, unique_ptr<ServerConfig>& serve
 	if (translatorInitialized && aiInitialized) {
 		translator->setLanguage(aiConfig->Lang);
 	}
-	
+
 	bool serverInitialized = initServerConfig(serverConfig, message);
 
 	programInitialized = aiInitialized && translatorInitialized && serverInitialized;
@@ -111,16 +110,16 @@ bool initProgram(unique_ptr<AIConfig>& aiConfig, unique_ptr<ServerConfig>& serve
 }
 
 /**
- * Initialize the Translator.
- * Load the language files stored in LANGUAGE_DIR and add them to the translator.
- */
+* Initialize the Translator.
+* Load the language files stored in LANGUAGE_DIR and add them to the translator.
+*/
 bool initTranslator(Translator* translator, string& message) 
 {
 	logger->info("Init Translator...");
 
-	auto files = FileUtils::list_files(LANGUAGE_DIR, false, ".*(\\.lang)$", true);
+	auto files = fs_utils::list_files(LANGUAGE_DIR, false, ".*(\\.lang)$", true);
 	for (auto file : files) {
-		
+
 		try {
 			translator->addLanguage(filenameToKey(file.getFilename()), file.getfullPath());
 		} catch (const exception& e) {
@@ -143,8 +142,8 @@ bool initTranslator(Translator* translator, string& message)
 }
 
 /**
- * Get a filename and return the corresponding language key.
- */
+* Get a filename and return the corresponding language key.
+*/
 string filenameToKey(const string& filename)
 {
 	const string defaultKey = Translator::LANG_EN;
@@ -165,8 +164,8 @@ string filenameToKey(const string& filename)
 }
 
 /**
- * Init config for the AI
- */
+* Init config for the AI
+*/
 bool initAiConfig(unique_ptr<AIConfig>& aiConfig, string& message)
 {
 	logger->info("Init config for the AI...");
@@ -184,9 +183,9 @@ bool initAiConfig(unique_ptr<AIConfig>& aiConfig, string& message)
 }
 
 /**
- * Init config for the Server.
- * Load the ServerConfig object with the properties found in SERVER_CONF_FILE 
- */
+* Init config for the Server.
+* Load the ServerConfig object with the properties found in SERVER_CONF_FILE 
+*/
 bool initServerConfig(unique_ptr<ServerConfig>& serverConfig, string& message)
 {
 	// Init config for the server
