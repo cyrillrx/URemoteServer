@@ -121,7 +121,7 @@ bool initTranslator(Translator* translator, string& message)
 	for (auto file : files) {
 
 		try {
-			translator->addLanguage(filenameToKey(file.getFilename()), file.getfullPath());
+			translator->addLanguage(filenameToKey(file.filename()), file.path());
 		} catch (const exception& e) {
 			logger->warning(e.what());
 			message += e.what();

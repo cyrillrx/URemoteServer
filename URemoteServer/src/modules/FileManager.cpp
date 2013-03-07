@@ -71,7 +71,7 @@ void FileManager::OpenFile(std::string filePath)
 bool FileManager::AddFile(DirContent* dirContent, fs_utils::File& file)
 {
 	DirContent_File *exchangefile = dirContent->add_file();
-	exchangefile->set_name(file.getFilename());
+	exchangefile->set_name(file.filename());
 
 	// TODO: Use a function to translate FileUtils::File::TYPE to DirContent_File_FileType
 	if (file.type == fs_utils::file_type::directory_file) {
