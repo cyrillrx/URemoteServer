@@ -7,6 +7,7 @@
 #include "ServerConfig.h"
 #include "Translator.h"
 #include "fs_utils.h"
+#include "exception\Exception.h"
 #include "modules\Speech.h"
 
 using namespace std;
@@ -17,10 +18,11 @@ bool initTranslator(Translator* translator, string& message);
 bool initServerConfig(unique_ptr<ServerConfig>& serverConfig, string& message);
 string filenameToKey(const string& filename);
 
-static const string LANGUAGE_DIR		= "lang\\";
-static const string CONFIGURATION_DIR	= "conf\\";
-static const string AI_CONF_FILE		= CONFIGURATION_DIR + "ai.conf";
-static const string SERVER_CONF_FILE	= CONFIGURATION_DIR + "server.conf";
+static const string language_dir	= "lang/";
+static const string config_dir		= "conf/";
+static const string ai_conf_path		= config_dir + "ai.conf";
+static const string server_conf_path	= config_dir + "server.conf";
+static const string log_path = "URemote.log";
 
 Logger* logger = Utils::getLogger();
 
@@ -30,29 +32,28 @@ int main()
 	logger->debug("*****          Directory initialization          *****");
 	logger->debug("******************************************************");
 
-	// TODO: Replace plate-forme dependent API
 	try {
-		fs_utils::create_directory(LANGUAGE_DIR);
-		logger->debug("Language directory \"" + LANGUAGE_DIR + "\" have been created.");
-	} catch (...) { // TODO: catch the correct exception
-		logger->error("Language directory \"" + LANGUAGE_DIR + "\" already exists.");
+		fs_utils::create_directory(language_dir);
+		logger->debug("Language directory \"" + language_dir + "\" have been created.");
+	} catch (const Exception& e) {
+		logger->error(e.whatAsString());
 	}
 
 	try {
-		fs_utils::create_directory(CONFIGURATION_DIR);
-		logger->debug("Configuration directory \"" + CONFIGURATION_DIR + "\" have been created");
-	} catch (...) { // TODO: catch the correct exception
-		logger->error("Configuration directory \"" + CONFIGURATION_DIR +  "\" already exists.");
+		fs_utils::create_directory(config_dir);
+		logger->debug("Configuration directory \"" + config_dir + "\" have been created");
+	} catch (const Exception& e) {
+		logger->error(e.whatAsString());
 	}
 
 	try {
 		fs_utils::create_directory(Logger::getLogDir());
 		logger->debug("Log directory \"" + Logger::getLogDir() + "\" have been created");
-	} catch (...) { // TODO: catch the correct exception
-		logger->error("Log directory \"" + Logger::getLogDir() + "\" already exists.");
+	} catch (const Exception& e) {
+		logger->error(e.whatAsString());
 	}
 
-	logger->setLogFile("URemote.log");
+	logger->setLogFile(log_path);
 
 	logger->info("******************************************************");
 	logger->info("*****               URemote Server               *****");
@@ -117,7 +118,7 @@ bool initTranslator(Translator* translator, string& message)
 {
 	logger->info("Init Translator...");
 
-	auto files = fs_utils::list_files(LANGUAGE_DIR, false, ".*(\\.lang)$", true);
+	auto files = fs_utils::list_files(language_dir, false, ".*(\\.lang)$", true);
 	for (auto file : files) {
 
 		try {
@@ -171,7 +172,7 @@ bool initAiConfig(unique_ptr<AIConfig>& aiConfig, string& message)
 	logger->info("Init config for the AI...");
 	bool aiInitialized = false;
 	try {
-		aiConfig = unique_ptr<AIConfig>(new AIConfig(AI_CONF_FILE));
+		aiConfig = unique_ptr<AIConfig>(new AIConfig(ai_conf_path));
 		logger->info("AI config OK.");
 		aiInitialized = true;
 	} catch (const exception& e) {
@@ -192,7 +193,7 @@ bool initServerConfig(unique_ptr<ServerConfig>& serverConfig, string& message)
 	logger->info("Init config for the server...");
 	bool serverInitialized = false;
 	try {
-		serverConfig = unique_ptr<ServerConfig>(new ServerConfig(SERVER_CONF_FILE));
+		serverConfig = unique_ptr<ServerConfig>(new ServerConfig(server_conf_path));
 		logger->debug("Server config OK.");
 		serverInitialized = true;
 	} catch (const exception& e) {
