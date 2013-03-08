@@ -111,6 +111,7 @@
     <ClInclude Include="src\listeners\VoiceListener.h" />
     <ClInclude Include="src\helpers\WinSockHelper.h" />
     <ClInclude Include="src\modules\text_to_speech.h" />
+    <ClInclude Include="src\modules\voice_recognition.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\helpers\ComHelper.cpp" />
@@ -133,6 +134,7 @@
     <ClCompile Include="src\listeners\VoiceListener.cpp" />
     <ClCompile Include="src\helpers\WinSockHelper.cpp" />
     <ClCompile Include="src\modules\text_to_speech.cpp" />
+    <ClCompile Include="src\modules\voice_recognition.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="URemoteServer.rc" />
