@@ -25,7 +25,7 @@ static const string ai_conf_path		= config_dir + "ai.conf";
 static const string server_conf_path	= config_dir + "server.conf";
 static const string log_path = "URemote.log";
 
-Logger* logger = Utils::getLogger();
+logger* logger = Utils::getLogger();
 
 int main()
 {
@@ -48,8 +48,8 @@ int main()
 	}
 
 	try {
-		fs_utils::create_directory(Logger::getLogDir());
-		logger->debug("Log directory \"" + Logger::getLogDir() + "\" have been created");
+		fs_utils::create_directory(logger::getLogDir());
+		logger->debug("Log directory \"" + logger::getLogDir() + "\" have been created");
 	} catch (const Exception& e) {
 		logger->error(e.whatAsString());
 	}

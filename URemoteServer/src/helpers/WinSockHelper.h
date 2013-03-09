@@ -2,16 +2,16 @@
 
 #include <string>
 #include <basetsd.h>
-#include "Logger.h"
+#include "logger.h"
 
 class WinSockHandler
 {
 public:
-	WinSockHandler(Logger* logger);
+	WinSockHandler(logger* logger);
 	~WinSockHandler();
 
 private:
-	Logger* m_log;
+	logger* m_log;
 };
 
 class SocketHandler

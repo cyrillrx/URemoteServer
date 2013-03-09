@@ -11,8 +11,8 @@ const wchar_t* ruleName1 = L"ruleName1";
 VoiceListener::VoiceListener(AI *ai)
 	: m_ai(ai)
 {
-	m_log = new Logger("VoiceListener.log");
-	m_log->setLogSeverityConsole(Logger::SEVERITY_LVL_WARNING);
+	m_log = new logger("VoiceListener.log");
+	m_log->setLogSeverityConsole(logger::SEVERITY_LVL_WARNING);
 }
 
 VoiceListener::~VoiceListener()

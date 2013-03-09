@@ -4,7 +4,7 @@
 
 #include "exception\Exception.h"
 
-ComHandler::ComHandler(Logger* logger)
+ComHandler::ComHandler(logger* logger)
 	: m_log(logger)
 {
 	m_log->debug("Initializing COM library...");

@@ -7,7 +7,7 @@
 #include "Listener.h"
 #include "..\ServerConfig.h"
 #include "..\server_exchange.pb.h"
-#include "Logger.h"
+#include "logger.h"
 
 class SerializedExchange;
 class AI;
@@ -22,7 +22,7 @@ private :
 	static int s_instanceCount;
 
 	AI * m_ai;
-	Logger* m_log;
+	logger* m_log;
 	std::unique_ptr<ServerConfig> m_config;
 	
 	std::string m_hostname;

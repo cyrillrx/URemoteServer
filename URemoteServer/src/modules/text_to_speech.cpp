@@ -3,7 +3,7 @@
 #include <Windows.h>
 #include <iostream>
 
-#include "StringUtils.h"
+#include "string_utils.h"
 
 BOOL CALLBACK EnumUILanguagesProc(LPTSTR wLanguage, LONG_PTR lParam);
 
@@ -21,7 +21,7 @@ std::vector<std::string> text_to_speech::available_languages()
 
 BOOL CALLBACK EnumUILanguagesProc(LPTSTR  wLanguage, LONG_PTR lParam)
 {
-	const auto language = StringUtils::wstring_to_string(std::wstring(wLanguage));
+	const auto language = string_utils::wstring_to_string(std::wstring(wLanguage));
 	std::cout << "Langues : " << language << std::endl;
 	languages.push_back(language);
 	return TRUE;

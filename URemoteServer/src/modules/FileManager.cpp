@@ -2,7 +2,8 @@
 
 #include <sstream>
 
-#include "StringUtils.h"
+#include "exception\file_exception.h"
+#include "string_utils.h"
 #include "Utils.h"
 
 using namespace network;
@@ -53,9 +54,9 @@ bool FileManager::GetDirectoryContent(Response* reply, std::string dirPath)
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		return true;
 
-	} catch (const std::exception& e) {
-		// TODO: Catch FileException
-		Utils::getLogger()->error(e.what());
+	} catch (const file_exception& e) {
+		// TODO: Catch file_exception
+		Utils::getLogger()->error(e.whatAsString());
 		reply->set_returncode(Response_ReturnCode_RC_ERROR);
 		reply->set_message(e.what());
 		return false;
@@ -82,7 +83,7 @@ bool FileManager::AddFile(DirContent* dirContent, fs_utils::File& file)
 	} else {
 		// TODO: Throw an exception
 	}
-	exchangefile->set_size(file.size);
+	exchangefile->set_size(file.size());
 
 	return true;
 }

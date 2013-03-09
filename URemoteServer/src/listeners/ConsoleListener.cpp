@@ -5,8 +5,8 @@
 
 ConsoleListener::ConsoleListener()
 {
-	m_log = new Logger("ConsoleListener.log");
-	m_log->setLogSeverityConsole(Logger::SEVERITY_LVL_WARNING);
+	m_log = new logger("ConsoleListener.log");
+	m_log->setLogSeverityConsole(logger::SEVERITY_LVL_WARNING);
 }
 
 ConsoleListener::~ConsoleListener()

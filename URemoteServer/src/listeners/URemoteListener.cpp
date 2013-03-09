@@ -3,7 +3,7 @@
 #include <iostream>
 #include <WinSock2.h>
 
-#include "StringUtils.h"
+#include "string_utils.h"
 #include "..\Exchange.h"
 
 // Link with ws2_32.lib
@@ -23,8 +23,8 @@ int URemoteListener::s_instanceCount = 0;
 URemoteListener::URemoteListener(std::unique_ptr<ServerConfig> config, AI* ai) :
 	m_config(move(config)), m_ai(ai)
 {	
-	m_log = new Logger("URemoteListener.log");
-	m_log->setLogSeverityConsole(Logger::SEVERITY_LVL_WARNING);
+	m_log = new logger("URemoteListener.log");
+	m_log->setLogSeverityConsole(logger::SEVERITY_LVL_WARNING);
 	initServer();
 	// TODO: Create inner logger and keep log out of console
 }
@@ -68,7 +68,7 @@ void URemoteListener::doStart()
 			return;
 		}
 		
-		StringUtils::clear_buffer(buffer);
+		string_utils::clear_buffer(buffer);
 
 		int received = recv(m_cSocket, buffer, sizeof(buffer), 0);
 		m_log->debug("  -- result : " + received);

@@ -2,7 +2,7 @@
 
 #include <thread>
 
-#include "Logger.h"
+#include "logger.h"
 
 class Listener
 {
@@ -15,7 +15,7 @@ public:
 
 protected:
 	bool m_continueToListen;
-	Logger* m_log;
+	logger* m_log;
 
 private:
 	virtual void doStart() = 0;
