@@ -52,14 +52,15 @@ void AI::startConnection(std::unique_ptr<ServerConfig> serverConfig)
 
 	// TODO: Change debug messages
 	
-	std::unique_ptr<URemoteListener> uRemoteListener;
-	std::unique_ptr<ConsoleListener> consoleListener;
-	std::unique_ptr<VoiceListener> voiceListener;
+	std::unique_ptr<Listener> uRemoteListener;
+	std::unique_ptr<Listener> consoleListener;
+	std::unique_ptr<Listener> voiceListener;
+	//m_listeners2 = std::vector<std::unique_ptr<Listener>>();
 	try {
 		uRemoteListener = std::unique_ptr<URemoteListener>(new URemoteListener(move(serverConfig), this));
 		uRemoteThread = uRemoteListener->start();
 		Utils::getLogger()->debug("AI::StartConnection(), URemoteListener OK");
-		m_listeners.push_back(uRemoteListener.get());
+		m_listeners.push_back(std::move(uRemoteListener));
 
 	} catch (const std::exception&) {
 		Utils::getLogger()->error("AI::StartConnection(), URemoteListener KO");
@@ -69,7 +70,7 @@ void AI::startConnection(std::unique_ptr<ServerConfig> serverConfig)
 		voiceListener = std::unique_ptr<VoiceListener>(new VoiceListener(this));
 		voiceRecoThread = voiceListener->start();
 		Utils::getLogger()->debug("AI::StartConnection(), voiceRecoThread OK");
-		m_listeners.push_back(voiceListener.get());
+		m_listeners.push_back(std::move(voiceListener));
 
 	} catch (const std::exception&) {
 		Utils::getLogger()->error("AI::StartConnection(), voiceRecoThread KO");
@@ -80,7 +81,7 @@ void AI::startConnection(std::unique_ptr<ServerConfig> serverConfig)
 		consoleListener = std::unique_ptr<ConsoleListener>(new ConsoleListener());
 		consoleThread = consoleListener->start();
 		Utils::getLogger()->debug("AI::StartConnection(), ConsoleListener OK");
-		m_listeners.push_back(consoleListener.get());
+		m_listeners.push_back(std::move(consoleListener));
 
 	} catch (const std::exception&) {
 		Utils::getLogger()->error("AI::StartConnection(), ConsoleListener KO");
@@ -99,7 +100,7 @@ void AI::startConnection(std::unique_ptr<ServerConfig> serverConfig)
 
 void AI::stopConnection()
 {
-	for (auto listener : m_listeners) {
+	for (const auto& listener : m_listeners) {
 		listener->stop();
 	}
 }
