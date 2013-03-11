@@ -21,7 +21,7 @@ Speech::~Speech() { }
 void Speech::testParameters()
 {
 	// Init COM lib
-	ComHandler comHandler(Utils::getLogger());
+	ComHandler comHandler(*Utils::getLogger());
 	HRESULT hr;
 	ISpVoice * ispVoice = nullptr;
 	hr = ::CoCreateInstance(CLSID_SpVoice, nullptr, CLSCTX_ALL, IID_ISpVoice, reinterpret_cast<void**>(&ispVoice));
@@ -49,7 +49,7 @@ void Speech::initVoice(ISpVoice * ispVoice)
 bool Speech::sayB(const bstr_t& textToSpeak)
 {
 	// Init COM lib
-	ComHandler comHandler(Utils::getLogger());
+	ComHandler comHandler(*Utils::getLogger());
 	HRESULT hr;
 
 	ISpVoice * ispVoice = nullptr;

@@ -8,14 +8,14 @@ class Listener
 {
 public:
 	Listener(void);
-	~Listener(void);
+	virtual ~Listener(void);
 
 	std::thread start();
 	void stop();
 
 protected:
 	bool m_continueToListen;
-	logger* m_log;
+	logger m_log;
 
 private:
 	virtual void doStart() = 0;

@@ -9,12 +9,12 @@ class VoiceListener : public Listener
 {
 public:
 	VoiceListener(AI *ai);
-	~VoiceListener();
+	virtual ~VoiceListener();
 
 private:
+	virtual void doStart();
 	AI * m_ai;
 
-	void doStart();
 	void listen();
 	ISpRecoGrammar* initGrammar(ISpRecoContext* recoContext);
 	void getText(ISpRecoContext* reco_context);

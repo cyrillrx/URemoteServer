@@ -2,7 +2,7 @@
 
 #include "exception\Exception.h"
 
-Listener::Listener() { }
+Listener::Listener() : m_log("listener.log") { }
 
 Listener::~Listener() { }
 

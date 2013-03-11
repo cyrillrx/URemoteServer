@@ -14,7 +14,6 @@ using namespace network;
 
 void FileManager::HandleMessage(Response* reply, Request_Code code, std::string param)
 {
-
 	switch (code) {
 
 	case Request_Code_GET_FILE_LIST:

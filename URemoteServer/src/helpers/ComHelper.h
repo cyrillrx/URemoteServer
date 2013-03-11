@@ -6,11 +6,11 @@
 class ComHandler
 {
 public:
-	ComHandler(logger* logger);
+	ComHandler(logger logger);
 	~ComHandler();
 
 private:
-	logger* m_log;
+	logger m_log;
 };
 
 namespace ComHelper

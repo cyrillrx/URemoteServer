@@ -11,24 +11,24 @@ const wchar_t* ruleName1 = L"ruleName1";
 VoiceListener::VoiceListener(AI *ai)
 	: m_ai(ai)
 {
-	m_log = new logger("VoiceListener.log");
-	m_log->setLogSeverityConsole(logger::SEVERITY_LVL_WARNING);
+	m_log = logger("VoiceListener.log");
+	m_log.setLogSeverityConsole(logger::SEVERITY_LVL_WARNING);
+
+	m_log.info("******************************************************");
+	m_log.info("*****                 VoiceListener              *****");
+	m_log.info("******************************************************");
 }
 
 VoiceListener::~VoiceListener()
 {
-	if (m_log) {
-		delete(m_log);
-		m_log = nullptr;
-	}
+	m_log.info("******************************************************");
+	m_log.info("*****                ~VoiceListener              *****");
+	m_log.info("******************************************************");
 }
 
 void VoiceListener::doStart()
 {
-	m_log->info("******************************************************");
-	m_log->info("*****            VoiceListener Started           *****");
-	m_log->info("******************************************************");
-
+	m_log.info("Do start");
 	m_continueToListen = true;
 
 	std::string entry;
@@ -39,7 +39,7 @@ void VoiceListener::doStart()
 		// TODO: Add message : "command" is not supported
 		// TODO: support "Kill" command
 	}
-	m_log->debug("EXIT !");
+	m_log.debug("EXIT !");
 }
 
 void VoiceListener::listen()
@@ -58,8 +58,8 @@ void VoiceListener::listen()
 	hr = recognizer->CreateRecoContext(&recoContext);
 	ComHelper::checkResult("VoiceListener::listen", hr);
 
-	m_log->info("VoiceListener::listen, You should start Windows Recognition.");
-	m_log->info("VoiceListener::listen, Start talking !");
+	m_log.info("VoiceListener::listen, You should start Windows Recognition.");
+	m_log.info("VoiceListener::listen, Start talking !");
 
 	// Disable context
 	hr = recoContext->Pause(0);
@@ -125,7 +125,7 @@ ISpRecoGrammar* VoiceListener::initGrammar(ISpRecoContext* recoContext)
 	// Create rules
 	hr = recoGrammar->GetRule(ruleName1, 0, SPRAF_TopLevel | SPRAF_Active, true, &sate);
 	ComHelper::checkResult("VoiceListener::initGrammar", hr);
-	
+
 	// Add a word
 	const std::string aiName = m_ai->getName();
 	const std::wstring aiNameWstr = std::wstring(aiName.begin(), aiName.end());
@@ -155,7 +155,7 @@ void VoiceListener::getText(ISpRecoContext* reco_context)
 		ComHelper::checkResult("VoiceListener::getText", hr);
 	}
 
-	m_log->info("Nb events: " + std::to_string(eventCount));
+	m_log.info("Nb events: " + std::to_string(eventCount));
 	ISpRecoResult* recoResult;
 	recoResult = reinterpret_cast<ISpRecoResult*>(events[0].lParam);
 
@@ -165,6 +165,6 @@ void VoiceListener::getText(ISpRecoContext* reco_context)
 
 	const std::wstring wstr = std::wstring(text);
 	const std::string str(wstr.begin(), wstr.end());
-	m_log->info("VoiceListener::getText, Understood: " + str);
+	m_log.info("VoiceListener::getText, Understood: " + str);
 	CoTaskMemFree(text);
 }

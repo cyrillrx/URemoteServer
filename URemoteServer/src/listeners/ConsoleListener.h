@@ -6,8 +6,8 @@ class ConsoleListener : public Listener
 {
 public:
 	ConsoleListener();
-	~ConsoleListener();
+	virtual ~ConsoleListener();
 
 private:
-	void doStart();
+	virtual void doStart();
 };

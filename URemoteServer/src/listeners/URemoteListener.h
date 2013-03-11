@@ -16,13 +16,13 @@ class URemoteListener : public Listener
 {	
 public:
 	URemoteListener(std::unique_ptr<ServerConfig> config, AI *ai);
-	~URemoteListener();
+	virtual ~URemoteListener();
 
 private :
+	virtual void doStart();
 	static int s_instanceCount;
 
 	AI * m_ai;
-	logger* m_log;
 	std::unique_ptr<ServerConfig> m_config;
 	
 	std::string m_hostname;
@@ -30,7 +30,6 @@ private :
 	UINT_PTR m_cSocket;
 	UINT_PTR m_listenSocket;
 	
-	void doStart();
 	bool initServer();
 	void freeServer();
 	std::string getHostName();

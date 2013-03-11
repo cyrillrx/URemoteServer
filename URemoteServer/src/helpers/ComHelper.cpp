@@ -4,10 +4,10 @@
 
 #include "exception\Exception.h"
 
-ComHandler::ComHandler(logger* logger)
+ComHandler::ComHandler(logger logger)
 	: m_log(logger)
 {
-	m_log->debug("Initializing COM library...");
+	m_log.debug("Initializing COM library...");
 
 	HRESULT hr = ::CoInitialize(nullptr);
 	ComHelper::checkResult("::ComHandler", hr);
@@ -15,7 +15,7 @@ ComHandler::ComHandler(logger* logger)
 
 ComHandler::~ComHandler()
 {
-	m_log->debug("Uninitialize COM library.");
+	m_log.debug("Uninitialize COM library.");
 
 	::CoUninitialize();
 }
