@@ -9,7 +9,8 @@
 #include "fs_utils.h"
 #include "exception\Exception.h"
 #include "modules\Speech.h"
-#include "modules\text_to_speech.h"
+#include "text_to_speech.h"
+#include "logger.h"
 
 using namespace std;
 

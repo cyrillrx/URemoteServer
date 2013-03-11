@@ -2,7 +2,7 @@
 
 #include <thread>
 
-#include "..\helpers\ComHelper.h"
+#include "helpers\ComHelper.h"
 #include "exception\Exception.h"
 #include "Utils.h"
 

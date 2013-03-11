@@ -1,6 +1,6 @@
 #include "VoiceListener.h"
 
-#include "..\helpers\ComHelper.h"
+#include "helpers\ComHelper.h"
 #include "..\AI.h"
 #include "Translator.h"
 #include "..\TextKey.h"

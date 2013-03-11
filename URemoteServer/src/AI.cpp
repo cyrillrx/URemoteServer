@@ -94,8 +94,11 @@ void AI::startConnection(std::unique_ptr<ServerConfig> serverConfig)
 	// Join the listener threads
 	// TODO: Make it automatic
 	uRemoteThread.join();
+	Utils::getLogger()->debug("AI::StartConnection(), uRemoteThread has joined");
 	consoleThread.join();
+	Utils::getLogger()->debug("AI::StartConnection(), consoleThread has joined");
 	voiceRecoThread.join();
+	Utils::getLogger()->debug("AI::StartConnection(), voiceRecoThread has joined");
 }
 
 void AI::stopConnection()
