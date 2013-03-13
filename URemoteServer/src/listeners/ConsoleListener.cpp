@@ -27,6 +27,7 @@ void ConsoleListener::doStart()
 
 	std::string entry;
 	while (m_continueToListen) {
+		// TODO: Store messages in a message_queue instead of wainting for cin.
 		std::cout << "Waiting for user command : " << std::endl;
 		std::cin >> entry;
 		m_log.debug("Command received : " + entry);
