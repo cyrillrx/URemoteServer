@@ -1,10 +1,10 @@
 [AI]
 ai_initiated=Artificial Intelligence initiated.
-ai_server_online=My name is $1. Connections are open. Waiting for commands.
+ai_self_introduction=My name is $1.
 ai_full_capacity=Working at full capacity.
-ai_percent_full_capacity=Working at %1% of full capacity.
+ai_not_full_capacity=Working at $1% of full capacity.
 
-ai_welcome=User identified. Welcome Cyril.
+ai_welcome_user=User identified. Welcome Cyril.
 ai_goodbye=Goodbye sir.
 
 ai_shutdown=$1 is shutting down.

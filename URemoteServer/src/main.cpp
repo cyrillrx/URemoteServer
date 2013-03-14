@@ -176,7 +176,7 @@ bool initAiConfig(unique_ptr<AIConfig>& aiConfig, string& message)
 	try {
 		aiConfig = unique_ptr<AIConfig>(new AIConfig(ai_conf_path));
 		logger->info("AI config OK.");
-		text_to_speech::available_languages();
+		text_to_speech::testParameters(aiConfig->Lang, aiConfig->Gender);
 		aiInitialized = true;
 	} catch (const exception& e) {
 		message += e.what();

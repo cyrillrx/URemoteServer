@@ -1,8 +1,13 @@
 #include "TextKey.h"
 
-const std::string TextKey::AI_INITIATED		= "ai_initiated";
-const std::string TextKey::AI_SERVER_ONLINE	= "ai_server_online";
-const std::string TextKey::AI_WELCOME		= "ai_welcome";
+const std::string TextKey::AI_INITIATED			= "ai_initiated";
+const std::string TextKey::AI_SELF_INTRODUCTION	= "ai_self_introduction";
+const std::string TextKey::AI_FULL_CAPACITY		= "ai_full_capacity";
+const std::string TextKey::AI_NOT_FULL_CAPACITY	= "ai_not_full_capacity";
+
+const std::string TextKey::AI_WELCOME_USER	= "ai_welcome_user";
+const std::string TextKey::AI_GOODBYE		= "ai_goodbye";
+
 const std::string TextKey::AI_SHUTDOWN		= "ai_shutdown";
 const std::string TextKey::AI_YES			= "ai_yes";
 const std::string TextKey::AI_ALL_RIGHT		= "ai_all_right";

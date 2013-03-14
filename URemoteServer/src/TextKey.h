@@ -6,8 +6,13 @@ class TextKey
 {
 public:
 	static const std::string AI_INITIATED;
-	static const std::string AI_SERVER_ONLINE;
-	static const std::string AI_WELCOME;
+	static const std::string AI_SELF_INTRODUCTION;
+	static const std::string AI_FULL_CAPACITY;
+	static const std::string AI_NOT_FULL_CAPACITY;
+
+	static const std::string AI_WELCOME_USER;
+	static const std::string AI_GOODBYE;
+
 	static const std::string AI_SHUTDOWN;
 	static const std::string AI_YES;
 	static const std::string AI_ALL_RIGHT;
