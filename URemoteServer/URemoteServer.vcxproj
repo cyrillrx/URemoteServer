@@ -104,7 +104,7 @@
     <ClInclude Include="src\listeners\URemoteListener.h" />
     <ClInclude Include="src\server_exchange.pb.h" />
     <ClInclude Include="src\Modules\Speech.h" />
-    <ClInclude Include="src\TextKey.h" />
+    <ClInclude Include="src\trad_key.h" />
     <ClInclude Include="src\listeners\VoiceListener.h" />
     <ClInclude Include="src\helpers\WinSockHelper.h" />
   </ItemGroup>
@@ -124,7 +124,6 @@
     <ClCompile Include="src\listeners\URemoteListener.cpp" />
     <ClCompile Include="src\server_exchange.pb.cc" />
     <ClCompile Include="src\Modules\Speech.cpp" />
-    <ClCompile Include="src\TextKey.cpp" />
     <ClCompile Include="src\listeners\VoiceListener.cpp" />
     <ClCompile Include="src\helpers\WinSockHelper.cpp" />
   </ItemGroup>

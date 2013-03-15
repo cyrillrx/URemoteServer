@@ -3,7 +3,7 @@
 #include "helpers\ComHelper.h"
 #include "..\AI.h"
 #include "Translator.h"
-#include "..\TextKey.h"
+#include "..\trad_key.h"
 
 const ULONGLONG grammarId = 0;
 const wchar_t* ruleName1 = L"ruleName1";
@@ -99,7 +99,7 @@ void VoiceListener::listen()
 	WaitForMultipleObjects(1, handles, FALSE, INFINITE);
 	getText(recoContext);
 
-	m_ai->say(Translator::getString(TextKey::AI_YES));
+	m_ai->say(Translator::getString(trad_key::AI_YES));
 
 }
 

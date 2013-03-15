@@ -4,7 +4,7 @@
 
 #include "modules\Speech.h"
 #include "Translator.h"
-#include "TextKey.h"
+#include "trad_key.h"
 #include "Utils.h"
 #include "exception\Exception.h"
 #include "listeners\ConsoleListener.h"
@@ -18,18 +18,7 @@
 //////////////////////////////////////////////////////////////////////////////
 AI::AI(std::unique_ptr<AIConfig> config) : m_config(move(config))
 {
-	try {
-		m_voice = std::unique_ptr<Speech>(new Speech(m_config->Lang, m_config->Gender));
-
-	} catch (const Exception& e) {
-		Utils::getLogger()->error(e.whatAsString());
-		// if an error occured, try with default language.
-		// No exception catching this time.
-		// TODO: On change lang => update Translator
-		m_config->Lang = AIConfig::DEFAULT_LANG;
-
-		m_voice = std::unique_ptr<Speech>(new Speech(m_config->Lang, m_config->Gender));
-	}
+	m_voice = std::unique_ptr<Speech>(new Speech(m_config->Lang, m_config->Gender));
 
 	time(&m_lastWelcome);
 	m_lastWelcome -= DELAY;
@@ -64,11 +53,11 @@ void AI::startConnection(std::unique_ptr<ServerConfig> serverConfig)
 		Utils::getLogger()->debug("AI::StartConnection(), URemoteListener OK");
 		m_listeners.push_back(std::move(uRemoteListener));
 		capacity += 40;
-		say("URemoteListener, OK..."); // TODO: internationalize
+		say("URemote Listener, OK..."); // TODO: internationalize
 
 	} catch (const std::exception&) {
 		Utils::getLogger()->error("AI::StartConnection(), URemoteListener KO");
-		say("URemoteListener, KO..."); // TODO: internationalize
+		say("URemote Listener, KO..."); // TODO: internationalize
 	}
 
 	try {
@@ -77,33 +66,32 @@ void AI::startConnection(std::unique_ptr<ServerConfig> serverConfig)
 		Utils::getLogger()->debug("AI::StartConnection(), VoiceListener OK");
 		m_listeners.push_back(std::move(voiceListener));
 		capacity += 30;
-		say("VoiceListener, OK..."); // TODO: internationalize
+		say("Voice Listener, OK..."); // TODO: internationalize
 
 	} catch (const std::exception&) {
 		Utils::getLogger()->error("AI::StartConnection(), VoiceListener KO");
-		say("VoiceListener, KO..."); // TODO: internationalize
+		say("Voice Listener, KO..."); // TODO: internationalize
 	}
 
 	// TODO: Replace console listener by UI Listener
 	try {
-		throw std::exception();
 		consoleListener = std::unique_ptr<ConsoleListener>(new ConsoleListener());
 		consoleThread = consoleListener->start();
 		Utils::getLogger()->debug("AI::StartConnection(), ConsoleListener OK");
 		m_listeners.push_back(std::move(consoleListener));
 		capacity += 30;
-		say("ConsoleListener, OK..."); // TODO: internationalize
+		say("Console Listener, OK..."); // TODO: internationalize
 
 	} catch (const std::exception&) {
 		Utils::getLogger()->error("AI::StartConnection(), ConsoleListener KO");
-		say("ConsoleListener, KO..."); // TODO: internationalize
+		say("Console Listener, KO..."); // TODO: internationalize
 	}
 
 	// Notify the user that the listener are open.
 	if (capacity >= 100) {
-		say(Translator::getString(TextKey::AI_FULL_CAPACITY));
+		say(Translator::getString(trad_key::AI_FULL_CAPACITY));
 	} else {
-		say(trad::get_string(TextKey::AI_NOT_FULL_CAPACITY, capacity));
+		say(trad::get_string(trad_key::AI_NOT_FULL_CAPACITY, capacity));
 	}
 
 	// Join the listener threads
@@ -140,7 +128,7 @@ void AI::welcome()
 	// Welcome if last welcome > DELAY
 	if (elapsedTime > DELAY) {
 		// TODO: Welcome user instead of welcoming itself
-		say(trad::get_string(TextKey::AI_WELCOME_USER, m_config->Name));
+		say(trad::get_string(trad_key::AI_WELCOME_USER, m_config->Name));
 		time(&m_lastWelcome);
 	}
 }
@@ -166,12 +154,12 @@ bool AI::toggleMute()
 
 void AI::start()
 {
-	say(Translator::getString(TextKey::AI_INITIATED));
-	say(trad::get_string(TextKey::AI_SELF_INTRODUCTION, m_config->Name));
+	say(Translator::getString(trad_key::AI_INITIATED));
+	say(trad::get_string(trad_key::AI_SELF_INTRODUCTION, m_config->Name));
 }
 
 void AI::shutdown()
 {
-	auto text = trad::get_string(TextKey::AI_SHUTDOWN, m_config->Name);
+	auto text = trad::get_string(trad_key::AI_SHUTDOWN, m_config->Name);
 	say(text);
 }

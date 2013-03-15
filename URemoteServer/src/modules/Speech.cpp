@@ -6,9 +6,7 @@
 #include "Utils.h"
 
 Speech::Speech(const std::string& lang, const std::string& gender)
-	: m_language(lang), m_gender(gender)
-{
-}
+	: m_language(lang), m_gender(gender) { }
 
 Speech::~Speech() { }
 

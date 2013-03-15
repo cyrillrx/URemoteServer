@@ -8,7 +8,7 @@ const std::string AIConfig::KEY_MUTE	= "mute";
 const std::string AIConfig::DEFAULT_NAME	= "Eternity";
 const std::string AIConfig::DEFAULT_LANG	= "EN";
 const std::string AIConfig::DEFAULT_GENDER	= "F";
-const bool AIConfig::DEFAULT_MUTE		= false;
+const bool AIConfig::DEFAULT_MUTE			= false;
 
 AIConfig::AIConfig(const std::string& configFile) : Properties(configFile)
 {

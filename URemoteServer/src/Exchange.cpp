@@ -10,7 +10,7 @@
 #include "modules\Keyboard.h"
 #include "modules\App.h"
 #include "Translator.h"
-#include "TextKey.h"
+#include "trad_key.h"
 #include "Utils.h"
 
 using namespace network;
@@ -40,7 +40,7 @@ SerializedExchange Exchange::handleMessage(AI* ai, SerializedExchange serialized
 
 	if (request->securitytoken() != "1234") {
 		reply->set_returncode(Response_ReturnCode_RC_ERROR);
-		const auto message = Translator::getString(TextKey::XC_UNKNOWN_SECURITY_TOKEN);
+		const auto message = Translator::getString(trad_key::XC_UNKNOWN_SECURITY_TOKEN);
 		reply->set_message(message);
 
 		ai->say(message);
@@ -143,7 +143,7 @@ void Exchange::classicCommand(AI* ai, Response* reply, Request_Code code)
 		
 	case Request_Code_TEST:
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
-		reply->set_message(Translator::getString(TextKey::XC_TEST));
+		reply->set_message(Translator::getString(trad_key::XC_TEST));
 		break;
 
 	case Request_Code_KILL_SERVER:
@@ -313,7 +313,7 @@ void Exchange::shutdownPC(AI* ai, Response* reply, int delay)
 {
 	ai->stopConnection();
 	
-	const auto message = trad::get_string(TextKey::XC_PC_SHUTDOWN, delay);
+	const auto message = trad::get_string(trad_key::XC_PC_SHUTDOWN, delay);
 	
 	const std::string command = "Shutdown.exe -s -t " + std::to_string(delay) + " -c \"" + message + "\"";
 	system(command.c_str());
