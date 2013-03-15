@@ -83,6 +83,7 @@ int main()
 bool initProgram(unique_ptr<AIConfig>& aiConfig, unique_ptr<ServerConfig>& serverConfig)
 {
 	logger->info("Program initialization...");
+	// TODO: Set Error and warning into a Queue to treat it (vocally) once everything is loaded.
 
 	bool programInitialized = false;
 	string message = "";
@@ -176,8 +177,18 @@ bool initAiConfig(unique_ptr<AIConfig>& aiConfig, string& message)
 	try {
 		aiConfig = unique_ptr<AIConfig>(new AIConfig(ai_conf_path));
 		logger->info("AI config OK.");
-		text_to_speech::testParameters(aiConfig->Lang, aiConfig->Gender);
+		if (!text_to_speech::testParameters(aiConfig->Lang, aiConfig->Gender)) {
+			message += "AI setting failure. Trying out with default settings\n";
+			logger->warning("AI setting failure. Trying out with default settings");
+
+			// Retry with default settings.
+			aiConfig->Lang = text_to_speech::default_lang;
+			if (!text_to_speech::testParameters(aiConfig->Lang, aiConfig->Gender)) {
+				throw exception("AiConfig : Try with default Failed");
+			}
+		}
 		aiInitialized = true;
+
 	} catch (const exception& e) {
 		message += e.what();
 		message += "\n";
