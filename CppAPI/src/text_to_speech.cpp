@@ -3,7 +3,7 @@
 #include <iostream>
 #include <Windows.h>
 #include "helpers\ComHelper.h"
-#include "exception\Exception.h"
+#include "exception\config_exception.h"
 #include "Utils.h"
 #include "string_utils.h"
 
@@ -30,9 +30,10 @@ bool text_to_speech::testParameters(const std::string& language, const std::stri
 	try {
 		initVoice(ispVoice, language, gender);
 		return true;
-	} catch (const Exception&) {
-		return false;
+	} catch (const software_exception&) {
+		
 	}
+	return false;
 }
 
 void text_to_speech::initVoice(ISpVoice * ispVoice, const std::string& language, const std::string& gender)
@@ -41,11 +42,10 @@ void text_to_speech::initVoice(ISpVoice * ispVoice, const std::string& language,
 	const wchar_t* optAttributs = genderToAttribute(gender);
 
 	ISpObjectToken* cpTokenEng;
-	HRESULT hr = ::SpFindBestToken(SPCAT_VOICES, reqAttributs, optAttributs, &cpTokenEng);
-	if (FAILED(hr)) {
-		// TODO: create and use a SoftwareException here 
-		throw Exception("SoftwareException", "Speech::initVoice", "Couldn't find a Token with the required attributs.");
+	if (FAILED(::SpFindBestToken(SPCAT_VOICES, reqAttributs, optAttributs, &cpTokenEng))) { 
+		throw software_exception("Speech::initVoice", "Couldn't find a Token with the required attributs.");
 	}
+
 	ispVoice->SetVoice(cpTokenEng);
 	//TODO: Config Rate with file
 	ispVoice->SetRate(long(0.5));
