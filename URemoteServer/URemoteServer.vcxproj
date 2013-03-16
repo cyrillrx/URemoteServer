@@ -128,9 +128,6 @@
     <ClCompile Include="src\helpers\WinSockHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="URemoteServer.rc" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
