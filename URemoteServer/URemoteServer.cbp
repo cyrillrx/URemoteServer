@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="URemoteServer" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug Win32">
+				<Option output="URemoteServer" prefix_auto="1" extension_auto="1" />
+				<Option type="0" />
+				<Option compiler="msvc10" />
+				<Compiler>
+					<Add option="-DWIN32" />
+					<Add option="-D_DEBUG" />
+					<Add option="-D_CONSOLE" />
+					<Add directory="./include" />
+					<Add directory="../../CppUtils/Utils/src" />
+					<Add directory="../CppAPI/src" />
+					<Add directory="$(IncludePath)" />
+				</Compiler>
+				<Linker>
+					<Add library="libprotobuf.lib" />
+					<Add directory="./lib/$(Configuration)" />
+					<Add directory="$(LibraryPath)" />
+				</Linker>
+			</Target>
+			<Target title="Release Win32">
+				<Option output="URemoteServer" prefix_auto="1" extension_auto="1" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-DWIN32" />
+					<Add option="-DNDEBUG" />
+					<Add option="-D_CONSOLE" />
+					<Add directory="./include" />
+					<Add directory="../../CppUtils/Utils/src" />
+					<Add directory="../CppAPI/src" />
+					<Add directory="$(IncludePath)" />
+				</Compiler>
+				<Linker>
+					<Add library="libprotobuf.lib" />
+					<Add directory="./lib/$(Configuration)" />
+					<Add directory="$(LibraryPath)" />
+				</Linker>
+			</Target>
+		</Build>
+		<Unit filename="ClassDiagram1.cd" />
+		<Unit filename="URemoteServer.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
+		<Unit filename="resource.h" />
+		<Unit filename="src/AI.cpp" />
+		<Unit filename="src/AI.h" />
+		<Unit filename="src/AIConfig.cpp" />
+		<Unit filename="src/AIConfig.h" />
+		<Unit filename="src/Exchange.cpp" />
+		<Unit filename="src/Exchange.h" />
+		<Unit filename="src/ServerConfig.cpp" />
+		<Unit filename="src/ServerConfig.h" />
+		<Unit filename="src/helpers/WinSockHelper.cpp" />
+		<Unit filename="src/helpers/WinSockHelper.h" />
+		<Unit filename="src/listeners/ConsoleListener.cpp" />
+		<Unit filename="src/listeners/ConsoleListener.h" />
+		<Unit filename="src/listeners/Listener.cpp" />
+		<Unit filename="src/listeners/Listener.h" />
+		<Unit filename="src/listeners/URemoteListener.cpp" />
+		<Unit filename="src/listeners/URemoteListener.h" />
+		<Unit filename="src/listeners/VoiceListener.cpp" />
+		<Unit filename="src/listeners/VoiceListener.h" />
+		<Unit filename="src/main.cpp" />
+		<Unit filename="src/modules/App.cpp" />
+		<Unit filename="src/modules/App.h" />
+		<Unit filename="src/modules/FileManager.cpp" />
+		<Unit filename="src/modules/FileManager.h" />
+		<Unit filename="src/modules/Keyboard.cpp" />
+		<Unit filename="src/modules/Keyboard.h" />
+		<Unit filename="src/modules/MasterVolume.cpp" />
+		<Unit filename="src/modules/MasterVolume.h" />
+		<Unit filename="src/modules/MonUtils.cpp" />
+		<Unit filename="src/modules/MonUtils.h" />
+		<Unit filename="src/modules/Speech.cpp" />
+		<Unit filename="src/modules/Speech.h" />
+		<Unit filename="src/platform_config.h" />
+		<Unit filename="src/server_exchange.pb.cc" />
+		<Unit filename="src/server_exchange.pb.h" />
+		<Unit filename="src/trad_key.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
