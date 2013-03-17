@@ -185,8 +185,8 @@ void protobuf_AddDesc_server_5fexchange_2eproto() {
     "\010KB_ALTGR\020+\022\016\n\nKB_WINDOWS\020,\022\r\n\tKB_RETURN"
     "\020-\022\014\n\010KB_SPACE\020.\022\020\n\014KB_BACKSPACE\020/\022\r\n\tKB"
     "_ESCAPE\0200\022\n\n\006KB_TAB\0201\022\t\n\005KB_F4\0202\022\022\n\016GOM_"
-    "PLAYER_RUN\0202\022\023\n\017GOM_PLAYER_KILL\0203\022\026\n\022GOM"
-    "_PLAYER_STRETCH\0204\"\274\001\n\nDirContent\022\014\n\004path"
+    "PLAYER_RUN\020<\022\023\n\017GOM_PLAYER_KILL\020=\022\026\n\022GOM"
+    "_PLAYER_STRETCH\020>\"\274\001\n\nDirContent\022\014\n\004path"
     "\030\001 \002(\t\022&\n\004file\030\002 \003(\0132\030.network.DirConten"
     "t.File\032x\n\004File\022\014\n\004name\030\001 \002(\t\022/\n\004type\030\003 \002"
     "(\0162!.network.DirContent.File.FileType\022\014\n"
@@ -293,8 +293,9 @@ bool Request_Code_IsValid(int value) {
     case 48:
     case 49:
     case 50:
-    case 51:
-    case 52:
+    case 60:
+    case 61:
+    case 62:
       return true;
     default:
       return false;

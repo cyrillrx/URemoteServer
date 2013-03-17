@@ -99,9 +99,9 @@ enum Request_Code {
   Request_Code_KB_ESCAPE = 48,
   Request_Code_KB_TAB = 49,
   Request_Code_KB_F4 = 50,
-  Request_Code_GOM_PLAYER_RUN = 50,
-  Request_Code_GOM_PLAYER_KILL = 51,
-  Request_Code_GOM_PLAYER_STRETCH = 52
+  Request_Code_GOM_PLAYER_RUN = 60,
+  Request_Code_GOM_PLAYER_KILL = 61,
+  Request_Code_GOM_PLAYER_STRETCH = 62
 };
 bool Request_Code_IsValid(int value);
 const Request_Code Request_Code_Code_MIN = Request_Code_NONE;

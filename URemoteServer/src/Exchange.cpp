@@ -2,13 +2,14 @@
 
 #include <iostream>
 
-#include "google\protobuf\io\zero_copy_stream_impl_lite.h"
-#include "modules\FileManager.h"
-#include "modules\FileManager.h"
-#include "modules\MonUtils.h"
-#include "modules\MasterVolume.h"
-#include "modules\Keyboard.h"
-#include "modules\App.h"
+#include "google/protobuf/io/coded_stream.h"
+#include "google/protobuf/io/zero_copy_stream_impl_lite.h"
+#include "modules/FileManager.h"
+#include "modules/FileManager.h"
+#include "modules/MonUtils.h"
+#include "modules/MasterVolume.h"
+#include "modules/Keyboard.h"
+#include "modules/App.h"
 #include "Translator.h"
 #include "trad_key.h"
 #include "Utils.h"
