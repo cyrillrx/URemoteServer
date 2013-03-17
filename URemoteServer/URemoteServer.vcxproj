@@ -88,7 +88,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\platform_config.h" />
     <ClInclude Include="src\listeners\ConsoleListener.h" />
     <ClInclude Include="src\listeners\Listener.h" />
     <ClInclude Include="src\AIConfig.h" />

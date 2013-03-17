@@ -81,7 +81,6 @@
 		<Unit filename="src/modules/MonUtils.h" />
 		<Unit filename="src/modules/Speech.cpp" />
 		<Unit filename="src/modules/Speech.h" />
-		<Unit filename="src/platform_config.h" />
 		<Unit filename="src/server_exchange.pb.cc" />
 		<Unit filename="src/server_exchange.pb.h" />
 		<Unit filename="src/trad_key.h" />
