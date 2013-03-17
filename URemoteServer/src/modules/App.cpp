@@ -1,8 +1,13 @@
 #include "App.h"
 
 #include <iostream>
-#include <comdef.h>
+
 #include "Keyboard.h"
+#include "exception/config_exception.h"
+
+# if defined(WINDOWS_PLATFORM)
+#	include <comdef.h>
+# endif
 
 using namespace std;
 
@@ -25,22 +30,31 @@ App::~App(void)
 
 bool App::SetOnTop()
 {
+# if defined(WINDOWS_PLATFORM)
 	bstr_t className(mClassName.c_str());
 	HWND window = FindWindow(className, nullptr);
 	if (!window) {
 		cout << "Error while searching process." << endl;
 		return false;
 	}
-
 	return SetForegroundWindow(window) == TRUE;
+# else
+	// TODO: Code Linux function for App::SetOnTop()
+# endif
+	throw platform_exception("Timer::frequency()");
 }
 
 bool App::Launch()
 {
+# if defined(WINDOWS_PLATFORM)
 	cout << "Launching " << mLabel << endl;
 	bstr_t path(mExePath.c_str());
 	HINSTANCE returnCode = ShellExecute(nullptr, L"open", path, L"", nullptr, SW_SHOWMAXIMIZED);
 	return ((int)returnCode > 32);
+# else
+	// TODO: Code Linux function for App::Launch()
+# endif
+	throw platform_exception("Timer::frequency()");
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -88,6 +102,7 @@ string App::Show()
  */
 string App::Close()
 {
+# if defined(WINDOWS_PLATFORM)
 	string resultMessage;
 	
 	bstr_t className(mClassName.c_str());
@@ -101,6 +116,10 @@ string App::Close()
 
 	cout << resultMessage << endl; 
 	return resultMessage;
+# else
+	// TODO: Code Linux function for App::Close()
+# endif
+	throw platform_exception("App::Close()");
 }
 
 /** 
@@ -108,6 +127,7 @@ string App::Close()
  */
 string App::Strech()
 {
+# if defined(WINDOWS_PLATFORM)
 	string resultMessage;
 	
 	bstr_t className(mClassName.c_str());
@@ -121,6 +141,10 @@ string App::Strech()
 
 	cout << resultMessage << endl; 
 	return resultMessage;
+# else
+	// TODO: Code Linux function for App::Strech()
+# endif
+	throw platform_exception("App::Strech()");
 }
 
 

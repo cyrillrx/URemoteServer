@@ -1,10 +1,14 @@
 #pragma once
 
-#include <windows.h>
 #include <string>
 #include <memory>
 
-BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam);
+#include "platform_config.h"
+# if defined(WINDOWS_PLATFORM)
+#	include <windows.h>
+# endif
+
+//BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam);
 
 class App
 {
