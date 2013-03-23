@@ -2,14 +2,14 @@
 
 #include <thread>
 
-#include "modules\Speech.h"
+#include "modules/Speech.h"
 #include "Translator.h"
 #include "trad_key.h"
 #include "Utils.h"
-#include "exception\Exception.h"
-#include "listeners\ConsoleListener.h"
-#include "listeners\URemoteListener.h"
-#include "listeners\VoiceListener.h"
+#include "exception/Exception.h"
+#include "listeners/ConsoleListener.h"
+#include "listeners/URemoteListener.h"
+#include "listeners/VoiceListener.h"
 
 #define DELAY 60*5 // 5 min / 300 sec before repeate time
 

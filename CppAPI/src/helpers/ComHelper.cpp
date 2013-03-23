@@ -24,7 +24,7 @@ namespace ComHelper
 {
 	void checkResult(const std::string& source, const HRESULT& result)
 	{
-		if (result != S_OK) {	
+		if (result != S_OK) {
 			throw Exception("ComException", source, getResultMessage(result));
 		}
 	}

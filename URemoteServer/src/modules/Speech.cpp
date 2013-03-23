@@ -2,7 +2,7 @@
 
 #include <thread>
 #include "text_to_speech.h"
-#include "helpers\ComHelper.h"
+#include "helpers/ComHelper.h"
 #include "Utils.h"
 
 Speech::Speech(const std::string& lang, const std::string& gender)
