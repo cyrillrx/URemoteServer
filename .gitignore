@@ -1,6 +1,7 @@
 Debug
 Release
 include
+lib
 ipch
 conf
 logs
