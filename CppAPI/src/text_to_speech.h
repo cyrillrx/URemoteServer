@@ -2,8 +2,12 @@
 
 #include <vector>
 #include <string>
-#include <comdef.h>
-#include <sphelper.h>
+
+#include "platform_config.h"
+# if defined(WINDOWS_PLATFORM)
+#	include <comdef.h>
+#	include <sphelper.h>
+# endif
 
 namespace text_to_speech
 {
@@ -18,6 +22,7 @@ namespace text_to_speech
 	std::vector<std::string> available_languages();
 	bool testParameters(const std::string& language, const std::string& gender);
 	void initVoice(ISpVoice * ispVoice, const std::string& language, const std::string& gender);
+	bool say(const std::string& textToSpeak, const std::string& language, const std::string& gender);
 
 	const wchar_t* langToAttribute(std::string language);
 	const wchar_t* genderToAttribute(std::string gender);

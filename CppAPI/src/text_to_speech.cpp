@@ -2,10 +2,10 @@
 
 #include <iostream>
 #include <Windows.h>
-#include "helpers\ComHelper.h"
-#include "exception\config_exception.h"
 #include "Utils.h"
 #include "string_utils.h"
+#include "helpers/ComHelper.h"
+#include "exception/config_exception.h"
 
 std::vector<std::string> text_to_speech::available_languages()
 {
@@ -31,7 +31,7 @@ bool text_to_speech::testParameters(const std::string& language, const std::stri
 		initVoice(ispVoice, language, gender);
 		return true;
 	} catch (const software_exception&) {
-		
+
 	}
 	return false;
 }
@@ -49,6 +49,50 @@ void text_to_speech::initVoice(ISpVoice * ispVoice, const std::string& language,
 	ispVoice->SetVoice(cpTokenEng);
 	//TODO: Config Rate with file
 	ispVoice->SetRate(long(0.5));
+}
+
+bool text_to_speech::say(const std::string& textToSpeak, const std::string& language, const std::string& gender)
+{
+	// Init COM lib
+	ComHandler comHandler(*Utils::getLogger());
+	HRESULT hr;
+
+	ISpVoice * ispVoice = nullptr;
+
+	bool result = false;
+
+	hr = ::CoCreateInstance(CLSID_SpVoice, nullptr, CLSCTX_ALL, IID_ISpVoice, reinterpret_cast<void**>(&ispVoice));
+	ComHelper::checkResult("Speech::sayB", hr);
+
+	if (SUCCEEDED( hr )) {
+
+		initVoice(ispVoice, language, gender);
+
+		bstr_t bstrTextToSpeak(textToSpeak.c_str());
+		hr = ispVoice->Speak(bstrTextToSpeak, SPF_ASYNC, nullptr);
+		if (hr == S_OK) {
+			result = true;
+
+		} else if (hr == E_INVALIDARG) {
+			Utils::getLogger()->error("Speech::SayB - One or more parameters are invalid.");
+
+		} else if (hr == E_POINTER) {
+			Utils::getLogger()->error("Speech::SayB - Invalid pointer.");
+
+		} else if (hr == E_OUTOFMEMORY) {
+			Utils::getLogger()->error("Speech::SayB - Exceeded available memory.");
+
+		} else {
+			Utils::getLogger()->error("Speech::SayB - Unknown error.");
+		}
+
+		hr = ispVoice->WaitUntilDone(30000);
+
+		ispVoice->Release();
+		ispVoice = nullptr;
+	}
+
+	return result;
 }
 
 const wchar_t* text_to_speech::langToAttribute(std::string language)
