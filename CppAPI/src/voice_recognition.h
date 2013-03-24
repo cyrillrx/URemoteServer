@@ -7,11 +7,6 @@
 #	include "unix/voice_recognition.h"
 # endif
 
-#include <string>
-#include <memory>
-
-#include "logger.h"
-
 namespace voice_recognition
 {
 	// TODO: move in a more global scope (can be use for all listeners) => move in executor ?

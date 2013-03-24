@@ -7,6 +7,9 @@
 #	include "unix/text_to_speech.h"
 # endif
 
+#include <string>
+#include <vector>
+
 namespace text_to_speech
 {
 	namespace languague
