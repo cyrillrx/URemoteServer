@@ -42,12 +42,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)$(SolutionName)\lib\$(Configuration)\</OutDir>
-    <IncludePath>..\..\CppUtils\Utils\src;$(IncludePath)</IncludePath>
+    <IncludePath>.\include;..\..\CppUtils\Utils\src;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)$(SolutionName)\lib\$(Configuration)\</OutDir>
-    <IncludePath>..\..\CppUtils\Utils\src;$(IncludePath)</IncludePath>
+    <IncludePath>.\include;..\..\CppUtils\Utils\src;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -55,7 +55,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0501;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile />
     </ClCompile>
     <Link>
@@ -71,7 +71,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0501;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile />
     </ClCompile>
     <Link>
@@ -82,20 +82,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\windows\helpers\ComHelper.cpp" />
+    <ClCompile Include="src\exception\socket_exception.cpp" />
+    <ClCompile Include="src\io_socket.cpp" />
+    <ClCompile Include="src\windows\helpers\com_helper.cpp" />
+    <ClCompile Include="src\windows\io_socket.cpp" />
     <ClCompile Include="src\windows\text_to_speech.cpp" />
     <ClCompile Include="src\windows\voice_recognition.cpp" />
     <ClCompile Include="src\unix\voice_recognition.cpp" />
     <ClCompile Include="src\unix\text_to_speech.cpp" />
+    <ClCompile Include="src\exception\tts_exception.cpp" />
+    <ClCompile Include="src\exception\vr_exception.cpp" />
+    <ClCompile Include="src\windows\helpers\winsock_helper.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\windows\helpers\ComHelper.h" />
+    <ClInclude Include="src\exception\socket_exception.h" />
+    <ClInclude Include="src\io_socket.h" />
+    <ClInclude Include="src\windows\helpers\com_helper.h" />
     <ClInclude Include="src\text_to_speech.h" />
+    <ClInclude Include="src\windows\io_socket.h" />
     <ClInclude Include="src\windows\text_to_speech.h" />
     <ClInclude Include="src\voice_recognition.h" />
     <ClInclude Include="src\windows\voice_recognition.h" />
     <ClInclude Include="src\unix\voice_recognition.h" />
     <ClInclude Include="src\unix\text_to_speech.h" />
+    <ClInclude Include="src\exception\tts_exception.h" />
+    <ClInclude Include="src\exception\vr_exception.h" />
+    <ClInclude Include="src\windows\helpers\winsock_helper.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\CppUtils\Utils\Utils.vcxproj">
