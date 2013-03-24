@@ -4,7 +4,7 @@
 #include <Windows.h>
 #include "Utils.h"
 #include "string_utils.h"
-#include "helpers/ComHelper.h"
+#include "helpers/com_helper.h"
 #include "exception/config_exception.h"
 
 std::vector<std::string> text_to_speech::available_languages()
@@ -21,11 +21,11 @@ std::vector<std::string> text_to_speech::available_languages()
 bool text_to_speech::testParameters(const std::string& language, const std::string& gender)
 {
 	// Init COM lib
-	ComHandler comHandler(*Utils::getLogger());
+	com_handler comHandler;
 	HRESULT hr;
 	ISpVoice * ispVoice = nullptr;
 	hr = ::CoCreateInstance(CLSID_SpVoice, nullptr, CLSCTX_ALL, IID_ISpVoice, reinterpret_cast<void**>(&ispVoice));
-	ComHelper::checkResult("Speech::testParameters", hr);
+	com_helper::check_result("Speech::testParameters", hr);
 
 	try {
 		initVoice(ispVoice, language, gender);
@@ -54,7 +54,7 @@ void text_to_speech::initVoice(ISpVoice * ispVoice, const std::string& language,
 bool text_to_speech::say(const std::string& textToSpeak, const std::string& language, const std::string& gender)
 {
 	// Init COM lib
-	ComHandler comHandler(*Utils::getLogger());
+	com_handler comHandler;
 	HRESULT hr;
 
 	ISpVoice * ispVoice = nullptr;
@@ -62,7 +62,7 @@ bool text_to_speech::say(const std::string& textToSpeak, const std::string& lang
 	bool result = false;
 
 	hr = ::CoCreateInstance(CLSID_SpVoice, nullptr, CLSCTX_ALL, IID_ISpVoice, reinterpret_cast<void**>(&ispVoice));
-	ComHelper::checkResult("Speech::sayB", hr);
+	com_helper::check_result("Speech::sayB", hr);
 
 	if (SUCCEEDED( hr )) {
 

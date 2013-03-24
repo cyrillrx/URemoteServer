@@ -1,7 +1,8 @@
 #include "../voice_recognition.h"
 
 #include <memory>
-#include "helpers/ComHelper.h"
+#include "Utils.h"
+#include "helpers/com_helper.h"
 
 const ULONGLONG grammarId = 0;
 const wchar_t* ruleName1 = L"ruleName1";
@@ -19,28 +20,28 @@ void voice_recognition::recognizer::add_vocal_command()
 	// TODO: Implement recognizer::add_vocal_command()
 }
 
-void voice_recognition::recognizer::start_listening (logger log)
+void voice_recognition::recognizer::start_listening()
 {
 	// Initialize COM library
-	ComHandler initLibrary(log);
+	com_handler initLibrary;
 	HRESULT hr;
 
 	ISpRecognizer* recognizer;
 	hr = CoCreateInstance(CLSID_SpSharedRecognizer,
 		nullptr, CLSCTX_ALL, IID_ISpRecognizer,
 		reinterpret_cast<void**>(&recognizer));
-	ComHelper::checkResult("VoiceListener::listen", hr);
+	com_helper::check_result("VoiceListener::listen", hr);
 
 	ISpRecoContext* recoContext;
 	hr = recognizer->CreateRecoContext(&recoContext);
-	ComHelper::checkResult("VoiceListener::listen", hr);
+	com_helper::check_result("VoiceListener::listen", hr);
 
-	log.info("VoiceListener::listen, You should start Windows Recognition.");
-	log.info("VoiceListener::listen, Start talking !");
+	Utils::getLogger()->info("VoiceListener::listen, You should start Windows Recognition.");
+	Utils::getLogger()->info("VoiceListener::listen, Start talking !");
 
 	// Disable context
 	hr = recoContext->Pause(0);
-	ComHelper::checkResult("VoiceListener::listen", hr);
+	com_helper::check_result("VoiceListener::listen", hr);
 
 	// TODO: Change static text to a parameter
 	ISpRecoGrammar* recoGrammar = initGrammar(recoContext, "PC");
@@ -48,12 +49,12 @@ void voice_recognition::recognizer::start_listening (logger log)
 	/////////////////////////////////////////////////
 	// TODO: Review this
 	hr = recoContext->SetNotifyWin32Event();
-	ComHelper::checkResult("VoiceListener::listen", hr);
+	com_helper::check_result("VoiceListener::listen", hr);
 
 	HANDLE handleEvent;
 	handleEvent = recoContext->GetNotifyEventHandle();
 	if(handleEvent == INVALID_HANDLE_VALUE) {
-		ComHelper::checkResult("VoiceListener::listen", E_FAIL);
+		com_helper::check_result("VoiceListener::listen", E_FAIL);
 	}
 
 	// Si ci-dessous non invoquée, le moteur de reconnaissance démarre
@@ -61,15 +62,15 @@ void voice_recognition::recognizer::start_listening (logger log)
 	ULONGLONG interest;
 	interest = SPFEI(SPEI_RECOGNITION);
 	hr = recoContext->SetInterest(interest, interest);
-	ComHelper::checkResult("VoiceListener::listen", hr);
+	com_helper::check_result("VoiceListener::listen", hr);
 
 	// Activate Grammar
 	hr = recoGrammar->SetRuleState(ruleName1, 0, SPRS_ACTIVE);
-	ComHelper::checkResult("VoiceListener::listen", hr);
+	com_helper::check_result("VoiceListener::listen", hr);
 
 	// Enable context
 	hr = recoContext->Resume(0);
-	ComHelper::checkResult("VoiceListener::listen", hr);
+	com_helper::check_result("VoiceListener::listen", hr);
 
 	// Wait for reco
 	HANDLE handles[1];
@@ -79,6 +80,7 @@ void voice_recognition::recognizer::start_listening (logger log)
 
 	//TODO: implement callback
 	//m_ai->say(Translator::getString(trad_key::AI_YES));
+	Utils::getLogger()->info("AI_YES");
 
 }
 
@@ -94,25 +96,25 @@ ISpRecoGrammar* voice_recognition::recognizer::initGrammar(ISpRecoContext* recoC
 
 	ISpRecoGrammar* recoGrammar;
 	hr = recoContext->CreateGrammar(grammarId, &recoGrammar);
-	ComHelper::checkResult("VoiceListener::initGrammar", hr);
+	com_helper::check_result("VoiceListener::initGrammar", hr);
 
 	WORD langId = MAKELANGID(LANG_FRENCH, SUBLANG_FRENCH);
 	hr = recoGrammar->ResetGrammar(langId);
-	ComHelper::checkResult("VoiceListener::initGrammar", hr);
+	com_helper::check_result("VoiceListener::initGrammar", hr);
 	// TODO: Catch error and use default langId => GetUserDefaultUILanguage()
 
 	// Create rules
 	hr = recoGrammar->GetRule(ruleName1, 0, SPRAF_TopLevel | SPRAF_Active, true, &sate);
-	ComHelper::checkResult("VoiceListener::initGrammar", hr);
+	com_helper::check_result("VoiceListener::initGrammar", hr);
 
 	// Add a word
 	const std::wstring commandWstr = std::wstring(command.begin(), command.end());
 	hr = recoGrammar->AddWordTransition(sate, NULL, commandWstr.c_str(), L" ", SPWT_LEXICAL, 1, nullptr);
-	ComHelper::checkResult("VoiceListener::initGrammar", hr);
+	com_helper::check_result("VoiceListener::initGrammar", hr);
 
 	// Commit changes
 	hr = recoGrammar->Commit(0);
-	ComHelper::checkResult("VoiceListener::initGrammar", hr);
+	com_helper::check_result("VoiceListener::initGrammar", hr);
 
 	return recoGrammar;
 }
@@ -129,7 +131,7 @@ void voice_recognition::recognizer::getText(ISpRecoContext* reco_context)
 	// Warning hr equal S_FALSE if everything is OK 
 	// but eventCount < requestedEventCount
 	if(!(hr == S_OK || hr == S_FALSE)) {
-		ComHelper::checkResult("VoiceListener::getText", hr);
+		com_helper::check_result("VoiceListener::getText", hr);
 	}
 
 	ISpRecoResult* recoResult;
@@ -137,7 +139,7 @@ void voice_recognition::recognizer::getText(ISpRecoContext* reco_context)
 
 	wchar_t* text;
 	hr = recoResult->GetText(SP_GETWHOLEPHRASE, SP_GETWHOLEPHRASE, FALSE, &text, NULL);
-	ComHelper::checkResult("VoiceListener::getText", hr);
+	com_helper::check_result("VoiceListener::getText", hr);
 
 	const std::wstring wstr = std::wstring(text);
 	const std::string str(wstr.begin(), wstr.end());

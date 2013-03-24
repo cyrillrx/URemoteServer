@@ -1,35 +1,30 @@
-#include "ComHelper.h"
+#include "com_helper.h"
 
 #include <sapi.h>
 
 #include "exception\Exception.h"
 
-ComHandler::ComHandler(logger logger)
-	: m_log(logger)
+com_handler::com_handler()
 {
-	m_log.debug("Initializing COM library...");
-
 	HRESULT hr = ::CoInitialize(nullptr);
-	ComHelper::checkResult("::ComHandler", hr);
+	com_helper::check_result("::ComHandler", hr);
 }
 
-ComHandler::~ComHandler()
+com_handler::~com_handler()
 {
-	m_log.debug("Uninitialize COM library.");
-
 	::CoUninitialize();
 }
 
-namespace ComHelper
+namespace com_helper
 {
-	void checkResult(const std::string& source, const HRESULT& result)
+	void check_result(const std::string& source, const HRESULT& result)
 	{
 		if (result != S_OK) {
-			throw Exception("ComException", source, getResultMessage(result));
+			throw Exception("ComException", source, get_message(result));
 		}
 	}
 
-	std::string getResultMessage(const HRESULT& result)
+	std::string get_message(const HRESULT& result)
 	{
 		std::string msg;
 
