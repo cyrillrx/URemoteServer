@@ -1,12 +1,15 @@
 #include "URemoteListener.h"
 
 #include <iostream>
+#include <WinSock2.h>
 
 #include "string_utils.h"
 #include "io_socket.h"
 #include "exception/Exception.h"
 #include "../Exchange.h"
 
+// Link with ws2_32.lib
+#pragma comment(lib, "ws2_32.lib")
 
 //#define BUFFER_SIZE BUFSIZ
 #define BUFFER_SIZE 4096
@@ -19,8 +22,8 @@ int URemoteListener::s_instanceCount = 0;
 // Public methods
 //////////////////////////////////////////////////////////////////////////////
 
-URemoteListener::URemoteListener(std::unique_ptr<ServerConfig> config, AI* ai) :
-	m_config(move(config)), m_ai(ai)
+URemoteListener::URemoteListener(std::unique_ptr<ServerConfig> config, AI* ai)
+	: m_config(move(config)), m_ai(ai)
 {	
 	m_log = logger("URemoteListener.log");
 	m_log.setLogSeverityConsole(logger::SEVERITY_LVL_WARNING);
@@ -77,7 +80,7 @@ void URemoteListener::doStart()
 		m_log.debug(" - Open port  : " + std::to_string(m_config->Port));
 		m_log.debug("Waiting for client to connect...");
 
-		m_cSocket = accept(m_listenSocket, nullptr, nullptr);
+		m_cSocket = ::accept(m_listenSocket, nullptr, nullptr);
 		if (m_cSocket == INVALID_SOCKET) {
 			m_log.error("accept() failed with error: " + std::to_string(WSAGetLastError()));
 			freeServer();
@@ -137,7 +140,7 @@ bool URemoteListener::initServer()
 
 	// Bind the socket to the address and port defined in SOCKADDR
 	m_log.debug("Binding the socket to the address and port...");
-	if (bind(m_listenSocket, (SOCKADDR*)&socketAddress, sizeof(socketAddress)) == SOCKET_ERROR) {
+	if (::bind(m_listenSocket, (SOCKADDR*)&socketAddress, sizeof(socketAddress)) == SOCKET_ERROR) {
 		m_log.error("URemoteListener::InitServer(), bind() failed with error: " + std::to_string(WSAGetLastError()));
 		freeServer();
 		return false;
@@ -145,7 +148,7 @@ bool URemoteListener::initServer()
 
 	// Listen to incoming connections
 	m_log.debug("Listen to incoming connections...");
-	if (listen(m_listenSocket, m_config->MaxConcurrentConnections) == SOCKET_ERROR) {
+	if (::listen(m_listenSocket, m_config->MaxConcurrentConnections) == SOCKET_ERROR) {
 		m_log.error("URemoteListener::InitServer(), listen() failed with error: " + std::to_string(WSAGetLastError()));
 		freeServer();
 		return false;

@@ -1,3 +1,6 @@
+#include "platform_config.h"
+#if defined(LINUX_PLATFORM)
+
 #include "../voice_recognition.h"
 
 voice_recognition::recognizer::recognizer()
@@ -17,3 +20,5 @@ void voice_recognition::recognizer::start_listening()
 {
 	// TODO: Implement recognizer::start_listening()
 }
+
+#endif

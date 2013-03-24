@@ -1,3 +1,6 @@
+#include "platform_config.h"
+#if defined(WINDOWS_PLATFORM)
+
 #include "../voice_recognition.h"
 
 #include <memory>
@@ -145,3 +148,5 @@ void voice_recognition::recognizer::getText(ISpRecoContext* reco_context)
 	const std::string str(wstr.begin(), wstr.end());
 	CoTaskMemFree(text);
 }
+
+#endif

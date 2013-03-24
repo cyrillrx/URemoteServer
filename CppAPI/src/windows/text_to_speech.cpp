@@ -1,3 +1,6 @@
+#include "platform_config.h"
+#if defined(WINDOWS_PLATFORM)
+
 #include "../text_to_speech.h"
 
 #include <iostream>
@@ -119,3 +122,5 @@ const wchar_t* text_to_speech::genderToAttribute(std::string gender)
 
 	return defaultValue;
 }
+
+#endif
