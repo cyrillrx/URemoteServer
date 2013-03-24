@@ -11,5 +11,6 @@ logs
 *.user
 *.filters
 *.log
+*.layout
 .directory
 .objs
