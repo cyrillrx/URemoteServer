@@ -2,8 +2,6 @@
 
 #include <string>
 
-#include "logger.h"
-
 namespace voice_recognition
 {
 	class recognizer
@@ -13,7 +11,7 @@ namespace voice_recognition
 		~recognizer();
 
 		void add_vocal_command();
-		void start_listening(logger log);
+		void start_listening();
 
 	private:
 		std::string m_key_word;

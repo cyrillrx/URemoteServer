@@ -32,8 +32,6 @@ private :
 	
 	bool initServer();
 	void freeServer();
-	std::string getHostName();
-	std::string getIpAddress(std::string hostname);
 
 	void handleMessage(SerializedExchange serializedRequest);
 };

@@ -99,7 +99,6 @@
     <ClInclude Include="src\Modules\Keyboard.h" />
     <ClInclude Include="src\Exchange.h" />
     <ClInclude Include="src\Modules\MonUtils.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="src\listeners\URemoteListener.h" />
     <ClInclude Include="src\server_exchange.pb.h" />
     <ClInclude Include="src\Modules\Speech.h" />
@@ -125,9 +124,6 @@
     <ClCompile Include="src\Modules\Speech.cpp" />
     <ClCompile Include="src\listeners\VoiceListener.cpp" />
     <ClCompile Include="src\helpers\WinSockHelper.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\DevTools\protobuf-2.4.1\vsprojects\libprotobuf.vcxproj">

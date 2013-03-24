@@ -44,7 +44,6 @@ void AI::startConnection(std::unique_ptr<ServerConfig> serverConfig)
 	std::unique_ptr<Listener> uRemoteListener;
 	std::unique_ptr<Listener> consoleListener;
 	std::unique_ptr<Listener> voiceListener;
-	//m_listeners2 = std::vector<std::unique_ptr<Listener>>();
 
 	int capacity = 0;
 	try {
@@ -53,7 +52,6 @@ void AI::startConnection(std::unique_ptr<ServerConfig> serverConfig)
 		Utils::getLogger()->debug("AI::StartConnection(), URemoteListener OK");
 		m_listeners.push_back(std::move(uRemoteListener));
 		capacity += 40;
-		say("URemote Listener, OK..."); // TODO: internationalize
 
 	} catch (const std::exception&) {
 		Utils::getLogger()->error("AI::StartConnection(), URemoteListener KO");
@@ -66,7 +64,6 @@ void AI::startConnection(std::unique_ptr<ServerConfig> serverConfig)
 		Utils::getLogger()->debug("AI::StartConnection(), VoiceListener OK");
 		m_listeners.push_back(std::move(voiceListener));
 		capacity += 30;
-		say("Voice Listener, OK..."); // TODO: internationalize
 
 	} catch (const std::exception&) {
 		Utils::getLogger()->error("AI::StartConnection(), VoiceListener KO");
@@ -80,7 +77,6 @@ void AI::startConnection(std::unique_ptr<ServerConfig> serverConfig)
 		Utils::getLogger()->debug("AI::StartConnection(), ConsoleListener OK");
 		m_listeners.push_back(std::move(consoleListener));
 		capacity += 30;
-		say("Console Listener, OK..."); // TODO: internationalize
 
 	} catch (const std::exception&) {
 		Utils::getLogger()->error("AI::StartConnection(), ConsoleListener KO");

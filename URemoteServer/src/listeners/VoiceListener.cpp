@@ -46,6 +46,5 @@ void VoiceListener::listen()
 	recognizer.add_vocal_command();
 	// m_ai->say(Translator::getString(trad_key::AI_YES));}
 
-	recognizer.start_listening(m_log);
-
+	recognizer.start_listening();
 }

@@ -1,13 +1,12 @@
 #include "URemoteListener.h"
 
 #include <iostream>
-#include <WinSock2.h>
 
 #include "string_utils.h"
-#include "..\Exchange.h"
+#include "io_socket.h"
+#include "exception/Exception.h"
+#include "../Exchange.h"
 
-// Link with ws2_32.lib
-#pragma comment(lib, "ws2_32.lib")
 
 //#define BUFFER_SIZE BUFSIZ
 #define BUFFER_SIZE 4096
@@ -29,7 +28,23 @@ URemoteListener::URemoteListener(std::unique_ptr<ServerConfig> config, AI* ai) :
 	m_log.info("******************************************************");
 	m_log.info("*****                URemoteListener             *****");
 	m_log.info("******************************************************");
-	
+
+	// Init hostname
+	try {
+		m_hostname	= io_socket::hostname();
+	} catch (const Exception& e) {
+		m_hostname = "localhost";
+		m_log.error("URemoteListener::InitServer(), " + e.whatAsString());
+	}
+
+	// Init ip address
+	try {
+		m_ipAddress	= io_socket::ip_address(m_hostname);
+	} catch (const Exception& e) {
+		m_ipAddress = "127.0.0.1";
+		m_log.error("URemoteListener::InitServer(), " + e.whatAsString());
+	}
+
 	initServer();
 }
 
@@ -38,14 +53,14 @@ URemoteListener::~URemoteListener()
 	m_log.info("******************************************************");
 	m_log.info("*****               ~URemoteListener             *****");
 	m_log.info("******************************************************");
-	
+
 	freeServer();
 }
 
 /** 
- * Launch the server 
- * @return true if everything went correctly. False otherwise
- */
+* Launch the server 
+* @return true if everything went correctly. False otherwise
+*/
 void URemoteListener::doStart()
 {
 	m_log.info("Do start");
@@ -54,21 +69,21 @@ void URemoteListener::doStart()
 	char buffer[BUFFER_SIZE];
 
 	/* connection socket */
-	
+
 	while (m_continueToListen) {
 		m_log.debug("Server Info : ");
 		m_log.debug(" - Hostname   : " + m_hostname);
 		m_log.debug(" - IP Address : " + m_ipAddress);
 		m_log.debug(" - Open port  : " + std::to_string(m_config->Port));
 		m_log.debug("Waiting for client to connect...");
-		
+
 		m_cSocket = accept(m_listenSocket, nullptr, nullptr);
 		if (m_cSocket == INVALID_SOCKET) {
 			m_log.error("accept() failed with error: " + std::to_string(WSAGetLastError()));
 			freeServer();
 			return;
 		}
-		
+
 		string_utils::clear_buffer(buffer);
 
 		int received = recv(m_cSocket, buffer, sizeof(buffer), 0);
@@ -90,8 +105,8 @@ void URemoteListener::doStart()
 //////////////////////////////////////////////////////////////////////////////
 
 /**
- * Initialize the server.
- */
+* Initialize the server.
+*/
 bool URemoteListener::initServer() 
 {
 	// Initialize winSock library (v2.0)
@@ -102,7 +117,7 @@ bool URemoteListener::initServer()
 		WSACleanup();
 		return false;
 	}
-	
+
 	s_instanceCount++;
 
 	// Create listener socket for incoming connections
@@ -136,9 +151,6 @@ bool URemoteListener::initServer()
 		return false;
 	}
 
-	m_hostname = getHostName();
-	m_ipAddress = getIpAddress(m_hostname);
-
 	return true;
 }
 
@@ -146,44 +158,17 @@ bool URemoteListener::initServer()
 void URemoteListener::freeServer()
 {
 	closesocket(m_listenSocket);
-		
+
 	s_instanceCount--;
 	if (s_instanceCount < 1) {
 		WSACleanup();
 	}
 }
 
-
-std::string URemoteListener::getHostName()
-{
-	char hostname[80];
-	if (gethostname(hostname, sizeof(hostname)) == SOCKET_ERROR) {
-		m_log.error("Error " + std::to_string(WSAGetLastError()) + " when getting local host name.");
-		return "";
-	}
-
-	return hostname;
-}
-
-std::string URemoteListener::getIpAddress(std::string hostname)
-{
-	std::string ipAddress = "";
-	struct hostent *host = gethostbyname(hostname.c_str());
-	if (host == 0) {
-		m_log.error("Yow! Bad host lookup.");
-	}
-
-	struct in_addr addr;
-	memcpy(&addr, host->h_addr_list[0], sizeof(struct in_addr));
-	ipAddress = inet_ntoa(addr);
-
-	return ipAddress;
-}
-
 /**
- * Handle the command sent by the client.
- * then send a response.
- */
+* Handle the command sent by the client.
+* then send a response.
+*/
 void URemoteListener::handleMessage(SerializedExchange request) 
 {
 	SerializedExchange response = Exchange::handleMessage(m_ai, request);

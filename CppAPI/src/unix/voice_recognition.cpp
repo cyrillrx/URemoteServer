@@ -13,7 +13,7 @@ void voice_recognition::recognizer::add_vocal_command()
 	// TODO: Implement recognizer::add_vocal_command()
 }
 
-void voice_recognition::recognizer::start_listening (logger log)
+void voice_recognition::recognizer::start_listening()
 {
 	// TODO: Implement recognizer::start_listening()
 }
