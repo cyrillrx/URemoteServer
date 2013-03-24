@@ -1,7 +1,7 @@
 CppAPI
 ======
 
-Contains the cross platform APIs called by URemoteServer.
+Contains the extenal cross platform APIs called by URemoteServer.
 
 API list :
 - Text to speech
