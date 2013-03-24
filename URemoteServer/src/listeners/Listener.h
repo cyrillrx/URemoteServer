@@ -7,8 +7,8 @@
 class Listener
 {
 public:
-	Listener(void);
-	virtual ~Listener(void);
+	Listener();
+	virtual ~Listener() = 0;
 
 	std::thread start();
 	void stop();

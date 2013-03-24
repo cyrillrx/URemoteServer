@@ -82,14 +82,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\helpers\ComHelper.cpp" />
-    <ClCompile Include="src\text_to_speech.cpp" />
-    <ClCompile Include="src\voice_recognition.cpp" />
+    <ClCompile Include="src\windows\helpers\ComHelper.cpp" />
+    <ClCompile Include="src\windows\text_to_speech.cpp" />
+    <ClCompile Include="src\windows\voice_recognition.cpp" />
+    <ClCompile Include="src\unix\voice_recognition.cpp" />
+    <ClCompile Include="src\unix\text_to_speech.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\helpers\ComHelper.h" />
+    <ClInclude Include="src\windows\helpers\ComHelper.h" />
     <ClInclude Include="src\text_to_speech.h" />
+    <ClInclude Include="src\windows\text_to_speech.h" />
     <ClInclude Include="src\voice_recognition.h" />
+    <ClInclude Include="src\windows\voice_recognition.h" />
+    <ClInclude Include="src\unix\voice_recognition.h" />
+    <ClInclude Include="src\unix\text_to_speech.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\CppUtils\Utils\Utils.vcxproj">
