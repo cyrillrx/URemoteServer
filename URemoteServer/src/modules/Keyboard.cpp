@@ -145,7 +145,6 @@ std::string Keyboard::SendDefinedKey(std::string param, WORD extraCode)
 void Keyboard::CtrlEnter()
 {
 	SendKeyboardInput(VK_RETURN, VK_CONTROL);
-	SendKeyboardInput(VK_L, VK_LWIN);
 }
 
 void Keyboard::SendKeyboardInput(WORD code, WORD extraCode)
