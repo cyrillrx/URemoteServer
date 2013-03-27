@@ -23,11 +23,11 @@ public:
 	
 private:
 	static std::unique_ptr<App> s_GomPlayer;
-	std::string mLabel;
-	std::string mExePath;
-	std::string mClassName;
+	std::string m_label;
+	std::string m_exe_path;
+	std::string m_class_name;
 
-	App(std::string label, std::string className, std::string exePath);
+	App(const std::string& label, const std::string& className, const std::string& exePath);
 
 	bool SetOnTop();
 	bool Launch();

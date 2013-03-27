@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace voice_recognition
+namespace voice_recognition 
 {
 	class recognizer
 	{

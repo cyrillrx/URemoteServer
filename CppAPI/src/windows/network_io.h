@@ -3,7 +3,7 @@
 /*
 #include <string>
 
-namespace io_socket
+namespace network_io
 {
 	void init_server();
 	void send_message();

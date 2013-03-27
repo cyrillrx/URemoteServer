@@ -31,7 +31,7 @@ AI::~AI()
 	shutdown();
 }
 
-void AI::startConnection(std::unique_ptr<ServerConfig> serverConfig)
+void AI::startConnection(std::unique_ptr<network_io::server_config> serverConfig)
 {
 	// TODO: Instanciate other listeners
 	std::thread uRemoteThread;

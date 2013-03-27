@@ -2,7 +2,7 @@
 
 #include <string>
 #include <windows.h>
-#include "..\server_exchange.pb.h"
+#include "network_io/server_exchange.pb.h"
 
 #define VK_NONE (WORD)-1
 
@@ -47,11 +47,11 @@
 class Keyboard
 {
 public:
-	static void HandleMessage(network::Response* reply, network::Request* request);
+	static void HandleMessage(network_io::Response* reply, network_io::Request* request);
 	static void CtrlEnter();
 
 private :
-	static WORD GetInputFromCode(network::Request_Code code);
-	static void SendKeyboardInput(WORD keyCode, WORD secondKeyCode);
-	static std::string SendDefinedKey(std::string param, WORD extraCode);
+	static const WORD GetInputFromCode(network_io::Request::Code code);
+	static void SendKeyboardInput(const WORD& keyCode, const WORD& secondKeyCode);
+	static std::string SendDefinedKey(const std::string& param, const WORD& extraCode);
 };

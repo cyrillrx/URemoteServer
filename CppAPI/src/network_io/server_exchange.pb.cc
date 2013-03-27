@@ -16,7 +16,7 @@
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 
-namespace network {
+namespace network_io {
 
 namespace {
 
@@ -165,41 +165,41 @@ void protobuf_AddDesc_server_5fexchange_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\025server_exchange.proto\022\007network\"\266\006\n\007Req"
-    "uest\022#\n\004type\030\001 \002(\0162\025.network.Request.Typ"
-    "e\022#\n\004code\030\002 \002(\0162\025.network.Request.Code\022("
-    "\n\textraCode\030\003 \002(\0162\025.network.Request.Code"
-    "\022\025\n\rsecurityToken\030\004 \001(\t\022\020\n\010intParam\030\005 \001("
-    "\005\022\023\n\013stringParam\030\006 \001(\t\"K\n\004Type\022\n\n\006SIMPLE"
-    "\020\000\022\014\n\010EXPLORER\020\001\022\014\n\010KEYBOARD\020\002\022\006\n\002AI\020\003\022\n"
-    "\n\006VOLUME\020\004\022\007\n\003APP\020\005\"\253\004\n\004Code\022\010\n\004NONE\020\000\022\n"
-    "\n\006DEFINE\020\001\022\n\n\006STATUS\020\002\022\006\n\002ON\020\003\022\007\n\003OFF\020\004\022"
-    "\t\n\005HELLO\020\005\022\010\n\004TEST\020\006\022\017\n\013KILL_SERVER\020\007\022\014\n"
-    "\010SHUTDOWN\020\010\022\021\n\rSWITCH_WINDOW\020\t\022\010\n\004LOCK\020\n"
-    "\022\006\n\002UP\020\013\022\010\n\004DOWN\020\014\022\010\n\004LEFT\020\r\022\t\n\005RIGHT\020\016\022"
-    "\010\n\004MUTE\020\017\022\007\n\003SAY\020\020\022\021\n\rGET_FILE_LIST\020\024\022\r\n"
-    "\tOPEN_FILE\020\025\022\024\n\020MEDIA_PLAY_PAUSE\020\036\022\016\n\nME"
-    "DIA_STOP\020\037\022\022\n\016MEDIA_PREVIOUS\020 \022\016\n\nMEDIA_"
-    "NEXT\020!\022\014\n\010MEDIA_FF\020\"\022\020\n\014MEDIA_REWIND\020#\022\013"
-    "\n\007KB_CTRL\020(\022\014\n\010KB_SHIFT\020)\022\n\n\006KB_ALT\020*\022\014\n"
-    "\010KB_ALTGR\020+\022\016\n\nKB_WINDOWS\020,\022\r\n\tKB_RETURN"
-    "\020-\022\014\n\010KB_SPACE\020.\022\020\n\014KB_BACKSPACE\020/\022\r\n\tKB"
-    "_ESCAPE\0200\022\n\n\006KB_TAB\0201\022\t\n\005KB_F4\0202\022\022\n\016GOM_"
-    "PLAYER_RUN\020<\022\023\n\017GOM_PLAYER_KILL\020=\022\026\n\022GOM"
-    "_PLAYER_STRETCH\020>\"\274\001\n\nDirContent\022\014\n\004path"
-    "\030\001 \002(\t\022&\n\004file\030\002 \003(\0132\030.network.DirConten"
-    "t.File\032x\n\004File\022\014\n\004name\030\001 \002(\t\022/\n\004type\030\003 \002"
-    "(\0162!.network.DirContent.File.FileType\022\014\n"
-    "\004size\030\004 \002(\005\"#\n\010FileType\022\r\n\tDIRECTORY\020\000\022\010"
-    "\n\004FILE\020\001\"\226\002\n\010Response\022*\n\013requestType\030\001 \001"
-    "(\0162\025.network.Request.Type\022*\n\013requestCode"
-    "\030\002 \001(\0162\025.network.Request.Code\022:\n\nreturnC"
-    "ode\030\003 \001(\0162\034.network.Response.ReturnCode:"
-    "\010RC_ERROR\022\017\n\007message\030\004 \001(\t\022\020\n\010intValue\030\005"
-    " \001(\005\022\'\n\ndirContent\030\006 \001(\0132\023.network.DirCo"
-    "ntent\"*\n\nReturnCode\022\016\n\nRC_SUCCESS\020\000\022\014\n\010R"
-    "C_ERROR\020\001B \n\016org.es.networkB\016ExchangePro"
-    "tos", 1363);
+    "\n\025server_exchange.proto\022\nnetwork_io\"\277\006\n\007"
+    "Request\022&\n\004type\030\001 \002(\0162\030.network_io.Reque"
+    "st.Type\022&\n\004code\030\002 \002(\0162\030.network_io.Reque"
+    "st.Code\022+\n\textraCode\030\003 \002(\0162\030.network_io."
+    "Request.Code\022\025\n\rsecurityToken\030\004 \001(\t\022\020\n\010i"
+    "ntParam\030\005 \001(\005\022\023\n\013stringParam\030\006 \001(\t\"K\n\004Ty"
+    "pe\022\n\n\006SIMPLE\020\000\022\014\n\010EXPLORER\020\001\022\014\n\010KEYBOARD"
+    "\020\002\022\006\n\002AI\020\003\022\n\n\006VOLUME\020\004\022\007\n\003APP\020\005\"\253\004\n\004Code"
+    "\022\010\n\004NONE\020\000\022\n\n\006DEFINE\020\001\022\n\n\006STATUS\020\002\022\006\n\002ON"
+    "\020\003\022\007\n\003OFF\020\004\022\t\n\005HELLO\020\005\022\010\n\004TEST\020\006\022\017\n\013KILL"
+    "_SERVER\020\007\022\014\n\010SHUTDOWN\020\010\022\021\n\rSWITCH_WINDOW"
+    "\020\t\022\010\n\004LOCK\020\n\022\006\n\002UP\020\013\022\010\n\004DOWN\020\014\022\010\n\004LEFT\020\r"
+    "\022\t\n\005RIGHT\020\016\022\010\n\004MUTE\020\017\022\007\n\003SAY\020\020\022\021\n\rGET_FI"
+    "LE_LIST\020\024\022\r\n\tOPEN_FILE\020\025\022\024\n\020MEDIA_PLAY_P"
+    "AUSE\020\036\022\016\n\nMEDIA_STOP\020\037\022\022\n\016MEDIA_PREVIOUS"
+    "\020 \022\016\n\nMEDIA_NEXT\020!\022\014\n\010MEDIA_FF\020\"\022\020\n\014MEDI"
+    "A_REWIND\020#\022\013\n\007KB_CTRL\020(\022\014\n\010KB_SHIFT\020)\022\n\n"
+    "\006KB_ALT\020*\022\014\n\010KB_ALTGR\020+\022\016\n\nKB_WINDOWS\020,\022"
+    "\r\n\tKB_RETURN\020-\022\014\n\010KB_SPACE\020.\022\020\n\014KB_BACKS"
+    "PACE\020/\022\r\n\tKB_ESCAPE\0200\022\n\n\006KB_TAB\0201\022\t\n\005KB_"
+    "F4\0202\022\022\n\016GOM_PLAYER_RUN\020<\022\023\n\017GOM_PLAYER_K"
+    "ILL\020=\022\026\n\022GOM_PLAYER_STRETCH\020>\"\302\001\n\nDirCon"
+    "tent\022\014\n\004path\030\001 \002(\t\022)\n\004file\030\002 \003(\0132\033.netwo"
+    "rk_io.DirContent.File\032{\n\004File\022\014\n\004name\030\001 "
+    "\002(\t\0222\n\004type\030\003 \002(\0162$.network_io.DirConten"
+    "t.File.FileType\022\014\n\004size\030\004 \002(\005\"#\n\010FileTyp"
+    "e\022\r\n\tDIRECTORY\020\000\022\010\n\004FILE\020\001\"\242\002\n\010Response\022"
+    "-\n\013requestType\030\001 \001(\0162\030.network_io.Reques"
+    "t.Type\022-\n\013requestCode\030\002 \001(\0162\030.network_io"
+    ".Request.Code\022=\n\nreturnCode\030\003 \001(\0162\037.netw"
+    "ork_io.Response.ReturnCode:\010RC_ERROR\022\017\n\007"
+    "message\030\004 \001(\t\022\020\n\010intValue\030\005 \001(\005\022*\n\ndirCo"
+    "ntent\030\006 \001(\0132\026.network_io.DirContent\"*\n\nR"
+    "eturnCode\022\016\n\nRC_SUCCESS\020\000\022\014\n\010RC_ERROR\020\001B"
+    " \n\016org.es.networkB\016ExchangeProtos", 1393);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "server_exchange.proto", &protobuf_RegisterTypes);
   Request::default_instance_ = new Request();
@@ -443,7 +443,7 @@ bool Request::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required .network.Request.Type type = 1;
+      // required .network_io.Request.Type type = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -451,8 +451,8 @@ bool Request::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
                  input, &value)));
-          if (::network::Request_Type_IsValid(value)) {
-            set_type(static_cast< ::network::Request_Type >(value));
+          if (::network_io::Request_Type_IsValid(value)) {
+            set_type(static_cast< ::network_io::Request_Type >(value));
           } else {
             mutable_unknown_fields()->AddVarint(1, value);
           }
@@ -463,7 +463,7 @@ bool Request::MergePartialFromCodedStream(
         break;
       }
 
-      // required .network.Request.Code code = 2;
+      // required .network_io.Request.Code code = 2;
       case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -472,8 +472,8 @@ bool Request::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
                  input, &value)));
-          if (::network::Request_Code_IsValid(value)) {
-            set_code(static_cast< ::network::Request_Code >(value));
+          if (::network_io::Request_Code_IsValid(value)) {
+            set_code(static_cast< ::network_io::Request_Code >(value));
           } else {
             mutable_unknown_fields()->AddVarint(2, value);
           }
@@ -484,7 +484,7 @@ bool Request::MergePartialFromCodedStream(
         break;
       }
 
-      // required .network.Request.Code extraCode = 3;
+      // required .network_io.Request.Code extraCode = 3;
       case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -493,8 +493,8 @@ bool Request::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
                  input, &value)));
-          if (::network::Request_Code_IsValid(value)) {
-            set_extracode(static_cast< ::network::Request_Code >(value));
+          if (::network_io::Request_Code_IsValid(value)) {
+            set_extracode(static_cast< ::network_io::Request_Code >(value));
           } else {
             mutable_unknown_fields()->AddVarint(3, value);
           }
@@ -573,19 +573,19 @@ bool Request::MergePartialFromCodedStream(
 
 void Request::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // required .network.Request.Type type = 1;
+  // required .network_io.Request.Type type = 1;
   if (has_type()) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
       1, this->type(), output);
   }
 
-  // required .network.Request.Code code = 2;
+  // required .network_io.Request.Code code = 2;
   if (has_code()) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
       2, this->code(), output);
   }
 
-  // required .network.Request.Code extraCode = 3;
+  // required .network_io.Request.Code extraCode = 3;
   if (has_extracode()) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
       3, this->extracode(), output);
@@ -622,19 +622,19 @@ void Request::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* Request::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // required .network.Request.Type type = 1;
+  // required .network_io.Request.Type type = 1;
   if (has_type()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       1, this->type(), target);
   }
 
-  // required .network.Request.Code code = 2;
+  // required .network_io.Request.Code code = 2;
   if (has_code()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       2, this->code(), target);
   }
 
-  // required .network.Request.Code extraCode = 3;
+  // required .network_io.Request.Code extraCode = 3;
   if (has_extracode()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       3, this->extracode(), target);
@@ -676,19 +676,19 @@ int Request::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required .network.Request.Type type = 1;
+    // required .network_io.Request.Type type = 1;
     if (has_type()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->type());
     }
 
-    // required .network.Request.Code code = 2;
+    // required .network_io.Request.Code code = 2;
     if (has_code()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->code());
     }
 
-    // required .network.Request.Code extraCode = 3;
+    // required .network_io.Request.Code extraCode = 3;
     if (has_extracode()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->extracode());
@@ -925,7 +925,7 @@ bool DirContent_File::MergePartialFromCodedStream(
         break;
       }
 
-      // required .network.DirContent.File.FileType type = 3;
+      // required .network_io.DirContent.File.FileType type = 3;
       case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -934,8 +934,8 @@ bool DirContent_File::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
                  input, &value)));
-          if (::network::DirContent_File_FileType_IsValid(value)) {
-            set_type(static_cast< ::network::DirContent_File_FileType >(value));
+          if (::network_io::DirContent_File_FileType_IsValid(value)) {
+            set_type(static_cast< ::network_io::DirContent_File_FileType >(value));
           } else {
             mutable_unknown_fields()->AddVarint(3, value);
           }
@@ -989,7 +989,7 @@ void DirContent_File::SerializeWithCachedSizes(
       1, this->name(), output);
   }
 
-  // required .network.DirContent.File.FileType type = 3;
+  // required .network_io.DirContent.File.FileType type = 3;
   if (has_type()) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
       3, this->type(), output);
@@ -1018,7 +1018,7 @@ void DirContent_File::SerializeWithCachedSizes(
         1, this->name(), target);
   }
 
-  // required .network.DirContent.File.FileType type = 3;
+  // required .network_io.DirContent.File.FileType type = 3;
   if (has_type()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       3, this->type(), target);
@@ -1047,7 +1047,7 @@ int DirContent_File::ByteSize() const {
           this->name());
     }
 
-    // required .network.DirContent.File.FileType type = 3;
+    // required .network_io.DirContent.File.FileType type = 3;
     if (has_type()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->type());
@@ -1233,7 +1233,7 @@ bool DirContent::MergePartialFromCodedStream(
         break;
       }
 
-      // repeated .network.DirContent.File file = 2;
+      // repeated .network_io.DirContent.File file = 2;
       case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -1275,7 +1275,7 @@ void DirContent::SerializeWithCachedSizes(
       1, this->path(), output);
   }
 
-  // repeated .network.DirContent.File file = 2;
+  // repeated .network_io.DirContent.File file = 2;
   for (int i = 0; i < this->file_size(); i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       2, this->file(i), output);
@@ -1299,7 +1299,7 @@ void DirContent::SerializeWithCachedSizes(
         1, this->path(), target);
   }
 
-  // repeated .network.DirContent.File file = 2;
+  // repeated .network_io.DirContent.File file = 2;
   for (int i = 0; i < this->file_size(); i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
@@ -1325,7 +1325,7 @@ int DirContent::ByteSize() const {
     }
 
   }
-  // repeated .network.DirContent.File file = 2;
+  // repeated .network_io.DirContent.File file = 2;
   total_size += 1 * this->file_size();
   for (int i = 0; i < this->file_size(); i++) {
     total_size +=
@@ -1445,7 +1445,7 @@ Response::Response()
 }
 
 void Response::InitAsDefaultInstance() {
-  dircontent_ = const_cast< ::network::DirContent*>(&::network::DirContent::default_instance());
+  dircontent_ = const_cast< ::network_io::DirContent*>(&::network_io::DirContent::default_instance());
 }
 
 Response::Response(const Response& from)
@@ -1511,7 +1511,7 @@ void Response::Clear() {
     }
     intvalue_ = 0;
     if (has_dircontent()) {
-      if (dircontent_ != NULL) dircontent_->::network::DirContent::Clear();
+      if (dircontent_ != NULL) dircontent_->::network_io::DirContent::Clear();
     }
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -1524,7 +1524,7 @@ bool Response::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional .network.Request.Type requestType = 1;
+      // optional .network_io.Request.Type requestType = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -1532,8 +1532,8 @@ bool Response::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
                  input, &value)));
-          if (::network::Request_Type_IsValid(value)) {
-            set_requesttype(static_cast< ::network::Request_Type >(value));
+          if (::network_io::Request_Type_IsValid(value)) {
+            set_requesttype(static_cast< ::network_io::Request_Type >(value));
           } else {
             mutable_unknown_fields()->AddVarint(1, value);
           }
@@ -1544,7 +1544,7 @@ bool Response::MergePartialFromCodedStream(
         break;
       }
 
-      // optional .network.Request.Code requestCode = 2;
+      // optional .network_io.Request.Code requestCode = 2;
       case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -1553,8 +1553,8 @@ bool Response::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
                  input, &value)));
-          if (::network::Request_Code_IsValid(value)) {
-            set_requestcode(static_cast< ::network::Request_Code >(value));
+          if (::network_io::Request_Code_IsValid(value)) {
+            set_requestcode(static_cast< ::network_io::Request_Code >(value));
           } else {
             mutable_unknown_fields()->AddVarint(2, value);
           }
@@ -1565,7 +1565,7 @@ bool Response::MergePartialFromCodedStream(
         break;
       }
 
-      // optional .network.Response.ReturnCode returnCode = 3 [default = RC_ERROR];
+      // optional .network_io.Response.ReturnCode returnCode = 3 [default = RC_ERROR];
       case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -1574,8 +1574,8 @@ bool Response::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
                  input, &value)));
-          if (::network::Response_ReturnCode_IsValid(value)) {
-            set_returncode(static_cast< ::network::Response_ReturnCode >(value));
+          if (::network_io::Response_ReturnCode_IsValid(value)) {
+            set_returncode(static_cast< ::network_io::Response_ReturnCode >(value));
           } else {
             mutable_unknown_fields()->AddVarint(3, value);
           }
@@ -1619,7 +1619,7 @@ bool Response::MergePartialFromCodedStream(
         break;
       }
 
-      // optional .network.DirContent dirContent = 6;
+      // optional .network_io.DirContent dirContent = 6;
       case 6: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -1651,19 +1651,19 @@ bool Response::MergePartialFromCodedStream(
 
 void Response::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional .network.Request.Type requestType = 1;
+  // optional .network_io.Request.Type requestType = 1;
   if (has_requesttype()) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
       1, this->requesttype(), output);
   }
 
-  // optional .network.Request.Code requestCode = 2;
+  // optional .network_io.Request.Code requestCode = 2;
   if (has_requestcode()) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
       2, this->requestcode(), output);
   }
 
-  // optional .network.Response.ReturnCode returnCode = 3 [default = RC_ERROR];
+  // optional .network_io.Response.ReturnCode returnCode = 3 [default = RC_ERROR];
   if (has_returncode()) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
       3, this->returncode(), output);
@@ -1683,7 +1683,7 @@ void Response::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->intvalue(), output);
   }
 
-  // optional .network.DirContent dirContent = 6;
+  // optional .network_io.DirContent dirContent = 6;
   if (has_dircontent()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       6, this->dircontent(), output);
@@ -1697,19 +1697,19 @@ void Response::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* Response::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional .network.Request.Type requestType = 1;
+  // optional .network_io.Request.Type requestType = 1;
   if (has_requesttype()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       1, this->requesttype(), target);
   }
 
-  // optional .network.Request.Code requestCode = 2;
+  // optional .network_io.Request.Code requestCode = 2;
   if (has_requestcode()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       2, this->requestcode(), target);
   }
 
-  // optional .network.Response.ReturnCode returnCode = 3 [default = RC_ERROR];
+  // optional .network_io.Response.ReturnCode returnCode = 3 [default = RC_ERROR];
   if (has_returncode()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       3, this->returncode(), target);
@@ -1730,7 +1730,7 @@ void Response::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->intvalue(), target);
   }
 
-  // optional .network.DirContent dirContent = 6;
+  // optional .network_io.DirContent dirContent = 6;
   if (has_dircontent()) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
@@ -1748,19 +1748,19 @@ int Response::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional .network.Request.Type requestType = 1;
+    // optional .network_io.Request.Type requestType = 1;
     if (has_requesttype()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->requesttype());
     }
 
-    // optional .network.Request.Code requestCode = 2;
+    // optional .network_io.Request.Code requestCode = 2;
     if (has_requestcode()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->requestcode());
     }
 
-    // optional .network.Response.ReturnCode returnCode = 3 [default = RC_ERROR];
+    // optional .network_io.Response.ReturnCode returnCode = 3 [default = RC_ERROR];
     if (has_returncode()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->returncode());
@@ -1780,7 +1780,7 @@ int Response::ByteSize() const {
           this->intvalue());
     }
 
-    // optional .network.DirContent dirContent = 6;
+    // optional .network_io.DirContent dirContent = 6;
     if (has_dircontent()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -1830,7 +1830,7 @@ void Response::MergeFrom(const Response& from) {
       set_intvalue(from.intvalue());
     }
     if (from.has_dircontent()) {
-      mutable_dircontent()->::network::DirContent::MergeFrom(from.dircontent());
+      mutable_dircontent()->::network_io::DirContent::MergeFrom(from.dircontent());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -1881,6 +1881,6 @@ void Response::Swap(Response* other) {
 
 // @@protoc_insertion_point(namespace_scope)
 
-}  // namespace network
+}  // namespace network_io
 
 // @@protoc_insertion_point(global_scope)

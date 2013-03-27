@@ -9,19 +9,17 @@
 #	include <comdef.h>
 # endif
 
-using namespace std;
-
 //////////////////////////////////////////////////////////////////////////////
 // Fonctions privées
 //////////////////////////////////////////////////////////////////////////////
 
-unique_ptr<App> App::s_GomPlayer = nullptr;
+std::unique_ptr<App> App::s_GomPlayer = nullptr;
 
-App::App(string label, string className, string exePath)
+App::App(const std::string& label, const std::string& className, const std::string& exePath)
 {
-	mLabel		= label;
-	mClassName	= className;
-	mExePath	= exePath;
+	m_label			= label;
+	m_class_name	= className;
+	m_exe_path		= exePath;
 }
 
 App::~App(void)
@@ -31,10 +29,10 @@ App::~App(void)
 bool App::SetOnTop()
 {
 # if defined(WINDOWS_PLATFORM)
-	bstr_t className(mClassName.c_str());
-	HWND window = FindWindow(className, nullptr);
+	bstr_t className(m_class_name.c_str());
+	auto window = FindWindow(className, nullptr);
 	if (!window) {
-		cout << "Error while searching process." << endl;
+		std::cout << "Error while searching process." << std::endl;
 		return false;
 	}
 	return SetForegroundWindow(window) == TRUE;
@@ -47,9 +45,9 @@ bool App::SetOnTop()
 bool App::Launch()
 {
 # if defined(WINDOWS_PLATFORM)
-	cout << "Launching " << mLabel << endl;
-	bstr_t path(mExePath.c_str());
-	HINSTANCE returnCode = ShellExecute(nullptr, L"open", path, L"", nullptr, SW_SHOWMAXIMIZED);
+	std::cout << "Launching " << m_label << std::endl;
+	bstr_t path(m_exe_path.c_str());
+	auto returnCode = ShellExecute(nullptr, L"open", path, L"", nullptr, SW_SHOWMAXIMIZED);
 	return ((int)returnCode > 32);
 # else
 	// TODO: Code Linux function for App::Launch()
@@ -61,11 +59,11 @@ bool App::Launch()
 // Fonctions publics
 //////////////////////////////////////////////////////////////////////////////
 
-unique_ptr<App> App::GetGomPlayer() {
+std::unique_ptr<App> App::GetGomPlayer() {
 	if (s_GomPlayer)
 		return move(s_GomPlayer);
 
-	s_GomPlayer = unique_ptr<App>(new App("Gom Player", "GomPlayer1.x", "D:\\Programs\\GomPlayer\\GOM.exe"));
+	s_GomPlayer = std::unique_ptr<App>(new App("Gom Player", "GomPlayer1.x", "D:\\Programs\\GomPlayer\\GOM.exe"));
 	return move(s_GomPlayer);
 }
 
@@ -77,44 +75,44 @@ void App::FreeGomPlayer() {
  * Met l'application au premier plan
  * Lance l'application si elle n'est pas lancée
  */
-string App::Show()
+std::string App::Show()
 {
-	string resultMessage;
+	std::string resultMessage;
 
 	if (!SetOnTop()) {
-		cout << "Could not bring " << mLabel << " to the front." << endl;
-		cout << "Launching " << mLabel << endl;
+		std::cout << "Could not bring " << m_label << " to the front." << std::endl;
+		std::cout << "Launching " << m_label << std::endl;
 		if (Launch()) {
-			resultMessage = "Launching " + mLabel;
+			resultMessage = "Launching " + m_label;
 		} else {
-			resultMessage = "Couldn't launch " + mLabel;
+			resultMessage = "Couldn't launch " + m_label;
 		}
 	} else {
-		resultMessage = mLabel + " is now on top.";
+		resultMessage = m_label + " is now on top.";
 	}
 
-	cout << resultMessage << endl; 
+	std::cout << resultMessage << std::endl; 
 	return resultMessage;
 }
 
 /** 
  * Ferme l'application si elle est ouverte
  */
-string App::Close()
+std::string App::Close()
 {
 # if defined(WINDOWS_PLATFORM)
-	string resultMessage;
+	std::string resultMessage;
 	
-	bstr_t className(mClassName.c_str());
-	HWND window = FindWindow(className, nullptr);
+	bstr_t className(m_class_name.c_str());
+	auto window = FindWindow(className, nullptr);
 	if (!window) {
-		resultMessage = mLabel + " is not open.";
+		resultMessage = m_label + " is not open.";
 	} else {
 		PostMessage(window, WM_CLOSE, 0, 0);
-		resultMessage = mLabel + " has been closed.";
+		resultMessage = m_label + " has been closed.";
 	}
 
-	cout << resultMessage << endl; 
+	std::cout << resultMessage << std::endl; 
 	return resultMessage;
 # else
 	// TODO: Code Linux function for App::Close()
@@ -125,21 +123,21 @@ string App::Close()
 /** 
  * Stretch l'application si elle est ouverte
  */
-string App::Strech()
+std::string App::Strech()
 {
 # if defined(WINDOWS_PLATFORM)
-	string resultMessage;
+	std::string resultMessage;
 	
-	bstr_t className(mClassName.c_str());
-	HWND window = FindWindow(className, nullptr);
+	bstr_t className(m_class_name.c_str());
+	auto window = FindWindow(className, nullptr);
 	if (!window) {
-		resultMessage = mLabel + " is not open.";
+		resultMessage = m_label + " is not open.";
 	} else {
 		Keyboard::CtrlEnter();
-		resultMessage = mLabel + " has been streched.";
+		resultMessage = m_label + " has been streched.";
 	}
 
-	cout << resultMessage << endl; 
+	std::cout << resultMessage << std::endl; 
 	return resultMessage;
 # else
 	// TODO: Code Linux function for App::Strech()

@@ -6,9 +6,9 @@
 #include <windows.h>
 #include <mmdeviceapi.h>
 
-const float VOLUME_MAX	= 1.0f;
-const float VOLUME_MIN	= 0.0f;
-const float VOLUME_STEP	= 0.05f;
+const auto VOLUME_MAX(1.0f);
+const auto VOLUME_MIN(0.0f);
+const auto VOLUME_STEP(0.05f);
 
 MasterVolume* MasterVolume::s_masterVolume = nullptr; 
 
@@ -32,7 +32,7 @@ void MasterVolume::freeInstance()
 */
 bool MasterVolume::toggleMute()
 {
-	bool newMuteState = !isMute();
+	auto newMuteState = !isMute();
 	setMute(newMuteState);
 
 	return newMuteState;
@@ -43,7 +43,7 @@ bool MasterVolume::toggleMute()
 * @param volume The volume as a percentage.
 * @return The new value.
 */
-float MasterVolume::define(int volumePoucentage)
+float MasterVolume::define(const int& volumePoucentage)
 {
 	float volume = (float) volumePoucentage / 100.0f;
 	setVolume(volume);
@@ -57,7 +57,7 @@ float MasterVolume::define(int volumePoucentage)
 */
 float MasterVolume::turnUp()
 {
-	float currentVolume = getVolume();
+	auto currentVolume = getVolume();
 	float newVolume = min(VOLUME_MAX, currentVolume + VOLUME_STEP);
 	setVolume(newVolume);
 
@@ -70,7 +70,7 @@ float MasterVolume::turnUp()
 */
 float MasterVolume::turnDown()
 {
-	float currentVolume = getVolume();
+	auto currentVolume = getVolume();
 	float newVolume = max(VOLUME_MIN, currentVolume - VOLUME_STEP);
 	setVolume(newVolume);
 
@@ -161,7 +161,7 @@ void MasterVolume::freeVolumeController()
 bool MasterVolume::isMute()
 {
 	BOOL isMute = false;
-	HRESULT hr = m_endpointVolume->GetMute(&isMute);
+	auto hr = m_endpointVolume->GetMute(&isMute);
 	if (hr != S_OK) {
 		Utils::getLogger()->error("MasterVolume::isMute(), An error occured while getting muting state !");
 	}
@@ -171,9 +171,9 @@ bool MasterVolume::isMute()
 /**
 * Set mute state
 */
-void MasterVolume::setMute(bool isMute)
+void MasterVolume::setMute(const bool& isMute)
 {
-	HRESULT hr = m_endpointVolume->SetMute(isMute, nullptr);
+	auto hr = m_endpointVolume->SetMute(isMute, nullptr);
 	if (hr != S_OK) {
 		Utils::getLogger()->error("MasterVolume::setMute(), An error occured while setting muting state !");
 	}
@@ -184,9 +184,9 @@ void MasterVolume::setMute(bool isMute)
 */
 float MasterVolume::getVolume()
 {
-	float currentVolume = 0;
+	auto currentVolume(0.0f);
 
-	HRESULT hr = m_endpointVolume->GetMasterVolumeLevelScalar(&currentVolume);
+	auto hr = m_endpointVolume->GetMasterVolumeLevelScalar(&currentVolume);
 	if (hr != S_OK) {
 		Utils::getLogger()->error("MasterVolume::getVolume(), An error occured while getting volume !");
 	}
@@ -194,9 +194,9 @@ float MasterVolume::getVolume()
 }
 
 // Définit le nouveau volume
-void MasterVolume::setVolume(float _newVolume)
+void MasterVolume::setVolume(const float& newVolume)
 {
-	HRESULT hr = m_endpointVolume->SetMasterVolumeLevelScalar(_newVolume, nullptr);
+	auto hr = m_endpointVolume->SetMasterVolumeLevelScalar(newVolume, nullptr);
 	if (hr != S_OK) {
 		Utils::getLogger()->error("MasterVolume::setVolume(), An error occured while setting volume !");
 	}

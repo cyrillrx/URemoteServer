@@ -20,6 +20,6 @@ private:
 	static Rect* GetRelativePos(HWND window, Rect rectMon);
 	static PointF GetRectCoef(Rect rect1, Rect rect2);
 	static Rect* ApplyCoef(Rect rectIn, PointF coef);
-	static Rect* ApplyOffest(Rect relativePos, int offsetX, int offsetY);
+	static Rect* ApplyOffest(Rect relativePos, const int& offsetX, const int& offsetY);
 	static bool MoveWindow(HWND window, HMONITOR monitorSrc, HMONITOR monitorDest);
 };

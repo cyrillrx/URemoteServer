@@ -2,12 +2,12 @@
 
 #include "platform_config.h"
 # if defined(WINDOWS_PLATFORM)
-#	include "windows/io_socket.h"
+#	include "windows/network_io.h"
 # endif
 
 #include <string>
 
-namespace io_socket
+namespace network_io
 {
 	void connection();
 	std::string hostname();

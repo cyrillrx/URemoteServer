@@ -6,13 +6,13 @@
 #include "string_utils.h"
 #include "Utils.h"
 
-using namespace network;
+using namespace network_io;
 
 //////////////////////////////////////////////////////////////////////////////
 // Public functions
 //////////////////////////////////////////////////////////////////////////////
 
-void FileManager::HandleMessage(Response* reply, Request_Code code, std::string param)
+void FileManager::HandleMessage(Response* reply, Request::Code code, const std::string& param)
 {
 	switch (code) {
 
@@ -43,10 +43,10 @@ bool FileManager::GetDirectoryContent(Response* reply, std::string dirPath)
 		auto fileList = fs_utils::list_files(dirPath);
 
 		// Initiate the vector to return
-		DirContent *dirContent = reply->mutable_dircontent();
+		auto* dirContent = reply->mutable_dircontent();
 		dirContent->set_path(dirPath);
 
-		for (fs_utils::File& file : fileList) {
+		for (auto& file : fileList) {
 			AddFile(dirContent, file);
 		}
 
@@ -62,7 +62,7 @@ bool FileManager::GetDirectoryContent(Response* reply, std::string dirPath)
 	}
 }
 
-void FileManager::OpenFile(std::string filePath)
+void FileManager::OpenFile(const std::string& filePath)
 {
 	bstr_t path(filePath.c_str());
 	ShellExecute(nullptr, nullptr, path, nullptr, nullptr, SW_SHOWMAXIMIZED);
@@ -70,7 +70,7 @@ void FileManager::OpenFile(std::string filePath)
 
 bool FileManager::AddFile(DirContent* dirContent, fs_utils::File& file)
 {
-	DirContent_File *exchangefile = dirContent->add_file();
+	auto* exchangefile = dirContent->add_file();
 	exchangefile->set_name(file.filename());
 
 	// TODO: Use a function to translate FileUtils::File::TYPE to DirContent_File_FileType

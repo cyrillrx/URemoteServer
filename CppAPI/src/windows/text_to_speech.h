@@ -12,5 +12,5 @@ namespace text_to_speech
 
 	const wchar_t* langToAttribute(std::string language);
 	const wchar_t* genderToAttribute(std::string gender);
-};
+}
 

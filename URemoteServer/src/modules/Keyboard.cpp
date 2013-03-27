@@ -2,7 +2,7 @@
 
 #include "Utils.h"
 
-using namespace network;
+using namespace network_io;
 
 //////////////////////////////////////////////////////////////////////////////
 // Fonctions publics
@@ -10,11 +10,11 @@ using namespace network;
 
 void Keyboard::HandleMessage(Response* reply, Request* request)
 {
-	const Request_Code code			= request->code();
-	const Request_Code extraCode	= request->extracode();
-	const std::string strParam			= request->stringparam();
+	const auto code			= request->code();
+	const auto extraCode	= request->extracode();
+	const auto strParam		= request->stringparam();
 
-	const WORD extraInput = GetInputFromCode(extraCode);
+	const auto extraInput = GetInputFromCode(extraCode);
 
 	switch (code) {
 
@@ -112,7 +112,7 @@ void Keyboard::HandleMessage(Response* reply, Request* request)
 //////////////////////////////////////////////////////////////////////////////
 // Private functions
 //////////////////////////////////////////////////////////////////////////////
-WORD Keyboard::GetInputFromCode(Request_Code code)
+const WORD Keyboard::GetInputFromCode(Request::Code code)
 {
 	switch (code) {
 
@@ -128,10 +128,10 @@ WORD Keyboard::GetInputFromCode(Request_Code code)
 	}
 }
 
-std::string Keyboard::SendDefinedKey(std::string param, WORD extraCode)
+std::string Keyboard::SendDefinedKey(const std::string& param, const WORD& extraCode)
 {
-	char c = param.c_str()[0];
-	if (	(c >= 48 && c <= 57) || // 0 to 9
+	auto c = param.c_str()[0];
+	if ((c >= 48 && c <= 57) || // 0 to 9
 		(c >= 65 && c <= 90) || // A to Z
 		(c >= 97 && c <= 122) ) { // a to z
 			SendKeyboardInput(c, extraCode);
@@ -147,7 +147,7 @@ void Keyboard::CtrlEnter()
 	SendKeyboardInput(VK_RETURN, VK_CONTROL);
 }
 
-void Keyboard::SendKeyboardInput(WORD code, WORD extraCode)
+void Keyboard::SendKeyboardInput(const WORD& code, const WORD& extraCode)
 {
 	Utils::getLogger()->debug("Keyboard::SendKeyboardInput");
 	Utils::getLogger()->debug("-- code : "			+ code);

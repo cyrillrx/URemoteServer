@@ -14,7 +14,7 @@
 #include "trad_key.h"
 #include "Utils.h"
 
-using namespace network;
+using namespace network_io;
 
 SerializedExchange Exchange::handleMessage(AI* ai, SerializedExchange serializedRequest)
 {

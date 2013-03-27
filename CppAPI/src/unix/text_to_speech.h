@@ -1,6 +1,5 @@
 #pragma once
 
-namespace text_to_speech
-{
+namespace text_to_speech {
 
-};
+}

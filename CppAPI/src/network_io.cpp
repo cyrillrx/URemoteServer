@@ -1,4 +1,4 @@
-#include "io_socket.h"
+#include "network_io.h"
 
 //#include <boost/asio.hpp>
 #include <boost/asio/ip/host_name.hpp>
@@ -7,7 +7,7 @@
 //#include <boost/asio/ip/tcp.hpp>
 //#include <boost/bind.hpp>
 
-void io_socket::connection()
+void network_io::connection()
 {
 	/*
 	unsigned short port = 1234;
@@ -31,30 +31,22 @@ void io_socket::connection()
 
 }
 
-std::string io_socket::hostname()
+std::string network_io::hostname()
 {
 	try {
 		return boost::asio::ip::host_name();
 
 	} catch (const boost::system::error_code& e) {
-		throw socket_exception("io_socket::hostname()", e.message());
+		throw socket_exception("network_io::hostname()", e.message());
 	}
-/*
-		char hostname[80];
-	if (gethostname(hostname, sizeof(hostname)) == SOCKET_ERROR) {
-		m_log.error("Error " + std::to_string(WSAGetLastError()) + " when getting local host name.");
-		return "";
-	}
-
-	return hostname;*/
 }
 
-std::string io_socket::ip_address(const std::string& hostname)
+std::string network_io::ip_address(const std::string& hostname)
 {
 	std::string ipAddress = "";
 	struct hostent *host = gethostbyname(hostname.c_str());
 	if (host == 0) {
-		throw socket_exception("io_socket::ip_address()", "Bad host lookup.");
+		throw socket_exception("network_io::ip_address()", "Bad host lookup.");
 	}
 
 	struct in_addr addr;

@@ -4,7 +4,8 @@
 #include <WinSock2.h>
 
 #include "string_utils.h"
-#include "io_socket.h"
+#include "network_io.h"
+#include "network_io/server_config.h"
 #include "exception/Exception.h"
 #include "../Exchange.h"
 
@@ -14,7 +15,7 @@
 //#define BUFFER_SIZE BUFSIZ
 #define BUFFER_SIZE 4096
 
-using namespace network;
+using namespace network_io;
 
 int URemoteListener::s_instanceCount = 0;
 
@@ -22,7 +23,7 @@ int URemoteListener::s_instanceCount = 0;
 // Public methods
 //////////////////////////////////////////////////////////////////////////////
 
-URemoteListener::URemoteListener(std::unique_ptr<ServerConfig> config, AI* ai)
+URemoteListener::URemoteListener(std::unique_ptr<server_config> config, AI* ai)
 	: m_config(move(config)), m_ai(ai)
 {	
 	m_log = logger("URemoteListener.log");
@@ -34,7 +35,7 @@ URemoteListener::URemoteListener(std::unique_ptr<ServerConfig> config, AI* ai)
 
 	// Init hostname
 	try {
-		m_hostname	= io_socket::hostname();
+		m_hostname	= network_io::hostname();
 	} catch (const Exception& e) {
 		m_hostname = "localhost";
 		m_log.error("URemoteListener::InitServer(), " + e.whatAsString());
@@ -42,7 +43,7 @@ URemoteListener::URemoteListener(std::unique_ptr<ServerConfig> config, AI* ai)
 
 	// Init ip address
 	try {
-		m_ipAddress	= io_socket::ip_address(m_hostname);
+		m_ipAddress	= network_io::ip_address(m_hostname);
 	} catch (const Exception& e) {
 		m_ipAddress = "127.0.0.1";
 		m_log.error("URemoteListener::InitServer(), " + e.whatAsString());
@@ -77,7 +78,7 @@ void URemoteListener::doStart()
 		m_log.debug("Server Info : ");
 		m_log.debug(" - Hostname   : " + m_hostname);
 		m_log.debug(" - IP Address : " + m_ipAddress);
-		m_log.debug(" - Open port  : " + std::to_string(m_config->Port));
+		m_log.debug(" - Open port  : " + std::to_string(m_config->port()));
 		m_log.debug("Waiting for client to connect...");
 
 		m_cSocket = ::accept(m_listenSocket, nullptr, nullptr);
@@ -136,7 +137,7 @@ bool URemoteListener::initServer()
 	SOCKADDR_IN socketAddress; 
 	socketAddress.sin_addr.s_addr	= htonl(INADDR_ANY); // Server address
 	socketAddress.sin_family		= AF_INET; // Type of socket (AF_INET = Internet)
-	socketAddress.sin_port			= htons(m_config->Port);
+	socketAddress.sin_port			= htons(m_config->port());
 
 	// Bind the socket to the address and port defined in SOCKADDR
 	m_log.debug("Binding the socket to the address and port...");
@@ -148,7 +149,7 @@ bool URemoteListener::initServer()
 
 	// Listen to incoming connections
 	m_log.debug("Listen to incoming connections...");
-	if (::listen(m_listenSocket, m_config->MaxConcurrentConnections) == SOCKET_ERROR) {
+	if (::listen(m_listenSocket, m_config->max_concurrent_connections()) == SOCKET_ERROR) {
 		m_log.error("URemoteListener::InitServer(), listen() failed with error: " + std::to_string(WSAGetLastError()));
 		freeServer();
 		return false;

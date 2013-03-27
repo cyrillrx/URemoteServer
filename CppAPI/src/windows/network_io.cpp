@@ -1,4 +1,4 @@
-/*#include "../io_socket.h"
+/*#include "../network_io.h"
 
 #include "Utils.h"
 #include "helpers/winsock_helper.h"
@@ -8,7 +8,7 @@
 #pragma comment(lib, "ws2_32.lib")
 
 
-void io_socket::init_server()
+void network_io::init_server()
 {
 	//TODO: Change declaration of "port"
 	unsigned short port = 1234;
@@ -21,7 +21,7 @@ void io_socket::init_server()
 	// Create listener socket for incoming connections
 	Utils::getLogger()->debug("Creating listener socket for incoming connections...");
 	socket_handler listenSocket(::socket(AF_INET, SOCK_STREAM, IPPROTO_IP));
-	winsock_helper::check_socket("io_socket::init_server, creating listenSocket", listenSocket.get_socket());
+	winsock_helper::check_socket("network_io::init_server, creating listenSocket", listenSocket.get_socket());
 	//m_log.error("URemoteListener::InitServer(), socket() failed with error: " + std::to_string(WSAGetLastError()));
 
 	// Socket thecnical info
@@ -33,15 +33,15 @@ void io_socket::init_server()
 	// Bind the socket to the address and port defined in SOCKADDR
 	Utils::getLogger()->debug("Binding the socket to the address and port...");
 	int result = ::bind(listenSocket.get_socket(), (SOCKADDR*)&socketAddress, sizeof(socketAddress));
-	winsock_helper::check_result("io_socket::init_server, bind listenSocket", result);
+	winsock_helper::check_result("network_io::init_server, bind listenSocket", result);
 	//m_log.error("URemoteListener::InitServer(), bind() failed with error: " + std::to_string(WSAGetLastError()));
 
 	// Listen to incoming connections
 	Utils::getLogger()->debug("Listen to incoming connections...");
 	result = ::listen(listenSocket.get_socket(), max_concurrent_connections);
-	winsock_helper::check_result("io_socket::init_server, listen listenSocket", result);
+	winsock_helper::check_result("network_io::init_server, listen listenSocket", result);
 	// m_log.error("URemoteListener::InitServer(), listen() failed with error: " + std::to_string(WSAGetLastError()));
 
 	socket_handler connectionSocket(::accept(listenSocket.get_socket(), nullptr, nullptr));
-	winsock_helper::check_socket("io_socket::init_server, accept connection", connectionSocket.get_socket());
+	winsock_helper::check_socket("network_io::init_server, accept connection", connectionSocket.get_socket());
 }*/

@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "AIConfig.h"
-#include "ServerConfig.h"
+#include "network_io/server_config.h"
 #include "listeners/Listener.h"
 
 class Speech;
@@ -18,7 +18,7 @@ public:
 	AI(std::unique_ptr<AIConfig> aiConfig);
 	~AI();
 
-	void startConnection(std::unique_ptr<ServerConfig> serverConfig);
+	void startConnection(std::unique_ptr<network_io::server_config> serverConfig);
 	void stopConnection();
 
 	std::string getName();

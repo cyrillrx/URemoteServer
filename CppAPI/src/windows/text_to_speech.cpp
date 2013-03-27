@@ -24,6 +24,7 @@ std::vector<std::string> text_to_speech::available_languages()
 bool text_to_speech::testParameters(const std::string& language, const std::string& gender)
 {
 	// Init COM lib
+	
 	com_handler comHandler;
 	HRESULT hr;
 	ISpVoice * ispVoice = nullptr;
@@ -36,6 +37,7 @@ bool text_to_speech::testParameters(const std::string& language, const std::stri
 	} catch (const software_exception&) {
 
 	}
+	
 	return false;
 }
 

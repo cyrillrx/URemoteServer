@@ -10,7 +10,7 @@ public :
 	static void freeInstance();
 	
 	bool toggleMute();
-	float define(int volumePoucentage);
+	float define(const int& volumePoucentage);
 	float turnUp();
 	float turnDown();
 
@@ -25,8 +25,8 @@ private :
 	void freeVolumeController();
 	
 	bool isMute();
-	void setMute(bool mute);
+	void setMute(const bool& mute);
 
 	float getVolume();
-	void setVolume(float volume);	
+	void setVolume(const float& volume);	
 };

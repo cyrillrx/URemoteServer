@@ -27,7 +27,7 @@
 #include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
 
-namespace network {
+namespace network_io {
 
 // Internal implementation detail -- do not call these.
 void  protobuf_AddDesc_server_5fexchange_2eproto();
@@ -301,26 +301,26 @@ class Request : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required .network.Request.Type type = 1;
+  // required .network_io.Request.Type type = 1;
   inline bool has_type() const;
   inline void clear_type();
   static const int kTypeFieldNumber = 1;
-  inline ::network::Request_Type type() const;
-  inline void set_type(::network::Request_Type value);
+  inline ::network_io::Request_Type type() const;
+  inline void set_type(::network_io::Request_Type value);
 
-  // required .network.Request.Code code = 2;
+  // required .network_io.Request.Code code = 2;
   inline bool has_code() const;
   inline void clear_code();
   static const int kCodeFieldNumber = 2;
-  inline ::network::Request_Code code() const;
-  inline void set_code(::network::Request_Code value);
+  inline ::network_io::Request_Code code() const;
+  inline void set_code(::network_io::Request_Code value);
 
-  // required .network.Request.Code extraCode = 3;
+  // required .network_io.Request.Code extraCode = 3;
   inline bool has_extracode() const;
   inline void clear_extracode();
   static const int kExtraCodeFieldNumber = 3;
-  inline ::network::Request_Code extracode() const;
-  inline void set_extracode(::network::Request_Code value);
+  inline ::network_io::Request_Code extracode() const;
+  inline void set_extracode(::network_io::Request_Code value);
 
   // optional string securityToken = 4;
   inline bool has_securitytoken() const;
@@ -353,7 +353,7 @@ class Request : public ::google::protobuf::Message {
   inline ::std::string* release_stringparam();
   inline void set_allocated_stringparam(::std::string* stringparam);
 
-  // @@protoc_insertion_point(class_scope:network.Request)
+  // @@protoc_insertion_point(class_scope:network_io.Request)
  private:
   inline void set_has_type();
   inline void clear_has_type();
@@ -479,12 +479,12 @@ class DirContent_File : public ::google::protobuf::Message {
   inline ::std::string* release_name();
   inline void set_allocated_name(::std::string* name);
 
-  // required .network.DirContent.File.FileType type = 3;
+  // required .network_io.DirContent.File.FileType type = 3;
   inline bool has_type() const;
   inline void clear_type();
   static const int kTypeFieldNumber = 3;
-  inline ::network::DirContent_File_FileType type() const;
-  inline void set_type(::network::DirContent_File_FileType value);
+  inline ::network_io::DirContent_File_FileType type() const;
+  inline void set_type(::network_io::DirContent_File_FileType value);
 
   // required int32 size = 4;
   inline bool has_size() const;
@@ -493,7 +493,7 @@ class DirContent_File : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 size() const;
   inline void set_size(::google::protobuf::int32 value);
 
-  // @@protoc_insertion_point(class_scope:network.DirContent.File)
+  // @@protoc_insertion_point(class_scope:network_io.DirContent.File)
  private:
   inline void set_has_name();
   inline void clear_has_name();
@@ -588,19 +588,19 @@ class DirContent : public ::google::protobuf::Message {
   inline ::std::string* release_path();
   inline void set_allocated_path(::std::string* path);
 
-  // repeated .network.DirContent.File file = 2;
+  // repeated .network_io.DirContent.File file = 2;
   inline int file_size() const;
   inline void clear_file();
   static const int kFileFieldNumber = 2;
-  inline const ::network::DirContent_File& file(int index) const;
-  inline ::network::DirContent_File* mutable_file(int index);
-  inline ::network::DirContent_File* add_file();
-  inline const ::google::protobuf::RepeatedPtrField< ::network::DirContent_File >&
+  inline const ::network_io::DirContent_File& file(int index) const;
+  inline ::network_io::DirContent_File* mutable_file(int index);
+  inline ::network_io::DirContent_File* add_file();
+  inline const ::google::protobuf::RepeatedPtrField< ::network_io::DirContent_File >&
       file() const;
-  inline ::google::protobuf::RepeatedPtrField< ::network::DirContent_File >*
+  inline ::google::protobuf::RepeatedPtrField< ::network_io::DirContent_File >*
       mutable_file();
 
-  // @@protoc_insertion_point(class_scope:network.DirContent)
+  // @@protoc_insertion_point(class_scope:network_io.DirContent)
  private:
   inline void set_has_path();
   inline void clear_has_path();
@@ -608,7 +608,7 @@ class DirContent : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
   ::std::string* path_;
-  ::google::protobuf::RepeatedPtrField< ::network::DirContent_File > file_;
+  ::google::protobuf::RepeatedPtrField< ::network_io::DirContent_File > file_;
 
   mutable int _cached_size_;
   ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
@@ -700,26 +700,26 @@ class Response : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // optional .network.Request.Type requestType = 1;
+  // optional .network_io.Request.Type requestType = 1;
   inline bool has_requesttype() const;
   inline void clear_requesttype();
   static const int kRequestTypeFieldNumber = 1;
-  inline ::network::Request_Type requesttype() const;
-  inline void set_requesttype(::network::Request_Type value);
+  inline ::network_io::Request_Type requesttype() const;
+  inline void set_requesttype(::network_io::Request_Type value);
 
-  // optional .network.Request.Code requestCode = 2;
+  // optional .network_io.Request.Code requestCode = 2;
   inline bool has_requestcode() const;
   inline void clear_requestcode();
   static const int kRequestCodeFieldNumber = 2;
-  inline ::network::Request_Code requestcode() const;
-  inline void set_requestcode(::network::Request_Code value);
+  inline ::network_io::Request_Code requestcode() const;
+  inline void set_requestcode(::network_io::Request_Code value);
 
-  // optional .network.Response.ReturnCode returnCode = 3 [default = RC_ERROR];
+  // optional .network_io.Response.ReturnCode returnCode = 3 [default = RC_ERROR];
   inline bool has_returncode() const;
   inline void clear_returncode();
   static const int kReturnCodeFieldNumber = 3;
-  inline ::network::Response_ReturnCode returncode() const;
-  inline void set_returncode(::network::Response_ReturnCode value);
+  inline ::network_io::Response_ReturnCode returncode() const;
+  inline void set_returncode(::network_io::Response_ReturnCode value);
 
   // optional string message = 4;
   inline bool has_message() const;
@@ -740,16 +740,16 @@ class Response : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 intvalue() const;
   inline void set_intvalue(::google::protobuf::int32 value);
 
-  // optional .network.DirContent dirContent = 6;
+  // optional .network_io.DirContent dirContent = 6;
   inline bool has_dircontent() const;
   inline void clear_dircontent();
   static const int kDirContentFieldNumber = 6;
-  inline const ::network::DirContent& dircontent() const;
-  inline ::network::DirContent* mutable_dircontent();
-  inline ::network::DirContent* release_dircontent();
-  inline void set_allocated_dircontent(::network::DirContent* dircontent);
+  inline const ::network_io::DirContent& dircontent() const;
+  inline ::network_io::DirContent* mutable_dircontent();
+  inline ::network_io::DirContent* release_dircontent();
+  inline void set_allocated_dircontent(::network_io::DirContent* dircontent);
 
-  // @@protoc_insertion_point(class_scope:network.Response)
+  // @@protoc_insertion_point(class_scope:network_io.Response)
  private:
   inline void set_has_requesttype();
   inline void clear_has_requesttype();
@@ -771,7 +771,7 @@ class Response : public ::google::protobuf::Message {
   ::std::string* message_;
   int returncode_;
   ::google::protobuf::int32 intvalue_;
-  ::network::DirContent* dircontent_;
+  ::network_io::DirContent* dircontent_;
 
   mutable int _cached_size_;
   ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
@@ -790,7 +790,7 @@ class Response : public ::google::protobuf::Message {
 
 // Request
 
-// required .network.Request.Type type = 1;
+// required .network_io.Request.Type type = 1;
 inline bool Request::has_type() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -804,16 +804,16 @@ inline void Request::clear_type() {
   type_ = 0;
   clear_has_type();
 }
-inline ::network::Request_Type Request::type() const {
-  return static_cast< ::network::Request_Type >(type_);
+inline ::network_io::Request_Type Request::type() const {
+  return static_cast< ::network_io::Request_Type >(type_);
 }
-inline void Request::set_type(::network::Request_Type value) {
-  assert(::network::Request_Type_IsValid(value));
+inline void Request::set_type(::network_io::Request_Type value) {
+  assert(::network_io::Request_Type_IsValid(value));
   set_has_type();
   type_ = value;
 }
 
-// required .network.Request.Code code = 2;
+// required .network_io.Request.Code code = 2;
 inline bool Request::has_code() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
@@ -827,16 +827,16 @@ inline void Request::clear_code() {
   code_ = 0;
   clear_has_code();
 }
-inline ::network::Request_Code Request::code() const {
-  return static_cast< ::network::Request_Code >(code_);
+inline ::network_io::Request_Code Request::code() const {
+  return static_cast< ::network_io::Request_Code >(code_);
 }
-inline void Request::set_code(::network::Request_Code value) {
-  assert(::network::Request_Code_IsValid(value));
+inline void Request::set_code(::network_io::Request_Code value) {
+  assert(::network_io::Request_Code_IsValid(value));
   set_has_code();
   code_ = value;
 }
 
-// required .network.Request.Code extraCode = 3;
+// required .network_io.Request.Code extraCode = 3;
 inline bool Request::has_extracode() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
@@ -850,11 +850,11 @@ inline void Request::clear_extracode() {
   extracode_ = 0;
   clear_has_extracode();
 }
-inline ::network::Request_Code Request::extracode() const {
-  return static_cast< ::network::Request_Code >(extracode_);
+inline ::network_io::Request_Code Request::extracode() const {
+  return static_cast< ::network_io::Request_Code >(extracode_);
 }
-inline void Request::set_extracode(::network::Request_Code value) {
-  assert(::network::Request_Code_IsValid(value));
+inline void Request::set_extracode(::network_io::Request_Code value) {
+  assert(::network_io::Request_Code_IsValid(value));
   set_has_extracode();
   extracode_ = value;
 }
@@ -1095,7 +1095,7 @@ inline void DirContent_File::set_allocated_name(::std::string* name) {
   }
 }
 
-// required .network.DirContent.File.FileType type = 3;
+// required .network_io.DirContent.File.FileType type = 3;
 inline bool DirContent_File::has_type() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
@@ -1109,11 +1109,11 @@ inline void DirContent_File::clear_type() {
   type_ = 0;
   clear_has_type();
 }
-inline ::network::DirContent_File_FileType DirContent_File::type() const {
-  return static_cast< ::network::DirContent_File_FileType >(type_);
+inline ::network_io::DirContent_File_FileType DirContent_File::type() const {
+  return static_cast< ::network_io::DirContent_File_FileType >(type_);
 }
-inline void DirContent_File::set_type(::network::DirContent_File_FileType value) {
-  assert(::network::DirContent_File_FileType_IsValid(value));
+inline void DirContent_File::set_type(::network_io::DirContent_File_FileType value) {
+  assert(::network_io::DirContent_File_FileType_IsValid(value));
   set_has_type();
   type_ = value;
 }
@@ -1214,27 +1214,27 @@ inline void DirContent::set_allocated_path(::std::string* path) {
   }
 }
 
-// repeated .network.DirContent.File file = 2;
+// repeated .network_io.DirContent.File file = 2;
 inline int DirContent::file_size() const {
   return file_.size();
 }
 inline void DirContent::clear_file() {
   file_.Clear();
 }
-inline const ::network::DirContent_File& DirContent::file(int index) const {
+inline const ::network_io::DirContent_File& DirContent::file(int index) const {
   return file_.Get(index);
 }
-inline ::network::DirContent_File* DirContent::mutable_file(int index) {
+inline ::network_io::DirContent_File* DirContent::mutable_file(int index) {
   return file_.Mutable(index);
 }
-inline ::network::DirContent_File* DirContent::add_file() {
+inline ::network_io::DirContent_File* DirContent::add_file() {
   return file_.Add();
 }
-inline const ::google::protobuf::RepeatedPtrField< ::network::DirContent_File >&
+inline const ::google::protobuf::RepeatedPtrField< ::network_io::DirContent_File >&
 DirContent::file() const {
   return file_;
 }
-inline ::google::protobuf::RepeatedPtrField< ::network::DirContent_File >*
+inline ::google::protobuf::RepeatedPtrField< ::network_io::DirContent_File >*
 DirContent::mutable_file() {
   return &file_;
 }
@@ -1243,7 +1243,7 @@ DirContent::mutable_file() {
 
 // Response
 
-// optional .network.Request.Type requestType = 1;
+// optional .network_io.Request.Type requestType = 1;
 inline bool Response::has_requesttype() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -1257,16 +1257,16 @@ inline void Response::clear_requesttype() {
   requesttype_ = 0;
   clear_has_requesttype();
 }
-inline ::network::Request_Type Response::requesttype() const {
-  return static_cast< ::network::Request_Type >(requesttype_);
+inline ::network_io::Request_Type Response::requesttype() const {
+  return static_cast< ::network_io::Request_Type >(requesttype_);
 }
-inline void Response::set_requesttype(::network::Request_Type value) {
-  assert(::network::Request_Type_IsValid(value));
+inline void Response::set_requesttype(::network_io::Request_Type value) {
+  assert(::network_io::Request_Type_IsValid(value));
   set_has_requesttype();
   requesttype_ = value;
 }
 
-// optional .network.Request.Code requestCode = 2;
+// optional .network_io.Request.Code requestCode = 2;
 inline bool Response::has_requestcode() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
@@ -1280,16 +1280,16 @@ inline void Response::clear_requestcode() {
   requestcode_ = 0;
   clear_has_requestcode();
 }
-inline ::network::Request_Code Response::requestcode() const {
-  return static_cast< ::network::Request_Code >(requestcode_);
+inline ::network_io::Request_Code Response::requestcode() const {
+  return static_cast< ::network_io::Request_Code >(requestcode_);
 }
-inline void Response::set_requestcode(::network::Request_Code value) {
-  assert(::network::Request_Code_IsValid(value));
+inline void Response::set_requestcode(::network_io::Request_Code value) {
+  assert(::network_io::Request_Code_IsValid(value));
   set_has_requestcode();
   requestcode_ = value;
 }
 
-// optional .network.Response.ReturnCode returnCode = 3 [default = RC_ERROR];
+// optional .network_io.Response.ReturnCode returnCode = 3 [default = RC_ERROR];
 inline bool Response::has_returncode() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
@@ -1303,11 +1303,11 @@ inline void Response::clear_returncode() {
   returncode_ = 1;
   clear_has_returncode();
 }
-inline ::network::Response_ReturnCode Response::returncode() const {
-  return static_cast< ::network::Response_ReturnCode >(returncode_);
+inline ::network_io::Response_ReturnCode Response::returncode() const {
+  return static_cast< ::network_io::Response_ReturnCode >(returncode_);
 }
-inline void Response::set_returncode(::network::Response_ReturnCode value) {
-  assert(::network::Response_ReturnCode_IsValid(value));
+inline void Response::set_returncode(::network_io::Response_ReturnCode value) {
+  assert(::network_io::Response_ReturnCode_IsValid(value));
   set_has_returncode();
   returncode_ = value;
 }
@@ -1404,7 +1404,7 @@ inline void Response::set_intvalue(::google::protobuf::int32 value) {
   intvalue_ = value;
 }
 
-// optional .network.DirContent dirContent = 6;
+// optional .network_io.DirContent dirContent = 6;
 inline bool Response::has_dircontent() const {
   return (_has_bits_[0] & 0x00000020u) != 0;
 }
@@ -1415,24 +1415,24 @@ inline void Response::clear_has_dircontent() {
   _has_bits_[0] &= ~0x00000020u;
 }
 inline void Response::clear_dircontent() {
-  if (dircontent_ != NULL) dircontent_->::network::DirContent::Clear();
+  if (dircontent_ != NULL) dircontent_->::network_io::DirContent::Clear();
   clear_has_dircontent();
 }
-inline const ::network::DirContent& Response::dircontent() const {
+inline const ::network_io::DirContent& Response::dircontent() const {
   return dircontent_ != NULL ? *dircontent_ : *default_instance_->dircontent_;
 }
-inline ::network::DirContent* Response::mutable_dircontent() {
+inline ::network_io::DirContent* Response::mutable_dircontent() {
   set_has_dircontent();
-  if (dircontent_ == NULL) dircontent_ = new ::network::DirContent;
+  if (dircontent_ == NULL) dircontent_ = new ::network_io::DirContent;
   return dircontent_;
 }
-inline ::network::DirContent* Response::release_dircontent() {
+inline ::network_io::DirContent* Response::release_dircontent() {
   clear_has_dircontent();
-  ::network::DirContent* temp = dircontent_;
+  ::network_io::DirContent* temp = dircontent_;
   dircontent_ = NULL;
   return temp;
 }
-inline void Response::set_allocated_dircontent(::network::DirContent* dircontent) {
+inline void Response::set_allocated_dircontent(::network_io::DirContent* dircontent) {
   delete dircontent_;
   dircontent_ = dircontent;
   if (dircontent) {
@@ -1445,27 +1445,27 @@ inline void Response::set_allocated_dircontent(::network::DirContent* dircontent
 
 // @@protoc_insertion_point(namespace_scope)
 
-}  // namespace network
+}  // namespace network_io
 
 #ifndef SWIG
 namespace google {
 namespace protobuf {
 
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::network::Request_Type>() {
-  return ::network::Request_Type_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::network_io::Request_Type>() {
+  return ::network_io::Request_Type_descriptor();
 }
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::network::Request_Code>() {
-  return ::network::Request_Code_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::network_io::Request_Code>() {
+  return ::network_io::Request_Code_descriptor();
 }
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::network::DirContent_File_FileType>() {
-  return ::network::DirContent_File_FileType_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::network_io::DirContent_File_FileType>() {
+  return ::network_io::DirContent_File_FileType_descriptor();
 }
 template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::network::Response_ReturnCode>() {
-  return ::network::Response_ReturnCode_descriptor();
+inline const EnumDescriptor* GetEnumDescriptor< ::network_io::Response_ReturnCode>() {
+  return ::network_io::Response_ReturnCode_descriptor();
 }
 
 }  // namespace google

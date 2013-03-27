@@ -10,8 +10,7 @@
 #include <string>
 #include <vector>
 
-namespace text_to_speech
-{
+namespace text_to_speech {
 	namespace languague
 	{
 		const std::string EN = "EN";
@@ -23,4 +22,4 @@ namespace text_to_speech
 	std::vector<std::string> available_languages();
 	bool testParameters(const std::string& language, const std::string& gender);
 	bool say(const std::string& textToSpeak, const std::string& language, const std::string& gender);
-};
+}

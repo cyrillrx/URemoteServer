@@ -4,20 +4,20 @@
 #include <sstream>
 
 #include "Utils.h"
-#include "ServerConfig.h"
 #include "Translator.h"
 #include "fs_utils.h"
-#include "exception\Exception.h"
-#include "modules\Speech.h"
+#include "network_io/server_config.h"
+#include "exception/Exception.h"
+#include "modules/Speech.h"
 #include "text_to_speech.h"
 #include "logger.h"
 
 using namespace std;
 
-bool initProgram(unique_ptr<AIConfig>& aiConfig, unique_ptr<ServerConfig>& serverConfig);
+bool initProgram(unique_ptr<AIConfig>& aiConfig, unique_ptr<network_io::server_config>& server_config);
 bool initAiConfig(unique_ptr<AIConfig>& aiConfig, string& message);
 bool initTranslator(Translator* translator, string& message);
-bool initServerConfig(unique_ptr<ServerConfig>& serverConfig, string& message);
+bool initServerConfig(unique_ptr<network_io::server_config>& server_config, string& message);
 string filenameToKey(const string& filename);
 
 static const string language_dir	= "lang/";
@@ -62,7 +62,7 @@ int main()
 	logger->info("******************************************************");
 
 	unique_ptr<AIConfig> aiConfig = nullptr;
-	unique_ptr<ServerConfig> serverConfig = nullptr;
+	unique_ptr<network_io::server_config> serverConfig = nullptr;
 	if (!initProgram(aiConfig, serverConfig)) {
 		return EXIT_FAILURE;
 	}
@@ -80,7 +80,7 @@ int main()
 /**
 * Initialize the AI, the translator and the Server
 */
-bool initProgram(unique_ptr<AIConfig>& aiConfig, unique_ptr<ServerConfig>& serverConfig)
+bool initProgram(unique_ptr<AIConfig>& aiConfig, unique_ptr<network_io::server_config>& serverConfig)
 {
 	logger->info("Program initialization...");
 	// TODO: Set Error and warning into a Queue to treat it (vocally) once everything is loaded.
@@ -199,15 +199,15 @@ bool initAiConfig(unique_ptr<AIConfig>& aiConfig, string& message)
 
 /**
 * Init config for the Server.
-* Load the ServerConfig object with the properties found in SERVER_CONF_FILE 
+* Load the server_config object with the properties found in SERVER_CONF_FILE 
 */
-bool initServerConfig(unique_ptr<ServerConfig>& serverConfig, string& message)
+bool initServerConfig(unique_ptr<network_io::server_config>& server_config, string& message)
 {
 	// Init config for the server
 	logger->info("Init config for the server...");
 	bool serverInitialized = false;
 	try {
-		serverConfig = unique_ptr<ServerConfig>(new ServerConfig(server_conf_path));
+		server_config = unique_ptr<network_io::server_config>(new network_io::server_config(server_conf_path));
 		logger->debug("Server config OK.");
 		serverInitialized = true;
 	} catch (const exception& e) {
