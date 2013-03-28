@@ -44,4 +44,6 @@ void network_io::init_server()
 
 	socket_handler connectionSocket(::accept(listenSocket.get_socket(), nullptr, nullptr));
 	winsock_helper::check_socket("network_io::init_server, accept connection", connectionSocket.get_socket());
-}*/
+}
+
+*/
