@@ -93,11 +93,9 @@ void URemoteListener::doStart()
 		int received = recv(m_cSocket, buffer, sizeof(buffer), 0);
 		m_log.debug("  -- result : " + received);
 
-		SerializedExchange exchange;
-		exchange.buffer = buffer;
-		exchange.bufferSize = received;
+		serialized_message message(buffer, received);
 
-		handleMessage(exchange);
+		handleMessage(message);
 
 		closesocket(m_cSocket);
 		m_log.debug("Socket closed.");
@@ -173,10 +171,10 @@ void URemoteListener::freeServer()
 * Handle the command sent by the client.
 * then send a response.
 */
-void URemoteListener::handleMessage(SerializedExchange request) 
+void URemoteListener::handleMessage(serialized_message request) 
 {
-	SerializedExchange response = Exchange::handleMessage(m_ai, request);
-	send(m_cSocket, response.buffer, response.bufferSize, 0);
+	auto response = Exchange::handleMessage(m_ai, request);
+	send(m_cSocket, response.buffer(), response.size(), 0);
 }
 
 //TODO: Define a function (inline) for std::to_string(WSAGetLastError())

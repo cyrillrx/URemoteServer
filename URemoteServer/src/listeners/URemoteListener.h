@@ -5,11 +5,12 @@
 #include <basetsd.h>
 
 #include "Listener.h"
+#include "network_io.h"
 #include "network_io/server_config.h"
 #include "network_io/server_exchange.pb.h"
 #include "logger.h"
 
-class SerializedExchange;
+//class SerializedExchange;
 class AI;
 
 class URemoteListener : public Listener
@@ -33,5 +34,5 @@ private :
 	bool initServer();
 	void freeServer();
 
-	void handleMessage(SerializedExchange serializedRequest);
+	void handleMessage(network_io::serialized_message serializedRequest);
 };
