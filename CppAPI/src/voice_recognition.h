@@ -2,9 +2,9 @@
 
 #include "platform_config.h"
 # if defined(WINDOWS_PLATFORM)
-#	include "windows/voice_recognition.h"
+#	include "windows/voice_recognition_windows.h"
 # else
-#	include "unix/voice_recognition.h"
+#	include "unix/voice_recognition_unix.h"
 # endif
 
 namespace voice_recognition
