@@ -14,10 +14,6 @@
 					<Add option="-DWIN32" />
 					<Add option="-D_DEBUG" />
 					<Add option="-D_CONSOLE" />
-					<Add directory="./include" />
-					<Add directory="../../CppUtils/Utils/src" />
-					<Add directory="../CppAPI/src" />
-					<Add directory="$(IncludePath)" />
 				</Compiler>
 				<Linker>
 					<Add library="libprotobuf.lib" />
@@ -33,10 +29,6 @@
 					<Add option="-DWIN32" />
 					<Add option="-DNDEBUG" />
 					<Add option="-D_CONSOLE" />
-					<Add directory="./include" />
-					<Add directory="../../CppUtils/Utils/src" />
-					<Add directory="../CppAPI/src" />
-					<Add directory="$(IncludePath)" />
 				</Compiler>
 				<Linker>
 					<Add library="libprotobuf.lib" />
@@ -47,6 +39,9 @@
 		</Build>
 		<Compiler>
 			<Add option="-std=c++11" />
+			<Add directory="../include" />
+			<Add directory="../CppAPI/src" />
+			<Add directory="../../CppUtils/Utils/src" />
 		</Compiler>
 		<Unit filename="src/AI.cpp" />
 		<Unit filename="src/AI.h" />
@@ -54,8 +49,6 @@
 		<Unit filename="src/AIConfig.h" />
 		<Unit filename="src/Exchange.cpp" />
 		<Unit filename="src/Exchange.h" />
-		<Unit filename="src/helpers/WinSockHelper.cpp" />
-		<Unit filename="src/helpers/WinSockHelper.h" />
 		<Unit filename="src/listeners/ConsoleListener.cpp" />
 		<Unit filename="src/listeners/ConsoleListener.h" />
 		<Unit filename="src/listeners/Listener.cpp" />

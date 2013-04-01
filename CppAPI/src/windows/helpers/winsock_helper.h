@@ -1,5 +1,8 @@
 #pragma once
 
+#include "platform_config.h"
+#if defined(WINDOWS_PLATFORM)
+
 #include <string>
 #include <WinSock2.h>
 
@@ -28,3 +31,5 @@ namespace winsock_helper
 	void check_result(const std::string& source, const int& result);
 	std::string get_message(const int& result);
 }
+
+#endif

@@ -1,5 +1,8 @@
 #pragma once
 
+#include "platform_config.h"
+#if defined(WINDOWS_PLATFORM)
+
 #include <vector>
 #include <string>
 
@@ -14,3 +17,4 @@ namespace text_to_speech
 	const wchar_t* genderToAttribute(std::string gender);
 }
 
+#endif

@@ -1,8 +1,13 @@
 #pragma once
 
-#include <string> 
+#include "platform_config.h"
+
+# if defined(WINDOWS_PLATFORM)
+#   include <basetsd.h>
+# endif
+
+#include <string>
 #include <memory>
-#include <basetsd.h>
 
 #include "Listener.h"
 #include "network_io.h"
@@ -14,7 +19,7 @@
 class AI;
 
 class URemoteListener : public Listener
-{	
+{
 public:
 	URemoteListener(std::unique_ptr<network_io::server_config> config, AI *ai);
 	virtual ~URemoteListener();
@@ -25,12 +30,16 @@ private :
 
 	AI * m_ai;
 	std::unique_ptr<network_io::server_config> m_config;
-	
+
 	std::string m_hostname;
 	std::string m_ipAddress;
+
+
+#if defined(WINDOWS_PLATFORM)
 	UINT_PTR m_cSocket;
 	UINT_PTR m_listenSocket;
-	
+#endif
+
 	bool initServer();
 	void freeServer();
 

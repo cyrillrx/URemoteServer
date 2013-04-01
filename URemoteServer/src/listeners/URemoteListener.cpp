@@ -1,16 +1,17 @@
 #include "URemoteListener.h"
 
 #include <iostream>
-#include <WinSock2.h>
-
 #include "string_utils.h"
 #include "network_io.h"
 #include "network_io/server_config.h"
 #include "exception/Exception.h"
 #include "../Exchange.h"
 
-// Link with ws2_32.lib
-#pragma comment(lib, "ws2_32.lib")
+# if defined(WINDOWS_PLATFORM)
+#   include <WinSock2.h>
+//  Link with ws2_32.lib
+#   pragma comment(lib, "ws2_32.lib")
+# endif
 
 //#define BUFFER_SIZE BUFSIZ
 #define BUFFER_SIZE 4096
@@ -25,7 +26,7 @@ int URemoteListener::s_instanceCount = 0;
 
 URemoteListener::URemoteListener(std::unique_ptr<server_config> config, AI* ai)
 	: m_config(move(config)), m_ai(ai)
-{	
+{
 	m_log = logger("URemoteListener.log");
 	m_log.setLogSeverityConsole(logger::SEVERITY_LVL_WARNING);
 
@@ -61,8 +62,8 @@ URemoteListener::~URemoteListener()
 	freeServer();
 }
 
-/** 
-* Launch the server 
+/**
+* Launch the server
 * @return true if everything went correctly. False otherwise
 */
 void URemoteListener::doStart()
@@ -109,7 +110,7 @@ void URemoteListener::doStart()
 /**
 * Initialize the server.
 */
-bool URemoteListener::initServer() 
+bool URemoteListener::initServer()
 {
 	// Initialize winSock library (v2.0)
 	m_log.debug("Initializing winSock library (v2.0)...");
@@ -132,7 +133,7 @@ bool URemoteListener::initServer()
 	}
 
 	// Socket thecnical info
-	SOCKADDR_IN socketAddress; 
+	SOCKADDR_IN socketAddress;
 	socketAddress.sin_addr.s_addr	= htonl(INADDR_ANY); // Server address
 	socketAddress.sin_family		= AF_INET; // Type of socket (AF_INET = Internet)
 	socketAddress.sin_port			= htons(m_config->port());
@@ -171,7 +172,7 @@ void URemoteListener::freeServer()
 * Handle the command sent by the client.
 * then send a response.
 */
-void URemoteListener::handleMessage(serialized_message request) 
+void URemoteListener::handleMessage(serialized_message request)
 {
 	auto response = Exchange::handleMessage(m_ai, request);
 	send(m_cSocket, response.buffer(), response.size(), 0);

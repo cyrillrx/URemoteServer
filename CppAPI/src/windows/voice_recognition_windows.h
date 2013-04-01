@@ -1,5 +1,8 @@
 #pragma once
 
+#include "platform_config.h"
+#if defined(WINDOWS_PLATFORM)
+
 #include <string>
 #include <sapi.h>
 
@@ -21,3 +24,5 @@ namespace voice_recognition
 		void getText(ISpRecoContext* reco_context);
 	};
 }
+
+#endif

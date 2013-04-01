@@ -1839,3 +1839,55 @@
 1364804082 /home/cyril/cpp_Projects/URemoteServer/CppAPI/src/unix/voice_recognition_unix.h
 	<string>
 
+1364806724 source:/home/cyril/cpp_Projects/URemoteServer/CppAPI/src/windows/helpers/com_helper.cpp
+	"platform_config.h"
+	"com_helper.h"
+	<sapi.h>
+	"exception\Exception.h"
+
+1364804082 /home/cyril/cpp_Projects/URemoteServer/CppAPI/src/windows/helpers/com_helper.h
+	<string>
+
+1364806714 source:/home/cyril/cpp_Projects/URemoteServer/CppAPI/src/windows/helpers/winsock_helper.cpp
+	"platform_config.h"
+	"winsock_helper.h"
+	"exception/Exception.h"
+
+1364804082 /home/cyril/cpp_Projects/URemoteServer/CppAPI/src/windows/helpers/winsock_helper.h
+	<string>
+	<WinSock2.h>
+
+1364804082 source:/home/cyril/cpp_Projects/URemoteServer/CppAPI/src/windows/network_io_windows.cpp
+	"Utils.h"
+	"helpers/winsock_helper.h"
+	<WinSock2.h>
+
+1363373013 /home/cyril/cpp_Projects/CppUtils/Utils/src/Utils.h
+	"logger.h"
+
+1364804082 source:/home/cyril/cpp_Projects/URemoteServer/CppAPI/src/windows/text_to_speech_windows.cpp
+	"platform_config.h"
+	"../text_to_speech.h"
+	<iostream>
+	<Windows.h>
+	"Utils.h"
+	"string_utils.h"
+	"helpers/com_helper.h"
+	"exception/config_exception.h"
+
+1364068966 /home/cyril/cpp_Projects/CppUtils/Utils/src/string_utils.h
+	<iostream>
+	<string>
+	"platform_config.h"
+	<comdef.h>
+
+1363554444 /home/cyril/cpp_Projects/CppUtils/Utils/src/exception/config_exception.h
+	"Exception.h"
+
+1364804082 source:/home/cyril/cpp_Projects/URemoteServer/CppAPI/src/windows/voice_recognition_windows.cpp
+	"platform_config.h"
+	"../voice_recognition.h"
+	<memory>
+	"Utils.h"
+	"helpers/com_helper.h"
+
