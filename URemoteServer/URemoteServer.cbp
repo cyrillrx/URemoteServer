@@ -48,19 +48,12 @@
 		<Compiler>
 			<Add option="-std=c++11" />
 		</Compiler>
-		<Unit filename="ClassDiagram1.cd" />
-		<Unit filename="URemoteServer.rc">
-			<Option compilerVar="WINDRES" />
-		</Unit>
-		<Unit filename="resource.h" />
 		<Unit filename="src/AI.cpp" />
 		<Unit filename="src/AI.h" />
 		<Unit filename="src/AIConfig.cpp" />
 		<Unit filename="src/AIConfig.h" />
 		<Unit filename="src/Exchange.cpp" />
 		<Unit filename="src/Exchange.h" />
-		<Unit filename="src/ServerConfig.cpp" />
-		<Unit filename="src/ServerConfig.h" />
 		<Unit filename="src/helpers/WinSockHelper.cpp" />
 		<Unit filename="src/helpers/WinSockHelper.h" />
 		<Unit filename="src/listeners/ConsoleListener.cpp" />
@@ -84,8 +77,6 @@
 		<Unit filename="src/modules/MonUtils.h" />
 		<Unit filename="src/modules/Speech.cpp" />
 		<Unit filename="src/modules/Speech.h" />
-		<Unit filename="src/server_exchange.pb.cc" />
-		<Unit filename="src/server_exchange.pb.h" />
 		<Unit filename="src/trad_key.h" />
 		<Extensions>
 			<code_completion />

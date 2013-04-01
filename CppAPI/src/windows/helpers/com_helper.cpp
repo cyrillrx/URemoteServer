@@ -1,7 +1,9 @@
+#include "platform_config.h"
+#if defined(WINDOWS_PLATFORM)
+
 #include "com_helper.h"
 
 #include <sapi.h>
-
 #include "exception\Exception.h"
 
 com_handler::com_handler()
@@ -56,3 +58,5 @@ std::string com_helper::get_message(const HRESULT& result)
 		return "Unknown : " + std::to_string(result);
 	}
 }
+
+#endif

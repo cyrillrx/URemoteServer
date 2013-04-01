@@ -38,19 +38,47 @@
 		<Compiler>
 			<Add option="-std=c++11" />
 			<Add directory="../../CppUtils/Utils/src" />
+			<Add directory="../include" />
 		</Compiler>
+		<Unit filename="src/exception/socket_exception.cpp" />
+		<Unit filename="src/exception/socket_exception.h" />
+		<Unit filename="src/exception/tts_exception.cpp" />
+		<Unit filename="src/exception/tts_exception.h" />
+		<Unit filename="src/exception/vr_exception.cpp" />
+		<Unit filename="src/exception/vr_exception.h" />
+		<Unit filename="src/network_io.cpp" />
+		<Unit filename="src/network_io.h" />
+		<Unit filename="src/network_io/server_config.cpp" />
+		<Unit filename="src/network_io/server_config.h" />
+		<Unit filename="src/network_io/server_exchange.pb.cc" />
+		<Unit filename="src/network_io/server_exchange.pb.h" />
+		<Unit filename="src/network_io/tcp_server.cpp" />
+		<Unit filename="src/network_io/tcp_server.h" />
 		<Unit filename="src/text_to_speech.h" />
-		<Unit filename="src/unix/text_to_speech.cpp" />
-		<Unit filename="src/unix/text_to_speech.h" />
-		<Unit filename="src/unix/voice_recognition.cpp" />
-		<Unit filename="src/unix/voice_recognition.h" />
+		<Unit filename="src/unix/text_to_speech_unix.cpp" />
+		<Unit filename="src/unix/text_to_speech_unix.h" />
+		<Unit filename="src/unix/voice_recognition_unix.cpp" />
+		<Unit filename="src/unix/voice_recognition_unix.h" />
 		<Unit filename="src/voice_recognition.h" />
-		<Unit filename="src/windows/helpers/ComHelper.cpp" />
-		<Unit filename="src/windows/helpers/ComHelper.h" />
-		<Unit filename="src/windows/text_to_speech.cpp" />
-		<Unit filename="src/windows/text_to_speech.h" />
-		<Unit filename="src/windows/voice_recognition.cpp" />
-		<Unit filename="src/windows/voice_recognition.h" />
+		<Unit filename="src/windows/helpers/ComHelper.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="src/windows/helpers/com_helper.cpp" />
+		<Unit filename="src/windows/helpers/com_helper.h" />
+		<Unit filename="src/windows/helpers/winsock_helper.cpp" />
+		<Unit filename="src/windows/helpers/winsock_helper.h" />
+		<Unit filename="src/windows/network_io_windows.cpp" />
+		<Unit filename="src/windows/network_io_windows.h" />
+		<Unit filename="src/windows/text_to_speech.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="src/windows/text_to_speech_windows.cpp" />
+		<Unit filename="src/windows/text_to_speech_windows.h" />
+		<Unit filename="src/windows/voice_recognition.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="src/windows/voice_recognition_windows.cpp" />
+		<Unit filename="src/windows/voice_recognition_windows.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

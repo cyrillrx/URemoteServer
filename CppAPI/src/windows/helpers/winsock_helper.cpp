@@ -1,3 +1,6 @@
+#include "platform_config.h"
+#if defined(WINDOWS_PLATFORM)
+
 #include "winsock_helper.h"
 
 #include "exception/Exception.h"
@@ -65,3 +68,5 @@ std::string winsock_helper::get_message(const int& result)
 		return "Unknown : " + std::to_string(result);
 	}
 }
+
+#endif
