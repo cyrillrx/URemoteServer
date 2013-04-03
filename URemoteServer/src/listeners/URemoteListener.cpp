@@ -1,17 +1,17 @@
 #include "URemoteListener.h"
 
+# if defined(WINDOWS_PLATFORM)
+#   include <WinSock2.h>
+//  Link with ws2_32.lib
+#   pragma comment(lib, "ws2_32.lib")
+# endif
+
 #include <iostream>
 #include "string_utils.h"
 #include "network_io.h"
 #include "network_io/server_config.h"
 #include "exception/Exception.h"
 #include "../Exchange.h"
-
-# if defined(WINDOWS_PLATFORM)
-#   include <WinSock2.h>
-//  Link with ws2_32.lib
-#   pragma comment(lib, "ws2_32.lib")
-# endif
 
 //#define BUFFER_SIZE BUFSIZ
 #define BUFFER_SIZE 4096
