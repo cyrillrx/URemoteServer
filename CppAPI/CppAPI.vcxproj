@@ -84,6 +84,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\network_io\serialized_message.cpp" />
+    <ClCompile Include="src\network_io\io_service_pool.cpp" />
     <ClCompile Include="src\exception\socket_exception.cpp" />
     <ClCompile Include="src\network_io.cpp" />
     <ClCompile Include="src\network_io\server_config.cpp" />
@@ -98,8 +100,11 @@
     <ClCompile Include="src\exception\vr_exception.cpp" />
     <ClCompile Include="src\windows\helpers\winsock_helper.cpp" />
     <ClCompile Include="src\network_io\tcp_server.cpp" />
+    <ClCompile Include="src\network_io\tcp_connection.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\network_io\serialized_message.h" />
+    <ClInclude Include="src\network_io\io_service_pool.h" />
     <ClInclude Include="src\exception\socket_exception.h" />
     <ClInclude Include="src\network_io.h" />
     <ClInclude Include="src\network_io\server_config.h" />
@@ -116,6 +121,7 @@
     <ClInclude Include="src\exception\vr_exception.h" />
     <ClInclude Include="src\windows\helpers\winsock_helper.h" />
     <ClInclude Include="src\network_io\tcp_server.h" />
+    <ClInclude Include="src\network_io\tcp_connection.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\CppUtils\Utils\Utils.vcxproj">
