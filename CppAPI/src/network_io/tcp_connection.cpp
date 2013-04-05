@@ -5,8 +5,8 @@
 namespace network_io
 {
 	
-	tcp_connection::tcp_connection(boost::asio::io_service& io_service, void (*request_handler)(const serialized_message& request, serialized_message& response))
-		: socket_(io_service), request_handler_(request_handler) { }
+	tcp_connection::tcp_connection(boost::asio::io_service& io_service, request_handler handle_request)
+		: socket_(io_service), handle_request_(handle_request) { }
 
 	boost::asio::ip::tcp::socket& tcp_connection::socket()
 	{
@@ -15,18 +15,17 @@ namespace network_io
 
 	void tcp_connection::start()
 	{
-		socket_.async_read_some(boost::asio::buffer(buffer_), boost::bind(&tcp_connection::handle_read, shared_from_this(),
+		socket_.async_read_some(boost::asio::buffer(read_buffer_), boost::bind(&tcp_connection::handle_read, shared_from_this(),
 			boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
 	}
 
 	void tcp_connection::handle_read(const boost::system::error_code& error, std::size_t bytes_transferred)
 	{
 		if (!error)	{
-
-			double size = bytes_transferred;
-			auto request = std::string(buffer_, size);
-			request_handler_.handle_request(request, response_);
-			boost::asio::async_write(socket_, boost::asio::buffer(response_), boost::bind(&tcp_connection::handle_write, shared_from_this(), boost::asio::placeholders::error));
+			auto request	= serialized_message(read_buffer_, bytes_transferred);
+			auto response	= handle_request_(request);
+			auto write_buffer = boost::asio::buffer(response.buffer(), response.size());
+			boost::asio::async_write(socket_, write_buffer, boost::bind(&tcp_connection::handle_write, shared_from_this(), boost::asio::placeholders::error));
 		}
 
 		// If an error occurs then no new asynchronous operations are started. This

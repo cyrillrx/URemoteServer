@@ -1,9 +1,6 @@
 #include "network_io.h"
 
 #include <boost/asio/ip/host_name.hpp>
-#include <google/protobuf/io/coded_stream.h>
-#include <google/protobuf/io/zero_copy_stream_impl_lite.h>
-
 #include "exception/socket_exception.h"
 
 namespace network_io {

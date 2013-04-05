@@ -7,10 +7,11 @@ typedef boost::asio::ip::tcp tcp;
 namespace network_io
 {
 
-	tcp_server::tcp_server(const unsigned short& port, std::size_t pool_size, void (*request_handler)(const serialized_message& request, serialized_message& response))
+	tcp_server::tcp_server(const unsigned short& port, std::size_t pool_size, request_handler handle_request)
 		: io_service_pool_(pool_size),
 		signals_(io_service_pool_.get_io_service()),
 		acceptor_(io_service_pool_.get_io_service()),
+		handle_request_(handle_request),
 		new_connection_()
 	{
 		// Register to handle the signals that indicate when the server should exit.
@@ -20,7 +21,7 @@ namespace network_io
 		signals_.add(SIGTERM);
 #if defined(SIGQUIT)
 		signals_.add(SIGQUIT);
-#endif // defined(SIGQUIT)
+#endif
 		signals_.async_wait(boost::bind(&tcp_server::handle_stop, this));
 
 		// Open the acceptor with the option to reuse the address (i.e. SO_REUSEADDR).
@@ -45,7 +46,7 @@ namespace network_io
 
 	void tcp_server::start_accept()
 	{
-		new_connection_.reset(new tcp_connection(io_service_pool_.get_io_service(), request_handler_));
+		new_connection_.reset(new tcp_connection(io_service_pool_.get_io_service(), handle_request_));
 		acceptor_.async_accept(new_connection_->socket(), boost::bind(&tcp_server::handle_accept, this, boost::asio::placeholders::error));
 	}
 

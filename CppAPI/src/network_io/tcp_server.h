@@ -14,7 +14,7 @@ namespace network_io
 	{
 	public:
 		/// Construct the server to listen on the specified TCP port.
-		explicit tcp_server(const unsigned short& port, std::size_t pool_size, void (*request_handler)(const serialized_message& request, serialized_message& response));
+		explicit tcp_server(const unsigned short& port, std::size_t pool_size, request_handler handle_request);
 
 		/// Run the server's io_service loop.
 		void run();
@@ -33,7 +33,7 @@ namespace network_io
 		std::shared_ptr<tcp_connection> new_connection_;
 
 		/// The handler for all incoming requests.
-		std::function<void(const serialized_message& request, serialized_message& response)>& request_handler_;
+		request_handler& handle_request_;
 
 		/// Initiate an asynchronous accept operation.
 		void start_accept();
