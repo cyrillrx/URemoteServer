@@ -92,36 +92,34 @@
   <ItemGroup>
     <ClInclude Include="src\listeners\ConsoleListener.h" />
     <ClInclude Include="src\listeners\Listener.h" />
+    <ClInclude Include="src\listeners\URemoteListener.h" />
+    <ClInclude Include="src\listeners\VoiceListener.h" />
     <ClInclude Include="src\AIConfig.h" />
     <ClInclude Include="src\AI.h" />
     <ClInclude Include="src\modules\App.h" />
-    <ClInclude Include="src\Modules\FileManager.h" />
-    <ClInclude Include="src\Modules\MasterVolume.h" />
-    <ClInclude Include="src\Modules\Keyboard.h" />
+    <ClInclude Include="src\modules\FileManager.h" />
+    <ClInclude Include="src\modules\MasterVolume.h" />
+    <ClInclude Include="src\modules\Keyboard.h" />
+    <ClInclude Include="src\modules\MonUtils.h" />
+    <ClInclude Include="src\modules\Speech.h" />
     <ClInclude Include="src\Exchange.h" />
-    <ClInclude Include="src\Modules\MonUtils.h" />
-    <ClInclude Include="src\listeners\URemoteListener.h" />
-    <ClInclude Include="src\Modules\Speech.h" />
     <ClInclude Include="src\trad_key.h" />
-    <ClInclude Include="src\listeners\VoiceListener.h" />
-    <ClInclude Include="src\helpers\WinSockHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\listeners\ConsoleListener.cpp" />
     <ClCompile Include="src\listeners\Listener.cpp" />
+    <ClCompile Include="src\listeners\URemoteListener.cpp" />
+    <ClCompile Include="src\listeners\VoiceListener.cpp" />
     <ClCompile Include="src\AIConfig.cpp" />
     <ClCompile Include="src\AI.cpp" />
     <ClCompile Include="src\modules\App.cpp" />
-    <ClCompile Include="src\Modules\FileManager.cpp" />
+    <ClCompile Include="src\modules\FileManager.cpp" />
+    <ClCompile Include="src\modules\MasterVolume.cpp" />
+    <ClCompile Include="src\modules\Keyboard.cpp" />
+    <ClCompile Include="src\modules\MonUtils.cpp" />
+    <ClCompile Include="src\modules\Speech.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\Modules\MasterVolume.cpp" />
-    <ClCompile Include="src\Modules\Keyboard.cpp" />
     <ClCompile Include="src\Exchange.cpp" />
-    <ClCompile Include="src\Modules\MonUtils.cpp" />
-    <ClCompile Include="src\listeners\URemoteListener.cpp" />
-    <ClCompile Include="src\Modules\Speech.cpp" />
-    <ClCompile Include="src\listeners\VoiceListener.cpp" />
-    <ClCompile Include="src\helpers\WinSockHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\CppUtils\Utils\Utils.vcxproj">

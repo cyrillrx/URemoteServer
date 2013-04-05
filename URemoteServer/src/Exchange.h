@@ -3,6 +3,7 @@
 #include <string>
 #include "network_io.h"
 #include "network_io/server_exchange.pb.h"
+#include "network_io/serialized_message.h"
 #include "AI.h"
 
 class AI;
