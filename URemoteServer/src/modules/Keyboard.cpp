@@ -149,9 +149,9 @@ void Keyboard::CtrlEnter()
 
 void Keyboard::SendKeyboardInput(const WORD& code, const WORD& extraCode)
 {
-	Utils::getLogger()->debug("Keyboard::SendKeyboardInput");
-	Utils::getLogger()->debug("-- code : "			+ code);
-	Utils::getLogger()->debug("-- extra code : "	+ extraCode);
+	Utils::get_logger()->debug("Keyboard::SendKeyboardInput");
+	Utils::get_logger()->debug("-- code : "			+ code);
+	Utils::get_logger()->debug("-- extra code : "	+ extraCode);
 
 #define KEYEVENTF_KEYDOWN 0x0000
 

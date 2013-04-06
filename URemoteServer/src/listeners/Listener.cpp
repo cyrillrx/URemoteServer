@@ -2,7 +2,7 @@
 
 #include "exception\Exception.h"
 
-Listener::Listener() : m_log("listener.log") { }
+Listener::Listener() : log_("listener.log") { }
 
 Listener::~Listener() { }
 
@@ -15,7 +15,7 @@ std::thread Listener::start()
 /** Stop the listener loop. */
 void Listener::stop()
 {
-	m_continueToListen = false;
+	continueToListen_ = false;
 }
 
 // TODO: Create a callback to AI via open port.

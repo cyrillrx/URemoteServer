@@ -4,7 +4,7 @@
 #include <sstream>
 
 #include "Utils.h"
-#include "Translator.h"
+#include "lexicon_manager.h"
 #include "fs_utils.h"
 #include "network_io/server_config.h"
 #include "exception/Exception.h"
@@ -12,21 +12,19 @@
 #include "text_to_speech.h"
 #include "logger.h"
 
-using namespace std;
+bool initProgram(std::unique_ptr<ai_config>& aiConfig, std::unique_ptr<network_io::server_config>& server_config);
+bool initAiConfig(std::unique_ptr<ai_config>& aiConfig, std::string& message);
+bool initLexicons(lexicon_manager* lexiconMgr, std::string& message);
+bool initServerConfig(std::unique_ptr<network_io::server_config>& server_config, std::string& message);
+std::string filenameToKey(const std::string& filename);
 
-bool initProgram(unique_ptr<AIConfig>& aiConfig, unique_ptr<network_io::server_config>& server_config);
-bool initAiConfig(unique_ptr<AIConfig>& aiConfig, string& message);
-bool initTranslator(Translator* translator, string& message);
-bool initServerConfig(unique_ptr<network_io::server_config>& server_config, string& message);
-string filenameToKey(const string& filename);
+static const std::string language_dir	= "lang/";
+static const std::string config_dir		= "conf/";
+static const std::string ai_conf_path		= config_dir + "ai.conf";
+static const std::string server_conf_path	= config_dir + "server.conf";
+static const std::string log_path = "URemote.log";
 
-static const string language_dir	= "lang/";
-static const string config_dir		= "conf/";
-static const string ai_conf_path		= config_dir + "ai.conf";
-static const string server_conf_path	= config_dir + "server.conf";
-static const string log_path = "URemote.log";
-
-logger* logger = Utils::getLogger();
+logger* logger = Utils::get_logger();
 
 int main()
 {
@@ -49,53 +47,53 @@ int main()
 	}
 
 	try {
-		fs_utils::create_directory(logger::getLogDir());
-		logger->debug("Log directory \"" + logger::getLogDir() + "\" have been created");
+		fs_utils::create_directory(logger::log_dir());
+		logger->debug("Log directory \"" + logger::log_dir() + "\" have been created");
 	} catch (const Exception& e) {
 		logger->error(e.whatAsString());
 	}
 
-	logger->setLogFile(log_path);
+	logger->set_log_file(log_path);
 
 	logger->info("******************************************************");
 	logger->info("*****               URemote Server               *****");
 	logger->info("******************************************************");
 
-	unique_ptr<AIConfig> aiConfig = nullptr;
-	unique_ptr<network_io::server_config> serverConfig = nullptr;
+	std::unique_ptr<ai_config> aiConfig = nullptr;
+	std::unique_ptr<network_io::server_config> serverConfig = nullptr;
 	if (!initProgram(aiConfig, serverConfig)) {
 		return EXIT_FAILURE;
 	}
 
 	// Create the AI
-	auto artificialIntelligence = unique_ptr<AI>(new AI(move(aiConfig)));
+	auto artificialIntelligence = std::unique_ptr<AI>(new AI(std::move(aiConfig)));
 
 	// Start the server on the AI
-	artificialIntelligence->startConnection(move(serverConfig));
+	artificialIntelligence->startConnection(std::move(serverConfig));
 
-	Translator::freeInstance();
+	lexicon_manager::free_instance();
 	return EXIT_SUCCESS;
 }
 
 /**
-* Initialize the AI, the translator and the Server
+* Initialize the AI, the lexicon_manager and the Server
 */
-bool initProgram(unique_ptr<AIConfig>& aiConfig, unique_ptr<network_io::server_config>& serverConfig)
+bool initProgram(std::unique_ptr<ai_config>& aiConfig, std::unique_ptr<network_io::server_config>& serverConfig)
 {
 	logger->info("Program initialization...");
 	// TODO: Set Error and warning into a Queue to treat it (vocally) once everything is loaded.
 
 	bool programInitialized = false;
-	string message = "";
+	std::string message = "";
 
 	// Init config for the AI
 	bool aiInitialized = initAiConfig(aiConfig, message);
 
-	// Init translator
-	auto translator = Translator::getInstance();
-	bool translatorInitialized = initTranslator(translator, message);
+	// Init lexicon_manager
+	auto lexiconMgr = lexicon_manager::instance();
+	bool translatorInitialized = initLexicons(lexiconMgr, message);
 	if (translatorInitialized && aiInitialized) {
-		translator->setLanguage(aiConfig->Lang);
+		lexiconMgr->set_language(aiConfig->language);
 	}
 
 	bool serverInitialized = initServerConfig(serverConfig, message);
@@ -114,30 +112,30 @@ bool initProgram(unique_ptr<AIConfig>& aiConfig, unique_ptr<network_io::server_c
 }
 
 /**
-* Initialize the Translator.
-* Load the language files stored in LANGUAGE_DIR and add them to the translator.
+* Initialize the lexicon_manager.
+* Load the language files stored in LANGUAGE_DIR and add them to the lexicon_manager.
 */
-bool initTranslator(Translator* translator, string& message) 
+bool initLexicons(lexicon_manager* lexiconMgr, std::string& message) 
 {
-	logger->info("Init Translator...");
+	logger->info("Init lexicon_manager...");
 
 	auto files = fs_utils::list_files(language_dir, false, ".*(\\.lang)$", true);
 	for (auto file : files) {
 
 		try {
-			translator->addLanguage(filenameToKey(file.filename()), file.path());
-		} catch (const exception& e) {
+			lexiconMgr->add_language(filenameToKey(file.filename()), file.path());
+		} catch (const std::exception& e) {
 			logger->warning(e.what());
 			message += e.what();
 			message += "\n";
 		}
 	}
 
-	const auto isInitialized = translator->isInitialized();
+	const auto isInitialized = lexiconMgr->is_initialized();
 	if (isInitialized) {
-		logger->info("Translator OK.");
+		logger->info("lexicon_manager OK.");
 	} else {
-		string errorMessage = "Translator KO : No language file available.";
+		std::string errorMessage = "lexicon_manager KO : No language file available.";
 		logger->error(errorMessage);
 		message += errorMessage + "\n";
 	}
@@ -148,14 +146,14 @@ bool initTranslator(Translator* translator, string& message)
 /**
 * Get a filename and return the corresponding language key.
 */
-string filenameToKey(const string& filename)
+std::string filenameToKey(const std::string& filename)
 {
-	const string defaultKey = Translator::LANG_EN;
+	const auto defaultKey = lexicon_manager::LANG_EN;
 
 	// TODO: Store the map in RAM ?
-	map<string, string> langFilenameToKey;
-	langFilenameToKey.insert(make_pair("fr.lang", Translator::LANG_FR));
-	langFilenameToKey.insert(make_pair("en.lang", Translator::LANG_EN));
+	std::map<std::string, std::string> langFilenameToKey;
+	langFilenameToKey.insert(std::make_pair("fr.lang", lexicon_manager::LANG_FR));
+	langFilenameToKey.insert(std::make_pair("en.lang", lexicon_manager::LANG_EN));
 
 	auto keyItem = langFilenameToKey.find(filename);
 	if (keyItem != langFilenameToKey.end()) {
@@ -170,26 +168,26 @@ string filenameToKey(const string& filename)
 /**
 * Init config for the AI
 */
-bool initAiConfig(unique_ptr<AIConfig>& aiConfig, string& message)
+bool initAiConfig(std::unique_ptr<ai_config>& aiConfig, std::string& message)
 {
 	logger->info("Init config for the AI...");
 	bool aiInitialized = false;
 	try {
-		aiConfig = unique_ptr<AIConfig>(new AIConfig(ai_conf_path));
+		aiConfig = std::unique_ptr<ai_config>(new ai_config(ai_conf_path));
 		logger->info("AI config OK.");
-		if (!text_to_speech::testParameters(aiConfig->Lang, aiConfig->Gender)) {
+		if (!text_to_speech::test_parameters(aiConfig->language, aiConfig->gender)) {
 			message += "AI setting failure. Trying out with default settings\n";
 			logger->warning("AI setting failure. Trying out with default settings");
 
 			// Retry with default settings.
-			aiConfig->Lang = text_to_speech::default_lang;
-			if (!text_to_speech::testParameters(aiConfig->Lang, aiConfig->Gender)) {
-				throw exception("AiConfig : Try with default Failed");
+			aiConfig->language = text_to_speech::default_lang;
+			if (!text_to_speech::test_parameters(aiConfig->language, aiConfig->gender)) {
+				throw std::exception("AiConfig : Try with default Failed");
 			}
 		}
 		aiInitialized = true;
 
-	} catch (const exception& e) {
+	} catch (const std::exception& e) {
 		message += e.what();
 		message += "\n";
 		logger->error("AI config KO.");
@@ -201,16 +199,16 @@ bool initAiConfig(unique_ptr<AIConfig>& aiConfig, string& message)
 * Init config for the Server.
 * Load the server_config object with the properties found in SERVER_CONF_FILE 
 */
-bool initServerConfig(unique_ptr<network_io::server_config>& server_config, string& message)
+bool initServerConfig(std::unique_ptr<network_io::server_config>& server_config, std::string& message)
 {
 	// Init config for the server
 	logger->info("Init config for the server...");
 	bool serverInitialized = false;
 	try {
-		server_config = unique_ptr<network_io::server_config>(new network_io::server_config(server_conf_path));
+		server_config = std::unique_ptr<network_io::server_config>(new network_io::server_config(server_conf_path));
 		logger->debug("Server config OK.");
 		serverInitialized = true;
-	} catch (const exception& e) {
+	} catch (const std::exception& e) {
 		message += e.what();
 		message += "\n";
 		logger->error("Server config KO.");

@@ -18,10 +18,10 @@ namespace voice_recognition
 		void start_listening();
 
 	private:
-		std::string m_key_word;
+		std::string key_word_;
 
-		ISpRecoGrammar* initGrammar(ISpRecoContext* recoContext, const std::string& command);
-		void getText(ISpRecoContext* reco_context);
+		ISpRecoGrammar* init_grammar(ISpRecoContext* reco_context, const std::string& command);
+		void get_text(ISpRecoContext* reco_context);
 	};
 }
 

@@ -1,5 +1,8 @@
 #pragma once
 
+#include "platform_config.h"
+#if defined(UNIX_PLATFORM)
+
 #include <string>
 
 namespace voice_recognition 
@@ -14,6 +17,8 @@ namespace voice_recognition
 		void start_listening();
 
 	private:
-		std::string m_key_word;
+		std::string key_word_;
 	};
 }
+
+#endif

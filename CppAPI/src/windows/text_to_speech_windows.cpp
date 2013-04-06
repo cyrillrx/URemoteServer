@@ -21,7 +21,7 @@ std::vector<std::string> text_to_speech::available_languages()
 * @return True if parameters are correct, false othewise.
 * @throws and Exception if a problem occurs.
 */
-bool text_to_speech::testParameters(const std::string& language, const std::string& gender)
+bool text_to_speech::test_parameters(const std::string& language, const std::string& gender)
 {
 	// Init COM lib
 	
@@ -32,7 +32,7 @@ bool text_to_speech::testParameters(const std::string& language, const std::stri
 	com_helper::check_result("Speech::testParameters", hr);
 
 	try {
-		initVoice(ispVoice, language, gender);
+		init_voice(ispVoice, language, gender);
 		return true;
 	} catch (const software_exception&) {
 
@@ -41,10 +41,10 @@ bool text_to_speech::testParameters(const std::string& language, const std::stri
 	return false;
 }
 
-void text_to_speech::initVoice(ISpVoice * ispVoice, const std::string& language, const std::string& gender)
+void text_to_speech::init_voice(ISpVoice * ispVoice, const std::string& language, const std::string& gender)
 {
-	const wchar_t* reqAttributs = langToAttribute(language);
-	const wchar_t* optAttributs = genderToAttribute(gender);
+	const wchar_t* reqAttributs = lang_to_attribute(language);
+	const wchar_t* optAttributs = gender_to_attribute(gender);
 
 	ISpObjectToken* cpTokenEng;
 	if (FAILED(::SpFindBestToken(SPCAT_VOICES, reqAttributs, optAttributs, &cpTokenEng))) { 
@@ -71,7 +71,7 @@ bool text_to_speech::say(const std::string& textToSpeak, const std::string& lang
 
 	if (SUCCEEDED( hr )) {
 
-		initVoice(ispVoice, language, gender);
+		init_voice(ispVoice, language, gender);
 
 		bstr_t bstrTextToSpeak(textToSpeak.c_str());
 		hr = ispVoice->Speak(bstrTextToSpeak, SPF_ASYNC, nullptr);
@@ -79,16 +79,16 @@ bool text_to_speech::say(const std::string& textToSpeak, const std::string& lang
 			result = true;
 
 		} else if (hr == E_INVALIDARG) {
-			Utils::getLogger()->error("Speech::SayB - One or more parameters are invalid.");
+			Utils::get_logger()->error("Speech::SayB - One or more parameters are invalid.");
 
 		} else if (hr == E_POINTER) {
-			Utils::getLogger()->error("Speech::SayB - Invalid pointer.");
+			Utils::get_logger()->error("Speech::SayB - Invalid pointer.");
 
 		} else if (hr == E_OUTOFMEMORY) {
-			Utils::getLogger()->error("Speech::SayB - Exceeded available memory.");
+			Utils::get_logger()->error("Speech::SayB - Exceeded available memory.");
 
 		} else {
-			Utils::getLogger()->error("Speech::SayB - Unknown error.");
+			Utils::get_logger()->error("Speech::SayB - Unknown error.");
 		}
 
 		hr = ispVoice->WaitUntilDone(30000);
@@ -100,7 +100,7 @@ bool text_to_speech::say(const std::string& textToSpeak, const std::string& lang
 	return result;
 }
 
-const wchar_t* text_to_speech::langToAttribute(std::string language)
+const wchar_t* text_to_speech::lang_to_attribute(std::string language)
 {
 	// TODO: initialize Language in a map
 	// Default value : 409 = English 
@@ -114,7 +114,7 @@ const wchar_t* text_to_speech::langToAttribute(std::string language)
 }
 
 // TODO: initialize Gender in a map
-const wchar_t* text_to_speech::genderToAttribute(std::string gender)
+const wchar_t* text_to_speech::gender_to_attribute(std::string gender)
 {
 	const wchar_t* defaultValue = L"Gender=Female";
 

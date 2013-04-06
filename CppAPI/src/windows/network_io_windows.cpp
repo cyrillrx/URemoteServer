@@ -15,14 +15,14 @@ void network_io::init_server()
 	int max_concurrent_connections = 3;
 
 	// Initialize winSock library (v2.0)
-	Utils::getLogger()->debug("Initializing winSock library (v2.0)...");
+	Utils::get_logger()->debug("Initializing winSock library (v2.0)...");
 	winsock_handler initLibrary;
 
 	// Create listener socket for incoming connections
-	Utils::getLogger()->debug("Creating listener socket for incoming connections...");
+	Utils::get_logger()->debug("Creating listener socket for incoming connections...");
 	socket_handler listenSocket(::socket(AF_INET, SOCK_STREAM, IPPROTO_IP));
 	winsock_helper::check_socket("network_io::init_server, creating listenSocket", listenSocket.get_socket());
-	//m_log.error("URemoteListener::InitServer(), socket() failed with error: " + std::to_string(WSAGetLastError()));
+	//log_.error("URemoteListener::InitServer(), socket() failed with error: " + std::to_string(WSAGetLastError()));
 
 	// Socket thecnical info
 	SOCKADDR_IN socketAddress; 
@@ -31,16 +31,16 @@ void network_io::init_server()
 	socketAddress.sin_port			= htons(port);
 
 	// Bind the socket to the address and port defined in SOCKADDR
-	Utils::getLogger()->debug("Binding the socket to the address and port...");
+	Utils::get_logger()->debug("Binding the socket to the address and port...");
 	int result = ::bind(listenSocket.get_socket(), (SOCKADDR*)&socketAddress, sizeof(socketAddress));
 	winsock_helper::check_result("network_io::init_server, bind listenSocket", result);
-	//m_log.error("URemoteListener::InitServer(), bind() failed with error: " + std::to_string(WSAGetLastError()));
+	//log_.error("URemoteListener::InitServer(), bind() failed with error: " + std::to_string(WSAGetLastError()));
 
 	// Listen to incoming connections
-	Utils::getLogger()->debug("Listen to incoming connections...");
+	Utils::get_logger()->debug("Listen to incoming connections...");
 	result = ::listen(listenSocket.get_socket(), max_concurrent_connections);
 	winsock_helper::check_result("network_io::init_server, listen listenSocket", result);
-	// m_log.error("URemoteListener::InitServer(), listen() failed with error: " + std::to_string(WSAGetLastError()));
+	// log_.error("URemoteListener::InitServer(), listen() failed with error: " + std::to_string(WSAGetLastError()));
 
 	socket_handler connectionSocket(::accept(listenSocket.get_socket(), nullptr, nullptr));
 	winsock_helper::check_socket("network_io::init_server, accept connection", connectionSocket.get_socket());

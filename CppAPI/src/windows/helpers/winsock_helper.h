@@ -19,10 +19,10 @@ public:
 	socket_handler(SOCKET m_socket);
 	~socket_handler();
 
-	SOCKET get_socket();
+	SOCKET get_socket() const;
 
 private:
-	SOCKET m_socket;
+	SOCKET socket_;
 };
 
 namespace winsock_helper

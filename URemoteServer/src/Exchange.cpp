@@ -8,7 +8,7 @@
 #include "modules/MasterVolume.h"
 #include "modules/Keyboard.h"
 #include "modules/App.h"
-#include "Translator.h"
+#include "lexicon_manager.h"
 #include "trad_key.h"
 #include "Utils.h"
 
@@ -25,13 +25,13 @@ serialized_message Exchange::handleMessage(AI* ai, serialized_message serialized
 	const auto strParam	= request.stringparam();
 	const auto intParam	= request.intparam();
 
-	Utils::getLogger()->info("Server::HandleMessage() Received message : ");
-	Utils::getLogger()->info(" - Type		<" + Request_Type_Name(reqType)	+ ">");
-	Utils::getLogger()->info(" - Code		<" + Request_Code_Name(reqCode)	+ ">");
-	Utils::getLogger()->info(" - ExtraCode	<" + Request_Code_Name(reqExtraCode) + ">");
-	Utils::getLogger()->info(" - Token	    <" + securityToken				+ ">");
-	Utils::getLogger()->info(" - str param	<" + strParam					+ ">");
-	Utils::getLogger()->info(" - int param	<" + std::to_string(intParam)	+ ">");
+	Utils::get_logger()->info("Server::HandleMessage() Received message : ");
+	Utils::get_logger()->info(" - Type		<" + Request_Type_Name(reqType)	+ ">");
+	Utils::get_logger()->info(" - Code		<" + Request_Code_Name(reqCode)	+ ">");
+	Utils::get_logger()->info(" - ExtraCode	<" + Request_Code_Name(reqExtraCode) + ">");
+	Utils::get_logger()->info(" - Token	    <" + securityToken				+ ">");
+	Utils::get_logger()->info(" - str param	<" + strParam					+ ">");
+	Utils::get_logger()->info(" - int param	<" + std::to_string(intParam)	+ ">");
 
 	Response reply;
 	//auto* reply = new Response();
@@ -40,7 +40,7 @@ serialized_message Exchange::handleMessage(AI* ai, serialized_message serialized
 
 	if (request.securitytoken() != "1234") {
 		reply.set_returncode(Response_ReturnCode_RC_ERROR);
-		const auto message = Translator::getString(trad_key::XC_UNKNOWN_SECURITY_TOKEN);
+		const auto message = lexicon_manager::get_string(trad_key::XC_UNKNOWN_SECURITY_TOKEN);
 		reply.set_message(message);
 
 		ai->say(message);
@@ -107,7 +107,7 @@ void Exchange::classicCommand(AI* ai, Response reply, Request_Code code)
 
 	case Request_Code_TEST:
 		reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
-		reply.set_message(Translator::getString(trad_key::XC_TEST));
+		reply.set_message(lexicon_manager::get_string(trad_key::XC_TEST));
 		break;
 
 	case Request_Code_KILL_SERVER:
@@ -202,7 +202,7 @@ void Exchange::volumeCommand(Response reply, Request_Code code, int intParam)
 
 	default:
 		message = "Unknown Volume command !";
-		Utils::getLogger()->error(message);
+		Utils::get_logger()->error(message);
 		break;
 	}
 
@@ -227,7 +227,7 @@ void Exchange::aICommand(AI* ai, Response reply, Request_Code code)
 	default:
 		reply.set_returncode(Response_ReturnCode_RC_ERROR);
 		message = "Unknown AI command !";
-		Utils::getLogger()->error(message);
+		Utils::get_logger()->error(message);
 		break;
 	}
 
@@ -265,7 +265,7 @@ void Exchange::appCommand(Response reply, Request_Code code)
 	default:
 		reply.set_returncode(Response_ReturnCode_RC_ERROR);
 		message = "Unknown app command !";
-		Utils::getLogger()->error(message);
+		Utils::get_logger()->error(message);
 		break;
 	}
 
@@ -277,7 +277,7 @@ void Exchange::shutdownPC(AI* ai, Response reply, int delay)
 {
 	ai->stopConnection();
 
-	const auto message = trad::get_string(trad_key::XC_PC_SHUTDOWN, delay);
+	const auto message = lexicon_manager::get_string(trad_key::XC_PC_SHUTDOWN, delay);
 
 	const std::string command = "Shutdown.exe -s -t " + std::to_string(delay) + " -c \"" + message + "\"";
 	system(command.c_str());

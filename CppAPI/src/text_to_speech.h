@@ -20,6 +20,6 @@ namespace text_to_speech {
 	const std::string default_lang = languague::EN;
 
 	std::vector<std::string> available_languages();
-	bool testParameters(const std::string& language, const std::string& gender);
+	bool test_parameters(const std::string& language, const std::string& gender);
 	bool say(const std::string& textToSpeak, const std::string& language, const std::string& gender);
 }

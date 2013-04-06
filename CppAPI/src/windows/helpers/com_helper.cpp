@@ -6,6 +6,10 @@
 #include <sapi.h>
 #include "exception\Exception.h"
 
+////////////////////////////////////////////////////
+//                  com_handler
+////////////////////////////////////////////////////
+
 com_handler::com_handler()
 {
 	HRESULT hr = ::CoInitialize(nullptr);
@@ -17,6 +21,10 @@ com_handler::~com_handler()
 	::CoUninitialize();
 }
 
+////////////////////////////////////////////////////
+//                  com_helper
+////////////////////////////////////////////////////
+
 void com_helper::check_result(const std::string& source, const HRESULT& result)
 {
 	if (result != S_OK) {
@@ -24,7 +32,7 @@ void com_helper::check_result(const std::string& source, const HRESULT& result)
 	}
 }
 
-std::string com_helper::get_message(const HRESULT& result)
+const std::string com_helper::get_message(const HRESULT& result)
 {
 	std::string msg;
 

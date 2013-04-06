@@ -9,19 +9,19 @@ namespace network_io
 	{
 	public :
 		serialized_message(const char* buffer, const int& buffer_size)
-			: m_buffer(buffer), m_buffer_size(buffer_size) { }
+			: buffer_(buffer), buffer_size_(buffer_size) { }
 
 		const int size() const {
-			return m_buffer_size;
+			return buffer_size_;
 		}
 
 		const char* buffer() const {
-			return m_buffer;
+			return buffer_;
 		}
 
 	private:
-		int m_buffer_size;
-		const char* m_buffer;
+		int buffer_size_;
+		const char* buffer_;
 	};
 
 	Request build_request(serialized_message message);

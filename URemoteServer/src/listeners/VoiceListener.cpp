@@ -2,41 +2,41 @@
 
 #include "../AI.h"
 #include "../trad_key.h"
-#include "Translator.h"
+#include "lexicon_manager.h"
 #include "voice_recognition.h"
 
 VoiceListener::VoiceListener(AI *ai)
-	: m_ai(ai)
+	: ai_(ai)
 {
-	m_log = logger("VoiceListener.log");
-	m_log.setLogSeverityConsole(logger::SEVERITY_LVL_WARNING);
+	log_ = logger("VoiceListener.log");
+	log_.set_log_severity_console(logger::SEVERITY_LVL_WARNING);
 
-	m_log.info("******************************************************");
-	m_log.info("*****                 VoiceListener              *****");
-	m_log.info("******************************************************");
+	log_.info("******************************************************");
+	log_.info("*****                 VoiceListener              *****");
+	log_.info("******************************************************");
 }
 
 VoiceListener::~VoiceListener()
 {
-	m_log.info("******************************************************");
-	m_log.info("*****                ~VoiceListener              *****");
-	m_log.info("******************************************************");
+	log_.info("******************************************************");
+	log_.info("*****                ~VoiceListener              *****");
+	log_.info("******************************************************");
 }
 
 void VoiceListener::doStart()
 {
-	m_log.info("Do start");
-	m_continueToListen = true;
+	log_.info("Do start");
+	continueToListen_ = true;
 
 	std::string entry;
-	while (m_continueToListen) {
+	while (continueToListen_) {
 
 		// TODO: code voice recognition
 		listen();
 		// TODO: Add message : "command" is not supported
 		// TODO: support "Kill" command
 	}
-	m_log.debug("EXIT !");
+	log_.debug("EXIT !");
 }
 
 void VoiceListener::listen()
@@ -44,7 +44,7 @@ void VoiceListener::listen()
 	voice_recognition::recognizer recognizer;
 	
 	recognizer.add_vocal_command();
-	// m_ai->say(Translator::getString(trad_key::AI_YES));}
+	// m_ai->say(lexicon_manager::getString(trad_key::AI_YES));}
 
 	recognizer.start_listening();
 }

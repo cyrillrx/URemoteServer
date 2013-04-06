@@ -3,7 +3,7 @@
 #include <thread>
 
 #include "modules/Speech.h"
-#include "Translator.h"
+#include "lexicon_manager.h"
 #include "trad_key.h"
 #include "Utils.h"
 #include "exception/Exception.h"
@@ -16,12 +16,12 @@
 //////////////////////////////////////////////////////////////////////////////
 // Public methods
 //////////////////////////////////////////////////////////////////////////////
-AI::AI(std::unique_ptr<AIConfig> config) : m_config(move(config))
+AI::AI(std::unique_ptr<ai_config> config) : config_(move(config))
 {
-	m_voice = std::unique_ptr<Speech>(new Speech(m_config->Lang, m_config->Gender));
+	voice_ = std::unique_ptr<Speech>(new Speech(config_->language, config_->gender));
 
-	time(&m_lastWelcome);
-	m_lastWelcome -= DELAY;
+	time(&lastWelcome_);
+	lastWelcome_ -= DELAY;
 
 	start();
 }
@@ -49,24 +49,24 @@ void AI::startConnection(std::unique_ptr<network_io::server_config> serverConfig
 	try {
 		uRemoteListener = std::unique_ptr<URemoteListener>(new URemoteListener(move(serverConfig), this));
 		uRemoteThread = uRemoteListener->start();
-		Utils::getLogger()->debug("AI::StartConnection(), URemoteListener OK");
-		m_listeners.push_back(std::move(uRemoteListener));
+		Utils::get_logger()->debug("AI::StartConnection(), URemoteListener OK");
+		listeners_.push_back(std::move(uRemoteListener));
 		capacity += 40;
 
 	} catch (const std::exception&) {
-		Utils::getLogger()->error("AI::StartConnection(), URemoteListener KO");
+		Utils::get_logger()->error("AI::StartConnection(), URemoteListener KO");
 		say("URemote Listener, KO..."); // TODO: internationalize
 	}
 
 	try {
 		voiceListener = std::unique_ptr<VoiceListener>(new VoiceListener(this));
 		voiceRecoThread = voiceListener->start();
-		Utils::getLogger()->debug("AI::StartConnection(), VoiceListener OK");
-		m_listeners.push_back(std::move(voiceListener));
+		Utils::get_logger()->debug("AI::StartConnection(), VoiceListener OK");
+		listeners_.push_back(std::move(voiceListener));
 		capacity += 30;
 
 	} catch (const std::exception&) {
-		Utils::getLogger()->error("AI::StartConnection(), VoiceListener KO");
+		Utils::get_logger()->error("AI::StartConnection(), VoiceListener KO");
 		say("Voice Listener, KO..."); // TODO: internationalize
 	}
 
@@ -74,42 +74,42 @@ void AI::startConnection(std::unique_ptr<network_io::server_config> serverConfig
 	try {
 		consoleListener = std::unique_ptr<ConsoleListener>(new ConsoleListener());
 		consoleThread = consoleListener->start();
-		Utils::getLogger()->debug("AI::StartConnection(), ConsoleListener OK");
-		m_listeners.push_back(std::move(consoleListener));
+		Utils::get_logger()->debug("AI::StartConnection(), ConsoleListener OK");
+		listeners_.push_back(std::move(consoleListener));
 		capacity += 30;
 
 	} catch (const std::exception&) {
-		Utils::getLogger()->error("AI::StartConnection(), ConsoleListener KO");
+		Utils::get_logger()->error("AI::StartConnection(), ConsoleListener KO");
 		say("Console Listener, KO..."); // TODO: internationalize
 	}
 
 	// Notify the user that the listener are open.
 	if (capacity >= 100) {
-		say(Translator::getString(trad_key::AI_FULL_CAPACITY));
+		say(lexicon_manager::get_string(trad_key::AI_FULL_CAPACITY));
 	} else {
-		say(trad::get_string(trad_key::AI_NOT_FULL_CAPACITY, capacity));
+		say(lexicon_manager::get_string(trad_key::AI_NOT_FULL_CAPACITY, capacity));
 	}
 
 	// Join the listener threads
 	// TODO: Make it automatic
 	uRemoteThread.join();
-	Utils::getLogger()->debug("AI::StartConnection(), uRemoteThread has joined");
+	Utils::get_logger()->debug("AI::StartConnection(), uRemoteThread has joined");
 	consoleThread.join();
-	Utils::getLogger()->debug("AI::StartConnection(), consoleThread has joined");
+	Utils::get_logger()->debug("AI::StartConnection(), consoleThread has joined");
 	voiceRecoThread.join();
-	Utils::getLogger()->debug("AI::StartConnection(), voiceRecoThread has joined");
+	Utils::get_logger()->debug("AI::StartConnection(), voiceRecoThread has joined");
 }
 
 void AI::stopConnection()
 {
-	for (const auto& listener : m_listeners) {
+	for (const auto& listener : listeners_) {
 		listener->stop();
 	}
 }
 
 std::string AI::getName()
 {
-	return m_config->Name;
+	return config_->name;
 }
 
 void AI::welcome()
@@ -117,31 +117,31 @@ void AI::welcome()
 	// Calculate the elapsed time since the last call to the method
 	time_t now;
 	time(&now);
-	Utils::getLogger()->debug("AI::Welcome, now " + std::to_string(now));
-	auto elapsedTime = difftime(now, m_lastWelcome);
-	Utils::getLogger()->debug("AI::Welcome, elapsedTime " + std::to_string(elapsedTime));
+	Utils::get_logger()->debug("AI::Welcome, now " + std::to_string(now));
+	auto elapsedTime = difftime(now, lastWelcome_);
+	Utils::get_logger()->debug("AI::Welcome, elapsedTime " + std::to_string(elapsedTime));
 
 	// Welcome if last welcome > DELAY
 	if (elapsedTime > DELAY) {
 		// TODO: Welcome user instead of welcoming itself
-		say(trad::get_string(trad_key::AI_WELCOME_USER, m_config->Name));
-		time(&m_lastWelcome);
+		say(lexicon_manager::get_string(trad_key::AI_WELCOME_USER, config_->name));
+		time(&lastWelcome_);
 	}
 }
 
 void AI::say(std::string textToSpeak)
 {
 	// Test mute state
-	if (!m_config->IsMute) {
-		m_voice->sayInThread(textToSpeak);
+	if (!config_->is_mute) {
+		voice_->sayInThread(textToSpeak);
 	}
 }
 
 //! Change l'état de mute et renvoie le nouvel état
 bool AI::toggleMute()
 {
-	m_config->IsMute = !m_config->IsMute;
-	return m_config->IsMute;
+	config_->is_mute = !config_->is_mute;
+	return config_->is_mute;
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -150,12 +150,12 @@ bool AI::toggleMute()
 
 void AI::start()
 {
-	say(Translator::getString(trad_key::AI_INITIATED));
-	say(trad::get_string(trad_key::AI_SELF_INTRODUCTION, m_config->Name));
+	say(lexicon_manager::get_string(trad_key::AI_INITIATED));
+	say(lexicon_manager::get_string(trad_key::AI_SELF_INTRODUCTION, config_->name));
 }
 
 void AI::shutdown()
 {
-	auto text = trad::get_string(trad_key::AI_SHUTDOWN, m_config->Name);
+	auto text = lexicon_manager::get_string(trad_key::AI_SHUTDOWN, config_->name);
 	say(text);
 }

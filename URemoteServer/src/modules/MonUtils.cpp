@@ -6,14 +6,14 @@
 
 // TODO: comments FR => EN
 // Initialisation du vecteur
-std::vector<HMONITOR> MonUtils::s_vcMonitors = std::vector<HMONITOR>();
+std::vector<HMONITOR> MonUtils::monitors_ = std::vector<HMONITOR>();
 
 /**
  * CALLBACK permettant de lister les moniteurs
  */
 BOOL CALLBACK MonUtils::MonitorEnumProc(HMONITOR monitor, HDC hdcMonitor, LPRECT lpMonitorRect, LPARAM dwData)
 {	
-	s_vcMonitors.push_back(monitor);
+	monitors_.push_back(monitor);
 	return TRUE;
 }
 
@@ -24,9 +24,9 @@ BOOL CALLBACK MonUtils::MonitorEnumProc(HMONITOR monitor, HDC hdcMonitor, LPRECT
  */
 int MonUtils::GetMonitorIndex(HMONITOR monitor)
 {
-	const int monitorsCount = s_vcMonitors.size();
+	const int monitorsCount = monitors_.size();
 	for (auto i = 0; i < monitorsCount; i++) {
-		if (s_vcMonitors[i] == monitor)
+		if (monitors_[i] == monitor)
 			return i;
 	}
 
@@ -69,7 +69,7 @@ HMONITOR MonUtils::GetNextMonitor(HMONITOR monitor)
 		return nullptr;
 	}
 	
-	return s_vcMonitors[nextMonitorIndex];
+	return monitors_[nextMonitorIndex];
 }
 
 /**
@@ -77,13 +77,13 @@ HMONITOR MonUtils::GetNextMonitor(HMONITOR monitor)
  * @return Le rectangle délimitant la position et les dimensions du moniteur.
  * Retourne nullptr en cas d'erreur.
  */
-Rect* MonUtils::GetMonitorRect(HMONITOR monitor)
+rect* MonUtils::GetMonitorRect(HMONITOR monitor)
 {
 	MONITORINFO monitorInfo;
 	monitorInfo.cbSize = sizeof(monitorInfo);
 	
 	if (GetMonitorInfo(monitor, &monitorInfo) != 0) {
-		return new Rect(monitorInfo.rcMonitor);
+		return new rect(monitorInfo.rcMonitor);
 	}
 	
 	return nullptr;
@@ -95,12 +95,12 @@ Rect* MonUtils::GetMonitorRect(HMONITOR monitor)
  * @return La position relative de la fenêtre par rappot au moniteur.
  * Retourne nullptr en cas d'erreur.
  */
-Rect* MonUtils::GetRelativePos(HWND window, Rect rectMon)
+rect* MonUtils::GetRelativePos(HWND window, rect rectMon)
 {
 	// Récuperation de la position de la fenêtre
 	RECT windowPos;
 	if ( GetWindowRect(window, &windowPos)  !=0 ) {
-		auto* relativePos = new Rect();
+		auto* relativePos = new rect();
 		// Calcul de l'offset en pixels
 		relativePos->left	= windowPos.left	- rectMon.left;
 		relativePos->top	= windowPos.top		- rectMon.top;
@@ -118,11 +118,11 @@ Rect* MonUtils::GetRelativePos(HWND window, Rect rectMon)
  * @param _rec2 Le rectangle 2
  * @return Le coefficient de transition entre les deux rectangles.
  */
-PointF MonUtils::GetRectCoef(Rect rect1, Rect rect2)
+pointf MonUtils::GetRectCoef(rect rect1, rect rect2)
 {
-	PointF coef;
-	coef.x = (float) (rect2.getWidth())		/ (float) (rect1.getWidth());
-	coef.y = (float) (rect2.getHeight())	/ (float) (rect1.getHeight());
+	pointf coef;
+	coef.x = (float) (rect2.get_width())	/ (float) (rect1.get_width());
+	coef.y = (float) (rect2.get_height())	/ (float) (rect1.get_height());
 	
 	return coef;
 }
@@ -133,9 +133,9 @@ PointF MonUtils::GetRectCoef(Rect rect1, Rect rect2)
  * @param coef Le coefficient à appliquer.
  * @return Le rectangle redimensionné.
  */
-Rect* MonUtils::ApplyCoef(Rect rectIn, PointF coef)
+rect* MonUtils::ApplyCoef(rect rectIn, pointf coef)
 {
-	auto* rectOut = new Rect();
+	auto* rectOut = new rect();
 	rectOut->left	= (int) ((float)rectIn.left		* coef.x);
 	rectOut->top	= (int) ((float)rectIn.top		* coef.y);
 	rectOut->right	= (int) ((float)rectIn.right	* coef.x);
@@ -150,9 +150,9 @@ Rect* MonUtils::ApplyCoef(Rect rectIn, PointF coef)
  * @param offsetX Le décalage à appliquer sur l'axe des abscisses
  * @param offsetY Le décalage à appliquer sur l'axe des ordonnées
  */
-Rect* MonUtils::ApplyOffest(Rect relativePos, const int& offsetX, const int& offsetY)
+rect* MonUtils::ApplyOffest(rect relativePos, const int& offsetX, const int& offsetY)
 {
-	auto* absPos = new Rect();
+	auto* absPos = new rect();
 	absPos->left	= relativePos.left		+ offsetX;
 	absPos->top		= relativePos.top		+ offsetY;
 	absPos->right	= relativePos.right		+ offsetX;
@@ -218,7 +218,7 @@ bool MonUtils::MoveWindow(HWND window, HMONITOR srcMonitor, HMONITOR destMonitor
 		std::cout << "!!! ApplyOffest(*newRelPos, rectDestMon->left, rectDestMon->top) failed !!!" << std::endl;
 	}
 
-	SetWindowPos(window, nullptr, newPos->left, newPos->top, newPos->getWidth(), newPos->getHeight(), SWP_SHOWWINDOW);
+	SetWindowPos(window, nullptr, newPos->left, newPos->top, newPos->get_width(), newPos->get_height(), SWP_SHOWWINDOW);
 	
 	// Suppression des pointeurs créés
 	delete(srcMonPos);

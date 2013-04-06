@@ -1,5 +1,5 @@
 #include "platform_config.h"
-#if defined(LINUX_PLATFORM)
+#if defined(UNIX_PLATFORM)
 
 #include "../voice_recognition.h"
 

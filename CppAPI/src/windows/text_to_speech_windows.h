@@ -11,10 +11,10 @@
 
 namespace text_to_speech
 {
-	void initVoice(ISpVoice * ispVoice, const std::string& language, const std::string& gender);
+	void init_voice(ISpVoice * ispVoice, const std::string& language, const std::string& gender);
 
-	const wchar_t* langToAttribute(std::string language);
-	const wchar_t* genderToAttribute(std::string gender);
+	const wchar_t* lang_to_attribute(std::string language);
+	const wchar_t* gender_to_attribute(std::string gender);
 }
 
 #endif

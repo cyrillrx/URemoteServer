@@ -11,7 +11,7 @@ public:
 
 private:
 	virtual void doStart();
-	AI * m_ai;
+	AI * ai_;
 
 	void listen();
 };

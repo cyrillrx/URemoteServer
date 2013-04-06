@@ -10,6 +10,7 @@
 #include "string_utils.h"
 #include "network_io.h"
 #include "network_io/server_config.h"
+#include "network_io/tcp_server.h"
 #include "exception/Exception.h"
 #include "../Exchange.h"
 
@@ -25,39 +26,38 @@ int URemoteListener::s_instanceCount = 0;
 //////////////////////////////////////////////////////////////////////////////
 
 URemoteListener::URemoteListener(std::unique_ptr<server_config> config, AI* ai)
-	: m_config(move(config)), m_ai(ai)
+	: config_(move(config)), ai_(ai)
 {
-	m_log = logger("URemoteListener.log");
-	m_log.setLogSeverityConsole(logger::SEVERITY_LVL_WARNING);
+	log_ = logger("URemoteListener.log");
+	log_.set_log_severity_console(logger::SEVERITY_LVL_WARNING);
 
-	m_log.info("******************************************************");
-	m_log.info("*****                URemoteListener             *****");
-	m_log.info("******************************************************");
+	log_.info("******************************************************");
+	log_.info("*****                URemoteListener             *****");
+	log_.info("******************************************************");
 
 	// Init hostname
 	try {
-		m_hostname	= network_io::hostname();
+		hostname_	= network_io::hostname();
 	} catch (const Exception& e) {
-		m_hostname = "localhost";
-		m_log.error("URemoteListener::InitServer(), " + e.whatAsString());
+		hostname_ = "localhost";
+		log_.error("URemoteListener::InitServer(), " + e.whatAsString());
 	}
 
 	// Init ip address
 	try {
-		m_ipAddress	= network_io::ip_address(m_hostname);
+		ipAddress_	= network_io::ip_address(hostname_);
 	} catch (const Exception& e) {
-		m_ipAddress = "127.0.0.1";
-		m_log.error("URemoteListener::InitServer(), " + e.whatAsString());
+		ipAddress_ = "127.0.0.1";
+		log_.error("URemoteListener::InitServer(), " + e.whatAsString());
 	}
 
-	initServer();
 }
 
 URemoteListener::~URemoteListener()
 {
-	m_log.info("******************************************************");
-	m_log.info("*****               ~URemoteListener             *****");
-	m_log.info("******************************************************");
+	log_.info("******************************************************");
+	log_.info("*****               ~URemoteListener             *****");
+	log_.info("******************************************************");
 
 	freeServer();
 }
@@ -68,38 +68,50 @@ URemoteListener::~URemoteListener()
 */
 void URemoteListener::doStart()
 {
-	m_log.info("Do start");
-	m_continueToListen = true;
+	log_.info("Do start");
+/*
+	try {
+		// Initialise the server.
+		network_io::request_handler handler = std::bind(&URemoteListener::handleMessage, this);
+		network_io::tcp_server server(config_->port(), config_->port(), handler);
+		// Run the server until stopped.
+		server.run();
 
+	} catch (std::exception& e) {
+		std::cerr << e.what() << std::endl;
+	}
+	*/
+	initServer();
+
+	continueToListen_ = true;
 	char buffer[BUFFER_SIZE];
 
-	/* connection socket */
+	while (continueToListen_) {
+		log_.debug("Server Info : ");
+		log_.debug(" - Hostname   : " + hostname_);
+		log_.debug(" - IP Address : " + ipAddress_);
+		log_.debug(" - Open port  : " + std::to_string(config_->port()));
+		log_.debug("Waiting for client to connect...");
 
-	while (m_continueToListen) {
-		m_log.debug("Server Info : ");
-		m_log.debug(" - Hostname   : " + m_hostname);
-		m_log.debug(" - IP Address : " + m_ipAddress);
-		m_log.debug(" - Open port  : " + std::to_string(m_config->port()));
-		m_log.debug("Waiting for client to connect...");
-
-		m_cSocket = ::accept(m_listenSocket, nullptr, nullptr);
-		if (m_cSocket == INVALID_SOCKET) {
-			m_log.error("accept() failed with error: " + std::to_string(WSAGetLastError()));
+		cSocket_ = ::accept(listenSocket_, nullptr, nullptr);
+		if (cSocket_ == INVALID_SOCKET) {
+			log_.error("accept() failed with error: " + std::to_string(WSAGetLastError()));
 			freeServer();
 			return;
 		}
 
 		string_utils::clear_buffer(buffer);
 
-		int received = recv(m_cSocket, buffer, sizeof(buffer), 0);
-		m_log.debug("  -- result : " + received);
+		int received = recv(cSocket_, buffer, sizeof(buffer), 0);
+		log_.debug("  -- result : " + received);
 
-		serialized_message message(buffer, received);
+		serialized_message request(buffer, received);
 
-		handleMessage(message);
+		auto response = handleMessage(request);
+		send(cSocket_, response.buffer(), response.size(), 0);
 
-		closesocket(m_cSocket);
-		m_log.debug("Socket closed.");
+		closesocket(cSocket_);
+		log_.debug("Socket closed.");
 	}
 }
 
@@ -113,10 +125,10 @@ void URemoteListener::doStart()
 bool URemoteListener::initServer()
 {
 	// Initialize winSock library (v2.0)
-	m_log.debug("Initializing winSock library (v2.0)...");
+	log_.debug("Initializing winSock library (v2.0)...");
 	WSADATA wsaData;
 	if (WSAStartup(MAKEWORD(2,0), &wsaData) != NO_ERROR) {
-		m_log.error("URemoteListener::InitServer(), WSAStartup() failed with error: " + std::to_string(WSAGetLastError()));
+		log_.error("URemoteListener::InitServer(), WSAStartup() failed with error: " + std::to_string(WSAGetLastError()));
 		WSACleanup();
 		return false;
 	}
@@ -124,10 +136,10 @@ bool URemoteListener::initServer()
 	s_instanceCount++;
 
 	// Create listener socket for incoming connections
-	m_log.debug("Creating listener socket for incoming connections...");
-	m_listenSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_IP);
-	if (m_listenSocket == INVALID_SOCKET) {
-		m_log.error("URemoteListener::InitServer(), socket() failed with error: " + std::to_string(WSAGetLastError()));
+	log_.debug("Creating listener socket for incoming connections...");
+	listenSocket_ = socket(AF_INET, SOCK_STREAM, IPPROTO_IP);
+	if (listenSocket_ == INVALID_SOCKET) {
+		log_.error("URemoteListener::InitServer(), socket() failed with error: " + std::to_string(WSAGetLastError()));
 		freeServer();
 		return false;
 	}
@@ -136,20 +148,20 @@ bool URemoteListener::initServer()
 	SOCKADDR_IN socketAddress;
 	socketAddress.sin_addr.s_addr	= htonl(INADDR_ANY); // Server address
 	socketAddress.sin_family		= AF_INET; // Type of socket (AF_INET = Internet)
-	socketAddress.sin_port			= htons(m_config->port());
+	socketAddress.sin_port			= htons(config_->port());
 
 	// Bind the socket to the address and port defined in SOCKADDR
-	m_log.debug("Binding the socket to the address and port...");
-	if (::bind(m_listenSocket, (SOCKADDR*)&socketAddress, sizeof(socketAddress)) == SOCKET_ERROR) {
-		m_log.error("URemoteListener::InitServer(), bind() failed with error: " + std::to_string(WSAGetLastError()));
+	log_.debug("Binding the socket to the address and port...");
+	if (::bind(listenSocket_, (SOCKADDR*)&socketAddress, sizeof(socketAddress)) == SOCKET_ERROR) {
+		log_.error("URemoteListener::InitServer(), bind() failed with error: " + std::to_string(WSAGetLastError()));
 		freeServer();
 		return false;
 	}
 
 	// Listen to incoming connections
-	m_log.debug("Listen to incoming connections...");
-	if (::listen(m_listenSocket, m_config->max_concurrent_connections()) == SOCKET_ERROR) {
-		m_log.error("URemoteListener::InitServer(), listen() failed with error: " + std::to_string(WSAGetLastError()));
+	log_.debug("Listen to incoming connections...");
+	if (::listen(listenSocket_, config_->pool_size()) == SOCKET_ERROR) {
+		log_.error("URemoteListener::InitServer(), listen() failed with error: " + std::to_string(WSAGetLastError()));
 		freeServer();
 		return false;
 	}
@@ -160,7 +172,7 @@ bool URemoteListener::initServer()
 /** Free the sockets. */
 void URemoteListener::freeServer()
 {
-	closesocket(m_listenSocket);
+	closesocket(listenSocket_);
 
 	s_instanceCount--;
 	if (s_instanceCount < 1) {
@@ -172,10 +184,9 @@ void URemoteListener::freeServer()
 * Handle the command sent by the client.
 * then send a response.
 */
-void URemoteListener::handleMessage(serialized_message request)
+serialized_message URemoteListener::handleMessage(serialized_message request)
 {
-	auto response = Exchange::handleMessage(m_ai, request);
-	send(m_cSocket, response.buffer(), response.size(), 0);
+	return Exchange::handleMessage(ai_, request);
 }
 
 //TODO: Define a function (inline) for std::to_string(WSAGetLastError())

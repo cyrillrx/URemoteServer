@@ -1,20 +1,18 @@
 #pragma once
 
 #include <string>
-#include "Properties.h"
+#include "properties.h"
 
-class AIConfig : public Properties
+class ai_config : public properties
 {
 public:
-	AIConfig(const std::string& path);
-	~AIConfig();
-
-	void check();
+	ai_config(const std::string& path);
+	~ai_config();
 	
-	std::string Name;
-	std::string Lang;
-	std::string Gender;
-	bool IsMute;
+	std::string name;
+	std::string language;
+	std::string gender;
+	bool is_mute;
 
 	static const std::string DEFAULT_LANG;
 

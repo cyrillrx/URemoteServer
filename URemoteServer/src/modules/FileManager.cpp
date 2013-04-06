@@ -55,7 +55,7 @@ bool FileManager::GetDirectoryContent(Response* reply, std::string dirPath)
 
 	} catch (const file_exception& e) {
 		// TODO: Catch file_exception
-		Utils::getLogger()->error(e.whatAsString());
+		Utils::get_logger()->error(e.whatAsString());
 		reply->set_returncode(Response_ReturnCode_RC_ERROR);
 		reply->set_message(e.what());
 		return false;
@@ -68,7 +68,7 @@ void FileManager::OpenFile(const std::string& filePath)
 	ShellExecute(nullptr, nullptr, path, nullptr, nullptr, SW_SHOWMAXIMIZED);
 }
 
-bool FileManager::AddFile(DirContent* dirContent, fs_utils::File& file)
+bool FileManager::AddFile(DirContent* dirContent, fs_utils::file& file)
 {
 	auto* exchangefile = dirContent->add_file();
 	exchangefile->set_name(file.filename());

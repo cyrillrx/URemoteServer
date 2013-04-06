@@ -14,8 +14,8 @@ public:
 	void stop();
 
 protected:
-	bool m_continueToListen;
-	logger m_log;
+	bool continueToListen_;
+	logger log_;
 
 private:
 	virtual void doStart() = 0;

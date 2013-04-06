@@ -84,7 +84,7 @@ MasterVolume::MasterVolume()
 {
 	// Initialize the COM library.
 	if (CoInitialize(nullptr) != S_OK) {
-		Utils::getLogger()->error("MasterVolume::MasterVolume(), CoInitialize failed");
+		Utils::get_logger()->error("MasterVolume::MasterVolume(), CoInitialize failed");
 	}
 	loadVolumeController();
 }
@@ -113,14 +113,14 @@ void MasterVolume::loadVolumeController()
 	// Get the list of audio devices
 	hr = CoCreateInstance(__uuidof(MMDeviceEnumerator), nullptr, CLSCTX_INPROC_SERVER, __uuidof(IMMDeviceEnumerator), (LPVOID *)&deviceEnumerator);
 	if (hr != S_OK) {
-		Utils::getLogger()->error("MasterVolume::loadVolumeController(), CoCreateInstance failed with error: " + hr);
+		Utils::get_logger()->error("MasterVolume::loadVolumeController(), CoCreateInstance failed with error: " + hr);
 		return;
 	}
 
 	// Get the default audio device
 	hr = deviceEnumerator->GetDefaultAudioEndpoint(eRender, eConsole, &defaultDevice);
 	if (hr != S_OK) {
-		Utils::getLogger()->error("GetDefaultAudioEndpoint failed with error: " + hr);
+		Utils::get_logger()->error("GetDefaultAudioEndpoint failed with error: " + hr);
 		return;
 	}
 
@@ -133,7 +133,7 @@ void MasterVolume::loadVolumeController()
 	// Load EndpointVolume (volume controller)
 	hr = defaultDevice->Activate(__uuidof(IAudioEndpointVolume), CLSCTX_INPROC_SERVER, nullptr, (LPVOID *)&m_endpointVolume);
 	if (hr != S_OK) {
-		Utils::getLogger()->error("MasterVolume::loadVolumeController(), defaultDevice->Activate failed with error: " + hr);
+		Utils::get_logger()->error("MasterVolume::loadVolumeController(), defaultDevice->Activate failed with error: " + hr);
 		return;
 	}
 
@@ -163,7 +163,7 @@ bool MasterVolume::isMute()
 	BOOL isMute = false;
 	auto hr = m_endpointVolume->GetMute(&isMute);
 	if (hr != S_OK) {
-		Utils::getLogger()->error("MasterVolume::isMute(), An error occured while getting muting state !");
+		Utils::get_logger()->error("MasterVolume::isMute(), An error occured while getting muting state !");
 	}
 	return (isMute) ? true : false;
 }
@@ -175,7 +175,7 @@ void MasterVolume::setMute(const bool& isMute)
 {
 	auto hr = m_endpointVolume->SetMute(isMute, nullptr);
 	if (hr != S_OK) {
-		Utils::getLogger()->error("MasterVolume::setMute(), An error occured while setting muting state !");
+		Utils::get_logger()->error("MasterVolume::setMute(), An error occured while setting muting state !");
 	}
 }
 
@@ -188,7 +188,7 @@ float MasterVolume::getVolume()
 
 	auto hr = m_endpointVolume->GetMasterVolumeLevelScalar(&currentVolume);
 	if (hr != S_OK) {
-		Utils::getLogger()->error("MasterVolume::getVolume(), An error occured while getting volume !");
+		Utils::get_logger()->error("MasterVolume::getVolume(), An error occured while getting volume !");
 	}
 	return currentVolume;
 }
@@ -198,6 +198,6 @@ void MasterVolume::setVolume(const float& newVolume)
 {
 	auto hr = m_endpointVolume->SetMasterVolumeLevelScalar(newVolume, nullptr);
 	if (hr != S_OK) {
-		Utils::getLogger()->error("MasterVolume::setVolume(), An error occured while setting volume !");
+		Utils::get_logger()->error("MasterVolume::setVolume(), An error occured while setting volume !");
 	}
 }

@@ -40,10 +40,10 @@ namespace network_io
 
 		/// Buffer for incoming data.
 		char read_buffer_[BUFFER_SIZE];
-		//std::vector<uint8_t> read_buffer_;
 
 		/// Handle completion of a read operation.
 		void handle_read(const boost::system::error_code& e, std::size_t bytes_transferred);
+
 		/// Handle completion of a write operation.
 		void handle_write(const boost::system::error_code& e);
 	};

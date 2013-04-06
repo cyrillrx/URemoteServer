@@ -12,8 +12,8 @@ public:
 	void sayInThread(const std::string& textToSpeak);
 
 private:
-	std::string m_language;
-	std::string m_gender;
+	std::string language_;
+	std::string gender_;
 
 	void say(const std::string& textToSpeak);
 };

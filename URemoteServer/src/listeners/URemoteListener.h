@@ -28,20 +28,21 @@ private :
 	virtual void doStart();
 	static int s_instanceCount;
 
-	AI * m_ai;
-	std::unique_ptr<network_io::server_config> m_config;
+	AI * ai_;
+	std::unique_ptr<network_io::server_config> config_;
 
-	std::string m_hostname;
-	std::string m_ipAddress;
+	std::string hostname_;
+	std::string ipAddress_;
 
 
 #if defined(WINDOWS_PLATFORM)
-	UINT_PTR m_cSocket;
-	UINT_PTR m_listenSocket;
+	UINT_PTR cSocket_;
+	UINT_PTR listenSocket_;
 #endif
 
 	bool initServer();
 	void freeServer();
-
-	void handleMessage(network_io::serialized_message serializedRequest);
+	
+	//void handleMessage(network_io::serialized_message serializedRequest);
+	network_io::serialized_message handleMessage(network_io::serialized_message serializedRequest);
 };

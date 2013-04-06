@@ -2,32 +2,32 @@
 
 namespace network_io
 {
-	const std::string server_config::KEY_PORT = "port";
-	const std::string server_config::KEY_MAX_CONNECTIONS = "maxConnections";
+	const std::string server_config::KEY_PORT		= "port";
+	const std::string server_config::KEY_POOL_SIZE	= "pool_size";
 
-	const int server_config::DEFAULT_PORT = 8082;
-	const int server_config::DEFAULT_MAX_CONNECTIONS = 3;
+	const unsigned short server_config::DEFAULT_PORT	= 8082;
+	const int server_config::DEFAULT_POOL_SIZE			= 3;
 
-	server_config::server_config(const std::string& configFile) : Properties(configFile)
+	server_config::server_config(const std::string& configFile) : properties(configFile)
 	{
-		m_port = getInt(KEY_PORT, DEFAULT_PORT);
-		m_max_concurrent_connections = getInt(KEY_MAX_CONNECTIONS, DEFAULT_MAX_CONNECTIONS);
+		port_		= get_int(KEY_PORT, DEFAULT_PORT);
+		pool_size_	= get_int(KEY_POOL_SIZE, DEFAULT_POOL_SIZE);
 	}
 
 	server_config::~server_config()
 	{
-		setInt(KEY_PORT, m_port);
-		setInt(KEY_MAX_CONNECTIONS, m_max_concurrent_connections);
-		saveProperties();
+		get_int(KEY_PORT, port_);
+		get_int(KEY_POOL_SIZE, pool_size_);
+		save_properties();
 	}
 
-	unsigned short server_config::port()
+	unsigned short server_config::port() const
 	{
-		return m_port;
+		return port_;
 	}
 
-	int server_config::max_concurrent_connections()
+	int server_config::pool_size() const 
 	{
-		return m_max_concurrent_connections;
+		return pool_size_;
 	}
 }

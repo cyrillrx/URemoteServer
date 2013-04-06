@@ -10,13 +10,9 @@
 const ULONGLONG grammarId = 0;
 const wchar_t* ruleName1 = L"ruleName1";
 
-voice_recognition::recognizer::recognizer()
-{
-}
+voice_recognition::recognizer::recognizer() { }
 
-voice_recognition::recognizer::~recognizer()
-{
-}
+voice_recognition::recognizer::~recognizer() { }
 
 void voice_recognition::recognizer::add_vocal_command()
 {
@@ -39,15 +35,15 @@ void voice_recognition::recognizer::start_listening()
 	hr = recognizer->CreateRecoContext(&recoContext);
 	com_helper::check_result("VoiceListener::listen", hr);
 
-	Utils::getLogger()->info("VoiceListener::listen, You should start Windows Recognition.");
-	Utils::getLogger()->info("VoiceListener::listen, Start talking !");
+	Utils::get_logger()->info("VoiceListener::listen, You should start Windows Recognition.");
+	Utils::get_logger()->info("VoiceListener::listen, Start talking !");
 
 	// Disable context
 	hr = recoContext->Pause(0);
 	com_helper::check_result("VoiceListener::listen", hr);
 
 	// TODO: Change static text to a parameter
-	ISpRecoGrammar* recoGrammar = initGrammar(recoContext, "PC");
+	ISpRecoGrammar* recoGrammar = init_grammar(recoContext, "PC");
 
 	/////////////////////////////////////////////////
 	// TODO: Review this
@@ -79,11 +75,11 @@ void voice_recognition::recognizer::start_listening()
 	HANDLE handles[1];
 	handles[0] = handleEvent;
 	WaitForMultipleObjects(1, handles, FALSE, INFINITE);
-	getText(recoContext);
+	get_text(recoContext);
 
 	//TODO: implement callback
-	//m_ai->say(Translator::getString(trad_key::AI_YES));
-	Utils::getLogger()->info("AI_YES");
+	//m_ai->say(lexicon_manager::getString(trad_key::AI_YES));
+	Utils::get_logger()->info("AI_YES");
 
 }
 
@@ -92,7 +88,7 @@ void voice_recognition::recognizer::start_listening()
 * Create a rule for the grammar.
 * Add word to the grammar.
 */
-ISpRecoGrammar* voice_recognition::recognizer::initGrammar(ISpRecoContext* recoContext, const std::string& command)
+ISpRecoGrammar* voice_recognition::recognizer::init_grammar(ISpRecoContext* recoContext, const std::string& command)
 {
 	HRESULT hr;
 	SPSTATEHANDLE sate;
@@ -122,7 +118,7 @@ ISpRecoGrammar* voice_recognition::recognizer::initGrammar(ISpRecoContext* recoC
 	return recoGrammar;
 }
 
-void voice_recognition::recognizer::getText(ISpRecoContext* reco_context)
+void voice_recognition::recognizer::get_text(ISpRecoContext* reco_context)
 {
 	const ULONG maxEvents = 10;
 	SPEVENT events[maxEvents];
