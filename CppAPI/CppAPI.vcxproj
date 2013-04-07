@@ -103,6 +103,7 @@
     <ClCompile Include="src\network_io\tcp_connection.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\network_io\request_handler.h" />
     <ClInclude Include="src\network_io\serialized_message.h" />
     <ClInclude Include="src\network_io\io_service_pool.h" />
     <ClInclude Include="src\exception\socket_exception.h" />

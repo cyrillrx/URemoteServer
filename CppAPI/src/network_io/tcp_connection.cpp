@@ -5,8 +5,8 @@
 namespace network_io
 {
 	
-	tcp_connection::tcp_connection(boost::asio::io_service& io_service, request_handler handle_request)
-		: socket_(io_service), handle_request_(handle_request) { }
+	tcp_connection::tcp_connection(boost::asio::io_service& io_service, request_handler& handler)
+		: socket_(io_service), request_handler_(handler) { }
 
 	boost::asio::ip::tcp::socket& tcp_connection::socket()
 	{
@@ -23,7 +23,7 @@ namespace network_io
 	{
 		if (!error)	{
 			auto request	= serialized_message(read_buffer_, bytes_transferred);
-			auto response	= handle_request_(request);
+			auto response	= request_handler_.handle_request(request);
 			auto write_buffer = boost::asio::buffer(response.buffer(), response.size());
 			boost::asio::async_write(socket_, write_buffer, boost::bind(&tcp_connection::handle_write, shared_from_this(), boost::asio::placeholders::error));
 		}

@@ -7,11 +7,11 @@ typedef boost::asio::ip::tcp tcp;
 namespace network_io
 {
 
-	tcp_server::tcp_server(const unsigned short& port, std::size_t pool_size, request_handler handle_request)
+	tcp_server::tcp_server(const unsigned short& port, std::size_t pool_size, request_handler& handler)
 		: io_service_pool_(pool_size),
 		signals_(io_service_pool_.get_io_service()),
 		acceptor_(io_service_pool_.get_io_service()),
-		handle_request_(handle_request),
+		request_handler_(handler),
 		new_connection_()
 	{
 		// Register to handle the signals that indicate when the server should exit.
@@ -46,7 +46,7 @@ namespace network_io
 
 	void tcp_server::start_accept()
 	{
-		new_connection_.reset(new tcp_connection(io_service_pool_.get_io_service(), handle_request_));
+		new_connection_.reset(new tcp_connection(io_service_pool_.get_io_service(), request_handler_));
 		acceptor_.async_accept(new_connection_->socket(), boost::bind(&tcp_server::handle_accept, this, boost::asio::placeholders::error));
 	}
 
