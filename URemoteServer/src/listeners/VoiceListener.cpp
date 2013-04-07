@@ -1,11 +1,10 @@
 #include "VoiceListener.h"
 
-#include "../AI.h"
-#include "../trad_key.h"
 #include "lexicon_manager.h"
 #include "voice_recognition.h"
+#include "../trad_key.h"
 
-VoiceListener::VoiceListener(AI *ai)
+VoiceListener::VoiceListener(std::shared_ptr<AI> ai)
 	: ai_(ai)
 {
 	log_ = logger("VoiceListener.log");
@@ -42,9 +41,10 @@ void VoiceListener::doStart()
 void VoiceListener::listen()
 {
 	voice_recognition::recognizer recognizer;
-	
+	/*
 	recognizer.add_vocal_command();
-	// m_ai->say(lexicon_manager::getString(trad_key::AI_YES));}
+	ai_->say(lexicon_manager::get_string(trad_key::AI_YES));}
 
 	recognizer.start_listening();
+	*/
 }

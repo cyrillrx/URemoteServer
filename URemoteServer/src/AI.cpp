@@ -45,28 +45,29 @@ void AI::startConnection(std::unique_ptr<network_io::server_config> serverConfig
 	std::unique_ptr<Listener> consoleListener;
 	std::unique_ptr<Listener> voiceListener;
 
+	auto ai_ptr = shared_from_this();
 	int capacity = 0;
 	try {
-		uRemoteListener = std::unique_ptr<URemoteListener>(new URemoteListener(move(serverConfig), this));
+		uRemoteListener = std::unique_ptr<URemoteListener>(new URemoteListener(move(serverConfig), ai_ptr));
 		uRemoteThread = uRemoteListener->start();
 		Utils::get_logger()->debug("AI::StartConnection(), URemoteListener OK");
 		listeners_.push_back(std::move(uRemoteListener));
 		capacity += 40;
 
-	} catch (const std::exception&) {
-		Utils::get_logger()->error("AI::StartConnection(), URemoteListener KO");
+	} catch (const std::exception& e) {
+		Utils::get_logger()->error("AI::StartConnection(), URemoteListener KO : " + std::string(e.what()));
 		say("URemote Listener, KO..."); // TODO: internationalize
 	}
 
 	try {
-		voiceListener = std::unique_ptr<VoiceListener>(new VoiceListener(this));
+		voiceListener = std::unique_ptr<VoiceListener>(new VoiceListener(ai_ptr));
 		voiceRecoThread = voiceListener->start();
 		Utils::get_logger()->debug("AI::StartConnection(), VoiceListener OK");
 		listeners_.push_back(std::move(voiceListener));
 		capacity += 30;
 
-	} catch (const std::exception&) {
-		Utils::get_logger()->error("AI::StartConnection(), VoiceListener KO");
+	} catch (const std::exception& e) {
+		Utils::get_logger()->error("AI::StartConnection(), VoiceListener KO : " + std::string(e.what()));
 		say("Voice Listener, KO..."); // TODO: internationalize
 	}
 
@@ -78,8 +79,8 @@ void AI::startConnection(std::unique_ptr<network_io::server_config> serverConfig
 		listeners_.push_back(std::move(consoleListener));
 		capacity += 30;
 
-	} catch (const std::exception&) {
-		Utils::get_logger()->error("AI::StartConnection(), ConsoleListener KO");
+	} catch (const std::exception& e) {
+		Utils::get_logger()->error("AI::StartConnection(), ConsoleListener KO : " + std::string(e.what()));
 		say("Console Listener, KO..."); // TODO: internationalize
 	}
 

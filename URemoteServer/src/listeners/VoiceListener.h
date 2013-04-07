@@ -1,17 +1,18 @@
 #pragma once
 
+#include <memory>
 #include "Listener.h"
-#include "../Exchange.h"
+#include "../AI.h"
 
 class VoiceListener : public Listener
 {
 public:
-	VoiceListener(AI *ai);
+	VoiceListener(std::shared_ptr<AI> ai);
 	virtual ~VoiceListener();
 
 private:
 	virtual void doStart();
-	AI * ai_;
+	std::shared_ptr<AI> ai_;
 
 	void listen();
 };

@@ -12,7 +12,7 @@
 class Speech;
 class Server;
 
-class AI
+class AI : public std::enable_shared_from_this<AI>
 {
 public:
 	AI(std::unique_ptr<ai_config> aiConfig);
@@ -33,6 +33,10 @@ private:
 
 	std::vector<std::unique_ptr<Listener>> listeners_;
 	time_t lastWelcome_;
+
+
+	AI(const AI&);
+	const AI& operator=(const AI&);
 
 	void start();
 	void shutdown();

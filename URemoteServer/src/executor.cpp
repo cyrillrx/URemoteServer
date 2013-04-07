@@ -1,4 +1,4 @@
-#include "Exchange.h"
+#include "executor.h"
 
 #include <iostream>
 
@@ -14,7 +14,10 @@
 
 using namespace network_io;
 
-serialized_message Exchange::handleMessage(AI* ai, serialized_message serializedRequest)
+executor::executor(std::shared_ptr<AI> ai)
+	: ai_(ai) { }
+
+serialized_message executor::handle_request(serialized_message serializedRequest)
 {
 	auto request = build_request(serializedRequest);
 
@@ -34,7 +37,6 @@ serialized_message Exchange::handleMessage(AI* ai, serialized_message serialized
 	Utils::get_logger()->info(" - int param	<" + std::to_string(intParam)	+ ">");
 
 	Response reply;
-	//auto* reply = new Response();
 	reply.set_requesttype(reqType);
 	reply.set_requestcode(reqCode);
 
@@ -43,14 +45,14 @@ serialized_message Exchange::handleMessage(AI* ai, serialized_message serialized
 		const auto message = lexicon_manager::get_string(trad_key::XC_UNKNOWN_SECURITY_TOKEN);
 		reply.set_message(message);
 
-		ai->say(message);
+		ai_->say(message);
 
 	} else {
 
 		switch (reqType) {
 
 		case Request_Type_SIMPLE:
-			classicCommand(ai, reply, reqCode);
+			classic_command(reply, reqCode);
 			break;
 
 		case Request_Type_EXPLORER:
@@ -62,15 +64,15 @@ serialized_message Exchange::handleMessage(AI* ai, serialized_message serialized
 			break;
 
 		case Request_Type_AI:
-			aICommand(ai, reply, reqCode);
+			ai_command(reply, reqCode);
 			break;
 
 		case Request_Type_VOLUME:
-			volumeCommand(reply, reqCode, intParam);
+			volume_command(reply, reqCode, intParam);
 			break;
 
 		case Request_Type_APP:
-			appCommand(reply, reqCode);
+			app_command(reply, reqCode);
 			break;
 
 		default:
@@ -84,25 +86,19 @@ serialized_message Exchange::handleMessage(AI* ai, serialized_message serialized
 	char* buf = nullptr;
 	auto serializedReply = serialize_response(reply);
 
-	/*delete(reply);
-	reply = nullptr;
-
-	delete(request);
-	request = nullptr;*/
-
 	return serializedReply;
 }
 
 
 
 /** Handle general commands. */
-void Exchange::classicCommand(AI* ai, Response reply, Request_Code code)
+void executor::classic_command(Response reply, Request_Code code)
 {
 	switch (code) {
 
 	case Request_Code_HELLO:
 		reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
-		ai->welcome();
+		ai_->welcome();
 		break;
 
 	case Request_Code_TEST:
@@ -113,11 +109,11 @@ void Exchange::classicCommand(AI* ai, Response reply, Request_Code code)
 	case Request_Code_KILL_SERVER:
 		reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply.set_message("Server killed");
-		ai->stopConnection();
+		ai_->stopConnection();
 		break;
 
 	case Request_Code_SHUTDOWN:
-		shutdownPC(ai, reply, 10);
+		shutdown_pc(reply, 10);
 		break;
 
 	case Request_Code_LOCK:
@@ -144,7 +140,7 @@ void Exchange::classicCommand(AI* ai, Response reply, Request_Code code)
 }
 
 /** Handle volume commands. */
-void Exchange::volumeCommand(Response reply, Request_Code code, int intParam)
+void executor::volume_command(Response reply, Request_Code code, int intParam)
 {
 	float fVolumeLvl;
 	bool isMute;
@@ -210,7 +206,7 @@ void Exchange::volumeCommand(Response reply, Request_Code code, int intParam)
 }
 
 /** Handle AI commands */
-void Exchange::aICommand(AI* ai, Response reply, Request_Code code)
+void executor::ai_command(Response reply, Request_Code code)
 {
 	bool isMute;
 	char* message;
@@ -218,7 +214,7 @@ void Exchange::aICommand(AI* ai, Response reply, Request_Code code)
 	switch (code) {
 
 	case Request_Code_MUTE:
-		isMute = ai->toggleMute();
+		isMute = ai_->toggleMute();
 
 		reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
 		message = (isMute) ? "AI volume is off." : "AI volume is now on.";
@@ -235,7 +231,7 @@ void Exchange::aICommand(AI* ai, Response reply, Request_Code code)
 }
 
 /** Handle application commands. */
-void Exchange::appCommand(Response reply, Request_Code code)
+void executor::app_command(Response reply, Request_Code code)
 {
 	std::string message;
 
@@ -273,9 +269,9 @@ void Exchange::appCommand(Response reply, Request_Code code)
 }
 
 /** Send a command to shutdown the computer. */
-void Exchange::shutdownPC(AI* ai, Response reply, int delay)
+void executor::shutdown_pc(Response reply, int delay)
 {
-	ai->stopConnection();
+	ai_->stopConnection();
 
 	const auto message = lexicon_manager::get_string(trad_key::XC_PC_SHUTDOWN, delay);
 
@@ -285,5 +281,5 @@ void Exchange::shutdownPC(AI* ai, Response reply, int delay)
 	reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
 	reply.set_message(message);
 
-	ai->say(message);
+	ai_->say(message);
 }

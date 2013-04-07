@@ -66,7 +66,7 @@ int main()
 	}
 
 	// Create the AI
-	auto artificialIntelligence = std::unique_ptr<AI>(new AI(std::move(aiConfig)));
+	auto artificialIntelligence = std::make_shared<AI>(std::move(aiConfig));
 
 	// Start the server on the AI
 	artificialIntelligence->startConnection(std::move(serverConfig));

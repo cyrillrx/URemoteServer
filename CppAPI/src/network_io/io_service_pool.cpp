@@ -12,6 +12,7 @@ namespace network_io
 		if (pool_size == 0) {
 			throw std::runtime_error("io_service_pool size is 0");
 		}
+		//TODO: throw an error if pool_size is to big ( > 10)
 
 		// Give all the io_services work to do so that their run() functions will not
 		// exit until they are explicitly stopped.
