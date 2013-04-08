@@ -2,14 +2,14 @@
 1364123588 source:/home/cyril/cpp_Projects/URemoteServer/CppAPI/src/unix/text_to_speech.cpp
 	"../text_to_speech.h"
 
-1364804082 /home/cyril/cpp_Projects/URemoteServer/CppAPI/src/text_to_speech.h
+1365442772 /home/cyril/cpp_Projects/URemoteServer/CppAPI/src/text_to_speech.h
 	"platform_config.h"
 	"windows/text_to_speech_windows.h"
 	"unix/text_to_speech_unix.h"
 	<string>
 	<vector>
 
-1363545013 /home/cyril/cpp_Projects/CppUtils/Utils/src/platform_config.h
+1365442871 /home/cyril/cpp_Projects/CppUtils/Utils/src/platform_config.h
 
 1364112429 /home/cyril/cpp_Projects/URemoteServer/CppAPI/src/windows/text_to_speech.h
 	<vector>
@@ -63,16 +63,15 @@
 1364804082 /home/cyril/cpp_Projects/URemoteServer/CppAPI/src/exception/vr_exception.h
 	"exception/Exception.h"
 
-1364804082 source:/home/cyril/cpp_Projects/URemoteServer/CppAPI/src/network_io.cpp
+1365442772 source:/home/cyril/cpp_Projects/URemoteServer/CppAPI/src/network_io.cpp
 	"network_io.h"
+	"platform_config.h"
+	<WinSock2.h>
 	<boost/asio/ip/host_name.hpp>
-	<google/protobuf/io/coded_stream.h>
-	<google/protobuf/io/zero_copy_stream_impl_lite.h>
 	"exception/socket_exception.h"
 
-1364804082 /home/cyril/cpp_Projects/URemoteServer/CppAPI/src/network_io.h
+1365442772 /home/cyril/cpp_Projects/URemoteServer/CppAPI/src/network_io.h
 	<string>
-	"network_io/server_exchange.pb.h"
 
 1364804082 /home/cyril/cpp_Projects/URemoteServer/CppAPI/src/network_io/server_exchange.pb.h
 	<string>
@@ -466,7 +465,7 @@
 1352891868 /home/cyril/cpp_Projects/URemoteServer/include/boost/smart_ptr/detail/spinlock_gcc_arm.hpp
 	<boost/smart_ptr/detail/yield_k.hpp>
 
-1278796025 /home/cyril/cpp_Projects/URemoteServer/include/boost/smart_ptr/detail/yield_k.hpp
+1365443588 /home/cyril/cpp_Projects/URemoteServer/include/boost/smart_ptr/detail/yield_k.hpp
 	<boost/config.hpp>
 	<windows.h>
 	<sched.h>
@@ -1820,19 +1819,22 @@
 	"platform_config.h"
 	"../text_to_speech.h"
 
-1364804082 /home/cyril/cpp_Projects/URemoteServer/CppAPI/src/windows/text_to_speech_windows.h
+1365442772 /home/cyril/cpp_Projects/URemoteServer/CppAPI/src/windows/text_to_speech_windows.h
+	"platform_config.h"
 	<vector>
 	<string>
 	<comdef.h>
 	<sphelper.h>
 
-1364804082 /home/cyril/cpp_Projects/URemoteServer/CppAPI/src/unix/text_to_speech_unix.h
+1365442772 /home/cyril/cpp_Projects/URemoteServer/CppAPI/src/unix/text_to_speech_unix.h
+	"platform_config.h"
 
 1364804082 source:/home/cyril/cpp_Projects/URemoteServer/CppAPI/src/unix/voice_recognition_unix.cpp
 	"platform_config.h"
 	"../voice_recognition.h"
 
-1364804082 /home/cyril/cpp_Projects/URemoteServer/CppAPI/src/windows/voice_recognition_windows.h
+1364852314 /home/cyril/cpp_Projects/URemoteServer/CppAPI/src/windows/voice_recognition_windows.h
+	"platform_config.h"
 	<string>
 	<sapi.h>
 
@@ -1845,7 +1847,8 @@
 	<sapi.h>
 	"exception\Exception.h"
 
-1364804082 /home/cyril/cpp_Projects/URemoteServer/CppAPI/src/windows/helpers/com_helper.h
+1364852258 /home/cyril/cpp_Projects/URemoteServer/CppAPI/src/windows/helpers/com_helper.h
+	"platform_config.h"
 	<string>
 
 1364806714 source:/home/cyril/cpp_Projects/URemoteServer/CppAPI/src/windows/helpers/winsock_helper.cpp
@@ -1853,7 +1856,8 @@
 	"winsock_helper.h"
 	"exception/Exception.h"
 
-1364804082 /home/cyril/cpp_Projects/URemoteServer/CppAPI/src/windows/helpers/winsock_helper.h
+1364852290 /home/cyril/cpp_Projects/URemoteServer/CppAPI/src/windows/helpers/winsock_helper.h
+	"platform_config.h"
 	<string>
 	<WinSock2.h>
 

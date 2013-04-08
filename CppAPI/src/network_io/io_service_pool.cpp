@@ -35,7 +35,7 @@ namespace network_io
 
 		for (std::size_t i = 0; i < io_services_.size(); ++i) {
 
-			auto thread = std::make_shared<std::thread>(run_ptr, io_services_[i]); 
+			auto thread = std::make_shared<std::thread>(run_ptr, io_services_[i].get());
 			threads.push_back(std::move(thread));
 		}
 
