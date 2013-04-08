@@ -1,1 +1,194 @@
 # depslib dependency file v1.0
+1365442772 source:/home/cyril/cpp_Projects/URemoteServer/URemoteServer/src/AI.cpp
+	"AI.h"
+	<thread>
+	"modules/Speech.h"
+	"lexicon_manager.h"
+	"trad_key.h"
+	"Utils.h"
+	"exception/Exception.h"
+	"listeners/ConsoleListener.h"
+	"listeners/URemoteListener.h"
+	"listeners/VoiceListener.h"
+
+1365442772 /home/cyril/cpp_Projects/URemoteServer/URemoteServer/src/AI.h
+	<string>
+	<ctime>
+	<memory>
+	<vector>
+	"ai_config.h"
+	"network_io/server_config.h"
+	"listeners/Listener.h"
+
+1365442772 /home/cyril/cpp_Projects/URemoteServer/URemoteServer/src/ai_config.h
+	<string>
+	"properties.h"
+
+1365442871 /home/cyril/cpp_Projects/CppUtils/Utils/src/properties.h
+	<string>
+	<map>
+	"file_handler.h"
+
+1365442871 /home/cyril/cpp_Projects/CppUtils/Utils/src/file_handler.h
+	<string>
+	<fstream>
+
+1365442772 /home/cyril/cpp_Projects/URemoteServer/CppAPI/src/network_io/server_config.h
+	<string>
+	"properties.h"
+
+1365442772 /home/cyril/cpp_Projects/URemoteServer/URemoteServer/src/listeners/Listener.h
+	<thread>
+	"logger.h"
+
+1365442871 /home/cyril/cpp_Projects/CppUtils/Utils/src/logger.h
+	<string>
+
+1365442772 /home/cyril/cpp_Projects/URemoteServer/URemoteServer/src/modules/Speech.h
+	<string>
+
+1365442871 /home/cyril/cpp_Projects/CppUtils/Utils/src/lexicon_manager.h
+	<string>
+	<map>
+	"lexicon.h"
+	"string_utils.h"
+
+1365442871 /home/cyril/cpp_Projects/CppUtils/Utils/src/lexicon.h
+	<string>
+	<map>
+	"properties.h"
+
+1365444631 /home/cyril/cpp_Projects/CppUtils/Utils/src/string_utils.h
+	<iostream>
+	<string>
+	<type_traits>
+	"platform_config.h"
+	<comdef.h>
+
+1365442871 /home/cyril/cpp_Projects/CppUtils/Utils/src/platform_config.h
+
+1363373170 /home/cyril/cpp_Projects/URemoteServer/URemoteServer/src/trad_key.h
+	<string>
+
+1365442871 /home/cyril/cpp_Projects/CppUtils/Utils/src/Utils.h
+	"logger.h"
+
+1363545013 /home/cyril/cpp_Projects/CppUtils/Utils/src/exception/Exception.h
+	<string>
+	<exception>
+
+1364804082 /home/cyril/cpp_Projects/URemoteServer/CppAPI/src/exception
+
+1363373170 /home/cyril/cpp_Projects/URemoteServer/URemoteServer/src/listeners/ConsoleListener.h
+	"Listener.h"
+
+1365442772 /home/cyril/cpp_Projects/URemoteServer/URemoteServer/src/listeners/URemoteListener.h
+	<string>
+	<memory>
+	"Listener.h"
+	"logger.h"
+	"network_io/server_config.h"
+	"../executor.h"
+	"../AI.h"
+
+1365442772 /home/cyril/cpp_Projects/URemoteServer/URemoteServer/src/executor.h
+	<string>
+	"network_io.h"
+	"network_io/server_exchange.pb.h"
+	"network_io/serialized_message.h"
+	"network_io/request_handler.h"
+	"AI.h"
+
+1365442772 /home/cyril/cpp_Projects/URemoteServer/CppAPI/src/network_io.h
+	<string>
+
+1364804082 /home/cyril/cpp_Projects/URemoteServer/CppAPI/src/network_io/server_exchange.pb.h
+	<string>
+	<google/protobuf/stubs/common.h>
+	<google/protobuf/generated_message_util.h>
+	<google/protobuf/message.h>
+	<google/protobuf/repeated_field.h>
+	<google/protobuf/extension_set.h>
+	<google/protobuf/generated_enum_reflection.h>
+	<google/protobuf/unknown_field_set.h>
+
+1361901398 /home/cyril/cpp_Projects/URemoteServer/include/google/protobuf/stubs/common.h
+	<assert.h>
+	<stdlib.h>
+	<cstddef>
+	<string>
+	<string.h>
+	<inttypes.h>
+	<stdint.h>
+	<exception>
+
+1361901402 /home/cyril/cpp_Projects/URemoteServer/include/google/protobuf/generated_message_util.h
+	<string>
+	<google/protobuf/stubs/common.h>
+
+1361901402 /home/cyril/cpp_Projects/URemoteServer/include/google/protobuf/message.h
+	<vector>
+	<string>
+	<iostream>
+	<iosfwd>
+	<google/protobuf/message_lite.h>
+	<google/protobuf/stubs/common.h>
+	<google/protobuf/descriptor.h>
+
+1361901402 /home/cyril/cpp_Projects/URemoteServer/include/google/protobuf/message_lite.h
+	<google/protobuf/stubs/common.h>
+
+1361901402 /home/cyril/cpp_Projects/URemoteServer/include/google/protobuf/descriptor.h
+	<string>
+	<vector>
+	<google/protobuf/stubs/common.h>
+
+1361901402 /home/cyril/cpp_Projects/URemoteServer/include/google/protobuf/repeated_field.h
+	<algorithm>
+	<string>
+	<iterator>
+	<google/protobuf/stubs/common.h>
+	<google/protobuf/stubs/type_traits.h>
+	<google/protobuf/generated_message_util.h>
+	<google/protobuf/message_lite.h>
+
+1361901398 /home/cyril/cpp_Projects/URemoteServer/include/google/protobuf/stubs/type_traits.h
+	<utility>
+	<google/protobuf/stubs/template_util.h>
+
+1361901398 /home/cyril/cpp_Projects/URemoteServer/include/google/protobuf/stubs/template_util.h
+
+1361901402 /home/cyril/cpp_Projects/URemoteServer/include/google/protobuf/extension_set.h
+	<vector>
+	<map>
+	<utility>
+	<string>
+	<google/protobuf/stubs/common.h>
+
+1361901403 /home/cyril/cpp_Projects/URemoteServer/include/google/protobuf/generated_enum_reflection.h
+	<string>
+
+1361901402 /home/cyril/cpp_Projects/URemoteServer/include/google/protobuf/unknown_field_set.h
+	<assert.h>
+	<string>
+	<vector>
+	<google/protobuf/stubs/common.h>
+
+1365442772 /home/cyril/cpp_Projects/URemoteServer/CppAPI/src/network_io/serialized_message.h
+	"server_exchange.pb.h"
+
+1365442772 /home/cyril/cpp_Projects/URemoteServer/CppAPI/src/network_io/request_handler.h
+	<boost/noncopyable.hpp>
+
+1093022226 /home/cyril/cpp_Projects/URemoteServer/include/boost/noncopyable.hpp
+
+1365442772 /home/cyril/cpp_Projects/URemoteServer/URemoteServer/src/listeners/VoiceListener.h
+	<memory>
+	"Listener.h"
+	"../AI.h"
+
+1365442772 source:/home/cyril/cpp_Projects/URemoteServer/URemoteServer/src/listeners/ConsoleListener.cpp
+	"ConsoleListener.h"
+	<string>
+	<iostream>
+
