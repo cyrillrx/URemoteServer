@@ -40,8 +40,8 @@
 		<Compiler>
 			<Add option="-std=c++11" />
 			<Add directory="../include" />
-			<Add directory="../CppAPI/src" />
-			<Add directory="../../CppUtils/Utils/src" />
+			<Add directory="../../cpp_cxp_api/src" />
+			<Add directory="../../cpp_utils/Utils/src" />
 		</Compiler>
 		<Unit filename="src/AI.cpp" />
 		<Unit filename="src/AI.h" />

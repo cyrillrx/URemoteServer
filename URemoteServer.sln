@@ -9,7 +9,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "URemoteServer", "URemoteSer
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libprotobuf", "C:\DevTools\protobuf-2.5.0\vsprojects\libprotobuf.vcxproj", "{3E283F37-A4ED-41B7-A3E6-A2D89D131A30}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Utils", "..\CppUtils\Utils\Utils.vcxproj", "{40A133AF-DBE7-4533-B198-9597B336F630}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Utils", "..\cpp_utils\Utils\Utils.vcxproj", "{40A133AF-DBE7-4533-B198-9597B336F630}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cpp_cxp_api", "..\cpp_cxp_api\cpp_cxp_api.vcxproj", "{7F02EF9C-4955-4C75-A254-D841598BB1DC}"
 EndProject

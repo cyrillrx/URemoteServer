@@ -2,9 +2,9 @@
 <CodeBlocks_workspace_file>
 	<Workspace title="URemoteServer workspace">
 		<Project filename="URemoteServer/URemoteServer.cbp">
-			<Depends filename="../CppUtils/Utils/Utils.cbp" />
+			<Depends filename="../cpp_utils/Utils/Utils.cbp" />
 		</Project>
-		<Project filename="../CppUtils/Utils/Utils.cbp" />
-		<Project filename="CppAPI/CppAPI.cbp" />
+		<Project filename="../cpp_utils/Utils/Utils.cbp" />
+		<Project filename="../cpp_cxp_api/cpp_cxp_api.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>

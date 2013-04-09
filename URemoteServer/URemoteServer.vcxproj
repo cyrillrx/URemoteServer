@@ -43,12 +43,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)include;..\..\CppUtils\Utils\src;..\..\cpp_cxp_api\src;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)include;..\..\cpp_utils\Utils\src;..\..\cpp_cxp_api\src;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)lib\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)include;..\..\CppUtils\Utils\src;..\..\cpp_cxp_api\src;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)include;..\..\cpp_utils\Utils\src;..\..\cpp_cxp_api\src;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)lib\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -122,7 +122,7 @@
     <ClCompile Include="src\executor.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\CppUtils\Utils\Utils.vcxproj">
+    <ProjectReference Include="..\..\cpp_utils\Utils\Utils.vcxproj">
       <Project>{40a133af-dbe7-4533-b198-9597b336f630}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\cpp_cxp_api\cpp_cxp_api.vcxproj">
