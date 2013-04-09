@@ -11,7 +11,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libprotobuf", "C:\DevTools\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Utils", "..\CppUtils\Utils\Utils.vcxproj", "{40A133AF-DBE7-4533-B198-9597B336F630}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CppAPI", "CppAPI\CppAPI.vcxproj", "{4D43ACBC-B630-49CE-8569-356E96629356}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cpp_cxp_api", "..\cpp_cxp_api\cpp_cxp_api.vcxproj", "{7F02EF9C-4955-4C75-A254-D841598BB1DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,10 +31,10 @@ Global
 		{40A133AF-DBE7-4533-B198-9597B336F630}.Debug|Win32.Build.0 = Debug|Win32
 		{40A133AF-DBE7-4533-B198-9597B336F630}.Release|Win32.ActiveCfg = Release|Win32
 		{40A133AF-DBE7-4533-B198-9597B336F630}.Release|Win32.Build.0 = Release|Win32
-		{4D43ACBC-B630-49CE-8569-356E96629356}.Debug|Win32.ActiveCfg = Debug|Win32
-		{4D43ACBC-B630-49CE-8569-356E96629356}.Debug|Win32.Build.0 = Debug|Win32
-		{4D43ACBC-B630-49CE-8569-356E96629356}.Release|Win32.ActiveCfg = Release|Win32
-		{4D43ACBC-B630-49CE-8569-356E96629356}.Release|Win32.Build.0 = Release|Win32
+		{7F02EF9C-4955-4C75-A254-D841598BB1DC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7F02EF9C-4955-4C75-A254-D841598BB1DC}.Debug|Win32.Build.0 = Debug|Win32
+		{7F02EF9C-4955-4C75-A254-D841598BB1DC}.Release|Win32.ActiveCfg = Release|Win32
+		{7F02EF9C-4955-4C75-A254-D841598BB1DC}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
