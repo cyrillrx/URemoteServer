@@ -45,10 +45,10 @@
 		</Compiler>
 		<Unit filename="src/AI.cpp" />
 		<Unit filename="src/AI.h" />
-		<Unit filename="src/AIConfig.cpp" />
-		<Unit filename="src/AIConfig.h" />
-		<Unit filename="src/Exchange.cpp" />
-		<Unit filename="src/Exchange.h" />
+		<Unit filename="src/ai_config.cpp" />
+		<Unit filename="src/ai_config.h" />
+		<Unit filename="src/executor.cpp" />
+		<Unit filename="src/executor.h" />
 		<Unit filename="src/listeners/ConsoleListener.cpp" />
 		<Unit filename="src/listeners/ConsoleListener.h" />
 		<Unit filename="src/listeners/Listener.cpp" />

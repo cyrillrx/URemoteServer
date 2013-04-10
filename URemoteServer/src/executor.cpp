@@ -1,6 +1,7 @@
 #include "executor.h"
 
 #include <iostream>
+#include <string>
 
 #include "modules/FileManager.h"
 #include "modules/FileManager.h"
@@ -11,6 +12,7 @@
 #include "lexicon_manager.h"
 #include "trad_key.h"
 #include "Utils.h"
+#include "platform_config.h"
 
 using namespace network_io;
 
@@ -117,9 +119,14 @@ void executor::classic_command(Response reply, Request_Code code)
 		break;
 
 	case Request_Code_LOCK:
+# if defined(WINDOWS_PLATFORM)
 		LockWorkStation();
 		reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply.set_message("PC locked");
+# else
+		reply.set_returncode(Response_ReturnCode_RC_ERROR);
+		reply.set_message("Not implemented on Linux");
+# endif
 		break;
 
 	case Request_Code_SWITCH_WINDOW:
@@ -159,7 +166,11 @@ void executor::volume_command(Response reply, Request_Code code, int intParam)
 		volumePoucentage = (int) (fVolumeLvl * 100);
 		reply.set_intvalue(volumePoucentage);
 
-		sprintf_s(buffer,  "Volume up to %d%%", volumePoucentage);
+# if defined(WINDOWS_PLATFORM)
+		sprintf_s(buffer,  "Volume set to %d%%", volumePoucentage);
+# else
+		sprintf(buffer,  "Volume set to %d%%", volumePoucentage);
+# endif
 		message = buffer;
 		break;
 
@@ -171,7 +182,11 @@ void executor::volume_command(Response reply, Request_Code code, int intParam)
 		volumePoucentage = (int) (fVolumeLvl * 100);
 		reply.set_intvalue(volumePoucentage);
 
+# if defined(WINDOWS_PLATFORM)
 		sprintf_s(buffer,  "Volume up to %d%%", volumePoucentage);
+# else
+		sprintf(buffer,  "Volume up to %d%%", volumePoucentage);
+# endif
 		message = buffer;
 		break;
 
@@ -183,7 +198,11 @@ void executor::volume_command(Response reply, Request_Code code, int intParam)
 		volumePoucentage = (int) (fVolumeLvl * 100);
 		reply.set_intvalue(volumePoucentage);
 
+# if defined(WINDOWS_PLATFORM)
 		sprintf_s(buffer,  "Volume down to %d%%", volumePoucentage);
+# else
+		sprintf(buffer,  "Volume down to %d%%", volumePoucentage);
+# endif
 		message = buffer;
 		break;
 
@@ -191,7 +210,7 @@ void executor::volume_command(Response reply, Request_Code code, int intParam)
 		isMute = MasterVolume::getInstance()->toggleMute();
 		MasterVolume::freeInstance();
 
-		reply.set_returncode(Response_ReturnCode_RC_SUCCESS);	
+		reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply.set_intvalue(isMute);
 		message = (isMute) ? "Volume is off." : "Volume is now on.";
 		break;
@@ -209,7 +228,7 @@ void executor::volume_command(Response reply, Request_Code code, int intParam)
 void executor::ai_command(Response reply, Request_Code code)
 {
 	bool isMute;
-	char* message;
+	std::string message;
 
 	switch (code) {
 

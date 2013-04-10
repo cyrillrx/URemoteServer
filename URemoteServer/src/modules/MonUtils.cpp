@@ -1,18 +1,56 @@
 #include "MonUtils.h"
+
 #include <iostream>
 
-#define ERROR_INDEX -1
-#define FIRST_MON_ID 0
+const auto ERROR_INDEX(-1);
+const auto FIRST_MON_ID(0);
 
+# if defined(WINDOWS_PLATFORM)
 // TODO: comments FR => EN
 // Initialisation du vecteur
 std::vector<HMONITOR> MonUtils::monitors_ = std::vector<HMONITOR>();
+#endif // defined
 
+/**
+ * Déplace la fenêtre courante de l'écran dans lequel elle se trouve vers l'écran suivant.
+ * @return true si le déplacement est effectué.
+ */
+bool MonUtils::SwitchWindow()
+{
+# if defined(WINDOWS_PLATFORM)
+	// On récupère le nombre de moniteur
+	const auto screenCount = GetSystemMetrics(SM_CMONITORS);
+	std::cout << "Using " << screenCount << " screens." << std::endl << std::endl;
+
+	if (screenCount < 2) { // Si on a pas au moins 2 moniteurs, on abandonne l'action en cours
+		return false;
+	}
+
+	// On établit la liste des moniteurs
+	EnumDisplayMonitors(nullptr, nullptr, MonitorEnumProc, 0);
+
+	// Récupération de la fenêtre au premier plan
+	auto foregroundWindow = GetForegroundWindow();
+	// Récupération de l'écran courant
+	auto currentMonitor = MonitorFromWindow(foregroundWindow, MONITOR_DEFAULTTONEAREST);
+	// Récupération du moniteur suivant
+	auto nextMonitor = GetNextMonitor(currentMonitor);
+
+	// Déplacement de la fenêtre
+	return MoveWindow(foregroundWindow, currentMonitor, nextMonitor);
+# else
+    // TODO: Implement MonUtils::SwitchWindow() on linux
+    return false;
+# endif
+}
+
+
+# if defined(WINDOWS_PLATFORM)
 /**
  * CALLBACK permettant de lister les moniteurs
  */
 BOOL CALLBACK MonUtils::MonitorEnumProc(HMONITOR monitor, HDC hdcMonitor, LPRECT lpMonitorRect, LPARAM dwData)
-{	
+{
 	monitors_.push_back(monitor);
 	return TRUE;
 }
@@ -35,7 +73,7 @@ int MonUtils::GetMonitorIndex(HMONITOR monitor)
 
 /**
  * @param monitor Le moniteur précédent celui dont on veut connaitre l'index.
- * @return L'index du moniteur suivant. 
+ * @return L'index du moniteur suivant.
  * Si on est sur le dernier moniteur, on boucle sur le premier.
  * Retourne -1 en cas d'erreur.
  */
@@ -52,7 +90,7 @@ int MonUtils::GetNextMonitorIndex(HMONITOR monitor)
 	} else if (currentIndex < monitorsCount -1) {
 		return currentIndex + 1;
 	}
-	
+
 	// Le moniteur est le dernier, on boucle sur le premier
 	return FIRST_MON_ID;
 }
@@ -68,7 +106,7 @@ HMONITOR MonUtils::GetNextMonitor(HMONITOR monitor)
 	if (nextMonitorIndex == ERROR_INDEX) {
 		return nullptr;
 	}
-	
+
 	return monitors_[nextMonitorIndex];
 }
 
@@ -81,11 +119,11 @@ rect* MonUtils::GetMonitorRect(HMONITOR monitor)
 {
 	MONITORINFO monitorInfo;
 	monitorInfo.cbSize = sizeof(monitorInfo);
-	
+
 	if (GetMonitorInfo(monitor, &monitorInfo) != 0) {
 		return new rect(monitorInfo.rcMonitor);
 	}
-	
+
 	return nullptr;
 }
 
@@ -123,7 +161,7 @@ pointf MonUtils::GetRectCoef(rect rect1, rect rect2)
 	pointf coef;
 	coef.x = (float) (rect2.get_width())	/ (float) (rect1.get_width());
 	coef.y = (float) (rect2.get_height())	/ (float) (rect1.get_height());
-	
+
 	return coef;
 }
 
@@ -157,7 +195,7 @@ rect* MonUtils::ApplyOffest(rect relativePos, const int& offsetX, const int& off
 	absPos->top		= relativePos.top		+ offsetY;
 	absPos->right	= relativePos.right		+ offsetX;
 	absPos->bottom	= relativePos.bottom	+ offsetY;
-	
+
 	return absPos;
 }
 
@@ -181,7 +219,7 @@ bool MonUtils::MoveWindow(HWND window, HMONITOR srcMonitor, HMONITOR destMonitor
 	} else {
 		std::cerr << "!!! GetMonitorRect(_srcMonitor) failed !!!" << std::endl;
 	}
-	
+
 	// Récupèration de la position du nouveau moniteur
 	auto* destMonPos = GetMonitorRect(destMonitor);
 	if (destMonPos) {
@@ -191,7 +229,7 @@ bool MonUtils::MoveWindow(HWND window, HMONITOR srcMonitor, HMONITOR destMonitor
 	}
 
 	// Calcul de la position relative de la fenêtre par rapport au moniteur source
-	auto* windowRelPos	= GetRelativePos(window, *srcMonPos); 
+	auto* windowRelPos	= GetRelativePos(window, *srcMonPos);
 	if (windowRelPos) {
 		windowRelPos->display("windowRelPos");
 	} else {
@@ -199,7 +237,7 @@ bool MonUtils::MoveWindow(HWND window, HMONITOR srcMonitor, HMONITOR destMonitor
 	}
 
 	// Calcul du coefficient d'agrandissement pour passer d'un moniteur à l'autre
-	auto coef	= GetRectCoef(*srcMonPos, *destMonPos); 
+	auto coef	= GetRectCoef(*srcMonPos, *destMonPos);
 	coef.display("coef");
 
 	// Application du coef à la position relative de la fenêtre
@@ -211,7 +249,7 @@ bool MonUtils::MoveWindow(HWND window, HMONITOR srcMonitor, HMONITOR destMonitor
 	}
 
 	// Calcul de la position absolue finale de la fenêtre
-	auto* newPos = ApplyOffest(*newRelPos, destMonPos->left, destMonPos->top); 
+	auto* newPos = ApplyOffest(*newRelPos, destMonPos->left, destMonPos->top);
 	if (newPos) {
 		newPos->display("newPos (final)");
 	} else {
@@ -219,7 +257,7 @@ bool MonUtils::MoveWindow(HWND window, HMONITOR srcMonitor, HMONITOR destMonitor
 	}
 
 	SetWindowPos(window, nullptr, newPos->left, newPos->top, newPos->get_width(), newPos->get_height(), SWP_SHOWWINDOW);
-	
+
 	// Suppression des pointeurs créés
 	delete(srcMonPos);
 	delete(destMonPos);
@@ -229,31 +267,4 @@ bool MonUtils::MoveWindow(HWND window, HMONITOR srcMonitor, HMONITOR destMonitor
 
 	return true;
 }
-
-/**
- * Déplace la fenêtre courante de l'écran dans lequel elle se trouve vers l'écran suivant.
- * @return true si le déplacement est effectué.
- */
-bool MonUtils::SwitchWindow()
-{
-	// On récupère le nombre de moniteur
-	const auto screenCount = GetSystemMetrics(SM_CMONITORS);
-	std::cout << "Using " << screenCount << " screens." << std::endl << std::endl;
-
-	if (screenCount < 2) { // Si on a pas au moins 2 moniteurs, on abandonne l'action en cours
-		return false;
-	}
-
-	// On établit la liste des moniteurs
-	EnumDisplayMonitors(nullptr, nullptr, MonitorEnumProc, 0);  
-
-	// Récupération de la fenêtre au premier plan
-	auto foregroundWindow = GetForegroundWindow();
-	// Récupération de l'écran courant
-	auto currentMonitor = MonitorFromWindow(foregroundWindow, MONITOR_DEFAULTTONEAREST);
-	// Récupération du moniteur suivant
-	auto nextMonitor = GetNextMonitor(currentMonitor);
-
-	// Déplacement de la fenêtre
-	return MoveWindow(foregroundWindow, currentMonitor, nextMonitor);
-}
+#endif

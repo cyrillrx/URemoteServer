@@ -3,11 +3,12 @@
 #include <iostream>
 #include <sstream>
 
+#include "platform_config.h"
 #include "Utils.h"
 #include "lexicon_manager.h"
 #include "fs_utils.h"
 #include "network_io/server_config.h"
-#include "exception/Exception.h"
+#include "exception/config_exception.h"
 #include "modules/Speech.h"
 #include "text_to_speech.h"
 #include "logger.h"
@@ -105,7 +106,11 @@ bool initProgram(std::unique_ptr<ai_config>& aiConfig, std::unique_ptr<network_i
 		logger->info("Program initialized.");
 	} else {
 		logger->error("Program initialization failed !");
-		MessageBoxA(nullptr, message.c_str(), nullptr, 0);
+# if defined(WINDOWS_PLATFORM)
+        MessageBoxA(nullptr, message.c_str(), nullptr, 0);
+# else
+        // TODO: Implement messagebox with Qt or another widget library
+# endif
 	}
 
 	return programInitialized;
@@ -115,7 +120,7 @@ bool initProgram(std::unique_ptr<ai_config>& aiConfig, std::unique_ptr<network_i
 * Initialize the lexicon_manager.
 * Load the language files stored in LANGUAGE_DIR and add them to the lexicon_manager.
 */
-bool initLexicons(lexicon_manager* lexiconMgr, std::string& message) 
+bool initLexicons(lexicon_manager* lexiconMgr, std::string& message)
 {
 	logger->info("Init lexicon_manager...");
 
@@ -182,7 +187,7 @@ bool initAiConfig(std::unique_ptr<ai_config>& aiConfig, std::string& message)
 			// Retry with default settings.
 			aiConfig->language = text_to_speech::default_lang;
 			if (!text_to_speech::test_parameters(aiConfig->language, aiConfig->gender)) {
-				throw std::exception("AiConfig : Try with default Failed");
+				throw config_exception("main.cpp initAiConfig()", "AiConfig : Try with default Failed");
 			}
 		}
 		aiInitialized = true;
@@ -197,7 +202,7 @@ bool initAiConfig(std::unique_ptr<ai_config>& aiConfig, std::string& message)
 
 /**
 * Init config for the Server.
-* Load the server_config object with the properties found in SERVER_CONF_FILE 
+* Load the server_config object with the properties found in SERVER_CONF_FILE
 */
 bool initServerConfig(std::unique_ptr<network_io::server_config>& server_config, std::string& message)
 {

@@ -1,6 +1,10 @@
 #pragma once
 
-#include <windows.h>
+#include "platform_config.h"
+# if defined(WINDOWS_PLATFORM)
+#   include <windows.h>
+# endif
+
 #include <vector>
 #include "goemetry.h"
 
@@ -10,8 +14,10 @@ public:
 	static bool SwitchWindow();
 
 private:
+
+# if defined(WINDOWS_PLATFORM)
 	static std::vector<HMONITOR> monitors_;
-	
+
 	static BOOL CALLBACK MonitorEnumProc(HMONITOR monitor, HDC hdcMonitor, LPRECT lpMonitorRect, LPARAM dwData);
 	static int GetMonitorIndex(HMONITOR monitor);
 	static int GetNextMonitorIndex(HMONITOR monitor);
@@ -22,4 +28,5 @@ private:
 	static rect* ApplyCoef(rect rectIn, pointf coef);
 	static rect* ApplyOffest(rect relativePos, const int& offsetX, const int& offsetY);
 	static bool MoveWindow(HWND window, HMONITOR monitorSrc, HMONITOR monitorDest);
+# endif
 };

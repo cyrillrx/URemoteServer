@@ -3,14 +3,17 @@
 #include <iostream>
 
 #include "Utils.h"
-#include <windows.h>
-#include <mmdeviceapi.h>
+
+# if defined(WINDOWS_PLATFORM)
+#   include <windows.h>
+#   include <mmdeviceapi.h>
+# endif
 
 const auto VOLUME_MAX(1.0f);
 const auto VOLUME_MIN(0.0f);
 const auto VOLUME_STEP(0.05f);
 
-MasterVolume* MasterVolume::s_masterVolume = nullptr; 
+MasterVolume* MasterVolume::s_masterVolume = nullptr;
 
 MasterVolume* MasterVolume::getInstance()
 {
@@ -38,7 +41,7 @@ bool MasterVolume::toggleMute()
 	return newMuteState;
 }
 
-/** 
+/**
 * Define the volume as a pecentage.
 * @param volume The volume as a percentage.
 * @return The new value.
@@ -51,7 +54,7 @@ float MasterVolume::define(const int& volumePoucentage)
 	return volume;
 }
 
-/** 
+/**
 * Increase volume with the defined value VOLUME_STEP.
 * @return The new value.
 */
@@ -64,7 +67,7 @@ float MasterVolume::turnUp()
 	return newVolume;
 }
 
-/** 
+/**
 * Decrease volume with the defined value VOLUME_STEP.
 * @return The new value.
 */
@@ -82,11 +85,15 @@ float MasterVolume::turnDown()
 */
 MasterVolume::MasterVolume()
 {
+
+# if defined(WINDOWS_PLATFORM)
 	// Initialize the COM library.
 	if (CoInitialize(nullptr) != S_OK) {
 		Utils::get_logger()->error("MasterVolume::MasterVolume(), CoInitialize failed");
 	}
 	loadVolumeController();
+# endif
+
 }
 
 /**
@@ -94,11 +101,17 @@ MasterVolume::MasterVolume()
 */
 MasterVolume::~MasterVolume()
 {
+
+# if defined(WINDOWS_PLATFORM)
 	freeVolumeController();
 	// Free COM Library
 	CoUninitialize();
+# endif
+
 }
 
+
+# if defined(WINDOWS_PLATFORM)
 /**
 * Initialize the EndpointVolume (volume controller).
 */
@@ -140,7 +153,7 @@ void MasterVolume::loadVolumeController()
 	// Release the default device
 	if (defaultDevice) {
 		defaultDevice->Release();
-		defaultDevice = nullptr; 
+		defaultDevice = nullptr;
 	}
 }
 
@@ -154,18 +167,25 @@ void MasterVolume::freeVolumeController()
 		m_endpointVolume = nullptr;
 	}
 }
+# endif
+
 
 /**
 * Get Mute state
 */
 bool MasterVolume::isMute()
 {
+# if defined(WINDOWS_PLATFORM)
 	BOOL isMute = false;
 	auto hr = m_endpointVolume->GetMute(&isMute);
 	if (hr != S_OK) {
 		Utils::get_logger()->error("MasterVolume::isMute(), An error occured while getting muting state !");
 	}
 	return (isMute) ? true : false;
+# else
+    // TODO: Implement MasterVolume::isMute() on linux
+    return false;
+# endif
 }
 
 /**
@@ -173,10 +193,16 @@ bool MasterVolume::isMute()
 */
 void MasterVolume::setMute(const bool& isMute)
 {
+
+# if defined(WINDOWS_PLATFORM)
 	auto hr = m_endpointVolume->SetMute(isMute, nullptr);
 	if (hr != S_OK) {
 		Utils::get_logger()->error("MasterVolume::setMute(), An error occured while setting muting state !");
 	}
+# else
+    // TODO: Implement MasterVolume::setMute() on linux
+# endif
+
 }
 
 /**
@@ -184,6 +210,8 @@ void MasterVolume::setMute(const bool& isMute)
 */
 float MasterVolume::getVolume()
 {
+
+# if defined(WINDOWS_PLATFORM)
 	auto currentVolume(0.0f);
 
 	auto hr = m_endpointVolume->GetMasterVolumeLevelScalar(&currentVolume);
@@ -191,13 +219,23 @@ float MasterVolume::getVolume()
 		Utils::get_logger()->error("MasterVolume::getVolume(), An error occured while getting volume !");
 	}
 	return currentVolume;
+# else
+    // TODO: Implement MasterVolume::getVolume() on linux
+    return 0.0f;
+# endif
+
 }
 
 // Définit le nouveau volume
 void MasterVolume::setVolume(const float& newVolume)
 {
+
+# if defined(WINDOWS_PLATFORM)
 	auto hr = m_endpointVolume->SetMasterVolumeLevelScalar(newVolume, nullptr);
 	if (hr != S_OK) {
 		Utils::get_logger()->error("MasterVolume::setVolume(), An error occured while setting volume !");
 	}
+# else
+    // TODO: Implement MasterVolume::setVolume() on linux
+# endif
 }

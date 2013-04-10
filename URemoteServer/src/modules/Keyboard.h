@@ -1,10 +1,9 @@
 #pragma once
 
 #include <string>
-#include <windows.h>
 #include "network_io/server_exchange.pb.h"
 
-#define VK_NONE (WORD)-1
+#define VK_NONE (unsigned short)-1
 
 #define VK_0 0x30
 #define VK_1 0x31
@@ -51,7 +50,7 @@ public:
 	static void CtrlEnter();
 
 private :
-	static const WORD GetInputFromCode(network_io::Request::Code code);
-	static void SendKeyboardInput(const WORD& keyCode, const WORD& secondKeyCode);
-	static std::string SendDefinedKey(const std::string& param, const WORD& extraCode);
+	static const unsigned short GetInputFromCode(network_io::Request::Code code);
+	static void SendKeyboardInput(const unsigned short& keyCode, const unsigned short& secondKeyCode);
+	static std::string SendDefinedKey(const std::string& param, const unsigned short& extraCode);
 };

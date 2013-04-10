@@ -5735,3 +5735,99 @@
 	"platform_config.h"
 	<string>
 
+1365442772 source:/home/cyril/cpp_Projects/URemoteServer/URemoteServer/src/ai_config.cpp
+	"ai_config.h"
+
+1365630582 source:/home/cyril/cpp_Projects/URemoteServer/URemoteServer/src/executor.cpp
+	"executor.h"
+	<iostream>
+	<string>
+	"modules/FileManager.h"
+	"modules/FileManager.h"
+	"modules/MonUtils.h"
+	"modules/MasterVolume.h"
+	"modules/Keyboard.h"
+	"modules/App.h"
+	"lexicon_manager.h"
+	"trad_key.h"
+	"Utils.h"
+	"platform_config.h"
+
+1365442772 /home/cyril/cpp_Projects/URemoteServer/URemoteServer/src/modules/FileManager.h
+	<vector>
+	<string>
+	"network_io/server_exchange.pb.h"
+	"fs_utils.h"
+
+1365442871 /home/cyril/cpp_Projects/cpp_utils/Utils/src/fs_utils.h
+	<cstdint>
+	<vector>
+	<string>
+
+1365627559 /home/cyril/cpp_Projects/URemoteServer/URemoteServer/src/modules/MonUtils.h
+	"platform_config.h"
+	<windows.h>
+	<vector>
+	"goemetry.h"
+
+1365442871 /home/cyril/cpp_Projects/cpp_utils/Utils/src/goemetry.h
+	<string>
+	"platform_config.h"
+	<windows.h>
+
+1365629052 /home/cyril/cpp_Projects/URemoteServer/URemoteServer/src/modules/MasterVolume.h
+	<iostream>
+	"platform_config.h"
+	<endpointvolume.h>
+
+1365629764 /home/cyril/cpp_Projects/URemoteServer/URemoteServer/src/modules/Keyboard.h
+	<string>
+	"network_io/server_exchange.pb.h"
+
+1364804082 /home/cyril/cpp_Projects/URemoteServer/URemoteServer/src/modules/App.h
+	<string>
+	<memory>
+	"platform_config.h"
+	<windows.h>
+
+1365627001 source:/home/cyril/cpp_Projects/URemoteServer/URemoteServer/src/main.cpp
+	"AI.h"
+	<iostream>
+	<sstream>
+	"platform_config.h"
+	"Utils.h"
+	"lexicon_manager.h"
+	"fs_utils.h"
+	"network_io/server_config.h"
+	"exception/config_exception.h"
+	"modules/Speech.h"
+	"text_to_speech.h"
+	"logger.h"
+
+1363554444 /home/cyril/cpp_Projects/cpp_utils/Utils/src/exception/config_exception.h
+	"Exception.h"
+
+1365545262 /home/cyril/cpp_Projects/cpp_cxp_api/src/text_to_speech.h
+	"platform_config.h"
+	"windows/text_to_speech_windows.h"
+	"unix/text_to_speech_unix.h"
+	<string>
+	<vector>
+
+1365545262 /home/cyril/cpp_Projects/cpp_cxp_api/src/windows/text_to_speech_windows.h
+	"platform_config.h"
+	<vector>
+	<string>
+	<comdef.h>
+	<sphelper.h>
+
+1365545262 /home/cyril/cpp_Projects/cpp_cxp_api/src/unix/text_to_speech_unix.h
+	"platform_config.h"
+
+1364804082 source:/home/cyril/cpp_Projects/URemoteServer/URemoteServer/src/modules/App.cpp
+	"App.h"
+	<iostream>
+	"Keyboard.h"
+	"exception/config_exception.h"
+	<comdef.h>
+

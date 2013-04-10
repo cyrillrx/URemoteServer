@@ -1,6 +1,7 @@
 #include "Keyboard.h"
 
 #include "Utils.h"
+#include "platform_config.h"
 
 using namespace network_io;
 
@@ -112,7 +113,7 @@ void Keyboard::HandleMessage(Response* reply, Request* request)
 //////////////////////////////////////////////////////////////////////////////
 // Private functions
 //////////////////////////////////////////////////////////////////////////////
-const WORD Keyboard::GetInputFromCode(Request::Code code)
+const unsigned short Keyboard::GetInputFromCode(Request::Code code)
 {
 	switch (code) {
 
@@ -123,12 +124,12 @@ const WORD Keyboard::GetInputFromCode(Request::Code code)
 	case Request_Code_KB_WINDOWS:	return VK_RWIN;
 	case Request_Code_NONE:			return VK_NONE;
 
-	default: 
+	default:
 		return VK_NONE;
 	}
 }
 
-std::string Keyboard::SendDefinedKey(const std::string& param, const WORD& extraCode)
+std::string Keyboard::SendDefinedKey(const std::string& param, const unsigned short& extraCode)
 {
 	auto c = param.c_str()[0];
 	if ((c >= 48 && c <= 57) || // 0 to 9
@@ -147,12 +148,14 @@ void Keyboard::CtrlEnter()
 	SendKeyboardInput(VK_RETURN, VK_CONTROL);
 }
 
-void Keyboard::SendKeyboardInput(const WORD& code, const WORD& extraCode)
+void Keyboard::SendKeyboardInput(const unsigned short& code, const unsigned short& extraCode)
 {
 	Utils::get_logger()->debug("Keyboard::SendKeyboardInput");
 	Utils::get_logger()->debug("-- code : "			+ code);
 	Utils::get_logger()->debug("-- extra code : "	+ extraCode);
 
+
+# if defined(WINDOWS_PLATFORM)
 #define KEYEVENTF_KEYDOWN 0x0000
 
 	INPUT input;
@@ -184,4 +187,8 @@ void Keyboard::SendKeyboardInput(const WORD& code, const WORD& extraCode)
 		input.ki.dwFlags = KEYEVENTF_KEYUP;
 		SendInput(1, &input, sizeof(INPUT));
 	}
+	# else
+        //TODO: Implement Keyboard::SendKeyboardInput() on Linux
+	# endif
+
 }
