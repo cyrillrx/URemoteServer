@@ -20,6 +20,7 @@ public :
 
 private :
 	static MasterVolume *s_masterVolume;
+
 # if defined(WINDOWS_PLATFORM)
 	IAudioEndpointVolume *m_endpointVolume;
 	void loadVolumeController();

@@ -1,13 +1,12 @@
 #include "MasterVolume.h"
 
 #include <iostream>
-
 #include "Utils.h"
 
 # if defined(WINDOWS_PLATFORM)
 #   include <windows.h>
 #   include <mmdeviceapi.h>
-# endif
+# endif // defined(WINDOWS_PLATFORM)
 
 const auto VOLUME_MAX(1.0f);
 const auto VOLUME_MIN(0.0f);
@@ -85,15 +84,15 @@ float MasterVolume::turnDown()
 */
 MasterVolume::MasterVolume()
 {
-
 # if defined(WINDOWS_PLATFORM)
+
 	// Initialize the COM library.
 	if (CoInitialize(nullptr) != S_OK) {
 		Utils::get_logger()->error("MasterVolume::MasterVolume(), CoInitialize failed");
 	}
 	loadVolumeController();
-# endif
 
+# endif // defined(WINDOWS_PLATFORM)
 }
 
 /**
@@ -101,17 +100,17 @@ MasterVolume::MasterVolume()
 */
 MasterVolume::~MasterVolume()
 {
-
 # if defined(WINDOWS_PLATFORM)
+
 	freeVolumeController();
 	// Free COM Library
 	CoUninitialize();
-# endif
 
+# endif // defined(WINDOWS_PLATFORM)
 }
 
-
 # if defined(WINDOWS_PLATFORM)
+
 /**
 * Initialize the EndpointVolume (volume controller).
 */
@@ -167,7 +166,7 @@ void MasterVolume::freeVolumeController()
 		m_endpointVolume = nullptr;
 	}
 }
-# endif
+# endif // defined(WINDOWS_PLATFORM)
 
 
 /**
@@ -183,8 +182,8 @@ bool MasterVolume::isMute()
 	}
 	return (isMute) ? true : false;
 # else
-    // TODO: Implement MasterVolume::isMute() on linux
-    return false;
+	// TODO: Implement MasterVolume::isMute() on linux
+	return false;
 # endif
 }
 
@@ -200,7 +199,7 @@ void MasterVolume::setMute(const bool& isMute)
 		Utils::get_logger()->error("MasterVolume::setMute(), An error occured while setting muting state !");
 	}
 # else
-    // TODO: Implement MasterVolume::setMute() on linux
+	// TODO: Implement MasterVolume::setMute() on linux
 # endif
 
 }
@@ -220,8 +219,8 @@ float MasterVolume::getVolume()
 	}
 	return currentVolume;
 # else
-    // TODO: Implement MasterVolume::getVolume() on linux
-    return 0.0f;
+	// TODO: Implement MasterVolume::getVolume() on linux
+	return 0.0f;
 # endif
 
 }
@@ -236,6 +235,6 @@ void MasterVolume::setVolume(const float& newVolume)
 		Utils::get_logger()->error("MasterVolume::setVolume(), An error occured while setting volume !");
 	}
 # else
-    // TODO: Implement MasterVolume::setVolume() on linux
+	// TODO: Implement MasterVolume::setVolume() on linux
 # endif
 }
