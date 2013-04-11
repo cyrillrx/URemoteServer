@@ -2,6 +2,7 @@
 
 #include <sstream>
 
+#include "platform_config.h"
 #include "exception/file_exception.h"
 #include "string_utils.h"
 #include "Utils.h"
@@ -64,8 +65,12 @@ bool FileManager::GetDirectoryContent(Response* reply, std::string dirPath)
 
 void FileManager::OpenFile(const std::string& filePath)
 {
+#if defined(WINDOWS_PLATFORM)
 	bstr_t path(filePath.c_str());
 	ShellExecute(nullptr, nullptr, path, nullptr, nullptr, SW_SHOWMAXIMIZED);
+#else
+    system(filePath.c_str());
+#endif
 }
 
 bool FileManager::AddFile(DirContent* dirContent, fs_utils::file& file)

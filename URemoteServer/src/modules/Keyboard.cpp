@@ -5,7 +5,30 @@
 #include "platform_config.h"
 # if defined(WINDOWS_PLATFORM)
 #	include <windows.h>
-# endif
+# else
+
+#define VK_LEFT     0x25
+#define VK_UP       0x26
+#define VK_RIGHT    0x27
+#define VK_DOWN     0x28
+
+#define VK_MEDIA_PLAY_PAUSE 0
+#define VK_MEDIA_STOP       0
+#define VK_MEDIA_PREV_TRACK 0
+#define VK_MEDIA_NEXT_TRACK 0
+
+#define VK_RETURN   0
+#define VK_SPACE    0
+#define VK_BACK     0
+#define VK_ESCAPE   0
+#define VK_F4       0
+#define VK_CONTROL  0
+#define VK_MENU     0
+#define VK_RMENU    0
+#define VK_SHIFT    0
+#define VK_RWIN     0
+
+# endif // define platform
 
 #define VK_NONE (unsigned short)-1
 
@@ -46,11 +69,6 @@
 #define VK_X 0x58
 #define VK_Y 0x59
 #define VK_Z 0x5A
-
-//#define VK_LEFT	0x25
-//#define VK_UP	0x26
-//#define VK_RIGHT 0x27
-//#define VK_DOWN	0x28
 
 using namespace network_io;
 

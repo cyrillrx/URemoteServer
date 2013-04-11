@@ -1,6 +1,7 @@
 #include "MasterVolume.h"
 
 #include <iostream>
+#include <algorithm>
 #include "Utils.h"
 
 # if defined(WINDOWS_PLATFORM)
@@ -60,7 +61,7 @@ float MasterVolume::define(const int& volumePoucentage)
 float MasterVolume::turnUp()
 {
 	auto currentVolume = getVolume();
-	float newVolume = min(VOLUME_MAX, currentVolume + VOLUME_STEP);
+	float newVolume = std::min(VOLUME_MAX, currentVolume + VOLUME_STEP);
 	setVolume(newVolume);
 
 	return newVolume;
@@ -73,7 +74,7 @@ float MasterVolume::turnUp()
 float MasterVolume::turnDown()
 {
 	auto currentVolume = getVolume();
-	float newVolume = max(VOLUME_MIN, currentVolume - VOLUME_STEP);
+	float newVolume = std::max(VOLUME_MIN, currentVolume - VOLUME_STEP);
 	setVolume(newVolume);
 
 	return newVolume;

@@ -5775,12 +5775,12 @@
 	"platform_config.h"
 	<windows.h>
 
-1365629052 /home/cyril/cpp_Projects/URemoteServer/URemoteServer/src/modules/MasterVolume.h
+1365717943 /home/cyril/cpp_Projects/URemoteServer/URemoteServer/src/modules/MasterVolume.h
 	<iostream>
 	"platform_config.h"
 	<endpointvolume.h>
 
-1365629764 /home/cyril/cpp_Projects/URemoteServer/URemoteServer/src/modules/Keyboard.h
+1365717943 /home/cyril/cpp_Projects/URemoteServer/URemoteServer/src/modules/Keyboard.h
 	<string>
 	"network_io/server_exchange.pb.h"
 
@@ -5807,7 +5807,7 @@
 1363554444 /home/cyril/cpp_Projects/cpp_utils/Utils/src/exception/config_exception.h
 	"Exception.h"
 
-1365545262 /home/cyril/cpp_Projects/cpp_cxp_api/src/text_to_speech.h
+1365718683 /home/cyril/cpp_Projects/cpp_cxp_api/src/text_to_speech.h
 	"platform_config.h"
 	"windows/text_to_speech_windows.h"
 	"unix/text_to_speech_unix.h"
@@ -5830,4 +5830,39 @@
 	"Keyboard.h"
 	"exception/config_exception.h"
 	<comdef.h>
+
+1365721839 source:/home/cyril/cpp_Projects/URemoteServer/URemoteServer/src/modules/FileManager.cpp
+	"FileManager.h"
+	<sstream>
+	"platform_config.h"
+	"exception/file_exception.h"
+	"string_utils.h"
+	"Utils.h"
+
+1363373013 /home/cyril/cpp_Projects/cpp_utils/Utils/src/exception/file_exception.h
+	"Exception.h"
+
+1365722244 source:/home/cyril/cpp_Projects/URemoteServer/URemoteServer/src/modules/Keyboard.cpp
+	"Keyboard.h"
+	"Utils.h"
+	"platform_config.h"
+	<windows.h>
+
+1365722350 source:/home/cyril/cpp_Projects/URemoteServer/URemoteServer/src/modules/MasterVolume.cpp
+	"MasterVolume.h"
+	<iostream>
+	<algorithm>
+	"Utils.h"
+	<windows.h>
+	<mmdeviceapi.h>
+
+1365628948 source:/home/cyril/cpp_Projects/URemoteServer/URemoteServer/src/modules/MonUtils.cpp
+	"MonUtils.h"
+	<iostream>
+
+1365442772 source:/home/cyril/cpp_Projects/URemoteServer/URemoteServer/src/modules/Speech.cpp
+	"Speech.h"
+	<thread>
+	"text_to_speech.h"
+	"Utils.h"
 
