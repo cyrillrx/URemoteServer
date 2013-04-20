@@ -63,9 +63,9 @@ int main()
 	std::unique_ptr<ai_config> aiConfig = nullptr;
 	std::unique_ptr<network_io::server_config> serverConfig = nullptr;
 	if (!initProgram(aiConfig, serverConfig)) {
-        logger->info("******************************************************");
-        logger->info("*****   Leaving URemote Server : EXIT_FAILURE    *****");
-        logger->info("******************************************************");
+		logger->info("******************************************************");
+		logger->info("*****   Leaving URemote Server : EXIT_FAILURE    *****");
+		logger->info("******************************************************");
 		return EXIT_FAILURE;
 	}
 
@@ -77,9 +77,9 @@ int main()
 
 	lexicon_manager::free_instance();
 
-    logger->info("******************************************************");
-    logger->info("*****   Leaving URemote Server : EXIT_SUCCESS    *****");
-    logger->info("******************************************************");
+	logger->info("******************************************************");
+	logger->info("*****   Leaving URemote Server : EXIT_SUCCESS    *****");
+	logger->info("******************************************************");
 	return EXIT_SUCCESS;
 }
 
@@ -114,9 +114,9 @@ bool initProgram(std::unique_ptr<ai_config>& aiConfig, std::unique_ptr<network_i
 	} else {
 		logger->error("Program initialization failed !");
 # if defined(WINDOWS_PLATFORM)
-        MessageBoxA(nullptr, message.c_str(), nullptr, 0);
+		MessageBoxA(nullptr, message.c_str(), nullptr, 0);
 # else
-        // TODO: Implement messagebox with Qt or another widget library
+		// TODO: Implement messagebox with Qt or another widget library
 # endif
 	}
 
@@ -136,9 +136,9 @@ bool initLexicons(lexicon_manager* lexiconMgr, std::string& message)
 
 		try {
 			lexiconMgr->add_language(filenameToKey(file.filename()), file.path());
-		} catch (const std::exception& e) {
-			logger->warning(e.what());
-			message += e.what();
+		} catch (const Exception& e) {
+			logger->warning(e.whatAsString());
+			message += e.whatAsString();
 			message += "\n";
 		}
 	}
@@ -201,8 +201,8 @@ bool initAiConfig(std::unique_ptr<ai_config>& aiConfig, std::string& message)
 
 		aiInitialized = true;
 
-	} catch (const std::exception& e) {
-		message += e.what();
+	} catch (const Exception& e) {
+		message += e.whatAsString();
 		message += "\n";
 		logger->error("AI config KO.");
 	}
@@ -222,8 +222,8 @@ bool initServerConfig(std::unique_ptr<network_io::server_config>& server_config,
 		server_config = std::unique_ptr<network_io::server_config>(new network_io::server_config(server_conf_path));
 		logger->debug("Server config OK.");
 		serverInitialized = true;
-	} catch (const std::exception& e) {
-		message += e.what();
+	} catch (const Exception& e) {
+		message += e.whatAsString();
 		message += "\n";
 		logger->error("Server config KO.");
 	}
