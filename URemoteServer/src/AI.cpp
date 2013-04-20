@@ -33,6 +33,9 @@ AI::~AI()
 
 void AI::startConnection(std::unique_ptr<network_io::server_config> serverConfig)
 {
+	
+	say(lexicon_manager::get_string(trad_key::AI_SETTING_UP));
+
 	// TODO: Instanciate other listeners
 	std::thread uRemoteThread;
 	std::thread consoleThread;
