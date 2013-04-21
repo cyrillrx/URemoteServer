@@ -101,7 +101,13 @@ bool initProgram(std::unique_ptr<ai_config>& aiConfig, std::unique_ptr<network_i
 	auto lexiconMgr = lexicon_manager::instance();
 	bool translatorInitialized = initLexicons(lexiconMgr, message);
 	if (translatorInitialized && aiInitialized) {
-		lexiconMgr->set_language(aiConfig->language);
+		try {
+			lexiconMgr->set_language(aiConfig->language);
+		} catch (const Exception& e) {
+			message += e.whatAsString();
+			message += "\n";
+			logger->error("AI config KO.");
+		}
 	}
 
 	bool serverInitialized = initServerConfig(serverConfig, message);
@@ -130,8 +136,12 @@ bool initProgram(std::unique_ptr<ai_config>& aiConfig, std::unique_ptr<network_i
 bool initLexicons(lexicon_manager* lexiconMgr, std::string& message)
 {
 	logger->info("Init lexicon_manager...");
+	
+	lexiconMgr->add_language(lexicon_manager::LANG_EN_UK, language_dir + "en.lang");
+	lexiconMgr->add_language(lexicon_manager::LANG_EN_US, language_dir + "en.lang");
+	lexiconMgr->add_language(lexicon_manager::LANG_FR, language_dir + "fr.lang");
 
-	auto files = fs_utils::list_files(language_dir, false, ".*(\\.lang)$", true);
+	/*auto files = fs_utils::list_files(language_dir, false, ".*(\\.lang)$", true);
 	for (auto file : files) {
 
 		try {
@@ -141,7 +151,7 @@ bool initLexicons(lexicon_manager* lexiconMgr, std::string& message)
 			message += e.whatAsString();
 			message += "\n";
 		}
-	}
+	}*/
 
 	const auto isInitialized = lexiconMgr->is_initialized();
 	if (isInitialized) {
@@ -160,12 +170,13 @@ bool initLexicons(lexicon_manager* lexiconMgr, std::string& message)
 */
 std::string filenameToKey(const std::string& filename)
 {
-	const auto defaultKey = lexicon_manager::LANG_EN;
+	const auto defaultKey = lexicon_manager::LANG_EN_US;
 
 	// TODO: Store the map in RAM ?
 	std::map<std::string, std::string> langFilenameToKey;
 	langFilenameToKey.insert(std::make_pair("fr.lang", lexicon_manager::LANG_FR));
-	langFilenameToKey.insert(std::make_pair("en.lang", lexicon_manager::LANG_EN));
+	langFilenameToKey.insert(std::make_pair("en.lang", lexicon_manager::LANG_EN_US));
+	langFilenameToKey.insert(std::make_pair("en.lang", lexicon_manager::LANG_EN_UK));
 
 	auto keyItem = langFilenameToKey.find(filename);
 	if (keyItem != langFilenameToKey.end()) {

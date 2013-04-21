@@ -1,6 +1,7 @@
 [AI]
-ai_initiated=Artificial Intelligence initiated.
+ai_initiated=AI instanciated.
 ai_self_introduction=My name is $1.
+ai_setting_up=Setting up system configuration.
 ai_full_capacity=Working at full capacity.
 ai_not_full_capacity=Working at $1% of full capacity.
 
