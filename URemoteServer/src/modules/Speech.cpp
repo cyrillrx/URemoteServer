@@ -4,14 +4,14 @@
 #include "text_to_speech.h"
 #include "Utils.h"
 
-Speech::Speech(const std::string& lang, const std::string& gender)
-	: language_(lang), gender_(gender) { }
+Speech::Speech(const std::string& lang, const std::string& gender, const long& rate)
+	: language_(lang), gender_(gender), rate_(rate) { }
 
 Speech::~Speech() { }
 
 void Speech::say(const std::string& textToSpeak)
 {
-	if (text_to_speech::say(textToSpeak, language_, gender_)) {
+	if (text_to_speech::say(textToSpeak, language_, gender_, rate_)) {
 		Utils::get_logger()->info("Speech::say - " + textToSpeak);
 	}
 }

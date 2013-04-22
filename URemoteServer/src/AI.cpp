@@ -18,7 +18,7 @@
 //////////////////////////////////////////////////////////////////////////////
 AI::AI(std::unique_ptr<ai_config> config) : config_(move(config))
 {
-	voice_ = std::unique_ptr<Speech>(new Speech(config_->language, config_->gender));
+	voice_ = std::unique_ptr<Speech>(new Speech(config_->language, config_->gender, config_->rate));
 
 	time(&lastWelcome_);
 	lastWelcome_ -= DELAY;
@@ -87,6 +87,8 @@ void AI::startConnection(std::unique_ptr<network_io::server_config> serverConfig
 		say("Console Listener, KO..."); // TODO: internationalize
 	}
 
+	
+	say(lexicon_manager::get_string(trad_key::AI_CONFIG_COMPLETED));
 	// Notify the user that the listener are open.
 	if (capacity >= 100) {
 		say(lexicon_manager::get_string(trad_key::AI_FULL_CAPACITY));

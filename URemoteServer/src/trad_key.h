@@ -7,6 +7,7 @@ namespace trad_key
 	const std::string AI_INITIATED			= "ai_initiated";
 	const std::string AI_SELF_INTRODUCTION	= "ai_self_introduction";
 	const std::string AI_SETTING_UP			= "ai_setting_up";
+	const std::string AI_CONFIG_COMPLETED	= "ai_configuration_completed";
 	const std::string AI_FULL_CAPACITY		= "ai_full_capacity";
 	const std::string AI_NOT_FULL_CAPACITY	= "ai_not_full_capacity";
 
