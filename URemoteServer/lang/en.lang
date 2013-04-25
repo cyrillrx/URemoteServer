@@ -1,11 +1,12 @@
 [AI]
-ai_initiated=AI instanciated.
+ai_initiated=artificial intelligence initiated.
 ai_self_introduction=My name is $1.
 ai_setting_up=Setting up system configuration.
+ai_configuration_completed=Configuration is complete.
 ai_full_capacity=Working at full capacity.
 ai_not_full_capacity=Working at $1% of full capacity.
 
-ai_welcome_user=User identified. Welcome Cyril.
+ai_welcome_user=User identified. Welcome $1.
 ai_goodbye=Goodbye sir.
 
 ai_shutdown=$1 is shutting down.
