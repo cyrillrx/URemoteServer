@@ -12,7 +12,7 @@
 #include "lexicon_manager.h"
 #include "trad_key.h"
 #include "Utils.h"
-#include "platform_config.h"
+#include "string_utils.h"
 
 using namespace network_io;
 
@@ -152,7 +152,8 @@ void executor::volume_command(Response reply, Request_Code code, int intParam)
 	float fVolumeLvl;
 	bool isMute;
 
-	char buffer[50];
+	const int bufferlength = 50;
+	char buffer[bufferlength];
 	std::string message;
 	int volumePoucentage;
 
@@ -166,11 +167,7 @@ void executor::volume_command(Response reply, Request_Code code, int intParam)
 		volumePoucentage = (int) (fVolumeLvl * 100);
 		reply.set_intvalue(volumePoucentage);
 
-# if defined(WINDOWS_PLATFORM)
-		sprintf_s(buffer,  "Volume set to %d%%", volumePoucentage);
-# else
-		sprintf(buffer,  "Volume set to %d%%", volumePoucentage);
-# endif
+		string_utils::securedPrint(buffer, bufferlength, "Volume set to %d%%", volumePoucentage);
 		message = buffer;
 		break;
 
@@ -181,12 +178,8 @@ void executor::volume_command(Response reply, Request_Code code, int intParam)
 		reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
 		volumePoucentage = (int) (fVolumeLvl * 100);
 		reply.set_intvalue(volumePoucentage);
-
-# if defined(WINDOWS_PLATFORM)
-		sprintf_s(buffer,  "Volume up to %d%%", volumePoucentage);
-# else
-		sprintf(buffer,  "Volume up to %d%%", volumePoucentage);
-# endif
+		
+		string_utils::securedPrint(buffer, bufferlength, "Volume set to %d%%", volumePoucentage);
 		message = buffer;
 		break;
 
@@ -197,12 +190,8 @@ void executor::volume_command(Response reply, Request_Code code, int intParam)
 		reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
 		volumePoucentage = (int) (fVolumeLvl * 100);
 		reply.set_intvalue(volumePoucentage);
-
-# if defined(WINDOWS_PLATFORM)
-		sprintf_s(buffer,  "Volume down to %d%%", volumePoucentage);
-# else
-		sprintf(buffer,  "Volume down to %d%%", volumePoucentage);
-# endif
+		
+		string_utils::securedPrint(buffer, bufferlength, "Volume set to %d%%", volumePoucentage);
 		message = buffer;
 		break;
 
