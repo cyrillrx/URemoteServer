@@ -94,7 +94,7 @@ serialized_message executor::handle_request(serialized_message serializedRequest
 
 
 /** Handle general commands. */
-void executor::classic_command(Response reply, Request_Code code)
+void executor::classic_command(Response& reply, const Request_Code& code)
 {
 	switch (code) {
 
@@ -147,7 +147,7 @@ void executor::classic_command(Response reply, Request_Code code)
 }
 
 /** Handle volume commands. */
-void executor::volume_command(Response reply, Request_Code code, int intParam)
+void executor::volume_command(Response& reply, const Request_Code& code, const int& intParam)
 {
 	float fVolumeLvl;
 	bool isMute;
@@ -178,7 +178,7 @@ void executor::volume_command(Response reply, Request_Code code, int intParam)
 		reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
 		volumePoucentage = (int) (fVolumeLvl * 100);
 		reply.set_intvalue(volumePoucentage);
-		
+
 		string_utils::securedPrint(buffer, bufferlength, "Volume set to %d%%", volumePoucentage);
 		message = buffer;
 		break;
@@ -190,7 +190,7 @@ void executor::volume_command(Response reply, Request_Code code, int intParam)
 		reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
 		volumePoucentage = (int) (fVolumeLvl * 100);
 		reply.set_intvalue(volumePoucentage);
-		
+
 		string_utils::securedPrint(buffer, bufferlength, "Volume set to %d%%", volumePoucentage);
 		message = buffer;
 		break;
@@ -214,7 +214,7 @@ void executor::volume_command(Response reply, Request_Code code, int intParam)
 }
 
 /** Handle AI commands */
-void executor::ai_command(Response reply, Request_Code code)
+void executor::ai_command(Response& reply, const Request_Code& code)
 {
 	bool isMute;
 	std::string message;
@@ -239,7 +239,7 @@ void executor::ai_command(Response reply, Request_Code code)
 }
 
 /** Handle application commands. */
-void executor::app_command(Response reply, Request_Code code)
+void executor::app_command(Response& reply, const Request_Code& code)
 {
 	std::string message;
 
@@ -277,7 +277,7 @@ void executor::app_command(Response reply, Request_Code code)
 }
 
 /** Send a command to shutdown the computer. */
-void executor::shutdown_pc(Response reply, int delay)
+void executor::shutdown_pc(Response& reply, const int& delay)
 {
 	ai_->stopConnection();
 
