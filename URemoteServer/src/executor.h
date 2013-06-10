@@ -16,7 +16,7 @@ public :
 private :
 	std::shared_ptr<AI> ai_;
 
-	void classic_command(network_io::Response& reply,	const network_io::Request_Code& code);
+	void classic_command(network_io::Response& reply,	const network_io::Request_Code& code, const std::string& securityToken);
 	void volume_command(network_io::Response& reply,	const network_io::Request_Code& code, const int& intParam);
 	void ai_command(network_io::Response& reply,		const network_io::Request_Code& code);
 	void app_command(network_io::Response& reply,		const network_io::Request_Code& code);

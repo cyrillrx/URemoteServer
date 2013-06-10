@@ -13,21 +13,68 @@
 #include "text_to_speech.h"
 #include "logger.h"
 
-bool initProgram(std::unique_ptr<ai_config>& aiConfig, std::unique_ptr<network_io::server_config>& server_config);
+void createDirectories();
+bool initProgram(std::unique_ptr<ai_config>& aiConfig,
+				 std::unique_ptr<authorized_users>& users,
+				 std::unique_ptr<network_io::server_config>& serverConfig);
 bool initAiConfig(std::unique_ptr<ai_config>& aiConfig, std::string& message);
 bool initLexicons(lexicon_manager* lexiconMgr, std::string& message);
-bool initServerConfig(std::unique_ptr<network_io::server_config>& server_config, std::string& message);
+bool loadServerConfig(std::unique_ptr<network_io::server_config>& server_config, std::string& message);
+bool loadUsers(std::unique_ptr<authorized_users>& users_config, std::string& message);
 std::string filenameToKey(const std::string& filename);
 
 static const std::string language_dir	= "lang/";
 static const std::string config_dir		= "conf/";
 static const std::string ai_conf_path		= config_dir + "ai.conf";
 static const std::string server_conf_path	= config_dir + "server.conf";
+static const std::string users_conf_path	= config_dir + "authorized_users.conf";
 static const std::string log_path = "URemote.log";
 
 logger* logger = Utils::get_logger();
 
 int main()
+{
+	createDirectories();
+
+	logger->set_log_file(log_path);
+
+	logger->info("******************************************************");
+	logger->info("*****               URemote Server               *****");
+	logger->info("******************************************************");
+	
+	std::unique_ptr<ai_config> aiConfig		= nullptr;
+	std::unique_ptr<authorized_users> users	= nullptr;
+	std::unique_ptr<network_io::server_config> serverConfig = nullptr;
+
+	const auto isInitialized = initProgram(aiConfig, users, serverConfig);
+	if (!isInitialized) {
+		logger->info("******************************************************");
+		logger->info("*****   Leaving URemote Server : EXIT_FAILURE    *****");
+		logger->info("******************************************************");
+		return EXIT_FAILURE;
+	}
+
+	// Create the AI
+	auto artificialIntelligence = std::make_shared<AI>(std::move(aiConfig), std::move(users));
+
+	// Start the server on the AI
+	artificialIntelligence->startConnection(std::move(serverConfig));
+
+	lexicon_manager::free_instance();
+
+	logger->info("******************************************************");
+	logger->info("*****   Leaving URemote Server : EXIT_SUCCESS    *****");
+	logger->info("******************************************************");
+	return EXIT_SUCCESS;
+}
+
+/**
+* Create the required directories : 
+* - language_dir
+* - config_dir
+* - log_dir
+*/
+void createDirectories()
 {
 	logger->debug("******************************************************");
 	logger->debug("*****          Directory initialization          *****");
@@ -53,40 +100,14 @@ int main()
 	} catch (const Exception& e) {
 		logger->error(e.whatAsString());
 	}
-
-	logger->set_log_file(log_path);
-
-	logger->info("******************************************************");
-	logger->info("*****               URemote Server               *****");
-	logger->info("******************************************************");
-
-	std::unique_ptr<ai_config> aiConfig = nullptr;
-	std::unique_ptr<network_io::server_config> serverConfig = nullptr;
-	if (!initProgram(aiConfig, serverConfig)) {
-		logger->info("******************************************************");
-		logger->info("*****   Leaving URemote Server : EXIT_FAILURE    *****");
-		logger->info("******************************************************");
-		return EXIT_FAILURE;
-	}
-
-	// Create the AI
-	auto artificialIntelligence = std::make_shared<AI>(std::move(aiConfig));
-
-	// Start the server on the AI
-	artificialIntelligence->startConnection(std::move(serverConfig));
-
-	lexicon_manager::free_instance();
-
-	logger->info("******************************************************");
-	logger->info("*****   Leaving URemote Server : EXIT_SUCCESS    *****");
-	logger->info("******************************************************");
-	return EXIT_SUCCESS;
 }
 
 /**
 * Initialize the AI, the lexicon_manager and the Server
 */
-bool initProgram(std::unique_ptr<ai_config>& aiConfig, std::unique_ptr<network_io::server_config>& serverConfig)
+bool initProgram(std::unique_ptr<ai_config>& aiConfig,
+				 std::unique_ptr<authorized_users>& users,
+				 std::unique_ptr<network_io::server_config>& serverConfig)
 {
 	logger->info("Program initialization...");
 	// TODO: Set Error and warning into a Queue to treat it (vocally) once everything is loaded.
@@ -109,10 +130,11 @@ bool initProgram(std::unique_ptr<ai_config>& aiConfig, std::unique_ptr<network_i
 			logger->error("AI config KO.");
 		}
 	}
+	
+	bool usersLoaded = loadUsers(users, message);
+	bool serverInitialized = loadServerConfig(serverConfig, message);
 
-	bool serverInitialized = initServerConfig(serverConfig, message);
-
-	programInitialized = aiInitialized && translatorInitialized && serverInitialized;
+	programInitialized = aiInitialized && translatorInitialized && usersLoaded && serverInitialized;
 
 	// Check program initializations
 	if (programInitialized) {
@@ -136,7 +158,7 @@ bool initProgram(std::unique_ptr<ai_config>& aiConfig, std::unique_ptr<network_i
 bool initLexicons(lexicon_manager* lexiconMgr, std::string& message)
 {
 	logger->info("Init lexicon_manager...");
-	
+
 	lexiconMgr->add_language(lexicon_manager::LANG_EN_UK, language_dir + "en.lang");
 	lexiconMgr->add_language(lexicon_manager::LANG_EN_US, language_dir + "en.lang");
 	lexiconMgr->add_language(lexicon_manager::LANG_FR, language_dir + "fr.lang");
@@ -144,13 +166,13 @@ bool initLexicons(lexicon_manager* lexiconMgr, std::string& message)
 	/*auto files = fs_utils::list_files(language_dir, false, ".*(\\.lang)$", true);
 	for (auto file : files) {
 
-		try {
-			lexiconMgr->add_language(filenameToKey(file.filename()), file.path());
-		} catch (const Exception& e) {
-			logger->warning(e.whatAsString());
-			message += e.whatAsString();
-			message += "\n";
-		}
+	try {
+	lexiconMgr->add_language(filenameToKey(file.filename()), file.path());
+	} catch (const Exception& e) {
+	logger->warning(e.whatAsString());
+	message += e.whatAsString();
+	message += "\n";
+	}
 	}*/
 
 	const auto isInitialized = lexiconMgr->is_initialized();
@@ -224,7 +246,7 @@ bool initAiConfig(std::unique_ptr<ai_config>& aiConfig, std::string& message)
 * Init config for the Server.
 * Load the server_config object with the properties found in SERVER_CONF_FILE
 */
-bool initServerConfig(std::unique_ptr<network_io::server_config>& server_config, std::string& message)
+bool loadServerConfig(std::unique_ptr<network_io::server_config>& server_config, std::string& message)
 {
 	// Init config for the server
 	logger->info("Init config for the server...");
@@ -239,4 +261,25 @@ bool initServerConfig(std::unique_ptr<network_io::server_config>& server_config,
 		logger->error("Server config KO.");
 	}
 	return serverInitialized;
+}
+
+/**
+* Load the authorized users from users_conf_path.
+*/
+bool loadUsers(std::unique_ptr<authorized_users>& users_config, std::string& message)
+{
+	// Loading authorized users
+	logger->info("Loading authorized users...");
+	bool usersLoaded = false;
+	try {
+		users_config = std::unique_ptr<authorized_users>(new authorized_users(users_conf_path));
+		logger->debug("Users loaded.");
+		usersLoaded = true;
+
+	} catch (const Exception& e) {
+		message += e.whatAsString();
+		message += "\n";
+		logger->error("Users Loading KO.");
+	}
+	return usersLoaded;
 }

@@ -90,6 +90,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\authorized_users.h" />
     <ClInclude Include="src\listeners\ConsoleListener.h" />
     <ClInclude Include="src\listeners\Listener.h" />
     <ClInclude Include="src\listeners\URemoteListener.h" />
@@ -106,6 +107,7 @@
     <ClInclude Include="src\trad_key.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\authorized_users.cpp" />
     <ClCompile Include="src\listeners\ConsoleListener.cpp" />
     <ClCompile Include="src\listeners\Listener.cpp" />
     <ClCompile Include="src\listeners\URemoteListener.cpp" />

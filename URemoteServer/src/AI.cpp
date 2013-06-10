@@ -16,10 +16,10 @@
 //////////////////////////////////////////////////////////////////////////////
 // Public methods
 //////////////////////////////////////////////////////////////////////////////
-AI::AI(std::unique_ptr<ai_config> config) : config_(move(config))
+AI::AI(std::unique_ptr<ai_config> config, std::unique_ptr<authorized_users> users)
+	: config_(move(config)), users_(move(users))
 {
 	voice_ = std::unique_ptr<Speech>(new Speech(config_->language, config_->gender, config_->rate));
-
 	time(&lastWelcome_);
 	lastWelcome_ -= DELAY;
 
@@ -86,7 +86,6 @@ void AI::startConnection(std::unique_ptr<network_io::server_config> serverConfig
 		Utils::get_logger()->error("AI::StartConnection(), ConsoleListener KO : " + std::string(e.what()));
 		say("Console Listener, KO..."); // TODO: internationalize
 	}
-
 	
 	say(lexicon_manager::get_string(trad_key::AI_CONFIG_COMPLETED));
 	// Notify the user that the listener are open.
@@ -113,12 +112,22 @@ void AI::stopConnection()
 	}
 }
 
+bool AI::isAuthorized(const std::string& securityToken)
+{
+	return users_->is_authorized(securityToken);
+}
+
+std::string AI::getUser(const std::string& securityToken)
+{
+	return users_->get_user(securityToken);
+}
+
 std::string AI::getName()
 {
 	return config_->name;
 }
 
-void AI::welcome()
+void AI::welcome(const std::string& securityToken)
 {
 	// Calculate the elapsed time since the last call to the method
 	time_t now;
@@ -130,7 +139,7 @@ void AI::welcome()
 	// Welcome if last welcome > DELAY
 	if (elapsedTime > DELAY) {
 		// TODO: Welcome user instead of welcoming itself
-		say(lexicon_manager::get_string(trad_key::AI_WELCOME_USER, config_->name));
+		say(lexicon_manager::get_string(trad_key::AI_WELCOME_USER, users_->get_user(securityToken)));
 		time(&lastWelcome_);
 	}
 }

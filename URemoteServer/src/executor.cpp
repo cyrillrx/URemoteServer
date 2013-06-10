@@ -42,7 +42,7 @@ serialized_message executor::handle_request(serialized_message serializedRequest
 	reply.set_requesttype(reqType);
 	reply.set_requestcode(reqCode);
 
-	if (request.securitytoken() != "1234") {
+	if (!ai_->isAuthorized(securityToken)) {
 		reply.set_returncode(Response_ReturnCode_RC_ERROR);
 		const auto message = lexicon_manager::get_string(trad_key::XC_UNKNOWN_SECURITY_TOKEN);
 		reply.set_message(message);
@@ -54,7 +54,7 @@ serialized_message executor::handle_request(serialized_message serializedRequest
 		switch (reqType) {
 
 		case Request_Type_SIMPLE:
-			classic_command(reply, reqCode);
+			classic_command(reply, reqCode, securityToken);
 			break;
 
 		case Request_Type_EXPLORER:
@@ -94,13 +94,12 @@ serialized_message executor::handle_request(serialized_message serializedRequest
 
 
 /** Handle general commands. */
-void executor::classic_command(Response& reply, const Request_Code& code)
+void executor::classic_command(Response& reply, const Request_Code& code, const std::string& securityToken)
 {
 	switch (code) {
-
 	case Request_Code_HELLO:
 		reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
-		ai_->welcome();
+		ai_->welcome(securityToken);
 		break;
 
 	case Request_Code_TEST:
