@@ -17,7 +17,7 @@ void createDirectories();
 bool initProgram(std::unique_ptr<ai_config>& aiConfig,
 				 std::unique_ptr<authorized_users>& users,
 				 std::unique_ptr<network_io::server_config>& serverConfig);
-bool initAiConfig(std::unique_ptr<ai_config>& aiConfig, std::string& message);
+bool loadAiConfig(std::unique_ptr<ai_config>& aiConfig, std::string& message);
 bool initLexicons(lexicon_manager* lexiconMgr, std::string& message);
 bool loadServerConfig(std::unique_ptr<network_io::server_config>& server_config, std::string& message);
 bool loadUsers(std::unique_ptr<authorized_users>& users_config, std::string& message);
@@ -104,6 +104,10 @@ void createDirectories()
 
 /**
 * Initialize the AI, the lexicon_manager and the Server
+* Load the program configurations : 
+* - Ai config
+* - Authorized Users
+* - Server (URemoteListener) configuration
 */
 bool initProgram(std::unique_ptr<ai_config>& aiConfig,
 				 std::unique_ptr<authorized_users>& users,
@@ -116,7 +120,7 @@ bool initProgram(std::unique_ptr<ai_config>& aiConfig,
 	std::string message = "";
 
 	// Init config for the AI
-	bool aiInitialized = initAiConfig(aiConfig, message);
+	bool aiInitialized = loadAiConfig(aiConfig, message);
 
 	// Init lexicon_manager
 	auto lexiconMgr = lexicon_manager::instance();
@@ -163,18 +167,6 @@ bool initLexicons(lexicon_manager* lexiconMgr, std::string& message)
 	lexiconMgr->add_language(lexicon_manager::LANG_EN_US, language_dir + "en.lang");
 	lexiconMgr->add_language(lexicon_manager::LANG_FR, language_dir + "fr.lang");
 
-	/*auto files = fs_utils::list_files(language_dir, false, ".*(\\.lang)$", true);
-	for (auto file : files) {
-
-	try {
-	lexiconMgr->add_language(filenameToKey(file.filename()), file.path());
-	} catch (const Exception& e) {
-	logger->warning(e.whatAsString());
-	message += e.whatAsString();
-	message += "\n";
-	}
-	}*/
-
 	const auto isInitialized = lexiconMgr->is_initialized();
 	if (isInitialized) {
 		logger->info("lexicon_manager OK.");
@@ -211,9 +203,9 @@ std::string filenameToKey(const std::string& filename)
 }
 
 /**
-* Init config for the AI
+* Load Artificial Intelligence configurations from a property file.
 */
-bool initAiConfig(std::unique_ptr<ai_config>& aiConfig, std::string& message)
+bool loadAiConfig(std::unique_ptr<ai_config>& aiConfig, std::string& message)
 {
 	logger->info("Init config for the AI...");
 	bool aiInitialized = false;
@@ -243,8 +235,7 @@ bool initAiConfig(std::unique_ptr<ai_config>& aiConfig, std::string& message)
 }
 
 /**
-* Init config for the Server.
-* Load the server_config object with the properties found in SERVER_CONF_FILE
+* Load URemoteListener configuration from a property file.
 */
 bool loadServerConfig(std::unique_ptr<network_io::server_config>& server_config, std::string& message)
 {
