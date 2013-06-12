@@ -31,3 +31,15 @@ ai_config::~ai_config()
 
 	save_properties();
 }
+
+const text_to_speech::language_code ai_config::language_code()
+{
+	if (language == "UK") {
+		return text_to_speech::en_UK;
+
+	} else if (language == "FR") {
+		return text_to_speech::fr_FR;
+	}
+
+	return text_to_speech::en_US;
+}

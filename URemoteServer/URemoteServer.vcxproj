@@ -102,7 +102,6 @@
     <ClInclude Include="src\modules\MasterVolume.h" />
     <ClInclude Include="src\modules\Keyboard.h" />
     <ClInclude Include="src\modules\MonUtils.h" />
-    <ClInclude Include="src\modules\Speech.h" />
     <ClInclude Include="src\executor.h" />
     <ClInclude Include="src\trad_key.h" />
   </ItemGroup>
@@ -119,7 +118,6 @@
     <ClCompile Include="src\modules\MasterVolume.cpp" />
     <ClCompile Include="src\modules\Keyboard.cpp" />
     <ClCompile Include="src\modules\MonUtils.cpp" />
-    <ClCompile Include="src\modules\Speech.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\executor.cpp" />
   </ItemGroup>

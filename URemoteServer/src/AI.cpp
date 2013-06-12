@@ -2,7 +2,6 @@
 
 #include <thread>
 
-#include "modules/Speech.h"
 #include "lexicon_manager.h"
 #include "trad_key.h"
 #include "Utils.h"
@@ -19,7 +18,7 @@
 AI::AI(std::unique_ptr<ai_config> config, std::unique_ptr<authorized_users> users)
 	: config_(move(config)), users_(move(users))
 {
-	voice_ = std::unique_ptr<Speech>(new Speech(config_->language, config_->gender, config_->rate));
+	voice_ = std::unique_ptr<text_to_speech::voice>(new text_to_speech::voice(config_->name, config_->language_code(), config_->gender, config_->rate));
 	time(&lastWelcome_);
 	lastWelcome_ -= DELAY;
 
@@ -34,7 +33,8 @@ AI::~AI()
 void AI::startConnection(std::unique_ptr<network_io::server_config> serverConfig)
 {
 	
-	say(lexicon_manager::get_string(trad_key::AI_SETTING_UP));
+	//say(lexicon_manager::get_string(trad_key::AI_SETTING_UP));
+	Utils::get_logger()->info(lexicon_manager::get_string(trad_key::AI_SETTING_UP));
 
 	// TODO: Instanciate other listeners
 	std::thread uRemoteThread;
@@ -87,7 +87,9 @@ void AI::startConnection(std::unique_ptr<network_io::server_config> serverConfig
 		say("Console Listener, KO..."); // TODO: internationalize
 	}
 	
-	say(lexicon_manager::get_string(trad_key::AI_CONFIG_COMPLETED));
+	//say(lexicon_manager::get_string(trad_key::AI_CONFIG_COMPLETED));
+	Utils::get_logger()->info(lexicon_manager::get_string(trad_key::AI_CONFIG_COMPLETED));
+
 	// Notify the user that the listener are open.
 	if (capacity >= 100) {
 		say(lexicon_manager::get_string(trad_key::AI_FULL_CAPACITY));
@@ -144,12 +146,15 @@ void AI::welcome(const std::string& securityToken)
 	}
 }
 
-void AI::say(std::string textToSpeak)
+void AI::say(const std::string& textToSpeak, const bool& text_only)
 {
+	Utils::get_logger()->info("Speech::say - " + textToSpeak);
+
 	// Test mute state
-	if (!config_->is_mute) {
-		voice_->sayInThread(textToSpeak);
+	if (config_->is_mute || text_only) {
+		return;
 	}
+	voice_->say_async(textToSpeak);
 }
 
 //! Change l'état de mute et renvoie le nouvel état
