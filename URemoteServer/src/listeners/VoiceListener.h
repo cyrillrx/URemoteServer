@@ -14,5 +14,5 @@ private:
 	virtual void doStart();
 	std::shared_ptr<AI> ai_;
 
-	void listen();
+	void listen(const std::string& keyword);
 };

@@ -170,8 +170,8 @@ bool AI::toggleMute()
 
 void AI::start()
 {
-	say(lexicon_manager::get_string(trad_key::AI_INITIATED));
-	say(lexicon_manager::get_string(trad_key::AI_SELF_INTRODUCTION, config_->name));
+	say(lexicon_manager::get_string(trad_key::AI_INITIATED, config_->name));
+	//say(lexicon_manager::get_string(trad_key::AI_SELF_INTRODUCTION, config_->name));
 }
 
 void AI::shutdown()

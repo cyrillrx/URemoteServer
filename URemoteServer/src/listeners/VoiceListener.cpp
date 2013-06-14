@@ -31,16 +31,20 @@ void VoiceListener::doStart()
 	while (continueToListen_) {
 
 		// TODO: code voice recognition
-		listen();
+		std::string keyword = "PC";
+		log_.info("Wait for " + keyword);
+		listen(keyword);
+		log_.info("Do continue");
 		// TODO: Add message : "command" is not supported
 		// TODO: support "Kill" command
 	}
 	log_.debug("EXIT !");
 }
 
-void VoiceListener::listen()
+void VoiceListener::listen(const std::string& keyword)
 {
 	voice_recognition::recognizer recognizer;
+	recognizer.start_listening(keyword);
 	/*
 	recognizer.add_vocal_command();
 	ai_->say(lexicon_manager::get_string(trad_key::AI_YES));}
