@@ -55,6 +55,8 @@
 		<Unit filename="src/AI.h" />
 		<Unit filename="src/ai_config.cpp" />
 		<Unit filename="src/ai_config.h" />
+		<Unit filename="src/authorized_users.cpp" />
+		<Unit filename="src/authorized_users.h" />
 		<Unit filename="src/executor.cpp" />
 		<Unit filename="src/executor.h" />
 		<Unit filename="src/listeners/ConsoleListener.cpp" />
