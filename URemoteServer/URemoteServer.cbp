@@ -40,11 +40,11 @@
 		<Compiler>
 			<Add option="-std=c++11" />
 			<Add directory="../include" />
-			<Add directory="../../cpp_cxp_api/src" />
+			<Add directory="../../cpp_cross_api/src" />
 			<Add directory="../../cpp_utils/Utils/src" />
 		</Compiler>
 		<Linker>
-			<Add library="libcpp_cxp_api.a" />
+			<Add library="libcpp_cross_api.a" />
 			<Add library="libUtils.a" />
 			<Add library="libboost_filesystem.a" />
 			<Add library="libboost_regex.a" />

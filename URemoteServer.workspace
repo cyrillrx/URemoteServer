@@ -3,10 +3,10 @@
 	<Workspace title="URemoteServer workspace">
 		<Project filename="URemoteServer/URemoteServer.cbp">
 			<Depends filename="../cpp_utils/Utils/Utils.cbp" />
-			<Depends filename="../cpp_cxp_api/cpp_cxp_api.cbp" />
+			<Depends filename="../cpp_cross_api/cpp_cxp_api.cbp" />
 		</Project>
 		<Project filename="../cpp_utils/Utils/Utils.cbp" />
-		<Project filename="../cpp_cxp_api/cpp_cxp_api.cbp">
+		<Project filename="../cpp_cross_api/cpp_cxp_api.cbp">
 			<Depends filename="../cpp_utils/Utils/Utils.cbp" />
 		</Project>
 	</Workspace>
