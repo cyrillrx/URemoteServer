@@ -43,12 +43,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)include;..\..\cpp_utils\Utils\src;..\..\cpp_cxp_api\src;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)include;..\..\cpp_utils\Utils\src;..\..\cpp_cross_api\src;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)lib\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)include;..\..\cpp_utils\Utils\src;..\..\cpp_cxp_api\src;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)include;..\..\cpp_utils\Utils\src;..\..\cpp_cross_api\src;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)lib\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -122,14 +122,14 @@
     <ClCompile Include="src\executor.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\cpp_utils\Utils\Utils.vcxproj">
-      <Project>{40a133af-dbe7-4533-b198-9597b336f630}</Project>
+    <ProjectReference Include="..\..\..\..\DevTools\protobuf-2.5.0\vsprojects\libprotobuf.vcxproj">
+      <Project>{3e283f37-a4ed-41b7-a3e6-a2d89d131a30}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\cpp_cxp_api\cpp_cxp_api.vcxproj">
+    <ProjectReference Include="..\..\cpp_cross_api\cpp_cross_api.vcxproj">
       <Project>{7f02ef9c-4955-4c75-a254-d841598bb1dc}</Project>
     </ProjectReference>
-    <ProjectReference Include="C:\DevTools\protobuf-2.5.0\vsprojects\libprotobuf.vcxproj">
-      <Project>{3e283f37-a4ed-41b7-a3e6-a2d89d131a30}</Project>
+    <ProjectReference Include="..\..\cpp_utils\Utils\Utils.vcxproj">
+      <Project>{40a133af-dbe7-4533-b198-9597b336f630}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
