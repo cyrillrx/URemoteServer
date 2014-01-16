@@ -10,11 +10,13 @@ public:
 	ai_config(const std::string& path);
 	~ai_config();
 	const text_to_speech::language_code language_code();
+	const text_to_speech::tts_age str_to_age(const std::string& age);
+	const std::string age_to_str(const text_to_speech::tts_age& age);
 
 	std::string name;
 	std::string language;
 	std::string gender;
-	std::string age;
+	text_to_speech::tts_age age;
 	std::string tts_name;
 	bool is_mute;
 	long rate;

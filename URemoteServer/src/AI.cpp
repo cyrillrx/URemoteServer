@@ -18,7 +18,7 @@
 AI::AI(std::unique_ptr<ai_config> config, std::unique_ptr<authorized_users> users)
 	: config_(move(config)), users_(move(users))
 {
-	voice_ = std::unique_ptr<text_to_speech::voice>(new text_to_speech::voice(config_->name, config_->language_code(), config_->gender, config_->rate));
+	voice_ = std::unique_ptr<text_to_speech::voice>(new text_to_speech::voice(config_->name, config_->language_code(), config_->gender, config_->age, config_->rate));
 	time(&lastWelcome_);
 	lastWelcome_ -= DELAY;
 
