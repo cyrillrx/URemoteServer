@@ -140,7 +140,7 @@ void Keyboard::HandleMessage(Response* reply, Request* request)
 		reply->set_message("Next");
 		break;
 
-	case Request_Code_KB_RETURN:
+	case Request_Code_KB_ENTER:
 		SendKeyboardInput(VK_RETURN, extraInput);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("Enter");

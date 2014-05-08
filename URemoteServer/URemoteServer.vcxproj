@@ -98,7 +98,7 @@
     <ClInclude Include="src\ai_config.h" />
     <ClInclude Include="src\AI.h" />
     <ClInclude Include="src\modules\App.h" />
-    <ClInclude Include="src\modules\FileManager.h" />
+    <ClInclude Include="src\modules\file_manager.h" />
     <ClInclude Include="src\modules\MasterVolume.h" />
     <ClInclude Include="src\modules\Keyboard.h" />
     <ClInclude Include="src\modules\MonUtils.h" />
@@ -114,7 +114,7 @@
     <ClCompile Include="src\ai_config.cpp" />
     <ClCompile Include="src\AI.cpp" />
     <ClCompile Include="src\modules\App.cpp" />
-    <ClCompile Include="src\modules\FileManager.cpp" />
+    <ClCompile Include="src\modules\file_manager.cpp" />
     <ClCompile Include="src\modules\MasterVolume.cpp" />
     <ClCompile Include="src\modules\Keyboard.cpp" />
     <ClCompile Include="src\modules\MonUtils.cpp" />

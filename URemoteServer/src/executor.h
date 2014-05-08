@@ -2,7 +2,7 @@
 
 #include <string>
 #include "network_io.h"
-#include "network_io/server_exchange.pb.h"
+#include "network_io/message.pb.h"
 #include "network_io/serialized_message.h"
 #include "network_io/request_handler.h"
 #include "AI.h"

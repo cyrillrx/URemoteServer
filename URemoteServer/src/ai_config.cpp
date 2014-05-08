@@ -9,7 +9,7 @@ const std::string ai_config::KEY_MUTE		= "mute";
 const std::string ai_config::KEY_RATE		= "rate";
 
 const std::string ai_config::DEFAULT_NAME		= "Eternity";
-const std::string ai_config::DEFAULT_LANG		= "EN";
+const std::string ai_config::DEFAULT_LANG		= "UK";
 const std::string ai_config::DEFAULT_GENDER		= "F";
 const std::string ai_config::DEFAULT_AGE		= "Adult";
 const std::string ai_config::DEFAULT_TTS_NAME	= "Amy";

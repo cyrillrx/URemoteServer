@@ -33,13 +33,11 @@ logger* logger = Utils::get_logger();
 
 int main()
 {
+	logger->info("URemote Server starting");
 	createDirectories();
 
 	logger->set_log_file(log_path);
 
-	logger->info("******************************************************");
-	logger->info("*****               URemote Server               *****");
-	logger->info("******************************************************");
 	
 	std::unique_ptr<ai_config> aiConfig		= nullptr;
 	std::unique_ptr<authorized_users> users	= nullptr;
@@ -47,9 +45,7 @@ int main()
 
 	const auto isInitialized = initProgram(aiConfig, users, serverConfig);
 	if (!isInitialized) {
-		logger->info("******************************************************");
-		logger->info("*****   Leaving URemote Server : EXIT_FAILURE    *****");
-		logger->info("******************************************************");
+		logger->error("Program not initialized. Leaving URemote Server : EXIT_FAILURE.");
 		return EXIT_FAILURE;
 	}
 
@@ -61,23 +57,19 @@ int main()
 
 	lexicon_manager::free_instance();
 
-	logger->info("******************************************************");
-	logger->info("*****   Leaving URemote Server : EXIT_SUCCESS    *****");
-	logger->info("******************************************************");
+	logger->info("Leaving URemote Server : EXIT_SUCCESS");
 	return EXIT_SUCCESS;
 }
 
 /**
-* Create the required directories : 
+* Creates the required directories : 
 * - language_dir
 * - config_dir
 * - log_dir
 */
 void createDirectories()
 {
-	logger->debug("******************************************************");
-	logger->debug("*****          Directory initialization          *****");
-	logger->debug("******************************************************");
+	logger->debug("Directories initialization...");
 
 	try {
 		fs_utils::create_directory(language_dir);
@@ -99,6 +91,8 @@ void createDirectories()
 	} catch (const Exception& e) {
 		logger->error(e.whatAsString());
 	}
+
+	logger->debug("Directory created.");
 }
 
 /**

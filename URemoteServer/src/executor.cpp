@@ -3,8 +3,7 @@
 #include <iostream>
 #include <string>
 
-#include "modules/FileManager.h"
-#include "modules/FileManager.h"
+#include "modules/file_manager.h"
 #include "modules/MonUtils.h"
 #include "modules/MasterVolume.h"
 #include "modules/Keyboard.h"
@@ -58,7 +57,7 @@ serialized_message executor::handle_request(serialized_message serializedRequest
 			break;
 
 		case Request_Type_EXPLORER:
-			FileManager::HandleMessage(&reply, reqCode, strParam);
+			file_manager::handle_message(&reply, reqCode, strParam);
 			break;
 
 		case Request_Type_KEYBOARD:
@@ -97,7 +96,7 @@ serialized_message executor::handle_request(serialized_message serializedRequest
 void executor::classic_command(Response& reply, const Request_Code& code, const std::string& securityToken)
 {
 	switch (code) {
-	case Request_Code_HELLO:
+	case Request_Code_PING:
 		reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
 		ai_->welcome(securityToken);
 		break;

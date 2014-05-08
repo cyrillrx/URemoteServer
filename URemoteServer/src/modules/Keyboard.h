@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include "network_io/server_exchange.pb.h"
+#include "network_io/message.pb.h"
 
 class Keyboard
 {
