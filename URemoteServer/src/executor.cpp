@@ -26,16 +26,16 @@ serialized_message executor::handle_request(serialized_message serializedRequest
 	const auto reqCode	= request.code();
 	const auto reqExtraCode		= request.extracode();
 	const auto securityToken	= request.securitytoken();
-	const auto strParam	= request.stringparam();
-	const auto intParam	= request.intparam();
+	const auto strExtra	= request.stringextra();
+	const auto intExtra	= request.intextra();
 
-	Utils::get_logger()->info("Server::HandleMessage() Received message : ");
+	Utils::get_logger()->info("executor::handle_request() Received message : ");
 	Utils::get_logger()->info(" - Type		<" + Request_Type_Name(reqType)	+ ">");
 	Utils::get_logger()->info(" - Code		<" + Request_Code_Name(reqCode)	+ ">");
 	Utils::get_logger()->info(" - ExtraCode	<" + Request_Code_Name(reqExtraCode) + ">");
 	Utils::get_logger()->info(" - Token	    <" + securityToken				+ ">");
-	Utils::get_logger()->info(" - str param	<" + strParam					+ ">");
-	Utils::get_logger()->info(" - int param	<" + std::to_string(intParam)	+ ">");
+	Utils::get_logger()->info(" - str param	<" + strExtra					+ ">");
+	Utils::get_logger()->info(" - int param	<" + std::to_string(intExtra)	+ ">");
 
 	Response reply;
 	reply.set_requesttype(reqType);
@@ -57,7 +57,7 @@ serialized_message executor::handle_request(serialized_message serializedRequest
 			break;
 
 		case Request_Type_EXPLORER:
-			file_manager::handle_message(&reply, reqCode, strParam);
+			file_manager::handle_message(&reply, reqCode, strExtra);
 			break;
 
 		case Request_Type_KEYBOARD:
@@ -69,7 +69,7 @@ serialized_message executor::handle_request(serialized_message serializedRequest
 			break;
 
 		case Request_Type_VOLUME:
-			volume_command(reply, reqCode, intParam);
+			volume_command(reply, reqCode, intExtra);
 			break;
 
 		case Request_Type_APP:
@@ -85,9 +85,14 @@ serialized_message executor::handle_request(serialized_message serializedRequest
 
 	int bufSize = 0;
 	char* buf = nullptr;
-	auto serializedReply = serialize_response(reply);
+	
+	try {		
+		return serialize_response(reply);
+	} catch (const std::exception& e) {
+		Utils::get_logger()->error("executor::handle_request() : " + std::string(e.what()));
+		return serialize_response(clear_response(reply, std::string(e.what())));
+	}
 
-	return serializedReply;
 }
 
 
@@ -145,7 +150,7 @@ void executor::classic_command(Response& reply, const Request_Code& code, const 
 }
 
 /** Handle volume commands. */
-void executor::volume_command(Response& reply, const Request_Code& code, const int& intParam)
+void executor::volume_command(Response& reply, const Request_Code& code, const int& intExtra)
 {
 	float fVolumeLvl;
 	bool isMute;
@@ -158,7 +163,7 @@ void executor::volume_command(Response& reply, const Request_Code& code, const i
 	switch (code) {
 
 	case Request_Code_DEFINE:
-		fVolumeLvl = MasterVolume::getInstance()->define(intParam);
+		fVolumeLvl = MasterVolume::getInstance()->define(intExtra);
 		MasterVolume::freeInstance();
 
 		reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
@@ -169,7 +174,7 @@ void executor::volume_command(Response& reply, const Request_Code& code, const i
 		message = buffer;
 		break;
 
-	case Request_Code_UP:
+	case Request_Code_DPAD_UP:
 		fVolumeLvl = MasterVolume::getInstance()->turnUp();
 		MasterVolume::freeInstance();
 
@@ -181,7 +186,7 @@ void executor::volume_command(Response& reply, const Request_Code& code, const i
 		message = buffer;
 		break;
 
-	case Request_Code_DOWN:
+	case Request_Code_DPAD_DOWN:
 		fVolumeLvl = MasterVolume::getInstance()->turnDown();
 		MasterVolume::freeInstance();
 
@@ -243,22 +248,22 @@ void executor::app_command(Response& reply, const Request_Code& code)
 
 	switch (code) {
 
-		// Ouvrir Gom player
-	case Request_Code_GOM_PLAYER_RUN:
+		// Start the specified app
+	case Request_Code_ON:
 		reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
 		message = App::GetGomPlayer()->Show();
 		App::FreeGomPlayer();
 		break;
 
-		// Fermer Gom player
-	case Request_Code_GOM_PLAYER_KILL:
+		// Close the specified app
+	case Request_Code_OFF:
 		reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
 		message = App::GetGomPlayer()->Close();
 		App::FreeGomPlayer();
 		break;
 
 		// Stretch Gom player
-	case Request_Code_GOM_PLAYER_STRETCH:
+	case Request_Code_KEYCODE_0:
 		reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
 		message = App::GetGomPlayer()->Strech();
 		App::FreeGomPlayer();

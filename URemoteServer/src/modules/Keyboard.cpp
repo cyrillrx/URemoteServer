@@ -80,7 +80,7 @@ void Keyboard::HandleMessage(Response* reply, Request* request)
 {
 	const auto code			= request->code();
 	const auto extraCode	= request->extracode();
-	const auto strParam		= request->stringparam();
+	const auto strParam		= request->stringextra();
 
 	const auto extraInput = GetInputFromCode(extraCode);
 
@@ -92,25 +92,25 @@ void Keyboard::HandleMessage(Response* reply, Request* request)
 		reply->set_message(strParam);
 		break;
 
-	case Request_Code_LEFT:
+	case Request_Code_DPAD_LEFT:
 		SendKeyboardInput(VK_LEFT, extraInput);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("Gauche");
 		break;
 
-	case Request_Code_RIGHT:
+	case Request_Code_DPAD_RIGHT:
 		SendKeyboardInput(VK_RIGHT, extraInput);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("Droite");
 		break;
 
-	case Request_Code_UP:
+	case Request_Code_DPAD_UP:
 		SendKeyboardInput(VK_UP, extraInput);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("Haut");
 		break;
 
-	case Request_Code_DOWN:
+	case Request_Code_DPAD_DOWN:
 		SendKeyboardInput(VK_DOWN, extraInput);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("Bas");
@@ -140,31 +140,31 @@ void Keyboard::HandleMessage(Response* reply, Request* request)
 		reply->set_message("Next");
 		break;
 
-	case Request_Code_KB_ENTER:
+	case Request_Code_KEYCODE_ENTER:
 		SendKeyboardInput(VK_RETURN, extraInput);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("Enter");
 		break;
 
-	case Request_Code_KB_SPACE:
+	case Request_Code_KEYCODE_SPACE:
 		SendKeyboardInput(VK_SPACE, extraInput);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("Space");
 		break;
 
-	case Request_Code_KB_BACKSPACE:
+	case Request_Code_KEYCODE_BACKSPACE:
 		SendKeyboardInput(VK_BACK, extraInput);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("Backspace");
 		break;
 
-	case Request_Code_KB_ESCAPE:
+	case Request_Code_KEYCODE_ESCAPE:
 		SendKeyboardInput(VK_ESCAPE, extraInput);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("Escape");
 		break;
 
-	case Request_Code_KB_F4:
+	case Request_Code_KEYCODE_F4:
 		SendKeyboardInput(VK_F4, extraInput);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("Window closed (Alt + F4)");
@@ -184,12 +184,12 @@ const unsigned short Keyboard::GetInputFromCode(Request::Code code)
 {
 	switch (code) {
 
-	case Request_Code_KB_CTRL:		return VK_CONTROL;
-	case Request_Code_KB_ALT:		return VK_MENU;
-	case Request_Code_KB_ALTGR:		return VK_RMENU;
-	case Request_Code_KB_SHIFT:		return VK_SHIFT;
-	case Request_Code_KB_WINDOWS:	return VK_RWIN;
-	case Request_Code_NONE:			return VK_NONE;
+	case Request_Code_KEYCODE_CTRL:		return VK_CONTROL;
+	case Request_Code_KEYCODE_ALT_LEFT:	return VK_MENU;
+	case Request_Code_KEYCODE_ALT_RIGHT:return VK_RMENU;
+	case Request_Code_KEYCODE_SHIFT:	return VK_SHIFT;
+	case Request_Code_KEYCODE_WINDOWS:	return VK_RWIN;
+	case Request_Code_NONE:				return VK_NONE;
 
 	default:
 		return VK_NONE;

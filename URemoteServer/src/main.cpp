@@ -222,7 +222,7 @@ bool loadAiConfig(std::unique_ptr<ai_config>& aiConfig, std::string& message)
 	} catch (const Exception& e) {
 		message += e.whatAsString();
 		message += "\n";
-		logger->error("AI config KO.");
+		logger->error("AI config KO : " + e.whatAsString());
 	}
 	return aiInitialized;
 }
