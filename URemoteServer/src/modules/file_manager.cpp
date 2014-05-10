@@ -27,16 +27,16 @@ void file_manager::handle_message(Response* reply, Request::Code code, const std
 		query_children(reply, param);
 		break;
 
-	case Request_Code_OPEN_FILE_SERVER_SIDE:
+	case Request_Code_OPEN_SERVER_SIDE:
 		open_file(param);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("Opening file : "  + param);
 		break;
 
-	case Request_Code_OPEN_FILE_CLIENT_SIDE:
+	case Request_Code_OPEN_CLIENT_SIDE:
 		// TODO : Stream client side
 		reply->set_returncode(Response_ReturnCode_RC_ERROR);
-		reply->set_message("OPEN_FILE_CLIENT_SIDE not yet implemented : " + code);
+		reply->set_message("OPEN_CLIENT_SIDE not yet implemented : " + code);
 		break;
 
 	default:
@@ -63,6 +63,9 @@ bool file_manager::query_children(Response* reply, std::string dirPath)
 		// Initiate the vector to return
 		auto* directory = reply->mutable_file();
 		directory->set_absolutefilepath(dirPath);
+		directory->set_filename(dirPath);
+		directory->set_isdirectory(true);
+		directory->set_size(0);
 
 		for (auto& file : fileList) {
 			add_file(directory, file);
@@ -95,6 +98,7 @@ bool file_manager::add_file(FileInfo* directoryInfo, fs_utils::file& file)
 {
 	auto* exchangefile = directoryInfo->add_child();
 
+	exchangefile->set_absolutefilepath(file.path());
 	exchangefile->set_filename(file.filename());
 	exchangefile->set_isdirectory(file.type == fs_utils::file_type::directory_file);
 	exchangefile->set_size(file.size());
