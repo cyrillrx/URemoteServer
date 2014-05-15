@@ -170,6 +170,162 @@ void Keyboard::HandleMessage(Response* reply, Request* request)
 		reply->set_message("Window closed (Alt + F4)");
 		break;
 
+	case Request_Code_KEYCODE_A:
+		SendKeyboardInput(VK_A, extraInput);
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_message("A");
+		break;
+
+	case Request_Code_KEYCODE_B:
+		SendKeyboardInput(VK_B, extraInput);
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_message("B");
+		break;
+
+	case Request_Code_KEYCODE_C:
+		SendKeyboardInput(VK_C, extraInput);
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_message("C");
+		break;
+
+	case Request_Code_KEYCODE_D:
+		SendKeyboardInput(VK_D, extraInput);
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_message("D");
+		break;
+
+	case Request_Code_KEYCODE_E:
+		SendKeyboardInput(VK_E, extraInput);
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_message("E");
+		break;
+		
+	case Request_Code_KEYCODE_F:
+		SendKeyboardInput(VK_F, extraInput);
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_message("F");
+		break;
+
+	case Request_Code_KEYCODE_G:
+		SendKeyboardInput(VK_G, extraInput);
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_message("G");
+		break;
+
+	case Request_Code_KEYCODE_H:
+		SendKeyboardInput(VK_H, extraInput);
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_message("H");
+		break;
+
+	case Request_Code_KEYCODE_I:
+		SendKeyboardInput(VK_I, extraInput);
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_message("I");
+		break;
+
+	case Request_Code_KEYCODE_J:
+		SendKeyboardInput(VK_J, extraInput);
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_message("J");
+		break;
+
+	case Request_Code_KEYCODE_K:
+		SendKeyboardInput(VK_K, extraInput);
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_message("K");
+		break;
+
+	case Request_Code_KEYCODE_L:
+		SendKeyboardInput(VK_L, extraInput);
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_message("L");
+		break;
+
+	case Request_Code_KEYCODE_M:
+		SendKeyboardInput(VK_M, extraInput);
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_message("M");
+		break;
+
+	case Request_Code_KEYCODE_N:
+		SendKeyboardInput(VK_N, extraInput);
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_message("N");
+		break;
+
+	case Request_Code_KEYCODE_O:
+		SendKeyboardInput(VK_O, extraInput);
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_message("O");
+		break;
+
+	case Request_Code_KEYCODE_P:
+		SendKeyboardInput(VK_P, extraInput);
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_message("P");
+		break;
+
+	case Request_Code_KEYCODE_Q:
+		SendKeyboardInput(VK_Q, extraInput);
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_message("Q");
+		break;
+
+	case Request_Code_KEYCODE_R:
+		SendKeyboardInput(VK_R, extraInput);
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_message("R");
+		break;
+
+	case Request_Code_KEYCODE_S:
+		SendKeyboardInput(VK_S, extraInput);
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_message("S");
+		break;
+
+	case Request_Code_KEYCODE_T:
+		SendKeyboardInput(VK_T, extraInput);
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_message("T");
+		break;
+
+	case Request_Code_KEYCODE_U:
+		SendKeyboardInput(VK_U, extraInput);
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_message("U");
+		break;
+
+	case Request_Code_KEYCODE_V:
+		SendKeyboardInput(VK_V, extraInput);
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_message("V");
+		break;
+
+	case Request_Code_KEYCODE_W:
+		SendKeyboardInput(VK_W, extraInput);
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_message("W");
+		break;
+
+	case Request_Code_KEYCODE_X:
+		SendKeyboardInput(VK_X, extraInput);
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_message("X");
+		break;
+
+	case Request_Code_KEYCODE_Y:
+		SendKeyboardInput(VK_Y, extraInput);
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_message("Y");
+		break;
+
+	case Request_Code_KEYCODE_Z:
+		SendKeyboardInput(VK_Z, extraInput);
+		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply->set_message("Z");
+		break;
+
 	default:
 		reply->set_returncode(Response_ReturnCode_RC_ERROR);
 		reply->set_message("Unknown Keyboard code received : " + code);
