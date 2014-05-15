@@ -70,7 +70,8 @@ bool file_manager::query_children(Response* reply, std::string dirPath)
 		for (auto& file : fileList) {
 			add_file(directory, file);
 		}
-
+		
+		reply->set_message("\"" + dirPath + "\"" + " successfully loaded.");
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		return true;
 
