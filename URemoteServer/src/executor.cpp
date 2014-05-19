@@ -24,7 +24,6 @@ serialized_message executor::handle_request(serialized_message serializedRequest
 
 	const auto reqType	= request.type();
 	const auto reqCode	= request.code();
-	const auto reqExtraCode		= request.extracode();
 	const auto securityToken	= request.securitytoken();
 	const auto strExtra	= request.stringextra();
 	const auto intExtra	= request.intextra();
@@ -32,10 +31,9 @@ serialized_message executor::handle_request(serialized_message serializedRequest
 	Utils::get_logger()->info("executor::handle_request() Received message : ");
 	Utils::get_logger()->info(" - Type		<" + Request_Type_Name(reqType)	+ ">");
 	Utils::get_logger()->info(" - Code		<" + Request_Code_Name(reqCode)	+ ">");
-	Utils::get_logger()->info(" - ExtraCode	<" + Request_Code_Name(reqExtraCode) + ">");
 	Utils::get_logger()->info(" - Token	    <" + securityToken				+ ">");
-	Utils::get_logger()->info(" - str param	<" + strExtra					+ ">");
-	Utils::get_logger()->info(" - int param	<" + std::to_string(intExtra)	+ ">");
+	Utils::get_logger()->info(" - str extra	<" + strExtra					+ ">");
+	Utils::get_logger()->info(" - int extra	<" + std::to_string(intExtra)	+ ">");
 
 	Response reply;
 	reply.set_requesttype(reqType);
@@ -61,7 +59,7 @@ serialized_message executor::handle_request(serialized_message serializedRequest
 			break;
 
 		case Request_Type_KEYBOARD:
-			Keyboard::HandleMessage(&reply, &request);
+			keyboard::handle_message(&reply, &request);
 			break;
 
 		case Request_Type_AI:

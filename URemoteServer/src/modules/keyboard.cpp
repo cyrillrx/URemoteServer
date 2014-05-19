@@ -1,4 +1,4 @@
-#include "Keyboard.h"
+#include "keyboard.h"
 
 #include "Utils.h"
 
@@ -76,252 +76,250 @@ using namespace network_io;
 // Fonctions publics
 //////////////////////////////////////////////////////////////////////////////
 
-void Keyboard::HandleMessage(Response* reply, Request* request)
+void keyboard::handle_message(Response* reply, Request* request)
 {
-	const auto code			= request->code();
-	const auto extraCode	= request->extracode();
-	const auto strParam		= request->stringextra();
-
-	const auto extraInput = GetInputFromCode(extraCode);
+	const auto code				= request->code();
+	const auto modifierFlags	= request->intextra();
+	const auto strExtra			= request->stringextra();
 
 	switch (code) {
 
 	case Request_Code_DEFINE:
-		SendDefinedKey(strParam, extraInput);
+		SendDefinedKey(strExtra, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
-		reply->set_message(strParam);
+		reply->set_message(strExtra);
 		break;
 
 	case Request_Code_DPAD_LEFT:
-		SendKeyboardInput(VK_LEFT, extraInput);
+		SendKeyboardInput(VK_LEFT, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("Gauche");
 		break;
 
 	case Request_Code_DPAD_RIGHT:
-		SendKeyboardInput(VK_RIGHT, extraInput);
+		SendKeyboardInput(VK_RIGHT, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("Droite");
 		break;
 
 	case Request_Code_DPAD_UP:
-		SendKeyboardInput(VK_UP, extraInput);
+		SendKeyboardInput(VK_UP, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("Haut");
 		break;
 
 	case Request_Code_DPAD_DOWN:
-		SendKeyboardInput(VK_DOWN, extraInput);
+		SendKeyboardInput(VK_DOWN, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("Bas");
 		break;
 
 	case Request_Code_MEDIA_PLAY_PAUSE:
-		SendKeyboardInput(VK_MEDIA_PLAY_PAUSE, extraInput);
+		SendKeyboardInput(VK_MEDIA_PLAY_PAUSE, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("Play/pause");
 		break;
 
 	case Request_Code_MEDIA_STOP:
-		SendKeyboardInput(VK_MEDIA_STOP, extraInput);
+		SendKeyboardInput(VK_MEDIA_STOP, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("Stop");
 		break;
 
 	case Request_Code_MEDIA_PREVIOUS:
-		SendKeyboardInput(VK_MEDIA_PREV_TRACK, extraInput);
+		SendKeyboardInput(VK_MEDIA_PREV_TRACK, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("Previous");
 		break;
 
 	case Request_Code_MEDIA_NEXT:
-		SendKeyboardInput(VK_MEDIA_NEXT_TRACK, extraInput);
+		SendKeyboardInput(VK_MEDIA_NEXT_TRACK, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("Next");
 		break;
 
 	case Request_Code_KEYCODE_ENTER:
-		SendKeyboardInput(VK_RETURN, extraInput);
+		SendKeyboardInput(VK_RETURN, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("Enter");
 		break;
 
 	case Request_Code_KEYCODE_SPACE:
-		SendKeyboardInput(VK_SPACE, extraInput);
+		SendKeyboardInput(VK_SPACE, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("Space");
 		break;
 
 	case Request_Code_KEYCODE_BACKSPACE:
-		SendKeyboardInput(VK_BACK, extraInput);
+		SendKeyboardInput(VK_BACK, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("Backspace");
 		break;
 
 	case Request_Code_KEYCODE_ESCAPE:
-		SendKeyboardInput(VK_ESCAPE, extraInput);
+		SendKeyboardInput(VK_ESCAPE, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("Escape");
 		break;
 
 	case Request_Code_KEYCODE_F4:
-		SendKeyboardInput(VK_F4, extraInput);
+		SendKeyboardInput(VK_F4, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("Window closed (Alt + F4)");
 		break;
 
 	case Request_Code_KEYCODE_A:
-		SendKeyboardInput(VK_A, extraInput);
+		SendKeyboardInput(VK_A, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("A");
 		break;
 
 	case Request_Code_KEYCODE_B:
-		SendKeyboardInput(VK_B, extraInput);
+		SendKeyboardInput(VK_B, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("B");
 		break;
 
 	case Request_Code_KEYCODE_C:
-		SendKeyboardInput(VK_C, extraInput);
+		SendKeyboardInput(VK_C, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("C");
 		break;
 
 	case Request_Code_KEYCODE_D:
-		SendKeyboardInput(VK_D, extraInput);
+		SendKeyboardInput(VK_D, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("D");
 		break;
 
 	case Request_Code_KEYCODE_E:
-		SendKeyboardInput(VK_E, extraInput);
+		SendKeyboardInput(VK_E, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("E");
 		break;
 		
 	case Request_Code_KEYCODE_F:
-		SendKeyboardInput(VK_F, extraInput);
+		SendKeyboardInput(VK_F, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("F");
 		break;
 
 	case Request_Code_KEYCODE_G:
-		SendKeyboardInput(VK_G, extraInput);
+		SendKeyboardInput(VK_G, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("G");
 		break;
 
 	case Request_Code_KEYCODE_H:
-		SendKeyboardInput(VK_H, extraInput);
+		SendKeyboardInput(VK_H, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("H");
 		break;
 
 	case Request_Code_KEYCODE_I:
-		SendKeyboardInput(VK_I, extraInput);
+		SendKeyboardInput(VK_I, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("I");
 		break;
 
 	case Request_Code_KEYCODE_J:
-		SendKeyboardInput(VK_J, extraInput);
+		SendKeyboardInput(VK_J, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("J");
 		break;
 
 	case Request_Code_KEYCODE_K:
-		SendKeyboardInput(VK_K, extraInput);
+		SendKeyboardInput(VK_K, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("K");
 		break;
 
 	case Request_Code_KEYCODE_L:
-		SendKeyboardInput(VK_L, extraInput);
+		SendKeyboardInput(VK_L, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("L");
 		break;
 
 	case Request_Code_KEYCODE_M:
-		SendKeyboardInput(VK_M, extraInput);
+		SendKeyboardInput(VK_M, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("M");
 		break;
 
 	case Request_Code_KEYCODE_N:
-		SendKeyboardInput(VK_N, extraInput);
+		SendKeyboardInput(VK_N, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("N");
 		break;
 
 	case Request_Code_KEYCODE_O:
-		SendKeyboardInput(VK_O, extraInput);
+		SendKeyboardInput(VK_O, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("O");
 		break;
 
 	case Request_Code_KEYCODE_P:
-		SendKeyboardInput(VK_P, extraInput);
+		SendKeyboardInput(VK_P, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("P");
 		break;
 
 	case Request_Code_KEYCODE_Q:
-		SendKeyboardInput(VK_Q, extraInput);
+		SendKeyboardInput(VK_Q, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("Q");
 		break;
 
 	case Request_Code_KEYCODE_R:
-		SendKeyboardInput(VK_R, extraInput);
+		SendKeyboardInput(VK_R, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("R");
 		break;
 
 	case Request_Code_KEYCODE_S:
-		SendKeyboardInput(VK_S, extraInput);
+		SendKeyboardInput(VK_S, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("S");
 		break;
 
 	case Request_Code_KEYCODE_T:
-		SendKeyboardInput(VK_T, extraInput);
+		SendKeyboardInput(VK_T, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("T");
 		break;
 
 	case Request_Code_KEYCODE_U:
-		SendKeyboardInput(VK_U, extraInput);
+		SendKeyboardInput(VK_U, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("U");
 		break;
 
 	case Request_Code_KEYCODE_V:
-		SendKeyboardInput(VK_V, extraInput);
+		SendKeyboardInput(VK_V, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("V");
 		break;
 
 	case Request_Code_KEYCODE_W:
-		SendKeyboardInput(VK_W, extraInput);
+		SendKeyboardInput(VK_W, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("W");
 		break;
 
 	case Request_Code_KEYCODE_X:
-		SendKeyboardInput(VK_X, extraInput);
+		SendKeyboardInput(VK_X, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("X");
 		break;
 
 	case Request_Code_KEYCODE_Y:
-		SendKeyboardInput(VK_Y, extraInput);
+		SendKeyboardInput(VK_Y, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("Y");
 		break;
 
 	case Request_Code_KEYCODE_Z:
-		SendKeyboardInput(VK_Z, extraInput);
+		SendKeyboardInput(VK_Z, modifierFlags);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply->set_message("Z");
 		break;
@@ -336,29 +334,14 @@ void Keyboard::HandleMessage(Response* reply, Request* request)
 //////////////////////////////////////////////////////////////////////////////
 // Private functions
 //////////////////////////////////////////////////////////////////////////////
-const unsigned short Keyboard::GetInputFromCode(Request::Code code)
-{
-	switch (code) {
 
-	case Request_Code_KEYCODE_CTRL:		return VK_CONTROL;
-	case Request_Code_KEYCODE_ALT_LEFT:	return VK_MENU;
-	case Request_Code_KEYCODE_ALT_RIGHT:return VK_RMENU;
-	case Request_Code_KEYCODE_SHIFT:	return VK_SHIFT;
-	case Request_Code_KEYCODE_WINDOWS:	return VK_RWIN;
-	case Request_Code_NONE:				return VK_NONE;
-
-	default:
-		return VK_NONE;
-	}
-}
-
-std::string Keyboard::SendDefinedKey(const std::string& param, const unsigned short& extraCode)
+std::string keyboard::SendDefinedKey(const std::string& param, const int& modifierFlags)
 {
 	auto c = param.c_str()[0];
 	if ((c >= 48 && c <= 57) || // 0 to 9
 		(c >= 65 && c <= 90) || // A to Z
 		(c >= 97 && c <= 122) ) { // a to z
-			SendKeyboardInput(c, extraCode);
+			SendKeyboardInput(c, modifierFlags);
 			return param;
 
 	} else {
@@ -366,51 +349,69 @@ std::string Keyboard::SendDefinedKey(const std::string& param, const unsigned sh
 	}
 }
 
-void Keyboard::CtrlEnter()
+void keyboard::CtrlEnter()
 {
 	SendKeyboardInput(VK_RETURN, VK_CONTROL);
 }
 
-void Keyboard::SendKeyboardInput(const unsigned short& code, const unsigned short& extraCode)
+void keyboard::SendKeyboardInput(const unsigned short& code, const int& modifierFlags)
 {
-	Utils::get_logger()->debug("Keyboard::SendKeyboardInput");
+	Utils::get_logger()->debug("keyboard::SendKeyboardInput");
 	Utils::get_logger()->debug("-- code : "			+ code);
-	Utils::get_logger()->debug("-- extra code : "	+ extraCode);
+	Utils::get_logger()->debug("-- modifiers : " 	+ modifierFlags);
 
-# if defined(WINDOWS_PLATFORM)
-#define KEYEVENTF_KEYDOWN 0x0000
+	const bool isCtrl		= FLAG_NONE != (modifierFlags & FLAG_CTRL);
+	const bool isShift		= FLAG_NONE != (modifierFlags & FLAG_SHIFT);
+	const bool isAltLeft	= FLAG_NONE != (modifierFlags & FLAG_ALT_LEFT);
+	const bool isAltRight	= FLAG_NONE != (modifierFlags & FLAG_ALT_RIGHT);
+	const bool isWindows	= FLAG_NONE != (modifierFlags & FLAG_WINDOWS);
 
-	INPUT input;
-	input.type = INPUT_KEYBOARD;
-	input.ki.wScan = 0;
-	input.ki.time = 0;
-	input.ki.dwExtraInfo = 0;
+	# if defined(WINDOWS_PLATFORM)
+	#define KEYEVENTF_KEYDOWN 0x0000
 
-	// Press the extra key
-	if (extraCode != VK_NONE) {
-		input.ki.wVk = extraCode;
-		input.ki.dwFlags = KEYEVENTF_KEYDOWN;
-		SendInput(1, &input, sizeof(INPUT));
-	}
+		INPUT input;
+		input.type = INPUT_KEYBOARD;
+		input.ki.wScan = 0;
+		input.ki.time = 0;
+		input.ki.dwExtraInfo = 0;
 
-	// Press the main key
-	input.ki.wVk = code;
-	input.ki.dwFlags = KEYEVENTF_KEYDOWN;
-	SendInput(1, &input, sizeof(INPUT));
+		// Press the extra keys
+		if (isCtrl)		{ press_key(input, VK_CONTROL);	}
+		if (isShift)	{ press_key(input, VK_SHIFT);	}
+		if (isAltLeft)	{ press_key(input, VK_MENU);	}
+		if (isAltRight)	{ press_key(input, VK_RMENU);	}
+		if (isWindows)	{ press_key(input, VK_RWIN);	}
 
-	// Release the main key
-	input.ki.wVk = code;
-	input.ki.dwFlags = KEYEVENTF_KEYUP;
-	SendInput(1, &input, sizeof(INPUT));
+		// Press the main key
+		press_key(input, code);
 
-	// Release the extra key
-	if (extraCode != VK_NONE) {
-		input.ki.wVk = extraCode;
-		input.ki.dwFlags = KEYEVENTF_KEYUP;
-		SendInput(1, &input, sizeof(INPUT));
-	}
+		// Release the main key
+		release_key(input, code);
+
+		// Release the extra keys
+		if (isWindows)	{ release_key(input, VK_RWIN);		}
+		if (isAltRight)	{ release_key(input, VK_RMENU);		}
+		if (isAltLeft)	{ release_key(input, VK_MENU);		}
+		if (isShift)	{ release_key(input, VK_SHIFT);		}
+		if (isCtrl)		{ release_key(input, VK_CONTROL);	}
 	# else
-        //TODO: Implement Keyboard::SendKeyboardInput() on Linux
+        //TODO: Implement keyboard::SendKeyboardInput() on Linux
 	# endif
 
 }
+
+# if defined(WINDOWS_PLATFORM)
+	void keyboard::press_key(INPUT &input, const unsigned short& keyCode)
+	{
+		input.ki.wVk = keyCode;
+		input.ki.dwFlags = KEYEVENTF_KEYUP;
+		SendInput(1, &input, sizeof(INPUT));
+	}
+
+	void keyboard::release_key(INPUT &input, const unsigned short& keyCode)
+	{
+		input.ki.wVk = keyCode;
+		input.ki.dwFlags = KEYEVENTF_KEYUP;
+		SendInput(1, &input, sizeof(INPUT));
+	}
+# endif

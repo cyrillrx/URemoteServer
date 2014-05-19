@@ -133,7 +133,7 @@ std::string App::Strech()
 	if (!window) {
 		resultMessage = m_label + " is not open.";
 	} else {
-		Keyboard::CtrlEnter();
+		keyboard::CtrlEnter();
 		resultMessage = m_label + " has been streched.";
 	}
 
