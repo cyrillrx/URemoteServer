@@ -162,12 +162,6 @@ void keyboard::handle_request(const Request& request, Response& reply)
 		reply.set_message("Escape");
 		break;
 
-	case Request::KEYCODE_F4:
-		SendKeyboardInput(VK_F4, modifierFlags);
-		reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
-		reply.set_message("Window closed (Alt + F4)");
-		break;
-
 	//
 	// Number keys
 	//
@@ -391,6 +385,96 @@ void keyboard::handle_request(const Request& request, Response& reply)
 		reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
 		reply.set_message("Z");
 		break;
+
+	//
+	// Special F1 - F12
+	//
+
+	case Request::KEYCODE_F1:
+		SendKeyboardInput(VK_F1, modifierFlags);
+		reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply.set_message("F1");
+		break;
+
+	case Request::KEYCODE_F2:
+		SendKeyboardInput(VK_F2, modifierFlags);
+		reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply.set_message("F2");
+		break;
+
+	case Request::KEYCODE_F3:
+		SendKeyboardInput(VK_F3, modifierFlags);
+		reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply.set_message("F3");
+		break;
+
+	case Request::KEYCODE_F4:
+		SendKeyboardInput(VK_F4, modifierFlags);
+		reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply.set_message("F4");
+		break;
+
+	case Request::KEYCODE_F5:
+		SendKeyboardInput(VK_F5, modifierFlags);
+		reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply.set_message("F5");
+		break;
+
+	case Request::KEYCODE_F6:
+		SendKeyboardInput(VK_F6, modifierFlags);
+		reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply.set_message("F6");
+		break;
+
+	case Request::KEYCODE_F7:
+		SendKeyboardInput(VK_F7, modifierFlags);
+		reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply.set_message("F7");
+		break;
+
+	case Request::KEYCODE_F8:
+		SendKeyboardInput(VK_F8, modifierFlags);
+		reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply.set_message("F8");
+		break;
+
+	case Request::KEYCODE_F9:
+		SendKeyboardInput(VK_F9, modifierFlags);
+		reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply.set_message("F9");
+		break;
+
+	case Request::KEYCODE_F10:
+		SendKeyboardInput(VK_F10, modifierFlags);
+		reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply.set_message("F10");
+		break;
+
+	case Request::KEYCODE_F11:
+		SendKeyboardInput(VK_F11, modifierFlags);
+		reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply.set_message("F11");
+		break;
+
+	case Request::KEYCODE_F12:
+		SendKeyboardInput(VK_F12, modifierFlags);
+		reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply.set_message("F12");
+		break;
+
+	//
+	// Special char keys
+	// '=', '-', '+', '*',
+	// '/', '\', '_', '|'
+	// ',', '.', ':', ';', '@', '''
+	//
+	case Request::KEYCODE_PERIODE:
+		SendKeyboardInput(VK_OEM_PERIOD, modifierFlags);
+		reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
+		reply.set_message("Periode char '.'");
+		break;
+
+	// Default => Unhandled key
 
 	default:
 		const std::string mesasge = "Key not handled : " + Request::Code_Name(code);
