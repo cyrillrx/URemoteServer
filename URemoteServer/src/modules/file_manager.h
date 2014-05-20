@@ -9,7 +9,7 @@
 class file_manager
 {
 public :
-	static void handle_message(network_io::Response* reply, network_io::Request_Code code, const std::string& param);
+	static void handle_message(network_io::Response* reply, const network_io::Request_Code& code, const std::string& strExtra);
 
 private :
 	static bool add_file(network_io::FileInfo* directoryInfo, fs_utils::file& file);

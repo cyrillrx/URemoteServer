@@ -18,9 +18,9 @@ using namespace network_io;
 executor::executor(std::shared_ptr<AI> ai)
 	: ai_(ai) { }
 
-serialized_message executor::handle_request(serialized_message serializedRequest)
+serialized_message executor::handle_request(serialized_message serializedRequest) const
 {
-	auto request = build_request(serializedRequest);
+	const auto request = build_request(serializedRequest);
 
 	const auto reqType	= request.type();
 	const auto reqCode	= request.code();
@@ -59,7 +59,7 @@ serialized_message executor::handle_request(serialized_message serializedRequest
 			break;
 
 		case Request_Type_KEYBOARD:
-			keyboard::handle_message(&reply, &request);
+			keyboard::handle_request(request, reply);
 			break;
 
 		case Request_Type_AI:
@@ -96,7 +96,7 @@ serialized_message executor::handle_request(serialized_message serializedRequest
 
 
 /** Handle general commands. */
-void executor::classic_command(Response& reply, const Request_Code& code, const std::string& securityToken)
+void executor::classic_command(Response& reply, const Request_Code& code, const std::string& securityToken) const
 {
 	switch (code) {
 	case Request_Code_PING:
@@ -148,7 +148,7 @@ void executor::classic_command(Response& reply, const Request_Code& code, const 
 }
 
 /** Handle volume commands. */
-void executor::volume_command(Response& reply, const Request_Code& code, const int& intExtra)
+void executor::volume_command(Response& reply, const Request_Code& code, const int& intExtra) const
 {
 	float fVolumeLvl;
 	bool isMute;
@@ -215,7 +215,7 @@ void executor::volume_command(Response& reply, const Request_Code& code, const i
 }
 
 /** Handle AI commands */
-void executor::ai_command(Response& reply, const Request_Code& code)
+void executor::ai_command(Response& reply, const Request_Code& code) const
 {
 	bool isMute;
 	std::string message;
@@ -240,7 +240,7 @@ void executor::ai_command(Response& reply, const Request_Code& code)
 }
 
 /** Handle application commands. */
-void executor::app_command(Response& reply, const Request_Code& code)
+void executor::app_command(Response& reply, const Request_Code& code) const
 {
 	std::string message;
 
@@ -278,7 +278,7 @@ void executor::app_command(Response& reply, const Request_Code& code)
 }
 
 /** Send a command to shutdown the computer. */
-void executor::shutdown_pc(Response& reply, const int& delay)
+void executor::shutdown_pc(Response& reply, const int& delay) const
 {
 	ai_->stopConnection();
 

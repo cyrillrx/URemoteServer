@@ -12,7 +12,7 @@
 class keyboard
 {
 public:
-	static void handle_message(network_io::Response* reply, network_io::Request* request);
+	static void handle_request(const network_io::Request& request, network_io::Response& reply);
 	static void CtrlEnter();
 
 private :

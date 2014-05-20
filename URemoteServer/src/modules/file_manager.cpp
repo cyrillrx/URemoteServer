@@ -13,27 +13,27 @@ using namespace network_io;
 // Public functions
 //////////////////////////////////////////////////////////////////////////////
 
-void file_manager::handle_message(Response* reply, Request::Code code, const std::string& param)
+void file_manager::handle_message(Response* reply, const Request_Code& code, const std::string& strExtra)
 {
 	switch (code) {
 
-	case Request_Code_QUERY_ROOTS:
+	case Request::QUERY_ROOTS:
 		// TODO : return strings containing pathes
 		reply->set_returncode(Response_ReturnCode_RC_ERROR);
 		reply->set_message("QUERY_ROOTS not yet implemented : " + code);
 		break;
 
-	case Request_Code_QUERY_CHILDREN:
-		query_children(reply, param);
+	case Request::QUERY_CHILDREN:
+		query_children(reply, strExtra);
 		break;
 
-	case Request_Code_OPEN_SERVER_SIDE:
-		open_file(param);
+	case Request::OPEN_SERVER_SIDE:
+		open_file(strExtra);
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
-		reply->set_message("Opening file : "  + param);
+		reply->set_message("Opening file : "  + strExtra);
 		break;
 
-	case Request_Code_OPEN_CLIENT_SIDE:
+	case Request::OPEN_CLIENT_SIDE:
 		// TODO : Stream client side
 		reply->set_returncode(Response_ReturnCode_RC_ERROR);
 		reply->set_message("OPEN_CLIENT_SIDE not yet implemented : " + code);
