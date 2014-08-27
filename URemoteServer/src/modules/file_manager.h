@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 
-#include "network_io/message.pb.h"
+#include "network_io/remote_command.pb.h"
 #include "fs_utils.h"
 
 class file_manager

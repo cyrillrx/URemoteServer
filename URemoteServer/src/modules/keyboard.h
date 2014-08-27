@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include "network_io/message.pb.h"
+#include "network_io/remote_command.pb.h"
 
 #include "platform_config.h"
 # if defined(WINDOWS_PLATFORM)
