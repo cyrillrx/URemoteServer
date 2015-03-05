@@ -1,5 +1,5 @@
 [AI]
-ai_initiated=artificial intelligence initiated.
+ai_initiated=$1 initiated.
 ai_self_introduction=My name is $1.
 ai_setting_up=Setting up system configuration.
 ai_configuration_completed=Configuration is complete.
@@ -10,7 +10,7 @@ ai_welcome_user=User identified. Welcome $1.
 ai_goodbye=Goodbye sir.
 
 ai_shutdown=$1 is shutting down.
-ai_yes=Yes sir.
+ai_yes=What can I do for you, sir ?
 ai_all_right=All right.
 ai_understood=Understood.
 

@@ -54,7 +54,7 @@ bool file_manager::query_children(Response* reply, std::string dirPath)
 {
 	// Default root
 	if (dirPath == "default_path") {
-		dirPath = "L:/";
+		dirPath = "L:";
 	}
 
 	try {

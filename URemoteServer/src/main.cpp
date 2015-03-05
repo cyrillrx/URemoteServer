@@ -11,6 +11,7 @@
 #include "exception/config_exception.h"
 #include "text_to_speech.h"
 #include "logger.h"
+#include "../../../cpp_cross_api/src/network_io/server_config.h"
 
 void createDirectories();
 bool initProgram(std::unique_ptr<ai_config>& aiConfig,
@@ -237,7 +238,9 @@ bool loadServerConfig(std::unique_ptr<network_io::server_config>& server_config,
 	bool serverInitialized = false;
 	try {
 		server_config = std::unique_ptr<network_io::server_config>(new network_io::server_config(server_conf_path));
-		logger->debug("Server config OK.");
+		std::stringstream ss;
+		ss << "Server config OK on port " << server_config->port();
+		logger->debug(ss.str());
 		serverInitialized = true;
 	} catch (const Exception& e) {
 		message += e.whatAsString();

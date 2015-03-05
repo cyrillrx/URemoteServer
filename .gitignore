@@ -1,10 +1,10 @@
-Debug
-Release
-include
-lib
-ipch
-conf
-logs
+# temp files
+*~*
+
+# Intellij project files
+.idea/
+
+# VS project files
 *.suo
 *.sdf
 *.opensdf
@@ -14,3 +14,14 @@ logs
 *.layout
 .directory
 .objs
+
+# generated files
+Debug
+Release
+
+include
+lib
+ipch
+conf
+logs
+

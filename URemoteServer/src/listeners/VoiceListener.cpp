@@ -31,7 +31,7 @@ void VoiceListener::doStart()
 	while (continueToListen_) {
 
 		// TODO: code voice recognition
-		std::string keyword = "PC";
+		std::string keyword = "Eternity";
 		log_.info("Wait for " + keyword);
 		listen(keyword);
 		log_.info("Do continue");
@@ -51,4 +51,5 @@ void VoiceListener::listen(const std::string& keyword)
 
 	recognizer.start_listening();
 	*/
+	ai_->say(lexicon_manager::get_string(trad_key::AI_YES));
 }
