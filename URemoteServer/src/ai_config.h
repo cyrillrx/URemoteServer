@@ -2,7 +2,7 @@
 
 #include <string>
 #include "properties.h"
-#include "voice.h"
+#include "../../libraries/lrx_cross_api/src/voice.h"
 
 class ai_config : public properties
 {

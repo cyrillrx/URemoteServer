@@ -1,0 +1,6 @@
+[submodule "libraries/lrx_cross_api"]
+	path = libraries/lrx_cross_api
+	url = git@github.com:cyrillrx/cpp_cross_api.git
+[submodule "libraries/lrx_core"]
+	path = libraries/lrx_core
+	url = git@github.com:cyrillrx/cpp_utils.git

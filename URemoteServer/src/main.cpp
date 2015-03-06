@@ -4,14 +4,15 @@
 #include <sstream>
 
 #include "platform_config.h"
-#include "Utils.h"
 #include "lexicon_manager.h"
-#include "fs_utils.h"
-#include "network_io/server_config.h"
 #include "exception/config_exception.h"
-#include "text_to_speech.h"
-#include "logger.h"
-#include "../../../cpp_cross_api/src/network_io/server_config.h"
+#include "../../libraries/lrx_cross_api/src/network_io/server_config.h"
+#include "../../libraries/lrx_core/Utils/src/logger.h"
+#include "../../libraries/lrx_core/Utils/src/Utils.h"
+#include "../../libraries/lrx_core/Utils/src/exception/Exception.h"
+#include "../../libraries/lrx_core/Utils/src/lexicon_manager.h"
+#include "../../libraries/lrx_core/Utils/src/fs_utils.h"
+#include "../../libraries/lrx_cross_api/src/text_to_speech.h"
 
 void createDirectories();
 bool initProgram(std::unique_ptr<ai_config>& aiConfig,
@@ -39,7 +40,7 @@ int main()
 
 	logger->set_log_file(log_path);
 
-	
+
 	std::unique_ptr<ai_config> aiConfig		= nullptr;
 	std::unique_ptr<authorized_users> users	= nullptr;
 	std::unique_ptr<network_io::server_config> serverConfig = nullptr;
@@ -63,7 +64,7 @@ int main()
 }
 
 /**
-* Creates the required directories : 
+* Creates the required directories :
 * - language_dir
 * - config_dir
 * - log_dir
@@ -98,7 +99,7 @@ void createDirectories()
 
 /**
 * Initialize the AI, the lexicon_manager and the Server
-* Load the program configurations : 
+* Load the program configurations :
 * - Ai config
 * - Authorized Users
 * - Server (URemoteListener) configuration
@@ -128,7 +129,7 @@ bool initProgram(std::unique_ptr<ai_config>& aiConfig,
 			logger->error("AI config KO.");
 		}
 	}
-	
+
 	bool usersLoaded = loadUsers(users, message);
 	bool serverInitialized = loadServerConfig(serverConfig, message);
 
