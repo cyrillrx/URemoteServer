@@ -55,8 +55,14 @@ set(SOURCE_FILES
     libraries/lrx_core/Utils/src/lexicon.h
     libraries/lrx_core/Utils/src/lexicon_manager.cpp
     libraries/lrx_core/Utils/src/lexicon_manager.h
+    libraries/lrx_core/Utils/src/logger.cpp
+    libraries/lrx_core/Utils/src/logger.h
+    libraries/lrx_core/Utils/src/platform_config.h
     libraries/lrx_core/Utils/src/properties.cpp
     libraries/lrx_core/Utils/src/properties.h
+    libraries/lrx_core/Utils/src/string_utils.cpp
+    libraries/lrx_core/Utils/src/string_utils.h
 )
 
 add_executable(eternity ${SOURCE_FILES})
+add_definitions(-std=c++11)

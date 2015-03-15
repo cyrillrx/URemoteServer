@@ -18,6 +18,15 @@
 .directory
 .objs
 
+# Biicode
+/bii/
+/cmake/
+/build/
+/bin/
+/deps/
+/blocks/
+settings.pyc
+
 # generated files
 Debug
 Release

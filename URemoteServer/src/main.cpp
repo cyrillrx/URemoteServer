@@ -2,10 +2,9 @@
 
 #include <iostream>
 #include <sstream>
+#include <stdlib.h>
+#include <winuser.h>
 
-#include "platform_config.h"
-#include "lexicon_manager.h"
-#include "exception/config_exception.h"
 #include "../../libraries/lrx_cross_api/src/network_io/server_config.h"
 #include "../../libraries/lrx_core/Utils/src/logger.h"
 #include "../../libraries/lrx_core/Utils/src/Utils.h"
@@ -13,6 +12,7 @@
 #include "../../libraries/lrx_core/Utils/src/lexicon_manager.h"
 #include "../../libraries/lrx_core/Utils/src/fs_utils.h"
 #include "../../libraries/lrx_cross_api/src/text_to_speech.h"
+#include "../../libraries/lrx_core/Utils/src/exception/config_exception.h"
 
 void createDirectories();
 bool initProgram(std::unique_ptr<ai_config>& aiConfig,

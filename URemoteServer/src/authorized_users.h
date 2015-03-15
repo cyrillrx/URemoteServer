@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include "properties.h"
+#include "../../libraries/lrx_core/Utils/src/properties.h"
 
 class authorized_users : public properties
 {

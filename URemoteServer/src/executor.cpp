@@ -1,17 +1,18 @@
 #include "executor.h"
 
 #include <iostream>
-#include <string>
+#include <stdlib.h>
 
 #include "modules/file_manager.h"
 #include "modules/MonUtils.h"
 #include "modules/MasterVolume.h"
 #include "modules/Keyboard.h"
 #include "modules/App.h"
-#include "lexicon_manager.h"
 #include "trad_key.h"
-#include "Utils.h"
 #include "string_utils.h"
+#include "../../libraries/lrx_cross_api/src/network_io/serialized_message.h"
+#include "../../libraries/lrx_core/Utils/src/Utils.h"
+#include "../../libraries/lrx_core/Utils/src/lexicon_manager.h"
 
 using namespace network_io;
 
@@ -83,8 +84,8 @@ serialized_message executor::handle_request(serialized_message serializedRequest
 
 	int bufSize = 0;
 	char* buf = nullptr;
-	
-	try {		
+
+	try {
 		return serialize_response(reply);
 	} catch (const std::exception& e) {
 		Utils::get_logger()->error("executor::handle_request() : " + std::string(e.what()));

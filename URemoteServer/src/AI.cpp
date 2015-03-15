@@ -2,13 +2,12 @@
 
 #include <thread>
 
-#include "lexicon_manager.h"
 #include "trad_key.h"
-#include "Utils.h"
-#include "exception/Exception.h"
 #include "listeners/ConsoleListener.h"
 #include "listeners/URemoteListener.h"
 #include "listeners/VoiceListener.h"
+#include "../../libraries/lrx_core/Utils/src/lexicon_manager.h"
+#include "../../libraries/lrx_core/Utils/src/Utils.h"
 
 #define DELAY 60*5 // 5 min / 300 sec before repeate time
 

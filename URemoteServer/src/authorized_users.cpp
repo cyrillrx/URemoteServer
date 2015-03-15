@@ -1,4 +1,5 @@
 #include "authorized_users.h"
+#include "../../libraries/lrx_core/Utils/src/properties.h"
 
 authorized_users::authorized_users(const std::string& path) : properties(path)
 { }
