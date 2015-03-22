@@ -1,0 +1,177 @@
+syntax = "proto3";
+package network_io;
+
+option java_package = "org.es.uremote.request.protobuf";
+option java_outer_classname = "RemoteCommand";
+
+message Request {
+
+	enum Type {
+		SIMPLE		= 0;
+		EXPLORER	= 1;
+		KEYBOARD	= 2;
+		AI			= 3;
+		VOLUME		= 4;
+		APP			= 5;
+	}
+
+	enum Code {
+		NONE			= 0;
+		DEFINE			= 1;
+		STATUS			= 2;
+		ON				= 3;
+		OFF				= 4;
+		PING			= 5;
+		TEST			= 6;
+		
+		KILL_SERVER		= 7;
+		SHUTDOWN		= 8;
+		SWITCH_WINDOW	= 9;
+		LOCK			= 10;
+		MUTE			= 11;
+		SAY				= 12;
+		
+		DPAD_UP			= 13;
+		DPAD_DOWN		= 14;
+		DPAD_LEFT		= 15;
+		DPAD_RIGHT		= 16;
+		
+		// 20-29 : Media keys
+		
+		MEDIA_PLAY_PAUSE	= 20;
+		MEDIA_STOP			= 21;
+		MEDIA_PREVIOUS		= 22;
+		MEDIA_NEXT			= 23;
+		MEDIA_FF			= 24;
+		MEDIA_REWIND		= 25;
+		
+		QUERY_ROOTS			= 26;
+		QUERY_CHILDREN		= 27;
+		OPEN_SERVER_SIDE	= 28;
+		OPEN_CLIENT_SIDE	= 29;
+		
+		// 30-39 : Modifier keys
+		
+		KEYCODE_CTRL		= 30;
+		KEYCODE_SHIFT		= 31;
+		KEYCODE_ALT_LEFT	= 32;
+		KEYCODE_ALT_RIGHT	= 33;
+		KEYCODE_WINDOWS		= 34;
+		
+		// 40-49 : Special keys
+		
+		KEYCODE_ENTER		= 40;
+		KEYCODE_ESCAPE		= 41;
+		KEYCODE_DELETE		= 42;
+		KEYCODE_SPACE		= 43;
+		KEYCODE_BACKSPACE	= 44;
+		KEYCODE_TAB			= 45;
+		
+		// 500-549 : Basic keys
+		
+		KEYCODE_0			= 500;
+		KEYCODE_1			= 501;
+		KEYCODE_2			= 502;
+		KEYCODE_3			= 503;
+		KEYCODE_4			= 504;
+		KEYCODE_5			= 505;
+		KEYCODE_6			= 506;
+		KEYCODE_7			= 507;
+		KEYCODE_8			= 508;
+		KEYCODE_9			= 509;
+		
+		KEYCODE_A			= 510;
+		KEYCODE_B			= 511;
+		KEYCODE_C			= 512;
+		KEYCODE_D			= 513;
+		KEYCODE_E			= 514;
+		KEYCODE_F			= 515;
+		KEYCODE_G			= 516;
+		KEYCODE_H			= 517;
+		KEYCODE_I			= 518;
+		KEYCODE_J			= 519;
+		KEYCODE_K			= 520;
+		KEYCODE_L			= 521;
+		KEYCODE_M			= 522;
+		KEYCODE_N			= 523;
+		KEYCODE_O			= 524;
+		KEYCODE_P			= 525;
+		KEYCODE_Q			= 526;
+		KEYCODE_R			= 527;
+		KEYCODE_S			= 528;
+		KEYCODE_T			= 529;
+		KEYCODE_U			= 530;
+		KEYCODE_V			= 531;
+		KEYCODE_W			= 532;
+		KEYCODE_X			= 533;
+		KEYCODE_Y			= 534;
+		KEYCODE_Z			= 535;
+		
+		KEYCODE_F1			= 550;
+		KEYCODE_F2			= 551;
+		KEYCODE_F3			= 552;
+		KEYCODE_F4			= 553;
+		KEYCODE_F5			= 554;
+		KEYCODE_F6			= 555;
+		KEYCODE_F7			= 556;
+		KEYCODE_F8			= 557;
+		KEYCODE_F9			= 558;
+		KEYCODE_F10			= 559;
+		KEYCODE_F11			= 560;
+		KEYCODE_F12			= 561;
+		
+		KEYCODE_EQUALS		= 600; // '='
+		KEYCODE_MINUS		= 601; // '-'
+		KEYCODE_PLUS		= 602; // '+'
+		KEYCODE_STAR		= 603; // '*'
+		KEYCODE_SLASH		= 604; // '/'
+		KEYCODE_BACKSLASH	= 605; // '\'
+		KEYCODE_UNDERSCORE	= 606; // '_'
+		KEYCODE_PIPE		= 607; // '|'
+		KEYCODE_COMMA		= 608; // ','
+		KEYCODE_PERIODE		= 609; // '.'
+		KEYCODE_COLON		= 610; // ':'
+		KEYCODE_SEMICOLON	= 611; // ';'
+		KEYCODE_AT			= 612; // '@'
+		KEYCODE_APOSTROPHE	= 613; // '''
+		
+		KEYCODE_LEFT_PAREN			= 650;	// '('
+		KEYCODE_RIGHT_PARENT		= 651;	// ')'
+		KEYCODE_LEFT_BRACKET		= 652;	// '['
+		KEYCODE_RIGHT_BRACKET		= 653;	// ']'
+		KEYCODE_LEFT_CURLY_BRACKET	= 654;	// '{'
+		KEYCODE_RIGHT_CURLY_BRACKET	= 655;	// '}'
+		KEYCODE_LEFT_ANGLE_BRACKET	= 656;	// '<'
+		KEYCODE_RIGHT_ANGLE_BRACKET	= 657; 	// '>'
+	}
+
+	Type type			= 1;
+	Code code			= 2;
+	
+	optional string	securityToken	= 3;
+	optional int32 intExtra			= 4;
+	optional string	stringExtra		= 5;
+}
+
+message FileInfo {	
+	string absoluteFilePath	= 1;
+	string filename			= 2;
+	bool isDirectory			= 3;
+	uint32 size				= 4;
+	FileInfo child				= 5;
+}
+
+message Response {
+
+	enum ReturnCode  {
+		RC_SUCCESS	= 0;
+		RC_ERROR	= 1;
+	}
+	
+	Request.Type requestType	= 1;
+	Request.Code requestCode	= 2;
+	ReturnCode returnCode		= 3;
+	string message				= 4;
+	optional int32 intValue				= 5;
+	optional FileInfo file				= 6;
+}

@@ -1,8 +1,8 @@
 #pragma once
 
 #include <string>
-#include "../../libraries/lrx_cross_api/src/voice.h"
-#include "../../libraries/lrx_core/Utils/src/properties.h"
+#include "voice.h"
+#include "properties.h"
 
 class ai_config : public properties
 {
