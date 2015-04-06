@@ -1,7 +1,7 @@
 syntax = "proto3";
 package network_io;
 
-option java_package = "org.es.uremote.request.protobuf";
+option java_package = "com.cyrilleroux.uremote.request.protobuf";
 option java_outer_classname = "RemoteCommand";
 
 message Request {
@@ -156,9 +156,9 @@ message Request {
 message FileInfo {	
 	string absoluteFilePath	= 1;
 	string filename			= 2;
-	bool isDirectory			= 3;
+	bool isDirectory		= 3;
 	uint32 size				= 4;
-	FileInfo child				= 5;
+	repeated FileInfo child = 5;
 }
 
 message Response {
@@ -172,6 +172,6 @@ message Response {
 	Request.Code requestCode	= 2;
 	ReturnCode returnCode		= 3;
 	string message				= 4;
-	optional int32 intValue				= 5;
-	optional FileInfo file				= 6;
+	optional int32 intValue		= 5;
+	optional FileInfo file		= 6;
 }

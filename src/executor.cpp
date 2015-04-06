@@ -2,13 +2,25 @@
 #include <stdlib.h>
 
 #include "string_utils.h"
-#include "network_io/serialized_message.h"
 #include "Utils.h"
 #include "lang/lexicon_manager.h"
 
+// TODO update Biicode config
+//#include "network_io/serialized_message.h"
+#include "cyrillrx/cross_api/src/network_io/serialized_message.h"
+
+#include "AI.h"
+#include "executor.h"
+#include "trad_key.h"
+#include "modules/App.h"
+#include "modules/file_manager.h"
+#include "modules/keyboard.h"
+#include "modules/master_volume.h"
+#include "modules/MonUtils.h"
+
 using namespace network_io;
 
-executor::executor(std::shared_ptr < AI > ai)
+executor::executor(std::shared_ptr<AI> ai)
         : ai_(ai) { }
 
 serialized_message executor::handle_request(serialized_message serializedRequest) const
@@ -153,8 +165,8 @@ void executor::volume_command(Response &reply, const Request_Code &code, const i
     switch (code) {
 
         case Request_Code_DEFINE:
-            fVolumeLvl = MasterVolume::getInstance()->define(intExtra);
-            MasterVolume::freeInstance();
+            fVolumeLvl = master_volume::getInstance()->define(intExtra);
+            master_volume::freeInstance();
 
             reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
             volumePoucentage = (int) (fVolumeLvl * 100);
@@ -165,8 +177,8 @@ void executor::volume_command(Response &reply, const Request_Code &code, const i
             break;
 
         case Request_Code_DPAD_UP:
-            fVolumeLvl = MasterVolume::getInstance()->turnUp();
-            MasterVolume::freeInstance();
+            fVolumeLvl = master_volume::getInstance()->turnUp();
+            master_volume::freeInstance();
 
             reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
             volumePoucentage = (int) (fVolumeLvl * 100);
@@ -177,8 +189,8 @@ void executor::volume_command(Response &reply, const Request_Code &code, const i
             break;
 
         case Request_Code_DPAD_DOWN:
-            fVolumeLvl = MasterVolume::getInstance()->turnDown();
-            MasterVolume::freeInstance();
+            fVolumeLvl = master_volume::getInstance()->turnDown();
+            master_volume::freeInstance();
 
             reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
             volumePoucentage = (int) (fVolumeLvl * 100);
@@ -189,8 +201,8 @@ void executor::volume_command(Response &reply, const Request_Code &code, const i
             break;
 
         case Request_Code_MUTE:
-            isMute = MasterVolume::getInstance()->toggleMute();
-            MasterVolume::freeInstance();
+            isMute = master_volume::getInstance()->toggleMute();
+            master_volume::freeInstance();
 
             reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
             reply.set_intvalue(isMute);
@@ -255,7 +267,7 @@ void executor::app_command(Response &reply, const Request_Code &code) const
             // Stretch Gom player
         case Request_Code_KEYCODE_0:
             reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
-            message = App::GetGomPlayer()->Strech();
+            message = App::GetGomPlayer()->Stretch();
             App::FreeGomPlayer();
             break;
 

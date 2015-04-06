@@ -11,15 +11,15 @@ bii_find_boost()
 #Add Boost headers to the block include directories
 target_include_directories(${BII_BLOCK_TARGET} INTERFACE ${Boost_INCLUDE_DIRS})
 
-#INCLUDE(biicode/cmake/tools) # Include tools.cmake file from cmake block from the "biicode" user
-#ACTIVATE_CPP11(INTERFACE ${BII_BLOCK_TARGET})
+INCLUDE(biicode/cmake/tools) # Include tools.cmake file from cmake block from the "biicode" user
+ACTIVATE_CPP11(INTERFACE ${BII_BLOCK_TARGET})
 
 
-    IF(APPLE)
-         TARGET_COMPILE_OPTIONS(${BII_BLOCK_TARGET} INTERFACE "-std=c++11 -stdlib=libc++")
-    ELSEIF (WIN32 OR UNIX)
-         TARGET_COMPILE_OPTIONS(${BII_BLOCK_TARGET} INTERFACE "-std=c++11")
-    ENDIF(APPLE)
+#    IF(APPLE)
+#         TARGET_COMPILE_OPTIONS(${BII_BLOCK_TARGET} INTERFACE "-std=c++11 -stdlib=libc++")
+#    ELSEIF (WIN32 OR UNIX)
+#         TARGET_COMPILE_OPTIONS(${BII_BLOCK_TARGET} INTERFACE "-std=c++11")
+#    ENDIF(APPLE)
 
 # You can safely delete lines from here...
 

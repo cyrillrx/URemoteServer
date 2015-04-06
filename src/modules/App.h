@@ -19,7 +19,7 @@ public:
 	
 	std::string Show();
 	std::string Close();
-	std::string Strech();
+	std::string Stretch();
 	
 private:
 	static std::unique_ptr<App> s_GomPlayer;

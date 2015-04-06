@@ -1,8 +1,11 @@
 #include "VoiceListener.h"
 
 #include "lang/lexicon_manager.h"
-#include "voice_recognition.h"
 #include "../trad_key.h"
+
+// TODO update Biicode config
+//#include "voice_recognition.h"
+#include "cyrillrx/cross_api/src/voice_recognition.h"
 
 VoiceListener::VoiceListener(std::shared_ptr<AI> ai)
 	: ai_(ai)

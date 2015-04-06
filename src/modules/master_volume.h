@@ -4,13 +4,14 @@
 
 #include "platform_config.h"
 # if defined(WINDOWS_PLATFORM)
+#   include <windows.h>
 #   include <endpointvolume.h>
 # endif
 
-class MasterVolume
+class master_volume
 {
 public :
-	static MasterVolume* getInstance();
+	static master_volume* getInstance();
 	static void freeInstance();
 
 	bool toggleMute();
@@ -19,7 +20,7 @@ public :
 	float turnDown();
 
 private :
-	static MasterVolume *s_masterVolume;
+	static master_volume *s_masterVolume;
 
 # if defined(WINDOWS_PLATFORM)
 	IAudioEndpointVolume *m_endpointVolume;
@@ -27,8 +28,8 @@ private :
 	void freeVolumeController();
 # endif
 
-	MasterVolume();
-	~MasterVolume();
+	master_volume();
+	~master_volume();
 
 	bool isMute();
 	void setMute(const bool& mute);

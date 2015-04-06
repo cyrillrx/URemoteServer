@@ -7,6 +7,10 @@
 #include "string_utils.h"
 #include "Utils.h"
 
+#if defined(WINDOWS_PLATFORM)
+#include <comutil.h>
+#endif
+
 using namespace network_io;
 
 //////////////////////////////////////////////////////////////////////////////
@@ -18,7 +22,7 @@ void file_manager::handle_message(Response* reply, const Request_Code& code, con
 	switch (code) {
 
 	case Request::QUERY_ROOTS:
-		// TODO : return strings containing pathes
+		// TODO : return strings containing paths
 		reply->set_returncode(Response_ReturnCode_RC_ERROR);
 		reply->set_message("QUERY_ROOTS not yet implemented : " + code);
 		break;
@@ -70,7 +74,7 @@ bool file_manager::query_children(Response* reply, std::string dirPath)
 		for (auto& file : fileList) {
 			add_file(directory, file);
 		}
-		
+
 		reply->set_message("\"" + dirPath + "\"" + " successfully loaded.");
 		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
 		return true;

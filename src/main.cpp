@@ -2,21 +2,24 @@
 
 #include <iostream>
 #include <sstream>
-#include <winuser.h>
+#include <stdlib.h>
 
-#include "network_io/server_config.h"
 #include "Utils.h"
+// TODO update Biicode config
+//#include "text_to_speech.h"
+//#include "network_io/server_config.h"
+#include "cyrillrx/cross_api/src/text_to_speech.h"
+
 #include "exception/Exception.h"
 #include "lang/lexicon_manager.h"
 #include "fs/fs_utils.h"
-#include "text_to_speech.h"
 #include "exception/config_exception.h"
 
 void createDirectories();
 
 bool initProgram(std::unique_ptr<ai_config> &aiConfig,
-        std::unique_ptr<authorized_users> &users,
-        std::unique_ptr<network_io::server_config> &serverConfig);
+                 std::unique_ptr<authorized_users> &users,
+                 std::unique_ptr<network_io::server_config> &serverConfig);
 
 bool loadAiConfig(std::unique_ptr<ai_config> &aiConfig, std::string &message);
 
@@ -108,8 +111,8 @@ void createDirectories()
 * - Server (URemoteListener) configuration
 */
 bool initProgram(std::unique_ptr<ai_config> &aiConfig,
-        std::unique_ptr<authorized_users> &users,
-        std::unique_ptr<network_io::server_config> &serverConfig)
+                 std::unique_ptr<authorized_users> &users,
+                 std::unique_ptr<network_io::server_config> &serverConfig)
 {
     logger->info("Program initialization...");
     // TODO: Set Error and warning into a Queue to treat it (vocally) once everything is loaded.
@@ -144,7 +147,7 @@ bool initProgram(std::unique_ptr<ai_config> &aiConfig,
     } else {
         logger->error("Program initialization failed !");
 # if defined(WINDOWS_PLATFORM)
-		MessageBoxA(nullptr, message.c_str(), nullptr, 0);
+        MessageBoxA(nullptr, message.c_str(), nullptr, 0);
 # else
         // TODO: Implement messagebox with Qt or another widget library
 # endif
@@ -211,13 +214,15 @@ bool loadAiConfig(std::unique_ptr<ai_config> &aiConfig, std::string &message)
         aiConfig = std::unique_ptr<ai_config>(new ai_config(ai_conf_path));
         logger->info("AI config OK.");
 
-        if (!text_to_speech::test_parameters(aiConfig->language_code(), aiConfig->gender, aiConfig->age, aiConfig->rate)) {
+        if (!text_to_speech::test_parameters(aiConfig->language_code(), aiConfig->gender, aiConfig->age,
+                                             aiConfig->rate)) {
             message += "AI setting failure. Trying out with default settings\n";
             logger->warning("AI setting failure. Trying out with default settings");
 
             // Retry with default settings.
             aiConfig->language = text_to_speech::default_lang;
-            if (!text_to_speech::test_parameters(aiConfig->language_code(), aiConfig->gender, aiConfig->age, aiConfig->rate)) {
+            if (!text_to_speech::test_parameters(aiConfig->language_code(), aiConfig->gender, aiConfig->age,
+                                                 aiConfig->rate)) {
                 throw config_exception("main.cpp initAiConfig()", "AiConfig : Try with default Failed");
             }
         }

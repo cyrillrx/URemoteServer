@@ -3,8 +3,9 @@
 #include <vector>
 #include <string>
 
-#include "cyrillrx/cross_api/src/network_io/remote_command.pb.h"
 #include "fs/fs_utils.h"
+//#include "cyrillrx/cross_api/src/network_io/remote_command.pb.h"
+#include "network_io/remote_command.pb.h"
 
 class file_manager
 {

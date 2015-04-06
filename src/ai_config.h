@@ -1,8 +1,11 @@
 #pragma once
 
 #include <string>
-#include "voice.h"
 #include "properties.h"
+
+// TODO update Biicode config
+//#include "voice.h"
+#include "cyrillrx/cross_api/src/voice.h"
 
 class ai_config : public properties
 {

@@ -9,6 +9,12 @@
 #include "authorized_users.h"
 #include "listeners/Listener.h"
 
+// TODO update Biicode config
+//#include "network_io.h"
+//#include "network_io/server_config.h"
+#include "cyrillrx/cross_api/src/network_io.h"
+#include "cyrillrx/cross_api/src/network_io/server_config.h"
+
 class Server;
 
 class AI : public std::enable_shared_from_this<AI>
