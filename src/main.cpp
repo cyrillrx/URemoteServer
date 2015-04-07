@@ -4,6 +4,11 @@
 #include <sstream>
 #include <stdlib.h>
 
+#include "platform_config.h"
+# if defined(WINDOWS_PLATFORM)
+#   include <winuser.h>
+# endif
+
 #include "Utils.h"
 // TODO update Biicode config
 //#include "text_to_speech.h"
