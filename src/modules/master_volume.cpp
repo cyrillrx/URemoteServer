@@ -61,7 +61,7 @@ float master_volume::define(const int& volumePoucentage)
 float master_volume::turnUp()
 {
 	const auto currentVolume = getVolume();
-	const float newVolume = min(VOLUME_MAX, currentVolume + VOLUME_STEP);
+	const float newVolume = std::min(VOLUME_MAX, currentVolume + VOLUME_STEP);
 	setVolume(newVolume);
 
 	return newVolume;
@@ -74,7 +74,7 @@ float master_volume::turnUp()
 float master_volume::turnDown()
 {
 	const auto currentVolume = getVolume();
-	const float newVolume = max(VOLUME_MIN, currentVolume - VOLUME_STEP);
+	const float newVolume = std::max(VOLUME_MIN, currentVolume - VOLUME_STEP);
 	setVolume(newVolume);
 
 	return newVolume;
@@ -226,7 +226,7 @@ float master_volume::getVolume()
 
 }
 
-// Définit le nouveau volume
+// Dï¿½finit le nouveau volume
 void master_volume::setVolume(const float& newVolume)
 {
 
