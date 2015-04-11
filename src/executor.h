@@ -1,11 +1,16 @@
 #pragma once
 
 #include <string>
-#include "network_io.h"
-#include "network_io/remote_command.pb.h"
-#include "network_io/serialized_message.h"
-#include "network_io/request_handler.h"
 #include "AI.h"
+// TODO update Biicode config
+//#include "network_io.h"
+//#include "network_io/remote_command.pb.h"
+//#include "network_io/serialized_message.h"
+//#include "network_io/request_handler.h"
+#include "cyrillrx/cross_api/src/network_io.h"
+#include "cyrillrx/cross_api/src/network_io/remote_command.pb.h"
+#include "cyrillrx/cross_api/src/network_io/serialized_message.h"
+#include "cyrillrx/cross_api/src/network_io/request_handler.h"
 
 class executor : public network_io::request_handler
 {

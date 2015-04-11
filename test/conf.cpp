@@ -2,7 +2,13 @@
 // Created by Cyril Leroux on 07/04/2015.
 //
 
+#include <memory>
+#include <fs/fs_utils.h>
+#include <exception/Exception.h>
+
+#include "../src/ai_config.h"
 #include "lang/lexicon_manager.h"
+#include <cyrillrx/cross_api/src/text_to_speech.h>
 #include "gtest/gtest.h"
 
 const std::string CONF_AI_PATH = "../../blocks/cyrillrx/ubiquity/test/conf/ai.conf";
@@ -19,37 +25,47 @@ std::string conf_dir(const std::string &filename)
 }
 
 
+TEST(Config, LoadAiConfig)
+{
+    std::unique_ptr<ai_config> aiConfig;
+    try {
+        aiConfig = std::unique_ptr<ai_config>(new ai_config(CONF_AI_PATH));
 
-TEST(Config, LoadAiConfig) {
-bool aiInitialized = false;
-std::unique_ptr<ai_config> &aiConfig
-try {
-aiConfig = std::unique_ptr<ai_config>(new ai_config(CONF_AI_PATH));
-
-if (!text_to_speech::test_parameters(aiConfig->language_code(), aiConfig->gender, aiConfig->age, aiConfig->rate)) {
+        if (!text_to_speech::test_parameters(
+                aiConfig->language_code(),
+                aiConfig->gender,
+                aiConfig->age,
+                aiConfig->rate)) {
 
 // Retry with default settings.
-aiConfig->language = text_to_speech::default_lang;
-if (!text_to_speech::test_parameters(aiConfig->language_code(), aiConfig->gender, aiConfig->age, aiConfig->rate)) {
-FAIL() << "AiConfig : Try with default Failed";
-}
-}
+            aiConfig->language = text_to_speech::default_lang;
+            if (!text_to_speech::test_parameters(
+                    aiConfig->language_code(),
+                    aiConfig->gender,
+                    aiConfig->age,
+                    aiConfig->rate)) {
+                FAIL() << "AiConfig : Try with default Failed";
+            }
+        }
 
-aiInitialized = true;
-
-} catch (const Exception &e) {
-    FAIL() << "Ai Config KO : " + e.whatAsString());
-}
-SUCCESS();
+    } catch (const Exception &e) {
+        FAIL() << "Ai Config KO : " << e.whatAsString();
+    }
+    SUCCEED();
 }
 
 TEST(Config, InitLexicon)
 {
-std::string path = fs_utils::get_current_directory();
-auto lexiconMgr = lexicon_manager::instance();
-lexiconMgr->add_language(lexicon_manager::LANG_EN_UK, language_dir + "en.lang");
-lexiconMgr->add_language(lexicon_manager::LANG_EN_US, language_dir + "en.lang");
-lexiconMgr->add_language(lexicon_manager::LANG_FR, language_dir + "fr.lang");
+    auto lexiconMgr = lexicon_manager::instance();
+    lexiconMgr->add_language(lexicon_manager::LANG_EN_UK, LANG_EN);
+    lexiconMgr->add_language(lexicon_manager::LANG_EN_US, LANG_EN);
+    lexiconMgr->add_language(lexicon_manager::LANG_FR, LANG_FR);
 
-ASSERT_TRUE(lexiconMgr->is_initialized(), actualFilename) << "lexicon_manager KO : No language file available.";
+    ASSERT_TRUE(lexiconMgr->is_initialized()) << "lexicon_manager KO : No language file available.";
+}
+
+int main(int argc, char **argv)
+{
+    testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
 }

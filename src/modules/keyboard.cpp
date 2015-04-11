@@ -6,9 +6,6 @@
 #include "platform_config.h"
 # if defined(WINDOWS_PLATFORM)
 #	include <windows.h>
-//#include "cyrillrx/cross_api/src/network_io/remote_command.pb.h"
-#include "network_io/remote_command.pb.h"
-
 # else
 
 // http://www.kbdedit.com/manual/low_level_vk_list.html

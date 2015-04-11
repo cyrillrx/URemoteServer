@@ -5,9 +5,12 @@
 
 #include "Listener.h"
 #include "logger.h"
-#include "network_io/server_config.h"
 #include "../executor.h"
 #include "../AI.h"
+
+// TODO update Biicode config
+//#include "network_io/server_config.h"
+#include "cyrillrx/cross_api/src/network_io/server_config.h"
 
 class URemoteListener : public Listener
 {

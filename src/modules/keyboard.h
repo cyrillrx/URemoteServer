@@ -1,7 +1,9 @@
 #pragma once
 
 #include <string>
-#include "network_io/remote_command.pb.h"
+// TODO update Biicode config
+//#include "network_io/remote_command.pb.h"
+#include "cyrillrx/cross_api/src/network_io/remote_command.pb.h"
 
 #include "platform_config.h"
 # if defined(WINDOWS_PLATFORM)
