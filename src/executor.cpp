@@ -1,5 +1,4 @@
 #include <iostream>
-#include <stdlib.h>
 
 #include "string_utils.h"
 #include "Utils.h"
@@ -81,7 +80,7 @@ serialized_message executor::handle_request(serialized_message serializedRequest
 
             default:
                 reply.set_returncode(Response_ReturnCode_RC_ERROR);
-                reply.set_message("Unknown type received : " + reqType);
+                reply.set_message("Unknown type received : " + Request_Type_Name(reqType));
                 break;
         }
     }
@@ -146,7 +145,7 @@ void executor::classic_command(Response &reply, const Request_Code &code, const 
 
         default:
             reply.set_returncode(Response_ReturnCode_RC_ERROR);
-            reply.set_message("Unknown Simple Command received : " + code);
+            reply.set_message("Unknown Simple Command received : " + Request_Code_Name(code));
             break;
     }
 }
@@ -160,7 +159,7 @@ void executor::volume_command(Response &reply, const Request_Code &code, const i
     const int bufferlength = 50;
     char buffer[bufferlength];
     std::string message;
-    int volumePoucentage;
+    int volumePercent;
 
     switch (code) {
 
@@ -169,10 +168,10 @@ void executor::volume_command(Response &reply, const Request_Code &code, const i
             master_volume::freeInstance();
 
             reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
-            volumePoucentage = (int) (fVolumeLvl * 100);
-            reply.set_intvalue(volumePoucentage);
+            volumePercent = (int) (fVolumeLvl * 100);
+            reply.set_intvalue(volumePercent);
 
-            string_utils::securedPrint(buffer, bufferlength, "Volume set to %d%%", volumePoucentage);
+            string_utils::securedPrint(buffer, bufferlength, "Volume set to %d%%", volumePercent);
             message = buffer;
             break;
 
@@ -181,10 +180,10 @@ void executor::volume_command(Response &reply, const Request_Code &code, const i
             master_volume::freeInstance();
 
             reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
-            volumePoucentage = (int) (fVolumeLvl * 100);
-            reply.set_intvalue(volumePoucentage);
+            volumePercent = (int) (fVolumeLvl * 100);
+            reply.set_intvalue(volumePercent);
 
-            string_utils::securedPrint(buffer, bufferlength, "Volume set to %d%%", volumePoucentage);
+            string_utils::securedPrint(buffer, bufferlength, "Volume set to %d%%", volumePercent);
             message = buffer;
             break;
 
@@ -193,10 +192,10 @@ void executor::volume_command(Response &reply, const Request_Code &code, const i
             master_volume::freeInstance();
 
             reply.set_returncode(Response_ReturnCode_RC_SUCCESS);
-            volumePoucentage = (int) (fVolumeLvl * 100);
-            reply.set_intvalue(volumePoucentage);
+            volumePercent = (int) (fVolumeLvl * 100);
+            reply.set_intvalue(volumePercent);
 
-            string_utils::securedPrint(buffer, bufferlength, "Volume set to %d%%", volumePoucentage);
+            string_utils::securedPrint(buffer, bufferlength, "Volume set to %d%%", volumePercent);
             message = buffer;
             break;
 

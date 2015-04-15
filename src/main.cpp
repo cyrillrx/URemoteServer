@@ -2,9 +2,7 @@
 
 #include <iostream>
 #include <sstream>
-#include <stdlib.h>
 
-#include "platform_config.h"
 # if defined(WINDOWS_PLATFORM)
 #   include <winuser.h>
 # endif
@@ -209,8 +207,9 @@ std::string filenameToKey(const std::string &filename)
 }
 
 /**
-* Load Artificial Intelligence configurations from a property file.
-*/
+ * Load Artificial Intelligence configurations from a property file.
+ * TODO AI loaded even without text-to-speech
+ */
 bool loadAiConfig(std::unique_ptr<ai_config> &aiConfig, std::string &message)
 {
     logger->info("Init config for the AI...");
@@ -219,15 +218,21 @@ bool loadAiConfig(std::unique_ptr<ai_config> &aiConfig, std::string &message)
         aiConfig = std::unique_ptr<ai_config>(new ai_config(ai_conf_path));
         logger->info("AI config OK.");
 
-        if (!text_to_speech::test_parameters(aiConfig->language_code(), aiConfig->gender, aiConfig->age,
-                                             aiConfig->rate)) {
+        if (!text_to_speech::test_parameters(
+                aiConfig->language_code(),
+                aiConfig->gender,
+                aiConfig->age,
+                aiConfig->rate)) {
             message += "AI setting failure. Trying out with default settings\n";
             logger->warning("AI setting failure. Trying out with default settings");
 
             // Retry with default settings.
             aiConfig->language = text_to_speech::default_lang;
-            if (!text_to_speech::test_parameters(aiConfig->language_code(), aiConfig->gender, aiConfig->age,
-                                                 aiConfig->rate)) {
+            if (!text_to_speech::test_parameters(
+                    aiConfig->language_code(),
+                    aiConfig->gender,
+                    aiConfig->age,
+                    aiConfig->rate)) {
                 throw config_exception("main.cpp initAiConfig()", "AiConfig : Try with default Failed");
             }
         }
