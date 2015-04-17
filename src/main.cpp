@@ -20,19 +20,21 @@
 
 void createDirectories();
 
-bool initProgram(std::unique_ptr<ai_config> &aiConfig,
-                 std::unique_ptr<authorized_users> &users,
-                 std::unique_ptr<network_io::server_config> &serverConfig);
+bool initProgram(std::unique_ptr<ai_config>& aiConfig,
+                 std::unique_ptr<authorized_users>& users,
+                 std::unique_ptr<network_io::server_config>& serverConfig);
 
-bool loadAiConfig(std::unique_ptr<ai_config> &aiConfig, std::string &message);
+bool loadAiConfig(std::unique_ptr<ai_config>& aiConfig, std::string& message);
 
-bool initLexicons(lexicon_manager *lexiconMgr, std::string &message);
+bool initTextToSpeech(const std::unique_ptr<ai_config>& aiConfig, std::string& message);
 
-bool loadServerConfig(std::unique_ptr<network_io::server_config> &server_config, std::string &message);
+bool initLexicons(lexicon_manager *lexiconMgr, std::string& message);
 
-bool loadUsers(std::unique_ptr<authorized_users> &users_config, std::string &message);
+bool loadServerConfig(std::unique_ptr<network_io::server_config>& server_config, std::string& message);
 
-std::string filenameToKey(const std::string &filename);
+bool loadUsers(std::unique_ptr<authorized_users>& users_config, std::string& message);
+
+std::string filenameToKey(const std::string& filename);
 
 static const std::string language_dir = "lang/";
 static const std::string config_dir = "conf/";
@@ -73,33 +75,36 @@ int main()
 }
 
 /**
-* Creates the required directories :
-* - language_dir
-* - config_dir
-* - log_dir
-*/
+ * Creates the required directories :
+ * - language_dir
+ * - config_dir
+ * - log_dir
+ */
 void createDirectories()
 {
     logger->debug("Directories initialization...");
 
     try {
+        // TODO Check if exists
         fs_utils::create_directory(language_dir);
         logger->debug("Language directory \"" + language_dir + "\" have been created.");
-    } catch (const Exception &e) {
+    } catch (const Exception& e) {
         logger->error(e.whatAsString());
     }
 
     try {
+        // TODO Check if exists
         fs_utils::create_directory(config_dir);
         logger->debug("Configuration directory \"" + config_dir + "\" have been created");
-    } catch (const Exception &e) {
+    } catch (const Exception& e) {
         logger->error(e.whatAsString());
     }
 
     try {
+        // TODO Check if exists
         fs_utils::create_directory(logger::log_dir());
         logger->debug("Log directory \"" + logger::log_dir() + "\" have been created");
-    } catch (const Exception &e) {
+    } catch (const Exception& e) {
         logger->error(e.whatAsString());
     }
 
@@ -107,15 +112,15 @@ void createDirectories()
 }
 
 /**
-* Initialize the AI, the lexicon_manager and the Server
-* Load the program configurations :
-* - Ai config
-* - Authorized Users
-* - Server (URemoteListener) configuration
-*/
-bool initProgram(std::unique_ptr<ai_config> &aiConfig,
-                 std::unique_ptr<authorized_users> &users,
-                 std::unique_ptr<network_io::server_config> &serverConfig)
+ * Initialize the AI, the lexicon_manager and the Server
+ * Load the program configurations :
+ * - Ai config
+ * - Authorized Users
+ * - Server (URemoteListener) configuration
+ */
+bool initProgram(std::unique_ptr<ai_config>& aiConfig,
+                 std::unique_ptr<authorized_users>& users,
+                 std::unique_ptr<network_io::server_config>& serverConfig)
 {
     logger->info("Program initialization...");
     // TODO: Set Error and warning into a Queue to treat it (vocally) once everything is loaded.
@@ -125,6 +130,7 @@ bool initProgram(std::unique_ptr<ai_config> &aiConfig,
 
     // Init config for the AI
     bool aiInitialized = loadAiConfig(aiConfig, message);
+    initTextToSpeech(aiConfig, message);
 
     // Init lexicon_manager
     auto lexiconMgr = lexicon_manager::instance();
@@ -132,7 +138,7 @@ bool initProgram(std::unique_ptr<ai_config> &aiConfig,
     if (translatorInitialized && aiInitialized) {
         try {
             lexiconMgr->set_language(aiConfig->language);
-        } catch (const Exception &e) {
+        } catch (const Exception& e) {
             message += e.whatAsString();
             message += "\n";
             logger->error("AI config KO.");
@@ -160,10 +166,10 @@ bool initProgram(std::unique_ptr<ai_config> &aiConfig,
 }
 
 /**
-* Initialize the lexicon_manager.
-* Load the language files stored in LANGUAGE_DIR and add them to the lexicon_manager.
-*/
-bool initLexicons(lexicon_manager *lexiconMgr, std::string &message)
+ * Initialize the lexicon_manager.
+ * Load the language files stored in LANGUAGE_DIR and add them to the lexicon_manager.
+ */
+bool initLexicons(lexicon_manager *lexiconMgr, std::string& message)
 {
     logger->info("Init lexicon_manager...");
 
@@ -184,9 +190,9 @@ bool initLexicons(lexicon_manager *lexiconMgr, std::string &message)
 }
 
 /**
-* Get a filename and return the corresponding language key.
-*/
-std::string filenameToKey(const std::string &filename)
+ * Get a filename and return the corresponding language key.
+ */
+std::string filenameToKey(const std::string& filename)
 {
     const auto defaultKey = lexicon_manager::LANG_EN_US;
 
@@ -208,49 +214,74 @@ std::string filenameToKey(const std::string &filename)
 
 /**
  * Load Artificial Intelligence configurations from a property file.
- * TODO AI loaded even without text-to-speech
  */
-bool loadAiConfig(std::unique_ptr<ai_config> &aiConfig, std::string &message)
+bool loadAiConfig(std::unique_ptr<ai_config>& aiConfig, std::string& message)
 {
     logger->info("Init config for the AI...");
-    bool aiInitialized = false;
     try {
         aiConfig = std::unique_ptr<ai_config>(new ai_config(ai_conf_path));
         logger->info("AI config OK.");
+        return true;
 
-        if (!text_to_speech::test_parameters(
-                aiConfig->language_code(),
-                aiConfig->gender,
-                aiConfig->age,
-                aiConfig->rate)) {
-            message += "AI setting failure. Trying out with default settings\n";
-            logger->warning("AI setting failure. Trying out with default settings");
-
-            // Retry with default settings.
-            aiConfig->language = text_to_speech::default_lang;
-            if (!text_to_speech::test_parameters(
-                    aiConfig->language_code(),
-                    aiConfig->gender,
-                    aiConfig->age,
-                    aiConfig->rate)) {
-                throw config_exception("main.cpp initAiConfig()", "AiConfig : Try with default Failed");
-            }
-        }
-
-        aiInitialized = true;
-
-    } catch (const Exception &e) {
+    } catch (const Exception& e) {
         message += e.whatAsString();
         message += "\n";
         logger->error("AI config KO : " + e.whatAsString());
+        return false;
     }
-    return aiInitialized;
+}
+
+bool initTextToSpeech(const std::unique_ptr<ai_config>& aiConfig, std::string& message)
+{
+    if (!text_to_speech::is_implemented()) {
+        logger->info("Text-to-speech not implemented.");
+        return false;
+    }
+
+    logger->info("Initializing Text-to-speech...");
+    try {
+
+        bool ttsSettingOK = text_to_speech::test_parameters(
+                aiConfig->language_code(),
+                aiConfig->gender,
+                aiConfig->age,
+                aiConfig->rate);
+
+        if (ttsSettingOK) {
+            logger->info("Text-to-speech config OK.");
+            return true;
+
+        } else {
+            message += "Text-to-speech setting failure. Trying out with default settings\n";
+            logger->warning("Text-to-speech setting failure. Trying out with default settings");
+        }
+
+        // Retry with default settings.
+        aiConfig->language = text_to_speech::default_lang;
+
+        bool ttsDefaultSettingOK = text_to_speech::test_parameters(
+                aiConfig->language_code(),
+                aiConfig->gender,
+                aiConfig->age,
+                aiConfig->rate);
+
+        if (!ttsDefaultSettingOK) {
+            throw config_exception("initTextToSpeech()", "Text-to-speech : Try with default Failed");
+        }
+
+    } catch (const Exception& e) {
+        message += e.whatAsString();
+        message += "\n";
+        logger->error("Text-to-speech config KO : " + e.whatAsString());
+        return false;
+    }
+    return true;
 }
 
 /**
-* Load URemoteListener configuration from a property file.
-*/
-bool loadServerConfig(std::unique_ptr<network_io::server_config> &server_config, std::string &message)
+ * Load URemoteListener configuration from a property file.
+ */
+bool loadServerConfig(std::unique_ptr<network_io::server_config>& server_config, std::string& message)
 {
     // Init config for the server
     logger->info("Init config for the server...");
@@ -261,7 +292,7 @@ bool loadServerConfig(std::unique_ptr<network_io::server_config> &server_config,
         ss << "Server config OK on port " << server_config->port();
         logger->debug(ss.str());
         serverInitialized = true;
-    } catch (const Exception &e) {
+    } catch (const Exception& e) {
         message += e.whatAsString();
         message += "\n";
         logger->error("Server config KO.");
@@ -270,9 +301,9 @@ bool loadServerConfig(std::unique_ptr<network_io::server_config> &server_config,
 }
 
 /**
-* Load the authorized users from users_conf_path.
-*/
-bool loadUsers(std::unique_ptr<authorized_users> &users_config, std::string &message)
+ * Load the authorized users from users_conf_path.
+ */
+bool loadUsers(std::unique_ptr<authorized_users>& users_config, std::string& message)
 {
     // Loading authorized users
     logger->info("Loading authorized users...");
@@ -282,7 +313,7 @@ bool loadUsers(std::unique_ptr<authorized_users> &users_config, std::string &mes
         logger->debug("Users loaded.");
         usersLoaded = true;
 
-    } catch (const Exception &e) {
+    } catch (const Exception& e) {
         message += e.whatAsString();
         message += "\n";
         logger->error("Users Loading KO.");
