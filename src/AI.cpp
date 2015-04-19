@@ -37,7 +37,7 @@ void AI::startConnection(std::unique_ptr<network_io::server_config> serverConfig
     //say(lexicon_manager::get_string(trad_key::AI_SETTING_UP));
     Utils::get_logger()->info(lexicon_manager::get_string(trad_key::AI_SETTING_UP));
 
-    // TODO: Instanciate other listeners
+    // TODO: Instantiate other listeners
     std::thread uRemoteThread;
     std::thread consoleThread;
     std::thread voiceRecoThread;
@@ -100,12 +100,12 @@ void AI::startConnection(std::unique_ptr<network_io::server_config> serverConfig
 
     // Join the listener threads
     // TODO: Make it automatic
+    voiceRecoThread.join();
+    Utils::get_logger()->debug("AI::StartConnection(), voiceRecoThread has joined");
     uRemoteThread.join();
     Utils::get_logger()->debug("AI::StartConnection(), uRemoteThread has joined");
     consoleThread.join();
     Utils::get_logger()->debug("AI::StartConnection(), consoleThread has joined");
-    voiceRecoThread.join();
-    Utils::get_logger()->debug("AI::StartConnection(), voiceRecoThread has joined");
 }
 
 void AI::stopConnection()

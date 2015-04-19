@@ -28,7 +28,7 @@ VoiceListener::~VoiceListener()
 void VoiceListener::doStart()
 {
 	log_.info("Do start");
-	continueToListen_ = true;
+	continueToListen_ = voice_recognition::is_implemented();
 
 	std::string entry;
 	while (continueToListen_) {

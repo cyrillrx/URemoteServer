@@ -1,17 +1,7 @@
-#Include the biicode Boost setup script
-include(biicode/boost/setup)
+ADD_BII_TARGETS()
 
-ADD_BIICODE_TARGETS()
-
-#Setup Boost and build (if needed) the required Boost components
-#Since lambda is header-only, there are no components to build and find
-bii_find_boost()
-#bii_find_boost(COMPONENTS system filesystem REQUIRED)
-
-#Add Boost headers to the block include directories
-target_include_directories(${BII_BLOCK_TARGET} INTERFACE ${Boost_INCLUDE_DIRS})
-
-INCLUDE(biicode/cmake/tools) # Include tools.cmake file from cmake block from the "biicode" user
+# Include tools.cmake file from cmake block from the "biicode" user
+INCLUDE(biicode/cmake/tools)
 ACTIVATE_CPP11(INTERFACE ${BII_BLOCK_TARGET})
 
 
