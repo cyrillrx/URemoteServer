@@ -16,10 +16,11 @@
 #include "cyrillrx/logger/src/logger_manager.h"
 #include "cyrillrx/logger/src/console_logger.h"
 
+#include "logger/file_logger.h"
 #include "exception/Exception.h"
+#include "exception/config_exception.h"
 #include "lang/lexicon_manager.h"
 #include "fs/fs_utils.h"
-#include "exception/config_exception.h"
 
 void createDirectories();
 
@@ -58,8 +59,8 @@ int main()
     loggerManager.Info("-----");
     createDirectories();
 
-//    std::unique_ptr<Logger> fileLogger(new FileLogger(log_path, DEBUG));
-//    loggerManager.AddLogger(fileLogger);
+    std::unique_ptr<Logger> fileLogger(new FileLogger(log_path, DEBUG));
+    loggerManager.AddLogger(fileLogger);
 
     std::unique_ptr<ai_config> aiConfig = nullptr;
     std::unique_ptr<authorized_users> users = nullptr;
