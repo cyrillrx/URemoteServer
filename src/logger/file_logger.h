@@ -5,8 +5,7 @@
 #pragma once
 
 #include <string>
-// TODO update Biicode config
-#include "cyrillrx/logger/src/logger.h"
+#include "logger/logger.h"
 
 class FileLogger : public Logger
 {

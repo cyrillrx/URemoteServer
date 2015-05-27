@@ -1,10 +1,9 @@
 #include "keyboard.h"
 
-#include "logger_manager.h"
-#include "console_logger.h"
+#include "logger/console_logger.h"
 
 // TODO: comments FR => EN
-#include "platform_config.h"
+#include "core/platform_config.h"
 # if defined(WINDOWS_PLATFORM)
 #	include <windows.h>
 # else
@@ -98,9 +97,7 @@
 
 using namespace network_io;
 
-LoggerManager loggerManager;
-std::unique_ptr<Logger> consoleLogger(new ConsoleLogger(DEBUG));
-loggerManager.AddLogger(consoleLogger);
+auto log = ConsoleLogger(DEBUG);
 
 //////////////////////////////////////////////////////////////////////////////
 // Fonctions publics
@@ -508,7 +505,7 @@ void keyboard::handle_request(const Request& request, Response& reply)
 
 	default:
 		const std::string mesasge = "Key not handled : " + Request::Code_Name(code);
-		loggerManager.Warning(mesasge);
+		log.Warning(mesasge);
 		reply.set_returncode(Response_ReturnCode_RC_ERROR);
 		reply.set_message(mesasge);
 		break;
@@ -540,9 +537,9 @@ void keyboard::CtrlEnter()
 
 void keyboard::SendKeyboardInput(const unsigned short& code, const int& modifierFlags)
 {
-	loggerManager.Debug("keyboard::SendKeyboardInput");
-	loggerManager.Debug("-- code : "			+ std::to_string(code));
-	loggerManager.Debug("-- modifiers : " 	+ std::to_string(modifierFlags));
+	log.Debug("keyboard::SendKeyboardInput");
+	log.Debug("-- code : "			+ std::to_string(code));
+	log.Debug("-- modifiers : " 	+ std::to_string(modifierFlags));
 
 	const bool isCtrl		= FLAG_NONE != (modifierFlags & FLAG_CTRL);
 	const bool isShift		= FLAG_NONE != (modifierFlags & FLAG_SHIFT);

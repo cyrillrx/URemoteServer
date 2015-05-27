@@ -2,11 +2,10 @@
 
 #include <sstream>
 
-#include "platform_config.h"
+#include "logger/console_logger.h"
+#include "core/platform_config.h"
 #include "exception/file_exception.h"
 #include "string_utils.h"
-#include "logger_manager.h"
-#include "console_logger.h"
 
 #if defined(WINDOWS_PLATFORM)
 #include <comutil.h>
@@ -14,9 +13,7 @@
 
 using namespace network_io;
 
-LoggerManager loggerManager;
-std::unique_ptr<Logger> consoleLogger(new ConsoleLogger(DEBUG));
-loggerManager.AddLogger(consoleLogger);
+auto log = ConsoleLogger(DEBUG);
 
 //////////////////////////////////////////////////////////////////////////////
 // Public functions
@@ -86,7 +83,7 @@ bool file_manager::query_children(Response* reply, std::string dirPath)
 
 	} catch (const file_exception& e) {
 		// TODO: Catch file_exception
-		loggerManager.Error(e.whatAsString());
+		log.Error(e.whatAsString());
 		reply->set_returncode(Response_ReturnCode_RC_ERROR);
 		reply->set_message(e.what());
 		return false;

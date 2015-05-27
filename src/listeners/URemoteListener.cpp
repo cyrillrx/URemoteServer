@@ -6,11 +6,8 @@
 # endif
 
 #include <iostream>
+#include "network_io/tcp_server.h"
 #include "exception/Exception.h"
-
-// TODO update Biicode config
-//#include "network_io/tcp_server.h"
-#include "cyrillrx/cross_api/src/network_io/tcp_server.h"
 
 
 //#define BUFFER_SIZE BUFSIZ

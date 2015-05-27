@@ -1,10 +1,8 @@
 #include <iostream>
 
+#include "logger/console_logger.h"
 #include "string_utils.h"
-#include "logger_manager.h"
-#include "console_logger.h"
 #include "lang/lexicon_manager.h"
-
 // TODO update Biicode config
 //#include "network_io/serialized_message.h"
 #include "cyrillrx/cross_api/src/network_io/serialized_message.h"
@@ -20,9 +18,7 @@
 
 using namespace network_io;
 
-LoggerManager loggerManager;
-std::unique_ptr<Logger> consoleLogger(new ConsoleLogger(DEBUG));
-loggerManager.AddLogger(consoleLogger);
+auto log = ConsoleLogger(DEBUG);
 
 executor::executor(std::shared_ptr<AI> ai)
         : ai_(ai) { }
@@ -37,12 +33,12 @@ serialized_message executor::handle_request(serialized_message serializedRequest
     const auto strExtra = request.stringextra();
     const auto intExtra = request.intextra();
 
-    loggerManager.Info("executor::handle_request() Received message : ");
-    loggerManager.Info(" - Type      <" + Request_Type_Name(reqType) + ">");
-    loggerManager.Info(" - Code      <" + Request_Code_Name(reqCode) + ">");
-    loggerManager.Info(" - Token     <" + securityToken + ">");
-    loggerManager.Info(" - str extra <" + strExtra + ">");
-    loggerManager.Info(" - int extra <" + std::to_string(intExtra) + ">");
+    log.Info("executor::handle_request() Received message : ");
+    log.Info(" - Type      <" + Request_Type_Name(reqType) + ">");
+    log.Info(" - Code      <" + Request_Code_Name(reqCode) + ">");
+    log.Info(" - Token     <" + securityToken + ">");
+    log.Info(" - str extra <" + strExtra + ">");
+    log.Info(" - int extra <" + std::to_string(intExtra) + ">");
 
     Response reply;
     reply.set_requesttype(reqType);
@@ -96,7 +92,7 @@ serialized_message executor::handle_request(serialized_message serializedRequest
     try {
         return serialize_response(reply);
     } catch (const std::exception &e) {
-        loggerManager.Error("executor::handle_request() : " + std::string(e.what()));
+        log.Error("executor::handle_request() : " + std::string(e.what()));
         return serialize_response(clear_response(reply, std::string(e.what())));
     }
 
@@ -215,7 +211,7 @@ void executor::volume_command(Response &reply, const Request_Code &code, const i
 
         default:
             message = "Unknown Volume command !";
-            loggerManager.Error(message);
+            log.Error(message);
             break;
     }
 
@@ -240,7 +236,7 @@ void executor::ai_command(Response &reply, const Request_Code &code) const
         default:
             reply.set_returncode(Response_ReturnCode_RC_ERROR);
             message = "Unknown AI command !";
-            loggerManager.Error(message);
+            log.Error(message);
             break;
     }
 
@@ -278,7 +274,7 @@ void executor::app_command(Response &reply, const Request_Code &code) const
         default:
             reply.set_returncode(Response_ReturnCode_RC_ERROR);
             message = "Unknown app command !";
-            loggerManager.Error(message);
+            log.Error(message);
             break;
     }
 
