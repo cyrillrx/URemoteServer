@@ -5,13 +5,18 @@
 #include "platform_config.h"
 #include "exception/file_exception.h"
 #include "string_utils.h"
-#include "Utils.h"
+#include "logger_manager.h"
+#include "console_logger.h"
 
 #if defined(WINDOWS_PLATFORM)
 #include <comutil.h>
 #endif
 
 using namespace network_io;
+
+LoggerManager loggerManager;
+std::unique_ptr<Logger> consoleLogger(new ConsoleLogger(DEBUG));
+loggerManager.AddLogger(consoleLogger);
 
 //////////////////////////////////////////////////////////////////////////////
 // Public functions
@@ -81,7 +86,7 @@ bool file_manager::query_children(Response* reply, std::string dirPath)
 
 	} catch (const file_exception& e) {
 		// TODO: Catch file_exception
-		Utils::get_logger()->error(e.whatAsString());
+		loggerManager.Error(e.whatAsString());
 		reply->set_returncode(Response_ReturnCode_RC_ERROR);
 		reply->set_message(e.what());
 		return false;
@@ -101,12 +106,12 @@ void file_manager::open_file(const std::string& filePath)
 // Adds a file to the 
 bool file_manager::add_file(FileInfo* directoryInfo, fs_utils::file& file)
 {
-	auto* exchangefile = directoryInfo->add_child();
+	auto* exchangeFile = directoryInfo->add_child();
 
-	exchangefile->set_absolutefilepath(file.path());
-	exchangefile->set_filename(file.filename());
-	exchangefile->set_isdirectory(file.type == fs_utils::file_type::directory_file);
-	exchangefile->set_size(file.size());
+	exchangeFile->set_absolutefilepath(file.path());
+	exchangeFile->set_filename(file.filename());
+	exchangeFile->set_isdirectory(file.type == fs_utils::file_type::directory_file);
+	exchangeFile->set_size(file.size());
 
 	return true;
 }

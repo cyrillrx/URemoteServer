@@ -7,14 +7,13 @@
 #   include <winuser.h>
 # endif
 
-#include "Utils.h"
 // TODO update Biicode config
 //#include "text_to_speech.h"
 //#include "network_io/server_config.h"
 #include "cyrillrx/cross_api/src/text_to_speech.h"
 #include "cyrillrx/logger/src/logger.h"
-#include "cyrillrx/logger/src/logger_manager.h"
-#include "cyrillrx/logger/src/console_logger.h"
+#include "logger_manager.h"
+#include "console_logger.h"
 
 #include "logger/file_logger.h"
 #include "exception/Exception.h"
@@ -40,20 +39,20 @@ bool loadUsers(std::unique_ptr<authorized_users>& users_config, std::string& mes
 
 std::string filenameToKey(const std::string& filename);
 
+static const std::string log_dir = "logs/";
 static const std::string language_dir = "lang/";
 static const std::string config_dir = "conf/";
 static const std::string ai_conf_path = config_dir + "ai.conf";
 static const std::string server_conf_path = config_dir + "server.conf";
 static const std::string users_conf_path = config_dir + "authorized_users.conf";
-static const std::string log_path = "URemote.log";
+static const std::string log_path = log_dir + "uremote.log";
 
 LoggerManager loggerManager;
+std::unique_ptr<Logger> consoleLogger(new ConsoleLogger(DEBUG));
+loggerManager.AddLogger(consoleLogger);
 
 int main()
 {
-
-    std::unique_ptr<Logger> consoleLogger(new ConsoleLogger(DEBUG));
-    loggerManager.AddLogger(consoleLogger);
     loggerManager.Info("-----------------------------------");
     loggerManager.Info("URemote Server starting");
     loggerManager.Info("-----");
@@ -114,7 +113,7 @@ void createDirectories()
         }
     }
 
-    if (!fs_utils::exists(logger::log_dir())) {
+    if (!fs_utils::exists(log_dir)) {
         try {
             fs_utils::create_directory(logger::log_dir());
             loggerManager.Debug("Log directory \"" + logger::log_dir() + "\" have been created");

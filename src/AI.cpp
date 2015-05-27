@@ -1,10 +1,13 @@
+#include "AI.h"
+
 #include <thread>
 
+#include "cyrillrx/logger/src/logger.h"
+#include "logger_manager.h"
+#include "console_logger.h"
 #include "lang/lexicon_manager.h"
-#include "Utils.h"
 #include "ai_config.h"
 #include "authorized_users.h"
-#include "AI.h"
 #include "listeners/ConsoleListener.h"
 #include "listeners/URemoteListener.h"
 #include "listeners/VoiceListener.h"
@@ -13,13 +16,19 @@
 //! Delay for the AI to say welcome again
 #define DELAY 60*5 // 5 min / 300 sec
 
+LoggerManager loggerManager;
+std::unique_ptr<Logger> consoleLogger(new ConsoleLogger(DEBUG));
+loggerManager.AddLogger(consoleLogger);
+
 //////////////////////////////////////////////////////////////////////////////
 // Public methods
 //////////////////////////////////////////////////////////////////////////////
 AI::AI(std::unique_ptr<ai_config> config, std::unique_ptr<authorized_users> users)
         : config_(move(config)), users_(move(users))
 {
-    voice_ = std::unique_ptr<text_to_speech::voice>(new text_to_speech::voice(config_->name, config_->language_code(), config_->gender, config_->age, config_->rate));
+    voice_ = std::unique_ptr<text_to_speech::voice>(
+            new text_to_speech::voice(config_->name, config_->language_code(), config_->gender, config_->age,
+                                      config_->rate));
     time(&lastWelcome_);
     lastWelcome_ -= DELAY;
 
@@ -33,9 +42,8 @@ AI::~AI()
 
 void AI::startConnection(std::unique_ptr<network_io::server_config> serverConfig)
 {
-
     //say(lexicon_manager::get_string(trad_key::AI_SETTING_UP));
-    Utils::get_logger()->info(lexicon_manager::get_string(trad_key::AI_SETTING_UP));
+    loggerManager.Info(lexicon_manager::get_string(trad_key::AI_SETTING_UP));
 
     // TODO: Instantiate other listeners
     std::thread uRemoteThread;
@@ -52,44 +60,44 @@ void AI::startConnection(std::unique_ptr<network_io::server_config> serverConfig
     auto ai_ptr = shared_from_this();
     int capacity = 0;
     try {
-        uRemoteListener = std::unique_ptr<URemoteListener>(new URemoteListener(move(serverConfig), ai_ptr));
+        uRemoteListener = std::unique_ptr<Listener>(new URemoteListener(move(serverConfig), ai_ptr));
         uRemoteThread = uRemoteListener->start();
-        Utils::get_logger()->debug("AI::StartConnection(), URemoteListener OK");
+        loggerManager.Debug("AI::StartConnection(), URemoteListener OK");
         listeners_.push_back(std::move(uRemoteListener));
         capacity += 40;
 
-    } catch (const std::exception &e) {
-        Utils::get_logger()->error("AI::StartConnection(), URemoteListener KO : " + std::string(e.what()));
+    } catch (const std::exception& e) {
+        loggerManager.Error("AI::StartConnection(), URemoteListener KO : " + std::string(e.what()));
         say("URemote Listener, KO..."); // TODO: internationalize
     }
 
     try {
-        voiceListener = std::unique_ptr<VoiceListener>(new VoiceListener(ai_ptr));
+        voiceListener = std::unique_ptr<Listener>(new VoiceListener(ai_ptr));
         voiceRecoThread = voiceListener->start();
-        Utils::get_logger()->debug("AI::StartConnection(), VoiceListener OK");
+        loggerManager.Debug("AI::StartConnection(), VoiceListener OK");
         listeners_.push_back(std::move(voiceListener));
         capacity += 30;
 
-    } catch (const std::exception &e) {
-        Utils::get_logger()->error("AI::StartConnection(), VoiceListener KO : " + std::string(e.what()));
+    } catch (const std::exception& e) {
+        loggerManager.Error("AI::StartConnection(), VoiceListener KO : " + std::string(e.what()));
         say("Voice Listener, KO..."); // TODO: internationalize
     }
 
     // TODO: Replace console listener by UI Listener
     try {
-        consoleListener = std::unique_ptr<ConsoleListener>(new ConsoleListener());
+        consoleListener = std::unique_ptr<Listener>(new ConsoleListener());
         consoleThread = consoleListener->start();
-        Utils::get_logger()->debug("AI::StartConnection(), ConsoleListener OK");
+        loggerManager.Debug("AI::StartConnection(), ConsoleListener OK");
         listeners_.push_back(std::move(consoleListener));
         capacity += 30;
 
-    } catch (const std::exception &e) {
-        Utils::get_logger()->error("AI::StartConnection(), ConsoleListener KO : " + std::string(e.what()));
+    } catch (const std::exception& e) {
+        loggerManager.Error("AI::StartConnection(), ConsoleListener KO : " + std::string(e.what()));
         say("Console Listener, KO..."); // TODO: internationalize
     }
 
     //say(lexicon_manager::get_string(trad_key::AI_CONFIG_COMPLETED));
-    Utils::get_logger()->info(lexicon_manager::get_string(trad_key::AI_CONFIG_COMPLETED));
+    loggerManager.Info(lexicon_manager::get_string(trad_key::AI_CONFIG_COMPLETED));
 
     // Notify the user that the listener are open.
     if (capacity >= 100) {
@@ -101,26 +109,26 @@ void AI::startConnection(std::unique_ptr<network_io::server_config> serverConfig
     // Join the listener threads
     // TODO: Make it automatic
     voiceRecoThread.join();
-    Utils::get_logger()->debug("AI::StartConnection(), voiceRecoThread has joined");
+    loggerManager.Debug("AI::StartConnection(), voiceRecoThread has joined");
     uRemoteThread.join();
-    Utils::get_logger()->debug("AI::StartConnection(), uRemoteThread has joined");
+    loggerManager.Debug("AI::StartConnection(), uRemoteThread has joined");
     consoleThread.join();
-    Utils::get_logger()->debug("AI::StartConnection(), consoleThread has joined");
+    loggerManager.Debug("AI::StartConnection(), consoleThread has joined");
 }
 
 void AI::stopConnection()
 {
-    for (const auto &listener : listeners_) {
+    for (const auto& listener : listeners_) {
         listener->stop();
     }
 }
 
-bool AI::isAuthorized(const std::string &securityToken)
+bool AI::isAuthorized(const std::string& securityToken)
 {
     return users_->is_authorized(securityToken);
 }
 
-std::string AI::getUser(const std::string &securityToken)
+std::string AI::getUser(const std::string& securityToken)
 {
     return users_->get_user(securityToken);
 }
@@ -130,14 +138,14 @@ std::string AI::getName()
     return config_->name;
 }
 
-void AI::welcome(const std::string &securityToken)
+void AI::welcome(const std::string& securityToken)
 {
     // Calculate the elapsed time since the last call to the method
     time_t now;
     time(&now);
-    Utils::get_logger()->debug("AI::Welcome, now " + std::to_string(now));
+    loggerManager.Debug("AI::Welcome, now " + std::to_string(now));
     auto elapsedTime = difftime(now, lastWelcome_);
-    Utils::get_logger()->debug("AI::Welcome, elapsedTime " + std::to_string(elapsedTime));
+    loggerManager.Debug("AI::Welcome, elapsedTime " + std::to_string(elapsedTime));
 
     // Welcome if last welcome > DELAY
     if (elapsedTime > DELAY) {
@@ -147,9 +155,9 @@ void AI::welcome(const std::string &securityToken)
     }
 }
 
-void AI::say(const std::string &textToSpeak, const bool &text_only)
+void AI::say(const std::string& textToSpeak, const bool& text_only)
 {
-    Utils::get_logger()->info("Speech::say - " + textToSpeak);
+    loggerManager.Info("Speech::say - " + textToSpeak);
 
     // Test mute state
     if (config_->is_mute || text_only) {
