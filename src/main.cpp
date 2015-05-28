@@ -52,7 +52,7 @@ auto log = LoggerManager();
 int main()
 {
     std::unique_ptr<Logger> consoleLogger(new ConsoleLogger(WARNING));
-    logger.AddLogger(consoleLogger);
+    log.AddLogger(consoleLogger);
 
     log.Info("-----------------------------------");
     log.Info("URemote Server starting");
