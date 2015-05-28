@@ -116,8 +116,8 @@ void createDirectories()
 
     if (!fs_utils::exists(log_dir)) {
         try {
-            fs_utils::create_directory(logger::log_dir());
-            log.Debug("Log directory \"" + logger::log_dir() + "\" have been created");
+            fs_utils::create_directory(log_dir);
+            log.Debug("Log directory \"" + log_dir + "\" have been created");
         } catch (const Exception& e) {
             log.Error(e.whatAsString());
         }

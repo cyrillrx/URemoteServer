@@ -13,7 +13,7 @@ const auto VOLUME_MAX(1.0f);
 const auto VOLUME_MIN(0.0f);
 const auto VOLUME_STEP(0.05f);
 
-auto log = ConsoleLogger(DEBUG);
+auto logger = ConsoleLogger(DEBUG);
 
 master_volume* master_volume::s_masterVolume = nullptr;
 
@@ -91,7 +91,7 @@ master_volume::master_volume()
 
 	// Initialize the COM library.
 	if (CoInitialize(nullptr) != S_OK) {
-		log.Error("master_volume::master_volume(), CoInitialize failed");
+		logger.Error("master_volume::master_volume(), CoInitialize failed");
 	}
 	loadVolumeController();
 
@@ -128,14 +128,14 @@ void master_volume::loadVolumeController()
 	// Get the list of audio devices
 	hr = CoCreateInstance(__uuidof(MMDeviceEnumerator), nullptr, CLSCTX_INPROC_SERVER, __uuidof(IMMDeviceEnumerator), (LPVOID *)&deviceEnumerator);
 	if (hr != S_OK) {
-		log.Error("master_volume::loadVolumeController(), CoCreateInstance failed with error: " + hr);
+		logger.Error("master_volume::loadVolumeController(), CoCreateInstance failed with error: " + hr);
 		return;
 	}
 
 	// Get the default audio device
 	hr = deviceEnumerator->GetDefaultAudioEndpoint(eRender, eConsole, &defaultDevice);
 	if (hr != S_OK) {
-		log.Error("GetDefaultAudioEndpoint failed with error: " + hr);
+		logger.Error("GetDefaultAudioEndpoint failed with error: " + hr);
 		return;
 	}
 
@@ -148,7 +148,7 @@ void master_volume::loadVolumeController()
 	// Load EndpointVolume (volume controller)
 	hr = defaultDevice->Activate(__uuidof(IAudioEndpointVolume), CLSCTX_INPROC_SERVER, nullptr, (LPVOID *)&m_endpointVolume);
 	if (hr != S_OK) {
-		log.Error("master_volume::loadVolumeController(), defaultDevice->Activate failed with error: " + hr);
+		logger.Error("master_volume::loadVolumeController(), defaultDevice->Activate failed with error: " + hr);
 		return;
 	}
 
@@ -181,7 +181,7 @@ bool master_volume::isMute()
 	BOOL isMute = false;
 	auto hr = m_endpointVolume->GetMute(&isMute);
 	if (hr != S_OK) {
-		log.Error("master_volume::isMute(), An error occured while getting muting state !");
+		logger.Error("master_volume::isMute(), An error occured while getting muting state !");
 	}
 	return (isMute) ? true : false;
 # else
@@ -199,7 +199,7 @@ void master_volume::setMute(const bool& isMute)
 # if defined(WINDOWS_PLATFORM)
 	auto hr = m_endpointVolume->SetMute(isMute, nullptr);
 	if (hr != S_OK) {
-		log.Error("master_volume::setMute(), An error occured while setting muting state !");
+		logger.Error("master_volume::setMute(), An error occured while setting muting state !");
 	}
 # else
 	// TODO: Implement master_volume::setMute() on linux
@@ -218,7 +218,7 @@ float master_volume::getVolume()
 
 	auto hr = m_endpointVolume->GetMasterVolumeLevelScalar(&currentVolume);
 	if (hr != S_OK) {
-		log.Error("master_volume::getVolume(), An error occured while getting volume !");
+		logger.Error("master_volume::getVolume(), An error occured while getting volume !");
 	}
 	return currentVolume;
 # else
@@ -235,7 +235,7 @@ void master_volume::setVolume(const float& newVolume)
 # if defined(WINDOWS_PLATFORM)
 	auto hr = m_endpointVolume->SetMasterVolumeLevelScalar(newVolume, nullptr);
 	if (hr != S_OK) {
-		log.Error("master_volume::setVolume(), An error occured while setting volume !");
+		logger.Error("master_volume::setVolume(), An error occured while setting volume !");
 	}
 # else
 	// TODO: Implement master_volume::setVolume() on linux

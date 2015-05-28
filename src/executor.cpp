@@ -3,9 +3,7 @@
 #include "logger/console_logger.h"
 #include "string_utils.h"
 #include "lang/lexicon_manager.h"
-// TODO update Biicode config
-//#include "network_io/serialized_message.h"
-#include "cyrillrx/cross_api/src/network_io/serialized_message.h"
+#include "network_io/serialized_message.h"
 
 #include "AI.h"
 #include "executor.h"

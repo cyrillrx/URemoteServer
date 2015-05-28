@@ -11,9 +11,8 @@
 
 // TODO update Biicode config
 //#include "network_io.h"
-//#include "network_io/server_config.h"
 #include "cyrillrx/cross_api/src/network_io.h"
-#include "cyrillrx/cross_api/src/network_io/server_config.h"
+#include "network_io/server_config.h"
 
 class Server;
 
@@ -28,15 +27,15 @@ public:
 
     void stopConnection();
 
-    bool isAuthorized(const std::string &securityToken);
+    bool isAuthorized(const std::string& securityToken);
 
-    std::string getUser(const std::string &securityToken);
+    std::string getUser(const std::string& securityToken);
 
     std::string getName();
 
-    void welcome(const std::string &securityToken);
+    void welcome(const std::string& securityToken);
 
-    void say(const std::string &textToSpeak, const bool &text_only = false);
+    void say(const std::string& textToSpeak, const bool& text_only = false);
 
     bool toggleMute();
 
@@ -49,9 +48,9 @@ private:
     time_t lastWelcome_;
 
 
-    AI(const AI &);
+    AI(const AI&);
 
-    const AI &operator=(const AI &);
+    const AI& operator=(const AI&);
 
     void start();
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "platform_config.h"
+#include "core/platform_config.h"
 # if defined(WINDOWS_PLATFORM)
 #   include <windows.h>
 # endif

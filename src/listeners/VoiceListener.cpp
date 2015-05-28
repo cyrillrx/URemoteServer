@@ -8,26 +8,23 @@
 #include "cyrillrx/cross_api/src/voice_recognition.h"
 
 VoiceListener::VoiceListener(std::shared_ptr<AI> ai)
-	: ai_(ai)
+	: Listener("VoiceListener.log"), ai_(ai)
 {
-	log_ = logger("VoiceListener.log");
-	log_.set_log_severity_console(logger::SEVERITY_LVL_WARNING);
-
-	log_.info("******************************************************");
-	log_.info("*****                 VoiceListener              *****");
-	log_.info("******************************************************");
+	log_.Info("******************************************************");
+	log_.Info("*****                 VoiceListener              *****");
+	log_.Info("******************************************************");
 }
 
 VoiceListener::~VoiceListener()
 {
-	log_.info("******************************************************");
-	log_.info("*****                ~VoiceListener              *****");
-	log_.info("******************************************************");
+	log_.Info("******************************************************");
+	log_.Info("*****                ~VoiceListener              *****");
+	log_.Info("******************************************************");
 }
 
 void VoiceListener::doStart()
 {
-	log_.info("Do start");
+	log_.Info("Do start");
 	continueToListen_ = voice_recognition::is_implemented();
 
 	std::string entry;
@@ -35,13 +32,13 @@ void VoiceListener::doStart()
 
 		// TODO: code voice recognition
 		std::string keyword = "Eternity";
-		log_.info("Wait for " + keyword);
+		log_.Info("Wait for " + keyword);
 		listen(keyword);
-		log_.info("Do continue");
+		log_.Info("Do continue");
 		// TODO: Add message : "command" is not supported
 		// TODO: support "Kill" command
 	}
-	log_.debug("EXIT !");
+	log_.Debug("EXIT !");
 }
 
 void VoiceListener::listen(const std::string& keyword)

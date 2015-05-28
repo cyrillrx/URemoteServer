@@ -9,26 +9,21 @@
 #include "network_io/tcp_server.h"
 #include "exception/Exception.h"
 
-
-//#define BUFFER_SIZE BUFSIZ
 #define BUFFER_SIZE 4096
 
 URemoteListener::URemoteListener(std::unique_ptr<network_io::server_config> config, std::shared_ptr<AI> ai)
-	: config_(move(config)), executor_(ai)
+	: Listener("URemoteListener.log"), config_(move(config)), executor_(ai)
 {
-	log_ = logger("URemoteListener.log");
-	log_.set_log_severity_console(logger::SEVERITY_LVL_WARNING);
-
-	log_.info("******************************************************");
-	log_.info("*****                URemoteListener             *****");
-	log_.info("******************************************************");
+	log_.Info("******************************************************");
+	log_.Info("*****                URemoteListener             *****");
+	log_.Info("******************************************************");
 
 	// Init hostname
 	try {
 		hostname_	= network_io::hostname();
 	} catch (const Exception& e) {
 		hostname_ = "localhost";
-		log_.error("URemoteListener::InitServer(), " + e.whatAsString());
+		log_.Error("URemoteListener::InitServer(), " + e.whatAsString());
 	}
 
 	// Init ip address
@@ -36,30 +31,29 @@ URemoteListener::URemoteListener(std::unique_ptr<network_io::server_config> conf
 		ipAddress_	= network_io::ip_address(hostname_);
 	} catch (const Exception& e) {
 		ipAddress_ = "127.0.0.1";
-		log_.error("URemoteListener::InitServer(), " + e.whatAsString());
+		log_.Error("URemoteListener::InitServer(), " + e.whatAsString());
 	}
-
 }
 
 URemoteListener::~URemoteListener()
 {
-	log_.info("******************************************************");
-	log_.info("*****               ~URemoteListener             *****");
-	log_.info("******************************************************");
+	log_.Info("******************************************************");
+	log_.Info("*****               ~URemoteListener             *****");
+	log_.Info("******************************************************");
 }
 
 /**
-* Launch the server
-* @return true if everything went correctly. False otherwise
-*/
+ * Launch the server
+ * @return true if everything went correctly. False otherwise
+ */
 void URemoteListener::doStart()
 {
-	log_.info("Do start URemoteListener");
-	log_.debug("Server Info : ");
-	log_.debug(" - Hostname   : " + hostname_);
-	log_.debug(" - IP Address : " + ipAddress_);
-	log_.debug(" - Open port  : " + std::to_string(config_->port()));
-	log_.debug("Waiting for client to connect...");
+	log_.Info("Do start URemoteListener");
+	log_.Debug("Server Info : ");
+	log_.Debug(" - Hostname   : " + hostname_);
+	log_.Debug(" - IP Address : " + ipAddress_);
+	log_.Debug(" - Open port  : " + std::to_string(config_->port()));
+	log_.Debug("Waiting for client to connect...");
 
 	try {
 		network_io::tcp_server server(config_->port(), config_->pool_size(), executor_);
@@ -70,4 +64,3 @@ void URemoteListener::doStart()
 		std::cerr << e.what() << std::endl;
 	}
 }
-
