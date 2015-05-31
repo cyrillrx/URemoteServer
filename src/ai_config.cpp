@@ -28,7 +28,7 @@ ai_config::ai_config(const std::string &configFile) : properties(configFile)
     name = get_string(KEY_NAME, DEFAULT_NAME);
     language = get_string(KEY_LANG, DEFAULT_LANG);
     gender = get_string(KEY_GENDER, DEFAULT_GENDER);
-    age = str_to_age(get_string(KEY_AGE, DEFAULT_GENDER));
+    age = str_to_age(get_string(KEY_AGE, DEFAULT_AGE));
     tts_name = get_string(KEY_TTS_NAME, DEFAULT_TTS_NAME);
     is_mute = get_bool(KEY_MUTE, DEFAULT_MUTE);
     rate = get_long(KEY_RATE, DEFAULT_RATE);

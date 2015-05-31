@@ -1,6 +1,6 @@
 #include "keyboard.h"
 
-#include "logger/console_logger.h"
+#include "../globals.h"
 
 // TODO: comments FR => EN
 #include "core/platform_config.h"
@@ -96,8 +96,6 @@
 #define VK_Z 0x5A
 
 using namespace network_io;
-
-auto log = ConsoleLogger(DEBUG);
 
 //////////////////////////////////////////////////////////////////////////////
 // Fonctions publics
@@ -505,7 +503,7 @@ void keyboard::handle_request(const Request& request, Response& reply)
 
 	default:
 		const std::string mesasge = "Key not handled : " + Request::Code_Name(code);
-		log.Warning(mesasge);
+		consoleLogger.Warning(mesasge);
 		reply.set_returncode(Response_ReturnCode_RC_ERROR);
 		reply.set_message(mesasge);
 		break;
@@ -537,9 +535,9 @@ void keyboard::CtrlEnter()
 
 void keyboard::SendKeyboardInput(const unsigned short& code, const int& modifierFlags)
 {
-	log.Debug("keyboard::SendKeyboardInput");
-	log.Debug("-- code : "			+ std::to_string(code));
-	log.Debug("-- modifiers : " 	+ std::to_string(modifierFlags));
+	consoleLogger.Debug("keyboard::SendKeyboardInput");
+	consoleLogger.Debug("-- code : "			+ std::to_string(code));
+	consoleLogger.Debug("-- modifiers : " 	+ std::to_string(modifierFlags));
 
 	const bool isCtrl		= FLAG_NONE != (modifierFlags & FLAG_CTRL);
 	const bool isShift		= FLAG_NONE != (modifierFlags & FLAG_SHIFT);

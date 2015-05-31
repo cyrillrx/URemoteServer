@@ -2,8 +2,7 @@
 
 #include <sstream>
 
-#include "logger/console_logger.h"
-#include "core/platform_config.h"
+#include "../globals.h"
 #include "exception/file_exception.h"
 #include "string_utils.h"
 
@@ -13,81 +12,91 @@
 
 using namespace network_io;
 
-auto log = ConsoleLogger(DEBUG);
-
 //////////////////////////////////////////////////////////////////////////////
 // Public functions
 //////////////////////////////////////////////////////////////////////////////
 
-void file_manager::handle_message(Response* reply, const Request_Code& code, const std::string& strExtra)
+const std::string& file_manager::default_path()
 {
-	switch (code) {
+    return default_path_;
+}
 
-	case Request::QUERY_ROOTS:
-		// TODO : return strings containing paths
-		reply->set_returncode(Response_ReturnCode_RC_ERROR);
-		reply->set_message("QUERY_ROOTS not yet implemented : " + code);
-		break;
+void file_manager::set_default_path(const std::string& default_path)
+{
+    default_path_ = default_path;
+}
 
-	case Request::QUERY_CHILDREN:
-		query_children(reply, strExtra);
-		break;
+void file_manager::handle_message(Response *reply, const Request_Code& code, const std::string& strExtra)
+{
+    switch (code) {
 
-	case Request::OPEN_SERVER_SIDE:
-		open_file(strExtra);
-		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
-		reply->set_message("Opening file : "  + strExtra);
-		break;
+        case Request::QUERY_ROOTS:
+            // TODO : return strings containing paths
+            reply->set_returncode(Response_ReturnCode_RC_ERROR);
+            reply->set_message("QUERY_ROOTS not yet implemented : " + code);
+            break;
 
-	case Request::OPEN_CLIENT_SIDE:
-		// TODO : Stream client side
-		reply->set_returncode(Response_ReturnCode_RC_ERROR);
-		reply->set_message("OPEN_CLIENT_SIDE not yet implemented : " + code);
-		break;
+        case Request::QUERY_CHILDREN:
+            query_children(reply, strExtra);
+            break;
 
-	default:
-		reply->set_returncode(Response_ReturnCode_RC_ERROR);
-		reply->set_message("Unknown code received : " + code);
-		break;
-	}
+        case Request::OPEN_SERVER_SIDE:
+            open_file(strExtra);
+            reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+            reply->set_message("Opening file : " + strExtra);
+            break;
+
+        case Request::OPEN_CLIENT_SIDE:
+            // TODO : Stream client side
+            reply->set_returncode(Response_ReturnCode_RC_ERROR);
+            reply->set_message("OPEN_CLIENT_SIDE not yet implemented : " + code);
+            break;
+
+        default:
+            reply->set_returncode(Response_ReturnCode_RC_ERROR);
+            reply->set_message("Unknown code received : " + code);
+            break;
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////////
 // Private functions
 //////////////////////////////////////////////////////////////////////////////
 
-bool file_manager::query_children(Response* reply, std::string dirPath)
+std::string file_manager::default_path_ = std::string();
+
+bool file_manager::query_children(Response *reply, std::string dirPath)
 {
-	// Default root
-	if (dirPath == "default_path") {
-		dirPath = "L:";
-	}
+    // Default root
+    if (dirPath == "default_path") {
+        dirPath = file_manager::default_path_;
+    }
 
-	try {
-		auto fileList = fs_utils::list_files(dirPath);
+    try {
+        auto fileList = fs_utils::list_files(dirPath);
 
-		// Initiate the vector to return
-		auto* directory = reply->mutable_file();
-		directory->set_absolutefilepath(dirPath);
-		directory->set_filename(dirPath);
-		directory->set_isdirectory(true);
-		directory->set_size(0);
+        // Initiate the vector to return
+        auto *directory = reply->mutable_file();
+        directory->set_absolutefilepath(dirPath);
+        directory->set_filename(dirPath);
+        directory->set_isdirectory(true);
+        directory->set_size(0);
 
-		for (auto& file : fileList) {
-			add_file(directory, file);
-		}
+        for (auto& file : fileList) {
+            add_file(directory, file);
+        }
 
-		reply->set_message("\"" + dirPath + "\"" + " successfully loaded.");
-		reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
-		return true;
+        reply->set_message("\"" + dirPath + "\"" + " successfully loaded.");
+        reply->set_returncode(Response_ReturnCode_RC_SUCCESS);
+        return true;
 
-	} catch (const file_exception& e) {
-		// TODO: Catch file_exception
-		log.Error(e.whatAsString());
-		reply->set_returncode(Response_ReturnCode_RC_ERROR);
-		reply->set_message(e.what());
-		return false;
-	}
+    } catch (const file_exception& e) {
+        // TODO: Catch file_exception
+        consoleLogger.Error(e.whatAsString());
+        reply->set_returncode(Response_ReturnCode_RC_ERROR);
+        reply->set_message(e.what());
+        return false;
+    }
 }
 
 void file_manager::open_file(const std::string& filePath)
@@ -101,14 +110,14 @@ void file_manager::open_file(const std::string& filePath)
 }
 
 // Adds a file to the 
-bool file_manager::add_file(FileInfo* directoryInfo, fs_utils::file& file)
+bool file_manager::add_file(FileInfo *directoryInfo, fs_utils::file& file)
 {
-	auto* exchangeFile = directoryInfo->add_child();
+    auto *exchangeFile = directoryInfo->add_child();
 
-	exchangeFile->set_absolutefilepath(file.path());
-	exchangeFile->set_filename(file.filename());
-	exchangeFile->set_isdirectory(file.type == fs_utils::file_type::directory_file);
-	exchangeFile->set_size(file.size());
+    exchangeFile->set_absolutefilepath(file.path());
+    exchangeFile->set_filename(file.filename());
+    exchangeFile->set_isdirectory(file.type == fs_utils::file_type::directory_file);
+    exchangeFile->set_size(file.size());
 
-	return true;
+    return true;
 }

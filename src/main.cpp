@@ -16,6 +16,7 @@
 //#include "network_io/server_config.h"
 #include "cyrillrx/cross_api/src/text_to_speech.h"
 
+#include "modules/file_manager.h"
 #include "exception/Exception.h"
 #include "exception/config_exception.h"
 #include "lang/lexicon_manager.h"
@@ -44,23 +45,23 @@ static const std::string language_dir = "lang/";
 static const std::string config_dir = "conf/";
 static const std::string ai_conf_path = config_dir + "ai.conf";
 static const std::string server_conf_path = config_dir + "server.conf";
-static const std::string users_conf_path = config_dir + "authorized_users.conf";
+static const std::string users_conf_path = config_dir + "users.conf";
 static const std::string log_path = log_dir + "uremote.log";
 
-auto log = LoggerManager();
+auto logManager = LoggerManager();
 
 int main()
 {
-    std::unique_ptr<Logger> consoleLogger(new ConsoleLogger(WARNING));
-    log.AddLogger(consoleLogger);
+    std::unique_ptr<Logger> consoleLogger(new ConsoleLogger(DEBUG));
+    logManager.AddLogger(consoleLogger);
 
-    log.Info("-----------------------------------");
-    log.Info("URemote Server starting");
-    log.Info("-----");
+    logManager.Info("-----------------------------------");
+    logManager.Info("URemote Server starting");
+    logManager.Info("-----");
     createDirectories();
 
     std::unique_ptr<Logger> fileLogger(new FileLogger(log_path, DEBUG));
-    log.AddLogger(fileLogger);
+    logManager.AddLogger(fileLogger);
 
     std::unique_ptr<ai_config> aiConfig = nullptr;
     std::unique_ptr<authorized_users> users = nullptr;
@@ -68,7 +69,7 @@ int main()
 
     const auto isInitialized = initProgram(aiConfig, users, serverConfig);
     if (!isInitialized) {
-        log.Error("Program not initialized. Leaving URemote Server : EXIT_FAILURE.");
+        logManager.Error("Program not initialized. Leaving URemote Server : EXIT_FAILURE.");
         return EXIT_FAILURE;
     }
 
@@ -80,7 +81,7 @@ int main()
 
     lexicon_manager::free_instance();
 
-    log.Info("Leaving URemote Server : EXIT_SUCCESS");
+    logManager.Info("Leaving URemote Server : EXIT_SUCCESS");
     return EXIT_SUCCESS;
 }
 
@@ -92,38 +93,38 @@ int main()
  */
 void createDirectories()
 {
-    log.Debug("-----------------------------------");
-    log.Debug("Check directories initialization...");
-    log.Debug("-----");
+    logManager.Debug("-----------------------------------");
+    logManager.Debug("Check directories initialization...");
+    logManager.Debug("-----");
 
     if (!fs_utils::exists(language_dir)) {
         try {
             fs_utils::create_directory(language_dir);
-            log.Debug("Language directory \"" + language_dir + "\" have been created.");
+            logManager.Debug("Language directory \"" + language_dir + "\" have been created.");
         } catch (const Exception& e) {
-            log.Error(e.whatAsString());
+            logManager.Error(e.whatAsString());
         }
     }
 
     if (!fs_utils::exists(config_dir)) {
         try {
             fs_utils::create_directory(config_dir);
-            log.Debug("Configuration directory \"" + config_dir + "\" have been created");
+            logManager.Debug("Configuration directory \"" + config_dir + "\" have been created");
         } catch (const Exception& e) {
-            log.Error(e.whatAsString());
+            logManager.Error(e.whatAsString());
         }
     }
 
     if (!fs_utils::exists(log_dir)) {
         try {
             fs_utils::create_directory(log_dir);
-            log.Debug("Log directory \"" + log_dir + "\" have been created");
+            logManager.Debug("Log directory \"" + log_dir + "\" have been created");
         } catch (const Exception& e) {
-            log.Error(e.whatAsString());
+            logManager.Error(e.whatAsString());
         }
     }
 
-    log.Debug("Directory created.");
+    logManager.Debug("Directory created.");
 }
 
 /**
@@ -137,9 +138,9 @@ bool initProgram(std::unique_ptr<ai_config>& aiConfig,
                  std::unique_ptr<authorized_users>& users,
                  std::unique_ptr<network_io::server_config>& serverConfig)
 {
-    log.Info("-----------------------------------");
-    log.Info("Program initialization...");
-    log.Info("-----------------------------------");
+    logManager.Info("-----------------------------------");
+    logManager.Info("Program initialization...");
+    logManager.Info("-----------------------------------");
     // TODO: Set Error and warning into a Queue to treat it (vocally) once everything is loaded.
 
     bool programInitialized;
@@ -158,7 +159,7 @@ bool initProgram(std::unique_ptr<ai_config>& aiConfig,
         } catch (const Exception& e) {
             message += e.whatAsString();
             message += "\n";
-            log.Error("lexiconMgr->set_language failed");
+            logManager.Error("lexiconMgr->set_language failed");
         }
     }
 
@@ -169,14 +170,14 @@ bool initProgram(std::unique_ptr<ai_config>& aiConfig,
 
     // Check program initializations
     if (programInitialized) {
-        log.Info("Program initialized.");
+        logManager.Info("Program initialized.");
     } else {
-        log.Error("Program initialization failed !");
+        logManager.Error("Program initialization failed !");
 # if defined(WINDOWS_PLATFORM)
         MessageBoxA(nullptr, message.c_str(), nullptr, 0);
 # else
         // TODO: Implement messagebox with Qt or another widget library
-        log.Error("An error occured:" + message);
+        logManager.Error("An error occured:" + message);
 # endif
     }
 
@@ -189,9 +190,9 @@ bool initProgram(std::unique_ptr<ai_config>& aiConfig,
  */
 bool initLexicons(lexicon_manager *lexiconMgr, std::string& message)
 {
-    log.Info("-----------------------------------");
-    log.Info("Init lexicon_manager...");
-    log.Info("-----");
+    logManager.Info("-----------------------------------");
+    logManager.Info("Init lexicon_manager...");
+    logManager.Info("-----");
 
     lexiconMgr->add_language(lexicon_manager::LANG_EN_UK, language_dir + "en.lang");
     lexiconMgr->add_language(lexicon_manager::LANG_EN_US, language_dir + "en.lang");
@@ -199,10 +200,10 @@ bool initLexicons(lexicon_manager *lexiconMgr, std::string& message)
 
     const auto isInitialized = lexiconMgr->is_initialized();
     if (isInitialized) {
-        log.Info("lexicon_manager OK.");
+        logManager.Info("lexicon_manager OK.");
     } else {
         std::string errorMessage = "lexicon_manager KO : No language file available.";
-        log.Error(errorMessage);
+        logManager.Error(errorMessage);
         message += errorMessage + "\n";
     }
 
@@ -228,7 +229,7 @@ std::string filenameToKey(const std::string& filename)
     }
 
     // If key is not found, return the default key
-    log.Debug("langFilenameToKey, file \"" + filename + "\" is not supported.");
+    logManager.Debug("langFilenameToKey, file \"" + filename + "\" is not supported.");
     return defaultKey;
 }
 
@@ -237,18 +238,18 @@ std::string filenameToKey(const std::string& filename)
  */
 bool loadAiConfig(std::unique_ptr<ai_config>& aiConfig, std::string& message)
 {
-    log.Info("-----------------------------------");
-    log.Info("Init config for the AI...");
-    log.Info("-----");
+    logManager.Info("-----------------------------------");
+    logManager.Info("Init config for the AI...");
+    logManager.Info("-----");
     try {
         aiConfig = std::unique_ptr<ai_config>(new ai_config(ai_conf_path));
-        log.Info("AI config OK.");
+        logManager.Info("AI config OK.");
         return true;
 
     } catch (const Exception& e) {
         message += e.whatAsString();
         message += "\n";
-        log.Error("AI config KO : " + e.whatAsString());
+        logManager.Error("AI config KO : " + e.whatAsString());
         return false;
     }
 }
@@ -256,14 +257,14 @@ bool loadAiConfig(std::unique_ptr<ai_config>& aiConfig, std::string& message)
 bool initTextToSpeech(const std::unique_ptr<ai_config>& aiConfig, std::string& message)
 {
     if (!text_to_speech::is_implemented()) {
-        log.Info("-----------------------------------");
-        log.Info("Text-to-speech not implemented.");
+        logManager.Info("-----------------------------------");
+        logManager.Info("Text-to-speech not implemented.");
         return false;
     }
 
-    log.Info("-----------------------------------");
-    log.Info("Initializing Text-to-speech...");
-    log.Info("-----");
+    logManager.Info("-----------------------------------");
+    logManager.Info("Initializing Text-to-speech...");
+    logManager.Info("-----");
     try {
 
         bool ttsSettingOK = text_to_speech::test_parameters(
@@ -273,12 +274,12 @@ bool initTextToSpeech(const std::unique_ptr<ai_config>& aiConfig, std::string& m
                 aiConfig->rate);
 
         if (ttsSettingOK) {
-            log.Info("Text-to-speech config OK.");
+            logManager.Info("Text-to-speech config OK.");
             return true;
 
         } else {
             message += "Text-to-speech setting failure. Trying out with default settings\n";
-            log.Warning("Text-to-speech setting failure. Trying out with default settings");
+            logManager.Warning("Text-to-speech setting failure. Trying out with default settings");
         }
 
         // Retry with default settings.
@@ -297,7 +298,7 @@ bool initTextToSpeech(const std::unique_ptr<ai_config>& aiConfig, std::string& m
     } catch (const Exception& e) {
         message += e.whatAsString();
         message += "\n";
-        log.Error("Text-to-speech config KO : " + e.whatAsString());
+        logManager.Error("Text-to-speech config KO : " + e.whatAsString());
         return false;
     }
     return true;
@@ -309,20 +310,21 @@ bool initTextToSpeech(const std::unique_ptr<ai_config>& aiConfig, std::string& m
 bool loadServerConfig(std::unique_ptr<network_io::server_config>& server_config, std::string& message)
 {
     // Init config for the server
-    log.Info("-----------------------------------");
-    log.Info("Init config for the server...");
-    log.Info("-----");
+    logManager.Info("-----------------------------------");
+    logManager.Info("Init config for the server...");
+    logManager.Info("-----");
     bool serverInitialized = false;
     try {
         server_config = std::unique_ptr<network_io::server_config>(new network_io::server_config(server_conf_path));
+        file_manager::set_default_path(server_config->root());
         std::stringstream ss;
         ss << "Server config OK on port " << server_config->port();
-        log.Debug(ss.str());
+        logManager.Debug(ss.str());
         serverInitialized = true;
     } catch (const Exception& e) {
         message += e.whatAsString();
         message += "\n";
-        log.Error("Server config KO.");
+        logManager.Error("Server config KO : " + e.whatAsString());
     }
     return serverInitialized;
 }
@@ -333,19 +335,19 @@ bool loadServerConfig(std::unique_ptr<network_io::server_config>& server_config,
 bool loadUsers(std::unique_ptr<authorized_users>& users_config, std::string& message)
 {
     // Loading authorized users
-    log.Info("-----------------------------------");
-    log.Info("Loading authorized users...");
-    log.Info("-----");
+    logManager.Info("-----------------------------------");
+    logManager.Info("Loading authorized users...");
+    logManager.Info("-----");
     bool usersLoaded = false;
     try {
         users_config = std::unique_ptr<authorized_users>(new authorized_users(users_conf_path));
-        log.Debug("Users loaded.");
+        logManager.Debug("Users loaded.");
         usersLoaded = true;
 
     } catch (const Exception& e) {
         message += e.whatAsString();
         message += "\n";
-        log.Error("Users Loading KO.");
+        logManager.Error("Users Loading KO : " + e.whatAsString());
     }
     return usersLoaded;
 }

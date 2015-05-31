@@ -1,12 +1,14 @@
+#include "executor.h"
+
 #include <iostream>
 
 #include "logger/console_logger.h"
 #include "string_utils.h"
 #include "lang/lexicon_manager.h"
-#include "network_io/serialized_message.h"
 
+#include "globals.h"
+#include "network_io/serialized_message.h"
 #include "AI.h"
-#include "executor.h"
 #include "trad_key.h"
 #include "modules/App.h"
 #include "modules/file_manager.h"
@@ -15,8 +17,6 @@
 #include "modules/MonUtils.h"
 
 using namespace network_io;
-
-auto log = ConsoleLogger(DEBUG);
 
 executor::executor(std::shared_ptr<AI> ai)
         : ai_(ai) { }
@@ -31,12 +31,12 @@ serialized_message executor::handle_request(serialized_message serializedRequest
     const auto strExtra = request.stringextra();
     const auto intExtra = request.intextra();
 
-    log.Info("executor::handle_request() Received message : ");
-    log.Info(" - Type      <" + Request_Type_Name(reqType) + ">");
-    log.Info(" - Code      <" + Request_Code_Name(reqCode) + ">");
-    log.Info(" - Token     <" + securityToken + ">");
-    log.Info(" - str extra <" + strExtra + ">");
-    log.Info(" - int extra <" + std::to_string(intExtra) + ">");
+    consoleLogger.Info("executor::handle_request() Received message : ");
+    consoleLogger.Info(" - Type      <" + Request_Type_Name(reqType) + ">");
+    consoleLogger.Info(" - Code      <" + Request_Code_Name(reqCode) + ">");
+    consoleLogger.Info(" - Token     <" + securityToken + ">");
+    consoleLogger.Info(" - str extra <" + strExtra + ">");
+    consoleLogger.Info(" - int extra <" + std::to_string(intExtra) + ">");
 
     Response reply;
     reply.set_requesttype(reqType);
@@ -90,7 +90,7 @@ serialized_message executor::handle_request(serialized_message serializedRequest
     try {
         return serialize_response(reply);
     } catch (const std::exception &e) {
-        log.Error("executor::handle_request() : " + std::string(e.what()));
+        consoleLogger.Error("executor::handle_request() : " + std::string(e.what()));
         return serialize_response(clear_response(reply, std::string(e.what())));
     }
 
@@ -209,7 +209,7 @@ void executor::volume_command(Response &reply, const Request_Code &code, const i
 
         default:
             message = "Unknown Volume command !";
-            log.Error(message);
+            consoleLogger.Error(message);
             break;
     }
 
@@ -234,7 +234,7 @@ void executor::ai_command(Response &reply, const Request_Code &code) const
         default:
             reply.set_returncode(Response_ReturnCode_RC_ERROR);
             message = "Unknown AI command !";
-            log.Error(message);
+            consoleLogger.Error(message);
             break;
     }
 
@@ -272,7 +272,7 @@ void executor::app_command(Response &reply, const Request_Code &code) const
         default:
             reply.set_returncode(Response_ReturnCode_RC_ERROR);
             message = "Unknown app command !";
-            log.Error(message);
+            consoleLogger.Error(message);
             break;
     }
 

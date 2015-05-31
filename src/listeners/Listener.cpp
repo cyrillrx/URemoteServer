@@ -8,7 +8,7 @@ static const std::string LOG_DIR = "logs/";
 Listener::Listener(const std::string& log_path)
 {
     log_ = LoggerManager();
-    std::unique_ptr<Logger> consoleLogger(new ConsoleLogger());
+    std::unique_ptr<Logger> consoleLogger(new ConsoleLogger(DEBUG));
     log_.AddLogger(consoleLogger);
 
     std::unique_ptr<Logger> fileLogger(new FileLogger(LOG_DIR + log_path, DEBUG));
