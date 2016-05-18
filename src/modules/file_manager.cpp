@@ -33,7 +33,7 @@ void file_manager::handle_message(Response *reply, const Request_Code& code, con
         case Request::QUERY_ROOTS:
             // TODO : return strings containing paths
             reply->set_returncode(Response_ReturnCode_RC_ERROR);
-            reply->set_message("QUERY_ROOTS not yet implemented : " + code);
+            reply->set_message("QUERY_ROOTS not yet implemented : " + Request::Code_Name(code));
             break;
 
         case Request::QUERY_CHILDREN:
@@ -49,12 +49,12 @@ void file_manager::handle_message(Response *reply, const Request_Code& code, con
         case Request::OPEN_CLIENT_SIDE:
             // TODO : Stream client side
             reply->set_returncode(Response_ReturnCode_RC_ERROR);
-            reply->set_message("OPEN_CLIENT_SIDE not yet implemented : " + code);
+            reply->set_message("OPEN_CLIENT_SIDE not yet implemented : " + Request::Code_Name(code));
             break;
 
         default:
             reply->set_returncode(Response_ReturnCode_RC_ERROR);
-            reply->set_message("Unknown code received : " + code);
+            reply->set_message("Unknown code received : " + Request::Code_Name(code));
             break;
     }
 }
