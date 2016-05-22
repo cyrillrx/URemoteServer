@@ -17,23 +17,16 @@
 *.layout
 .directory
 .objs
-
-# Biicode
-/bii/
-/cmake/
-/build/
-/bin/
-/deps/
-/blocks/
-settings.pyc
-
-# generated files
 Debug
 Release
-
 include
 lib
 ipch
-conf
-logs
 
+# Conan.io
+conanbuildinfo.*
+conaninfo.txt
+conanfile.pyc
+
+# Other
+build/
